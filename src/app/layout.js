@@ -1,7 +1,5 @@
-'use client'
 import Footer from "@/components/global/Footer"
 import Navbar from "@/components/global/Navbar"
-import { ChakraBaseProvider } from "@chakra-ui/react"
 import './globals.css'
 
 export const metadata = {
@@ -16,11 +14,9 @@ export default function RootLayout({ children }) {
         <title>Virolife</title>
       </head>
       <body>
-        <ChakraBaseProvider>
           <Navbar />
           {children}
           <Footer />
-        </ChakraBaseProvider>
       </body>
     </html>
   )

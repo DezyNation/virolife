@@ -48,7 +48,7 @@ const Carousel = () => {
                     <Text p={8} textAlign={'center'} fontSize={['md', 'xl']}>You either master money, or on some level, money masters you!</Text>
                 </Box>
                 <Box className='serif'>
-                    <Stack p={8} direction={['column', 'row']} w={'full'} justifyContent={'space-between'} gap={12}>
+                    <Stack p={8} direction={['column', 'row']} w={'full'} justifyContent={'space-between'} gap={8}>
                         <Image w={['full', '4xl']} src='https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg' />
                         <Box>
                             <Text fontSize={['xl', '6xl']} textAlign={['center', 'right']}>
@@ -57,6 +57,7 @@ const Carousel = () => {
                             <Button p={2} w={['56']} mt={12} rounded={6} bgColor={'yellow.400'} fontSize={'lg'} fontWeight={'semibold'} color={'#333'}>Watch Video</Button>
                         </Box>
                     </Stack>
+                    <Box w={'90vw'} h={'1'} bgColor={'yellow.500'}>Hiiii</Box>
                     <Text p={8} textAlign={'center'} fontSize={['md', 'xl']}>You either master money, or on some level, money masters you!</Text>
                 </Box>
             </Slider>
