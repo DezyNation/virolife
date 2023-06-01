@@ -1,5 +1,5 @@
 'use client'
-import Carousel from "@/components/global/Home/Carousel";
+import Carousel from "@/components/Home/Carousel";
 
 export default function Home() {
   return (
