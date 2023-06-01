@@ -59,7 +59,7 @@ const Navbar = () => {
                     </HStack>
                 </Flex>
                 <Flex w={['full']} alignItems="center" display={{ base: 'flex', md: 'none' }}>
-                    <BiMenuAltLeft size={24} onClick={()=>setIsDrawerOpen(!isDrawerOpen)} />
+                    <BiMenuAltLeft size={24} onClick={() => setIsDrawerOpen(!isDrawerOpen)} />
                     <Spacer />
                     <Link href={'/'}>
                         <Box cursor={'pointer'}>
@@ -94,7 +94,10 @@ const Navbar = () => {
                                         <Input w={['full', 'xs']} placeholder='Password' type='password' boxShadow={'xl'} border={'.5px solid #FAFAFA'} rounded={0} />
                                     </Stack>
                                 </FormControl>
-                                <Button colorScheme='yellow'>Continue</Button>
+                                <HStack>
+                                    <Button colorScheme='yellow' variant={'outline'} onClick={onToggle}>Cancel</Button>
+                                    <Button colorScheme='yellow'>Continue</Button>
+                                </HStack>
                             </VStack>
                             <VStack w={['full', 'xs']} gap={8}>
                                 <Text textAlign={'center'}>Or Login With</Text>
@@ -114,28 +117,31 @@ const Navbar = () => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalBody p={12}>
-                        <Stack direction={['column', 'row']} gap={8}>
+                    <ModalBody p={[8, 12]}>
+                        <Stack direction={['column', 'row']} gap={[4, 8]}>
                             <VStack gap={8}>
                                 <FormControl>
-                                    <Stack direction={['column', 'row']} spacing={8} justifyContent={'space-between'}>
+                                    <Stack direction={['column', 'row']} spacing={[4, 8]} justifyContent={'space-between'}>
                                         <FormLabel fontSize={'xl'}>Name</FormLabel>
                                         <Input w={['full', 'xs']} placeholder='Your Full Name' boxShadow={'xl'} border={'.5px solid #FAFAFA'} rounded={0} />
                                     </Stack>
                                 </FormControl>
                                 <FormControl>
-                                    <Stack direction={['column', 'row']} spacing={8} justifyContent={'space-between'}>
+                                    <Stack direction={['column', 'row']} spacing={[4, 8]} justifyContent={'space-between'}>
                                         <FormLabel fontSize={'xl'}>Email</FormLabel>
                                         <Input w={['full', 'xs']} placeholder='Your Email' type='email' boxShadow={'xl'} border={'.5px solid #FAFAFA'} rounded={0} />
                                     </Stack>
                                 </FormControl>
                                 <FormControl>
-                                    <Stack direction={['column', 'row']} spacing={8}>
+                                    <Stack direction={['column', 'row']} spacing={[4, 8]}>
                                         <FormLabel fontSize={'xl'}>Password</FormLabel>
                                         <Input w={['full', 'xs']} placeholder='Password' type='password' boxShadow={'xl'} border={'.5px solid #FAFAFA'} rounded={0} />
                                     </Stack>
                                 </FormControl>
-                                <Button colorScheme='yellow'>Continue</Button>
+                                <HStack>
+                                    <Button colorScheme='yellow' variant={'outline'} onClick={() => setIsSignupOpen(!isSignupOpen)}>Cancel</Button>
+                                    <Button colorScheme='yellow'>Continue</Button>
+                                </HStack>
                             </VStack>
                             <VStack w={['full', 'xs']} gap={8}>
                                 <Text textAlign={'center'}>Or Register With</Text>
@@ -159,8 +165,16 @@ const Navbar = () => {
                         <DrawerCloseButton />
                     </DrawerHeader>
                     <DrawerBody>
-                        <VStack gap={2} p={4}>
-
+                        <VStack gap={4} p={4} w={'full'} alignItems={'flex-start'}>
+                            <Text>Home</Text>
+                            <Text onClick={onToggle}>Login</Text>
+                            <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
+                            <Link href={'/auth/info'}>
+                                <Text className='serif'>Affiliate</Text>
+                            </Link>
+                            <Text>Blog</Text>
+                            <Text>Buy/Sell</Text>
+                            <Text>Contact Us</Text>
                         </VStack>
                     </DrawerBody>
                 </DrawerContent>
