@@ -41,7 +41,7 @@ const Info = () => {
             </Box>
           </FormControl>
         </Stack>
-        <Stack pb={16} gap={[0, 48]} direction={['column', 'row']} justifyContent={'flex-start'}>
+        <Stack pb={16} gap={[8, 48]} direction={['column', 'row']} justifyContent={'flex-start'}>
           <HStack gap={4}>
             <FormLabel fontWeight={'bold'} textTransform={'uppercase'} fontSize={'lg'}>GENDER</FormLabel>
             <Button rounded={'full'} colorScheme='yellow' onClick={() => setGender("male")} variant={gender == "male" ? 'solid' : 'outline'}>M</Button>
@@ -53,7 +53,7 @@ const Info = () => {
             <Input bg={'blanchedalmond'} w={['full', 'xs']} type='date' />
           </HStack>
         </Stack>
-        <Stack w={'full'} pb={16} direction={['column', 'row']} justifyContent={'space-between'}>
+        <Stack w={'full'} gap={8} pb={16} direction={['column', 'row']} justifyContent={'space-between'}>
           <FormControl>
             <FormLabel fontWeight={'bold'} textTransform={'uppercase'} fontSize={'lg'}>CONTACT NO</FormLabel>
             <HStack>

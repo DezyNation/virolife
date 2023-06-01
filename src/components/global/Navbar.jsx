@@ -21,13 +21,21 @@ import {
     FormLabel,
     Stack,
     VStack,
-    Image
+    Image,
+    Drawer,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerHeader,
+    DrawerCloseButton,
+    DrawerBody
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { BiMenuAltLeft } from 'react-icons/bi'
 
 const Navbar = () => {
     const { isOpen, onToggle } = useDisclosure();
     const [isSignupOpen, setIsSignupOpen] = useState(false)
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     return (
         <>
             <Box w={'98%'} mx={'auto'} p={4} borderBottom={'1px'} borderBottomColor={'yellow.500'}>
@@ -49,6 +57,15 @@ const Navbar = () => {
                         <Box cursor={'pointer'} mr={4} className='serif'>Buy Sell</Box>
                         <Box cursor={'pointer'} mr={4} className='serif'>Contact</Box>
                     </HStack>
+                </Flex>
+                <Flex w={['full']} alignItems="center" display={{ base: 'flex', md: 'none' }}>
+                    <BiMenuAltLeft size={24} onClick={()=>setIsDrawerOpen(!isDrawerOpen)} />
+                    <Spacer />
+                    <Link href={'/'}>
+                        <Box cursor={'pointer'}>
+                            <Text fontSize={'lg'} className='serif' fontWeight={'bold'} color={'#666'}>Virolife</Text>
+                        </Box>
+                    </Link>
                 </Flex>
             </Box>
 
@@ -127,8 +144,27 @@ const Navbar = () => {
                         </Stack>
                     </ModalBody>
                 </ModalContent>
-
             </Modal>
+
+
+            <Drawer
+                size={'xs'}
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+                placement='left'
+            >
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerHeader>
+                        <DrawerCloseButton />
+                    </DrawerHeader>
+                    <DrawerBody>
+                        <VStack gap={2} p={4}>
+
+                        </VStack>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
         </>
     );
 };
