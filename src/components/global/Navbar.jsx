@@ -1,49 +1,71 @@
 "use client"
 import React, { useState } from 'react';
-import { Box, Text, Flex, Spacer, IconButton, Collapse, useDisclosure, HStack } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import {
+    Box,
+    Text,
+    Flex,
+    Spacer,
+    IconButton,
+    Collapse,
+    useDisclosure,
+    HStack,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button,
+    FormControl,
+    Input,
+    FormLabel,
+    Stack
+} from '@chakra-ui/react';
 
 const Navbar = () => {
     const { isOpen, onToggle } = useDisclosure();
 
     return (
-        <Box className='serif' px={4} py={3}>
-            <Flex alignItems="center">
-                <IconButton
-                    icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-                    variant="ghost"
-                    colorScheme="white"
-                    onClick={onToggle}
-                    display={{ base: 'block', md: 'none' }}
-                />
-                <Box>
-                    <Collapse in={isOpen} animateOpacity>
-                        <Flex direction="column" mt={4} align="center">
-                            <Box>Link 1</Box>
-                            <Box>Link 2</Box>
-                            <Box>Link 3</Box>
-                        </Flex>
-                    </Collapse>
-                </Box>
-
+        <>
+            <Box px={4} py={3}>
                 <Flex w={['full']} alignItems="center" display={{ base: 'none', md: 'flex' }}>
                     <HStack spacing={8} fontWeight={'medium'}>
-                        <Box mr={4}>About Us</Box>
-                        <Box mr={4}>Login/Signup</Box>
+                        <Box cursor={'pointer'} mr={4} className='serif'>About Us</Box>
+                        <Box cursor={'pointer'} mr={4} className='serif' onClick={onToggle}>Login/Signup</Box>
                     </HStack>
                     <Spacer />
-                    <Box>
-                        <Text fontSize={'lg'} fontWeight={'bold'} color={'#666'}>Affiliate</Text>
+                    <Box cursor={'pointer'}>
+                        <Text fontSize={'lg'} className='serif' fontWeight={'bold'} color={'#666'}>Affiliate</Text>
                     </Box>
                     <Spacer />
                     <HStack spacing={8} fontWeight={'medium'}>
-                        <Box mr={4}>Blog</Box>
-                        <Box mr={4}>Buy Sell</Box>
-                        <Box mr={4}>Contact</Box>
+                        <Box cursor={'pointer'} mr={4} className='serif'>Blog</Box>
+                        <Box cursor={'pointer'} mr={4} className='serif'>Buy Sell</Box>
+                        <Box cursor={'pointer'} mr={4} className='serif'>Contact</Box>
                     </HStack>
                 </Flex>
-            </Flex>
-        </Box>
+            </Box>
+
+            <Modal
+                isOpen={isOpen}
+                isCentered={true}
+                onClose={onToggle}
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalBody p={12}>
+                        <Stack>
+                            <FormControl>
+                                <HStack spacing={8}>
+                                    <FormLabel fontSize={'xl'}>Email</FormLabel>
+                                    <Input type='password' boxShadow={'xl'} border={'none'} rounded={0} />
+                                </HStack>
+                            </FormControl>
+                        </Stack>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+        </>
     );
 };
 
