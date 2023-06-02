@@ -20,6 +20,8 @@ const Carousel = () => {
         slidesToShow: 1,
         slidesToScroll: 1,
         autoPlay: true,
+        prevArrow: null,
+        nextArrow: null
     };
 
     return (

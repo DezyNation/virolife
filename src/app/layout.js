@@ -2,7 +2,7 @@
 import Footer from "@/components/global/Footer"
 import Navbar from "@/components/global/Navbar"
 import { ChakraProvider } from "@chakra-ui/react"
-import './globals.css'
+import '../app/styles/globals.css'
 
 // export const metadata = {
 //   title: 'Create Next App',

@@ -53,7 +53,9 @@ const Navbar = () => {
                     </Link>
                     <Spacer />
                     <HStack spacing={8} fontWeight={'medium'}>
-                        <Box cursor={'pointer'} mr={4} className='serif'>Blog</Box>
+                        <Link href={'/blogs'}>
+                            <Box cursor={'pointer'} mr={4} className='serif'>Blog</Box>
+                        </Link>
                         <Box cursor={'pointer'} mr={4} className='serif'>Buy Sell</Box>
                         <Box cursor={'pointer'} mr={4} className='serif'>Contact</Box>
                     </HStack>
@@ -172,7 +174,9 @@ const Navbar = () => {
                             <Link href={'/auth/info'}>
                                 <Text className='serif'>Affiliate</Text>
                             </Link>
-                            <Text>Blog</Text>
+                            <Link href={'/blogs'}>
+                                <Text>Blog</Text>
+                            </Link>
                             <Text>Buy/Sell</Text>
                             <Text>Contact Us</Text>
                         </VStack>
