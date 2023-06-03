@@ -10,3 +10,7 @@ body{
 .serif{
   font-family: 'Playfair Display' !important;
 }
+
+.hide-scrollbar::-webkit-scrollbar{
+  display: none;
+}

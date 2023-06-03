@@ -27,7 +27,21 @@ import {
     DrawerContent,
     DrawerHeader,
     DrawerCloseButton,
-    DrawerBody
+    DrawerBody,
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
+    PopoverFooter,
+    PopoverArrow,
+    PopoverCloseButton,
+    PopoverAnchor,
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionIcon,
+    AccordionPanel
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { BiMenuAltLeft } from 'react-icons/bi'
@@ -46,17 +60,33 @@ const Navbar = () => {
                         <Box cursor={'pointer'} mr={4} className='serif' onClick={() => setIsSignupOpen(true)}>Signup</Box>
                     </HStack>
                     <Spacer />
-                    <Link href={'/auth/info'}>
-                        <Box cursor={'pointer'}>
-                            <Text fontSize={'lg'} className='serif' fontWeight={'bold'} color={'#666'}>Affiliate</Text>
-                        </Box>
-                    </Link>
+                    <Popover>
+                        <PopoverTrigger>
+                            <Text cursor={'pointer'} fontSize={'lg'} className='serif' fontWeight={'bold'} color={'#666'}>Group Funding</Text>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <PopoverArrow />
+                            <PopoverBody>
+                                <VStack gap={4}>
+                                    <Link href={'/campaigns'} style={{ width: '100%' }}>
+                                        <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Self Funding</Text>
+                                    </Link>
+                                    <Link href={'/campaigns'} style={{ width: '100%' }}>
+                                        <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Group Funding</Text>
+                                    </Link>
+                                    <Link href={'/campaigns'} style={{ width: '100%' }}>
+                                        <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Viro Team Funding</Text>
+                                    </Link>
+                                </VStack>
+                            </PopoverBody>
+                        </PopoverContent>
+                    </Popover>
                     <Spacer />
                     <HStack spacing={8} fontWeight={'medium'}>
                         <Link href={'/blogs'}>
                             <Box cursor={'pointer'} mr={4} className='serif'>Blog</Box>
                         </Link>
-                        <Box cursor={'pointer'} mr={4} className='serif'>Buy Sell</Box>
+                        <Box cursor={'pointer'} mr={4} className='serif'>Redeem Points</Box>
                         <Box cursor={'pointer'} mr={4} className='serif'>Contact</Box>
                     </HStack>
                 </Flex>
@@ -71,6 +101,53 @@ const Navbar = () => {
                 </Flex>
             </Box>
 
+
+            <Drawer
+                size={'xs'}
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+                placement='left'
+            >
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerHeader>
+                        <DrawerCloseButton />
+                    </DrawerHeader>
+                    <DrawerBody>
+                        <VStack gap={4} p={4} w={'full'} alignItems={'flex-start'}>
+                            <Text>Home</Text>
+                            <Text onClick={onToggle}>Login</Text>
+                            <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
+                            <Accordion w={'full'} allowToggle>
+                                <AccordionItem border={'none'}>
+                                    <AccordionButton px={0} justifyContent={'space-between'}>
+                                        <Text className='serif'>Group Funding</Text>
+                                        <AccordionIcon />
+                                    </AccordionButton>
+                                    <AccordionPanel>
+                                        <VStack gap={2}>
+                                            <Link href={'/campaigns'} style={{ width: '100%' }}>
+                                                <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Self Funding</Text>
+                                            </Link>
+                                            <Link href={'/campaigns'} style={{ width: '100%' }}>
+                                                <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Group Funding</Text>
+                                            </Link>
+                                            <Link href={'/campaigns'} style={{ width: '100%' }}>
+                                                <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Viro Team Funding</Text>
+                                            </Link>
+                                        </VStack>
+                                    </AccordionPanel>
+                                </AccordionItem>
+                            </Accordion>
+                            <Link href={'/blogs'}>
+                                <Text>Blog</Text>
+                            </Link>
+                            <Text>Redeem Points</Text>
+                            <Text>Contact Us</Text>
+                        </VStack>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
 
             {/* Login Popup */}
             <Modal
@@ -154,35 +231,6 @@ const Navbar = () => {
                 </ModalContent>
             </Modal>
 
-
-            <Drawer
-                size={'xs'}
-                isOpen={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-                placement='left'
-            >
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerHeader>
-                        <DrawerCloseButton />
-                    </DrawerHeader>
-                    <DrawerBody>
-                        <VStack gap={4} p={4} w={'full'} alignItems={'flex-start'}>
-                            <Text>Home</Text>
-                            <Text onClick={onToggle}>Login</Text>
-                            <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
-                            <Link href={'/auth/info'}>
-                                <Text className='serif'>Affiliate</Text>
-                            </Link>
-                            <Link href={'/blogs'}>
-                                <Text>Blog</Text>
-                            </Link>
-                            <Text>Buy/Sell</Text>
-                            <Text>Contact Us</Text>
-                        </VStack>
-                    </DrawerBody>
-                </DrawerContent>
-            </Drawer>
         </>
     );
 };
