@@ -175,7 +175,9 @@ const Navbar = () => {
                                 </FormControl>
                                 <HStack>
                                     <Button colorScheme='yellow' variant={'outline'} onClick={onToggle}>Cancel</Button>
-                                    <Button colorScheme='yellow'>Continue</Button>
+                                    <Link href={'/dashboard'}>
+                                        <Button colorScheme='yellow'>Continue</Button>
+                                    </Link>
                                 </HStack>
                             </VStack>
                             <VStack w={['full', 'xs']} gap={8}>
