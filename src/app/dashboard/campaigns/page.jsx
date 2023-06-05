@@ -3,6 +3,7 @@ import React from 'react'
 import { Box, Stack, Text, Button } from '@chakra-ui/react'
 import CampaignCard from '@/components/campaign/CampaignCard'
 import { BsPlus } from 'react-icons/bs'
+import Link from 'next/link'
 
 const Page = () => {
     const dummyCampaigns = [
@@ -57,9 +58,11 @@ const Page = () => {
                     className='serif' fontSize={'xl'}
                     fontWeight={'semibold'} mb={12}
                 >Your Campaigns</Text>
-                <Button colorScheme='yellow' rounded={'full'} leftIcon={<BsPlus size={24} />}>
-                    Create New
-                </Button>
+                <Link href={'/dashboard/campaigns/create'}>
+                    <Button colorScheme='yellow' rounded={'full'} leftIcon={<BsPlus size={24} />}>
+                        Create New
+                    </Button>
+                </Link>
             </Stack>
             <Stack
                 direction={['column', 'row']} flexWrap={'wrap'}
