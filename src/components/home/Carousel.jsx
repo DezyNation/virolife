@@ -25,7 +25,7 @@ const Carousel = () => {
     };
 
     return (
-        <Box h={['auto', '100vh']}>
+        <Box minH={['auto', '120vh']}>
             <Slider {...settings}>
                 <Box w={'full'}>
                     <Stack p={8} direction={['column', 'row']} justifyContent={'space-between'}>
