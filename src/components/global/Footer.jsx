@@ -1,42 +1,41 @@
 'use client'
 import React from 'react';
-import { Box, HStack, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
-import { BsFacebook, BsInstagram, BsLinkedin, BsTwitter } from 'react-icons/bs'
+import { Box, HStack, Spacer, Stack, Text, VStack, Image } from '@chakra-ui/react';
+import { BsFacebook, BsInstagram, BsLinkedin, BsPhone, BsTelephone, BsTelephoneFill, BsTwitter } from 'react-icons/bs'
+import { GrLocation } from 'react-icons/gr'
 
 const Footer = () => {
   return (
-    <VStack p={8} bgColor={'blanchedalmond'}>
-      <Stack direction={['column', 'row']} gap={8}>
+    <Box p={[8, 16]} bgColor={'blanchedalmond'}>
+      <Stack direction={['column', 'row']} alignItems={'flex-end'} justifyContent={'space-between'} gap={8}>
         <Box flex={1}>
-          <Text className='serif' fontSize={'lg'} fontWeight={'semibold'}>Virolife</Text>
-          <Text>
-            Our mission is to create opportunities for individuals to access the financial resources they need,
-            fostering a community that believes in the power of collective support.
-            Join us today and be a part of the positive change, as we work together to make dreams come true.
-          </Text>
+          <Image src='/logo.png' w={20} />
+          <Box>
+            <br />
+            <Text className='serif' pb={2} >Terms of Service</Text>
+            <Text className='serif' pb={2} >Privacy Policy</Text>
+            <Text className='serif' pb={2} >Refund Policy</Text>
+          </Box>
         </Box>
         <Spacer />
-        <VStack alignItems={'flex-start'} justifyContent={'flex-start'} gap={2} flex={1}>
-          <Text fontSize={'lg'} className='serif' fontWeight={'semibold'}>Services</Text>
-          <Text fontWeight={'normal'}>Raise Funds</Text>
-          <Text fontWeight={'normal'}>Investment Opportunities</Text>
-          <Text fontWeight={'normal'}>Payment Process</Text>
-        </VStack>
-        <VStack alignItems={'flex-start'} justifyContent={'flex-start'} gap={2} flex={1}>
-          <Text fontSize={'lg'} className='serif' fontWeight={'semibold'}>Important</Text>
-          <Text fontWeight={'normal'}>Terms & Conditions</Text>
-          <Text fontWeight={'normal'}>Privacy Policy</Text>
-          <Text fontWeight={'normal'}>Refund Policy</Text>
-        </VStack>
+        <Box>
+        <HStack p={8}>
+          <GrLocation color='#333' fontSize={36} />
+          <Text fontSize={'lg'}>Space for Address</Text>
+        </HStack>
+        <HStack p={8}>
+          <BsTelephoneFill color='#333' fontSize={36} />
+          <Text fontSize={'lg'}>+91 90228 53554</Text>
+        </HStack>
+        <HStack p={8} spacing={8}>
+          <BsFacebook color='#333' fontSize={36} cursor={'pointer'} />
+          <BsInstagram color='#333' fontSize={36} cursor={'pointer'} />
+          <BsTwitter color='#333' fontSize={36} cursor={'pointer'} />
+          <BsLinkedin color='#333' fontSize={36} cursor={'pointer'} />
+        </HStack>
+        </Box>
       </Stack>
-      <HStack p={8} spacing={8}>
-        <BsFacebook color='#FEA1A1' fontSize={24} cursor={'pointer'} />
-        <BsInstagram color='#FEA1A1' fontSize={24} cursor={'pointer'} />
-        <BsTwitter color='#FEA1A1' fontSize={24} cursor={'pointer'} />
-        <BsLinkedin color='#FEA1A1' fontSize={24} cursor={'pointer'} />
-      </HStack>
-      <Text p={2}>&copy; Copyright 2023 - Virolife. All Rights Reserved.</Text>
-    </VStack>
+    </Box>
   );
 };
 
