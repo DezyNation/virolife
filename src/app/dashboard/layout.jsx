@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Stack,
     Box,
@@ -16,9 +16,18 @@ import {
 import { BsCashCoin, BsCurrencyRupee, BsFill1CircleFill, BsHeartFill, BsMegaphoneFill, BsPerson, BsPersonFill, BsPower } from 'react-icons/bs';
 import { MdGroups } from 'react-icons/md';
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useRouter } from 'next/navigation'
 
 
 const Layout = ({ children }) => {
+    const Router = useRouter()
+    const { status } = useSession()
+    useEffect(()=>{
+        if(status==="unauthenticated"){
+            Router.replace("/")
+        }
+    },[status])
+
     return (
         <>
             <Stack direction={'row'} justifyContent={'space-between'}>
@@ -77,12 +86,10 @@ const Layout = ({ children }) => {
                                     <Text>Support</Text>
                                 </HStack>
                             </Link>
-                            <Link href={'/dashboard'} onClick={()=>signOut()}>
-                                <HStack gap={4}>
-                                    <BsPower size={20} />
-                                    <Text>Log Out</Text>
-                                </HStack>
-                            </Link>
+                            <HStack gap={4} onClick={signOut}>
+                                <BsPower size={20} />
+                                <Text>Log Out</Text>
+                            </HStack>
                         </VStack>
                     </Box>
                 </Show>
