@@ -12,11 +12,21 @@ import {
 import StatsCard from '@/components/dashboard/StatsCard'
 import { BsArrowRight, BsCashCoin, BsCurrencyRupee, BsMegaphoneFill, BsYoutube } from 'react-icons/bs'
 import Link from 'next/link'
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const DashboardHome = () => {
+    const { data: session } = useSession()
     const [selectedImg, setSelectedImg] = useState("https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg")
+    if(!session){
+        return(
+            <>
+                <Text>You need to login to view this page</Text>
+            </>
+        )
+    }
     return (
         <>
+            <Text className='serif' fontSize={'xl'} py={4} textTransform={'capitalize'}>Welcome, {session.user.name}</Text>
             <Stack w={'full'} direction={['column', 'row']} gap={[8, 16]} justifyContent={'space-between'}>
                 <StatsCard
                     icon={<BsYoutube size={28} />}

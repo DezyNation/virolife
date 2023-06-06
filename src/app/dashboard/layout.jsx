@@ -15,13 +15,14 @@ import {
 } from 'react-icons/ai'
 import { BsCashCoin, BsCurrencyRupee, BsFill1CircleFill, BsHeartFill, BsMegaphoneFill, BsPerson, BsPersonFill, BsPower } from 'react-icons/bs';
 import { MdGroups } from 'react-icons/md';
+import { useSession, signIn, signOut } from "next-auth/react"
 
 
 const Layout = ({ children }) => {
     return (
         <>
             <Stack direction={'row'} justifyContent={'space-between'}>
-                <Show above=''>
+                <Show above='md'>
                     <Box p={4} bg={'blanchedalmond'} w={'xs'}>
                         <Text className='serif' fontSize={'xl'} fontWeight={'semibold'}>Virolife</Text>
                         <VStack w={'full'} gap={4} pt={8} alignItems={'flex-start'}>
@@ -76,7 +77,7 @@ const Layout = ({ children }) => {
                                     <Text>Support</Text>
                                 </HStack>
                             </Link>
-                            <Link href={'/dashboard'}>
+                            <Link href={'/dashboard'} onClick={()=>signOut()}>
                                 <HStack gap={4}>
                                     <BsPower size={20} />
                                     <Text>Log Out</Text>
