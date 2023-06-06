@@ -6,17 +6,18 @@ import { GrLocation } from 'react-icons/gr'
 
 const Footer = () => {
   return (
-    <Box w={'full'} p={8} bgColor={'blanchedalmond'}>
+    <Box w={'full'} p={4} bgColor={'blanchedalmond'}>
       <Stack direction={['column', 'row']} gap={8}>
         <Box w={'full'} flex={1}>
           <Image src='/logo.png' width={24} />
-          <br />
-          <VStack w={'full'} alignItems={'flex-start'} justifyContent={'flex-start'} gap={2} flex={1}>
+        </Box>
+        <Spacer />
+        <VStack w={'full'} alignItems={'flex-start'} justifyContent={'flex-start'} gap={2} flex={1}>
+          <Text fontSize={'lg'} className='serif' fontWeight={'semibold'}>Services</Text>
             <Text fontWeight={'normal'}>Raise Funds</Text>
             <Text fontWeight={'normal'}>Investment Opportunities</Text>
             <Text fontWeight={'normal'}>Payment Process</Text>
-          </VStack>
-        </Box>
+        </VStack>
         <Spacer />
         <VStack w={'full'} alignItems={'flex-start'} justifyContent={'flex-start'} gap={2} flex={1}>
           <Text fontSize={'lg'} className='serif' fontWeight={'semibold'}>Important</Text>
@@ -26,15 +27,15 @@ const Footer = () => {
         </VStack>
         <Spacer />
         <Box flex={1} w={'full'}>
-          <HStack p={8}>
+          <HStack p={8} py={2}>
             <GrLocation color='#333' fontSize={36} />
             <Text fontSize={'lg'}>Space for Address</Text>
           </HStack>
-          <HStack p={8}>
+          <HStack p={8} py={2}>
             <BsTelephoneFill color='#333' fontSize={36} />
             <Text fontSize={'lg'}>+91 90228 53554</Text>
           </HStack>
-          <HStack p={8} spacing={8}>
+          <HStack p={8} py={2} spacing={8}>
             <BsFacebook color='#333' fontSize={36} cursor={'pointer'} />
             <BsInstagram color='#333' fontSize={36} cursor={'pointer'} />
             <BsTwitter color='#333' fontSize={36} cursor={'pointer'} />

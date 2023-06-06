@@ -54,25 +54,25 @@ const Navbar = () => {
     const { status } = useSession()
     return (
         <>
-            <Box w={'98%'} mx={'auto'} p={4} borderBottom={'1px'} borderBottomColor={'yellow.500'}>
+            <Box w={'full'} mx={'auto'} p={4} borderBottom={'1px'} borderBottomColor={'yellow.500'}>
                 <Flex w={['full']} alignItems="center" display={{ base: 'none', md: 'flex' }}>
                     <HStack spacing={8} fontWeight={'medium'}>
                         <Image src='/logo.png' width={16} />
-                        <Box cursor={'pointer'} mr={4} className='serif'>About Us</Box>
+                        <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif'>About Us</Box>
                         {
                             status === "unauthenticated" ?
-                                <Box cursor={'pointer'} mr={4} className='serif' onClick={onToggle}>Login</Box>
+                                <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif' onClick={onToggle}>Login</Box>
                                 : null
                         }
                         {
                             status === "unauthenticated" ?
-                                <Box cursor={'pointer'} mr={4} className='serif' onClick={() => setIsSignupOpen(true)}>Signup</Box>
+                                <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif' onClick={() => setIsSignupOpen(true)}>Signup</Box>
                                 : null
                         }
                         {
                             status === "authenticated" ?
                                 <Link href={'/dashboard'}>
-                                    <Box cursor={'pointer'} mr={4} className='serif'>Dashboard</Box>
+                                    <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif'>Dashboard</Box>
                                 </Link>
                                 : null
                         }
@@ -80,20 +80,20 @@ const Navbar = () => {
                     <Spacer />
                     <Popover>
                         <PopoverTrigger>
-                            <Text cursor={'pointer'} fontSize={'lg'} className='serif' fontWeight={'bold'} color={'#666'}>Group Funding</Text>
+                            <Text cursor={'pointer'} fontSize={'xl'} className='serif' fontWeight={'bold'} color={'#666'}>Group Funding</Text>
                         </PopoverTrigger>
                         <PopoverContent>
                             <PopoverArrow />
                             <PopoverBody>
                                 <VStack gap={4}>
                                     <Link href={'/campaigns'} style={{ width: '100%' }}>
-                                        <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Self Funding</Text>
+                                        <Box className='serif' fontSize={'lg'} p={2} _hover={{ bg: 'blanchedalmond' }}>Self Funding</Box>
                                     </Link>
                                     <Link href={'/campaigns'} style={{ width: '100%' }}>
-                                        <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Group Funding</Text>
+                                        <Box className='serif' fontSize={'lg'} p={2} _hover={{ bg: 'blanchedalmond' }}>Group Funding</Box>
                                     </Link>
                                     <Link href={'/campaigns'} style={{ width: '100%' }}>
-                                        <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Viro Team Funding</Text>
+                                        <Box className='serif' fontSize={'lg'} p={2} _hover={{ bg: 'blanchedalmond' }}>Viro Team Funding</Box>
                                     </Link>
                                 </VStack>
                             </PopoverBody>
@@ -102,10 +102,10 @@ const Navbar = () => {
                     <Spacer />
                     <HStack spacing={8} fontWeight={'medium'}>
                         <Link href={'/blogs'}>
-                            <Box cursor={'pointer'} mr={4} className='serif'>Blog</Box>
+                            <Box cursor={'pointer'} mr={4} fontSize={'lg'} className='serif'>Blog</Box>
                         </Link>
-                        <Box cursor={'pointer'} mr={4} className='serif'>Redeem Points</Box>
-                        <Box cursor={'pointer'} mr={4} className='serif'>Contact</Box>
+                        <Box cursor={'pointer'} mr={4} fontSize={'lg'} className='serif'>Redeem Points</Box>
+                        <Box cursor={'pointer'} mr={4} fontSize={'lg'} className='serif'>Contact</Box>
                     </HStack>
                 </Flex>
                 <Flex w={['full']} alignItems="center" display={{ base: 'flex', md: 'none' }}>
