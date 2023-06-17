@@ -45,37 +45,55 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { BiMenuAltLeft } from 'react-icons/bi'
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const Navbar = () => {
     const { isOpen, onToggle } = useDisclosure();
     const [isSignupOpen, setIsSignupOpen] = useState(false)
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const { status } = useSession()
     return (
         <>
-            <Box w={'98%'} mx={'auto'} p={4} borderBottom={'1px'} borderBottomColor={'yellow.500'}>
+            <Box w={'full'} mx={'auto'} p={4} borderBottom={'1px'} borderBottomColor={'yellow.500'}>
                 <Flex w={['full']} alignItems="center" display={{ base: 'none', md: 'flex' }}>
                     <HStack spacing={8} fontWeight={'medium'}>
-                        <Box cursor={'pointer'} mr={4} className='serif'>About Us</Box>
-                        <Box cursor={'pointer'} mr={4} className='serif' onClick={onToggle}>Login</Box>
-                        <Box cursor={'pointer'} mr={4} className='serif' onClick={() => setIsSignupOpen(true)}>Signup</Box>
+                        <Image src='/logo.png' width={16} />
+                        <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif'>About Us</Box>
+                        {
+                            status === "unauthenticated" ?
+                                <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif' onClick={onToggle}>Login</Box>
+                                : null
+                        }
+                        {
+                            status === "unauthenticated" ?
+                                <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif' onClick={() => setIsSignupOpen(true)}>Signup</Box>
+                                : null
+                        }
+                        {
+                            status === "authenticated" ?
+                                <Link href={'/dashboard'}>
+                                    <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif'>Dashboard</Box>
+                                </Link>
+                                : null
+                        }
                     </HStack>
                     <Spacer />
                     <Popover>
                         <PopoverTrigger>
-                            <Text cursor={'pointer'} fontSize={'lg'} className='serif' fontWeight={'bold'} color={'#666'}>Group Funding</Text>
+                            <Text cursor={'pointer'} fontSize={'xl'} className='serif' fontWeight={'bold'} color={'#666'}>Group Funding</Text>
                         </PopoverTrigger>
                         <PopoverContent>
                             <PopoverArrow />
                             <PopoverBody>
                                 <VStack gap={4}>
                                     <Link href={'/campaigns'} style={{ width: '100%' }}>
-                                        <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Self Funding</Text>
+                                        <Box className='serif' fontSize={'lg'} p={2} _hover={{ bg: 'blanchedalmond' }}>Self Funding</Box>
                                     </Link>
                                     <Link href={'/campaigns'} style={{ width: '100%' }}>
-                                        <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Group Funding</Text>
+                                        <Box className='serif' fontSize={'lg'} p={2} _hover={{ bg: 'blanchedalmond' }}>Group Funding</Box>
                                     </Link>
                                     <Link href={'/campaigns'} style={{ width: '100%' }}>
-                                        <Text className='serif' p={2} _hover={{ bg: 'blanchedalmond' }}>Viro Team Funding</Text>
+                                        <Box className='serif' fontSize={'lg'} p={2} _hover={{ bg: 'blanchedalmond' }}>Viro Team Funding</Box>
                                     </Link>
                                 </VStack>
                             </PopoverBody>
@@ -84,10 +102,10 @@ const Navbar = () => {
                     <Spacer />
                     <HStack spacing={8} fontWeight={'medium'}>
                         <Link href={'/blogs'}>
-                            <Box cursor={'pointer'} mr={4} className='serif'>Blog</Box>
+                            <Box cursor={'pointer'} mr={4} fontSize={'lg'} className='serif'>Blog</Box>
                         </Link>
-                        <Box cursor={'pointer'} mr={4} className='serif'>Redeem Points</Box>
-                        <Box cursor={'pointer'} mr={4} className='serif'>Contact</Box>
+                        <Box cursor={'pointer'} mr={4} fontSize={'lg'} className='serif'>Redeem Points</Box>
+                        <Box cursor={'pointer'} mr={4} fontSize={'lg'} className='serif'>Contact</Box>
                     </HStack>
                 </Flex>
                 <Flex w={['full']} alignItems="center" display={{ base: 'flex', md: 'none' }}>
@@ -111,13 +129,29 @@ const Navbar = () => {
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerHeader>
+                        <Image src='/logo.png' width={16} />
                         <DrawerCloseButton />
                     </DrawerHeader>
                     <DrawerBody>
                         <VStack gap={4} p={4} w={'full'} alignItems={'flex-start'}>
                             <Text>Home</Text>
-                            <Text onClick={onToggle}>Login</Text>
-                            <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
+                            {
+                                status === "unauthenticated" ?
+                                    <Text onClick={onToggle}>Login</Text>
+                                    : null
+                            }
+                            {
+                                status === "unauthenticated" ?
+                                    <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
+                                    : null
+                            }
+                            {
+                                status === "authenticated" ?
+                                    <Link href={'/dashboard'}>
+                                        <Text>Dashboard</Text>
+                                    </Link>
+                                    : null
+                            }
                             <Accordion w={'full'} allowToggle>
                                 <AccordionItem border={'none'}>
                                     <AccordionButton px={0} justifyContent={'space-between'}>
@@ -175,12 +209,14 @@ const Navbar = () => {
                                 </FormControl>
                                 <HStack>
                                     <Button colorScheme='yellow' variant={'outline'} onClick={onToggle}>Cancel</Button>
-                                    <Button colorScheme='yellow'>Continue</Button>
+                                    <Link href={'/dashboard'}>
+                                        <Button colorScheme='yellow'>Continue</Button>
+                                    </Link>
                                 </HStack>
                             </VStack>
                             <VStack w={['full', 'xs']} gap={8}>
                                 <Text textAlign={'center'}>Or Login With</Text>
-                                <Image src='/gmail.png' w={20} cursor={'pointer'} />
+                                <Image src='/gmail.png' w={20} cursor={'pointer'} onClick={() => signIn("google")} />
                             </VStack>
                         </Stack>
                     </ModalBody>
@@ -224,7 +260,7 @@ const Navbar = () => {
                             </VStack>
                             <VStack w={['full', 'xs']} gap={8}>
                                 <Text textAlign={'center'}>Or Register With</Text>
-                                <Image src='/gmail.png' w={20} cursor={'pointer'} />
+                                <Image src='/gmail.png' w={20} cursor={'pointer'} onClick={() => signIn("google")} />
                             </VStack>
                         </Stack>
                     </ModalBody>

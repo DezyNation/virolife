@@ -13,9 +13,8 @@ const Index = () => {
         speed: 500,
         slidesToShow: 4,
         slidesToScroll: 4,
-        autoPlay: true,
-        prevArrow: null,
-        nextArrow: null,
+        autoplay: true,
+        autoplaySpeed: 3000,
         responsive: [
             {
                 breakpoint: 1920, // screen width up to 1024px
@@ -69,8 +68,8 @@ const Index = () => {
                 <Slider {...settings}>
                     <Link href={'/blogs/why-crowd-funding'}>
                         <Image
-                            paddingX={['0', '8', '0']}
-                            boxSize={'xs'}
+                            paddingX={['0', '4', '4']}
+                            width={'xs'} h={'xs'}
                             rounded={64}
                             objectFit={'cover'}
                             src='https://www.bankofbaroda.in/-/media/project/bob/countrywebsites/india/blogs/savings/images/saving-vs-investing.jpg'
@@ -78,8 +77,8 @@ const Index = () => {
                     </Link>
                     <Link href={'/blogs/why-crowd-funding'}>
                         <Image
-                            paddingX={['0', '8', '0']}
-                            boxSize={'xs'}
+                            paddingX={['0', '4', '4']}
+                            width={'xs'} h={'xs'}
                             rounded={64}
                             objectFit={'cover'}
                             src='https://www.righthorizons.com/wp-content/uploads/2022/06/Investing-globally-options-for-Indian-residents.jpg'
@@ -87,8 +86,8 @@ const Index = () => {
                     </Link>
                     <Link href={'/blogs/why-crowd-funding'}>
                         <Image
-                            paddingX={['0', '8', '0']}
-                            boxSize={'xs'}
+                            paddingX={['0', '4', '4']}
+                            width={'xs'} h={'xs'}
                             rounded={64}
                             objectFit={'cover'}
                             src='https://www.valueresearchonline.com/content-assets/images/51119_20220802-investing__w660__.jpg'
@@ -101,8 +100,8 @@ const Index = () => {
                 <Slider {...settings}>
                     <Link href={'/blogs/why-crowd-funding'}>
                         <Image
-                            paddingX={['0', '8', '0']}
-                            boxSize={'xs'}
+                            paddingX={['0', '4', '4']}
+                            width={'xs'} h={'xs'}
                             rounded={64}
                             objectFit={'cover'}
                             src='https://www.bankofbaroda.in/-/media/project/bob/countrywebsites/india/blogs/savings/images/saving-vs-investing.jpg'
@@ -110,8 +109,8 @@ const Index = () => {
                     </Link>
                     <Link href={'/blogs/why-crowd-funding'}>
                         <Image
-                            paddingX={['0', '8', '0']}
-                            boxSize={'xs'}
+                            paddingX={['0', '4', '4']}
+                            width={'xs'} h={'xs'}
                             rounded={64}
                             objectFit={'cover'}
                             src='https://www.righthorizons.com/wp-content/uploads/2022/06/Investing-globally-options-for-Indian-residents.jpg'
@@ -119,8 +118,8 @@ const Index = () => {
                     </Link>
                     <Link href={'/blogs/why-crowd-funding'}>
                         <Image
-                            paddingX={['0', '8', '0']}
-                            boxSize={'xs'}
+                            paddingX={['0', '4', '4']}
+                            width={'xs'} h={'xs'}
                             rounded={64}
                             objectFit={'cover'}
                             src='https://www.valueresearchonline.com/content-assets/images/51119_20220802-investing__w660__.jpg'

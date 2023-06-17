@@ -10,6 +10,8 @@ const Post = () => {
     const settings = {
         dots: true,
         infinite: true,
+        autoplay: true,
+        autoplaySpeed: 3000,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -26,11 +28,11 @@ const Post = () => {
                 <Box w={['full', 'sm', 'xl']} p={4}>
                     <Image src='/blob.png' />
                 </Box>
-                <Box maxW={['full', 'xl']}>
+                <Box maxW={['full', 'xl', 'xl', '3xl']}>
                     <Slider {...settings}>
                         <Box>
-                            <Text fontSize={['3xl', '5xl']} fontWeight={'bold'} color={'#666'}>Why Crowd Funding?</Text>
-                            <Text fontSize={['xl', '2xl']} color={'#666'}>Expert Says</Text>
+                            <Text fontSize={['3xl', '5xl', '6xl']} fontWeight={'bold'} color={'#666'}>Why Crowd Funding?</Text>
+                            <Text fontSize={['xl', '2xl', '3xl']} color={'#666'}>Expert Says</Text>
                             <br /> <br />
                             <Text
                                 fontSize={['xl', '3xl']}

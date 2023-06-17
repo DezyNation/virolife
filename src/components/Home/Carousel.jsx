@@ -19,22 +19,23 @@ const Carousel = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        autoPlay: true,
+        autoplay: true,
+        autoplaySpeed: 3000,
         prevArrow: null,
         nextArrow: null
     };
 
     return (
-        <Box h={['auto', '100vh']}>
+        <Box minH={['auto', '100vh', '110vh']}>
             <Slider {...settings}>
                 <Box w={'full'}>
                     <Stack p={8} direction={['column', 'row']} justifyContent={'space-between'}>
-                        <Image w={['full', '4xl']} src='https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg' />
+                        <Image w={['full', '4xl', '5xl']} h={['auto', 'xl']} objectFit={'cover'} src='https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg' />
                         <VStack>
-                            <Text fontSize={['3xl', '6xl']} className='serif' textAlign={['center', 'right']}>
+                            <Text fontSize={['3xl', '6xl', '7xl']} className='serif' textAlign={['center', 'right']}>
                                 Thrive<br />Your<br />Income
                             </Text>
-                            <Button p={2} w={['56']} mt={12} rounded={6} bgColor={'yellow.400'} fontSize={'lg'} fontWeight={'semibold'} color={'#333'}>Watch Video</Button>
+                            <Button p={2} w={['56']} mt={12} rounded={6} bgColor={'yellow.400'} size={'lg'} fontSize={'xl'} fontWeight={'semibold'} color={'#333'}>Watch Video</Button>
                         </VStack>
                     </Stack>
                     <Box w={'90vw'} h={'0.5'} mx={'auto'} bgColor={'yellow.400'}></Box>
@@ -42,12 +43,12 @@ const Carousel = () => {
                 </Box>
                 <Box w={'full'}>
                     <Stack p={8} direction={['column', 'row']} justifyContent={'space-between'}>
-                        <Image w={['full', '4xl']} src='https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg' />
+                        <Image w={['full', '4xl', '5xl']} h={['auto', 'xl']} objectFit={'cover'} src='https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg' />
                         <VStack>
-                            <Text fontSize={['3xl', '6xl']} className='serif' textAlign={['center', 'right']}>
+                            <Text fontSize={['3xl', '6xl', '7xl']} className='serif' textAlign={['center', 'right']}>
                                 Boost<br />Your<br />Skills
                             </Text>
-                            <Button p={2} w={['56']} mt={12} rounded={6} bgColor={'yellow.400'} fontSize={'lg'} fontWeight={'semibold'} color={'#333'}>Watch Video</Button>
+                            <Button p={2} w={['56']} mt={12} rounded={6} bgColor={'yellow.400'} size={'lg'} fontSize={'xl'} fontWeight={'semibold'} color={'#333'}>Watch Video</Button>
                         </VStack>
                     </Stack>
                     <Box w={'90vw'} h={'0.5'} mx={'auto'} bgColor={'yellow.400'}></Box>
@@ -55,12 +56,12 @@ const Carousel = () => {
                 </Box>
                 <Box w={'full'}>
                     <Stack p={8} direction={['column', 'row']} justifyContent={'space-between'}>
-                        <Image w={['full', '4xl']} src='https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg' />
+                        <Image w={['full', '4xl', '5xl']} h={['auto', 'xl']} objectFit={'cover'} src='https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg' />
                         <VStack>
-                            <Text fontSize={['3xl', '6xl']} className='serif' textAlign={['center', 'right']}>
+                            <Text fontSize={['3xl', '6xl', '7xl']} className='serif' textAlign={['center', 'right']}>
                                 Importance<br />Of Passive<br />Income
                             </Text>
-                            <Button p={2} w={['56']} mt={12} rounded={6} bgColor={'yellow.400'} fontSize={'lg'} fontWeight={'semibold'} color={'#333'}>Watch Video</Button>
+                            <Button p={2} w={['56']} mt={12} rounded={6} bgColor={'yellow.400'} size={'lg'} fontSize={'xl'} fontWeight={'semibold'} color={'#333'}>Watch Video</Button>
                         </VStack>
                     </Stack>
                     <Box w={'90vw'} h={'0.5'} mx={'auto'} bgColor={'yellow.400'}></Box>
