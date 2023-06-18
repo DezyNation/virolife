@@ -1,11 +1,13 @@
 'use client'
-import React from 'react'
-import { Box, Stack, Text, Button } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import { Box, Stack, Text, Button, useToast } from '@chakra-ui/react'
 import CampaignCard from '@/components/campaign/CampaignCard'
 import { BsPlus } from 'react-icons/bs'
 import Link from 'next/link'
+import BackendAxios from '@/utils/axios'
 
 const Page = () => {
+    const Toast = useToast({ position: 'top-right' })
     const dummyCampaigns = [
         {
             id: '1',
@@ -51,6 +53,18 @@ const Page = () => {
         },
     ]
 
+    const [campaigns, setCampaigns] = useState([])
+    useEffect(() => {
+        BackendAxios.get("/api/user-campaigns").then(res => {
+            setCampaigns(res.data)
+        }).catch(err => {
+            Toast({
+                status: 'error',
+                description: err?.response?.data?.message || err?.response?.data || err?.message
+            })
+        })
+    }, [])
+
     return (
         <>
             <Stack direction={'row'} justifyContent={'space-between'}>
@@ -69,12 +83,14 @@ const Page = () => {
                 gap={[4, 8, 16]} justifyContent={'flex-start'}
             >
                 {
-                    dummyCampaigns.map((campaign, key) => (
+                    campaigns.map((campaign, key) => (
                         <CampaignCard
-                            coverImage={campaign.coverImage}
+                            key={key}
+                            coverImage={campaign.file_path ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
                             title={campaign.title}
-                            userName={campaign.userName}
+                            userName={campaign.status ? "Published" : "In Review"}
                             description={campaign.description}
+                            link={`/dashboard/campaigns/view/${campaign.id}`}
                         />
                     ))
                 }

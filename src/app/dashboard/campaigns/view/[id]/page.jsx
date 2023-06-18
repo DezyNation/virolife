@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Box,
     Button,
@@ -11,20 +11,16 @@ import {
     Show,
     Stack, Text, useToast
 } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
 import BackendAxios from '@/utils/axios'
 
-const CampaignInfo = ({params}) => {
+const CampaignInfo = ({ params }) => {
     const Toast = useToast({ position: 'top-right' })
     const [selectedImg, setSelectedImg] = useState("https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg")
     const { id } = params
     const [campaign, setCampaign] = useState({})
-
     useEffect(() => {
         BackendAxios.get(`/api/campaign/${id}`).then(res => {
-            if(!res.data[0]?.status){
-                window.location.replace("/")
-                return
-            }
             setCampaign(res.data[0])
         }).catch(err => {
             Toast({
@@ -33,10 +29,10 @@ const CampaignInfo = ({params}) => {
             })
         })
     }, [])
+
     return (
         <>
             <Stack
-                p={[4, 16, 24]}
                 direction={['column', 'row']}
                 justifyContent={'space-between'}
             >
@@ -95,34 +91,6 @@ const CampaignInfo = ({params}) => {
                         {campaign.full_description}
                     </Text>
                 </Box>
-                <Show above='md'>
-                    <Box width={'sm'} h={'inherit'} position={'relative'} p={4}>
-                        <Box p={4} boxShadow={'lg'} rounded={8} position={'sticky'} top={0}>
-                            <Text fontWeight={'semibold'} className='serif' fontSize={'xl'}>Donate To John Doe</Text>
-                            <br />
-                            <FormLabel>Enter Amount</FormLabel>
-                            <InputGroup>
-                                <InputLeftElement children={'₹'} />
-                                <Input type='number' mb={2} />
-                            </InputGroup>
-                            <Button w={'full'} colorScheme='yellow'>Donate Now</Button>
-                        </Box>
-                    </Box>
-                </Show>
-                <Show below='md'>
-                    <Box width={'full'} h={'inherit'} position={'fixed'} bottom={0} left={0} right={0} p={4} zIndex={999}>
-                        <Box p={4} boxShadow={'lg'} bg={'#FFF'} rounded={8} top={0}>
-                            <Text fontWeight={'semibold'} className='serif' fontSize={'xl'}>Donate To John Doe</Text>
-                            <br />
-                            <FormLabel>Enter Amount</FormLabel>
-                            <InputGroup>
-                                <InputLeftElement children={'₹'} />
-                                <Input type='number' mb={2} />
-                            </InputGroup>
-                            <Button w={'full'} colorScheme='yellow'>Donate Now</Button>
-                        </Box>
-                    </Box>
-                </Show>
             </Stack>
         </>
     )

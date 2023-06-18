@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Text,
     Stack,
@@ -7,26 +7,48 @@ import {
     Image,
     Button,
     HStack,
-    VStack
+    VStack,
+    useToast
 } from '@chakra-ui/react'
 import StatsCard from '@/components/dashboard/StatsCard'
 import { BsArrowRight, BsCashCoin, BsCurrencyRupee, BsMegaphoneFill, BsYoutube } from 'react-icons/bs'
 import Link from 'next/link'
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useCookies } from 'react-cookie'
+import { isExpired } from 'react-jwt'
+import BackendAxios from '@/utils/axios'
 
 const DashboardHome = () => {
-    const { data: session } = useSession()
     const [selectedImg, setSelectedImg] = useState("https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg")
-    if(!session){
-        return(
+    const [sessionExpired, setSessionExpired] = useState(false)
+    const [cookies] = useCookies(['jwt'])
+    const Toast = useToast({ position: 'top-right' })
+    const [authUser, setAuthUser] = useState({})
+
+    useEffect(() => {
+        setSessionExpired(isExpired(cookies.jwt))
+        if (!isExpired(cookies.jwt)) {
+            BackendAxios.post("/auth-user").then(res => {
+                setAuthUser(res.data)
+            }).catch(err => {
+                Toast({
+                    status: 'error',
+                    description: err?.response?.data?.message || err?.response?.data || err?.message
+                })
+            })
+        }
+    }, [cookies])
+
+    if (sessionExpired) {
+        return (
             <>
                 <Text>You need to login to view this page</Text>
             </>
         )
     }
+
     return (
         <>
-            <Text className='serif' fontSize={'xl'} py={4} textTransform={'capitalize'}>Welcome, {session.user.name}</Text>
+            <Text className='serif' fontSize={'xl'} py={4} textTransform={'capitalize'}>Welcome, {authUser?.name}</Text>
             <Stack w={'full'} direction={['column', 'row']} gap={[8, 16]} justifyContent={'space-between'}>
                 <StatsCard
                     icon={<BsYoutube size={28} />}

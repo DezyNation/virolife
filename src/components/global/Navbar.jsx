@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Text,
@@ -41,17 +41,88 @@ import {
     AccordionItem,
     AccordionButton,
     AccordionIcon,
-    AccordionPanel
+    AccordionPanel,
+    useToast,
+    InputGroup,
+    InputRightElement
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { BiMenuAltLeft } from 'react-icons/bi'
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useFormik } from 'formik';
+import BackendAxios from '@/utils/axios';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import Cookies from 'js-cookie';
+import { useJwt, decodeToken, isExpired } from 'react-jwt'
+import { useCookies } from 'react-cookie';
 
 const Navbar = () => {
+    const Toast = useToast({ position: 'top-right' })
     const { isOpen, onToggle } = useDisclosure();
     const [isSignupOpen, setIsSignupOpen] = useState(false)
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-    const { status } = useSession()
+    const [name, setName] = useState("")
+    const [isPasswordVisible, setisPasswordVisible] = useState(false)
+    const [sessionExpired, setSessionExpired] = useState(false)
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt'])
+
+    const Formik = useFormik({
+        initialValues: {
+            email: "",
+            password: ""
+        }
+    })
+
+    useEffect(() => {
+        setSessionExpired(isExpired(cookies.jwt))
+    }, [cookies])
+
+
+    function handleLogin() {
+        if (!Formik.values.email || !Formik.values.password) {
+            Toast({
+                description: 'Email and password must not be empty'
+            })
+            return
+        }
+        BackendAxios.post("/login", { ...Formik.values }).then(res => {
+            Toast({
+                status: 'success',
+                description: 'Login successful!'
+            })
+            BackendAxios.defaults.headers.common['Authorization'] = `Bearer ${res.data?.access_token}`
+            // Cookies.set("jwt", res.data?.access_token)
+            setCookie("jwt", res.data?.access_token)
+            onToggle()
+        }).catch(err => {
+            Toast({
+                status: 'error',
+                description: err?.response?.data?.message || err?.response?.data || err?.message
+            })
+        })
+    }
+
+    function handleSignup() {
+        if (!Formik.values.email || !Formik.values.password) {
+            Toast({
+                description: 'Email and password must not be empty'
+            })
+            return
+        }
+        BackendAxios.post("/register", { ...Formik.values, name: name }).then(res => {
+            Toast({
+                status: 'success',
+                description: 'Signup successful!'
+            })
+            setIsSignupOpen(false)
+        }).catch(err => {
+            Toast({
+                status: 'error',
+                description: err?.response?.data?.message || err?.response?.data || err?.message
+            })
+        })
+    }
+
     return (
         <>
             <Box w={'full'} mx={'auto'} p={4} borderBottom={'1px'} borderBottomColor={'yellow.500'}>
@@ -60,17 +131,17 @@ const Navbar = () => {
                         <Image src='/logo.png' width={16} />
                         <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif'>About Us</Box>
                         {
-                            status === "unauthenticated" ?
+                            sessionExpired ?
                                 <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif' onClick={onToggle}>Login</Box>
                                 : null
                         }
                         {
-                            status === "unauthenticated" ?
+                            sessionExpired ?
                                 <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif' onClick={() => setIsSignupOpen(true)}>Signup</Box>
                                 : null
                         }
                         {
-                            status === "authenticated" ?
+                            !sessionExpired ?
                                 <Link href={'/dashboard'}>
                                     <Box cursor={'pointer'} fontSize={'lg'} mr={4} className='serif'>Dashboard</Box>
                                 </Link>
@@ -135,23 +206,25 @@ const Navbar = () => {
                     <DrawerBody>
                         <VStack gap={4} p={4} w={'full'} alignItems={'flex-start'}>
                             <Text>Home</Text>
-                            {
+                            {/* {
                                 status === "unauthenticated" ?
                                     <Text onClick={onToggle}>Login</Text>
                                     : null
-                            }
-                            {
+                                } */}
+                            <Text onClick={onToggle}>Login</Text>
+                            {/* {
                                 status === "unauthenticated" ?
                                     <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
                                     : null
-                            }
-                            {
+                            } */}
+                            <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
+                            {/* {
                                 status === "authenticated" ?
                                     <Link href={'/dashboard'}>
                                         <Text>Dashboard</Text>
                                     </Link>
                                     : null
-                            }
+                            } */}
                             <Accordion w={'full'} allowToggle>
                                 <AccordionItem border={'none'}>
                                     <AccordionButton px={0} justifyContent={'space-between'}>
@@ -198,20 +271,42 @@ const Navbar = () => {
                                 <FormControl>
                                     <Stack direction={['column', 'row']} spacing={8} justifyContent={'space-between'}>
                                         <FormLabel fontSize={'xl'}>Email</FormLabel>
-                                        <Input w={['full', 'xs']} placeholder='Your Email' type='email' boxShadow={'xl'} border={'.5px solid #FAFAFA'} rounded={0} />
+                                        <Input
+                                            w={['full', 'xs']}
+                                            placeholder='Your Email'
+                                            type='email'
+                                            boxShadow={'xl'}
+                                            border={'.5px solid #FAFAFA'}
+                                            rounded={0}
+                                            name='email'
+                                            onChange={Formik.handleChange}
+                                        />
                                     </Stack>
                                 </FormControl>
                                 <FormControl>
                                     <Stack direction={['column', 'row']} spacing={8}>
                                         <FormLabel fontSize={'xl'}>Password</FormLabel>
-                                        <Input w={['full', 'xs']} placeholder='Password' type='password' boxShadow={'xl'} border={'.5px solid #FAFAFA'} rounded={0} />
+                                        <InputGroup>
+                                            <Input
+                                                w={['full', 'xs']}
+                                                placeholder='Password'
+                                                type={isPasswordVisible ? 'text' : 'password'}
+                                                boxShadow={'xl'}
+                                                border={'.5px solid #FAFAFA'}
+                                                rounded={0}
+                                                name='password'
+                                                onChange={Formik.handleChange}
+                                            />
+                                            <InputRightElement
+                                                children={isPasswordVisible ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                                                onClick={() => setisPasswordVisible(!isPasswordVisible)}
+                                            />
+                                        </InputGroup>
                                     </Stack>
                                 </FormControl>
                                 <HStack>
                                     <Button colorScheme='yellow' variant={'outline'} onClick={onToggle}>Cancel</Button>
-                                    <Link href={'/dashboard'}>
-                                        <Button colorScheme='yellow'>Continue</Button>
-                                    </Link>
+                                    <Button colorScheme='yellow' onClick={handleLogin}>Continue</Button>
                                 </HStack>
                             </VStack>
                             <VStack w={['full', 'xs']} gap={8}>
@@ -238,24 +333,55 @@ const Navbar = () => {
                                 <FormControl>
                                     <Stack direction={['column', 'row']} spacing={[4, 8]} justifyContent={'space-between'}>
                                         <FormLabel fontSize={'xl'}>Name</FormLabel>
-                                        <Input w={['full', 'xs']} placeholder='Your Full Name' boxShadow={'xl'} border={'.5px solid #FAFAFA'} rounded={0} />
+                                        <Input
+                                            w={['full', 'xs']}
+                                            placeholder='Your Full Name'
+                                            boxShadow={'xl'}
+                                            border={'.5px solid #FAFAFA'}
+                                            rounded={0}
+                                            onChange={e => setName(e.target.value)}
+                                        />
                                     </Stack>
                                 </FormControl>
                                 <FormControl>
                                     <Stack direction={['column', 'row']} spacing={[4, 8]} justifyContent={'space-between'}>
                                         <FormLabel fontSize={'xl'}>Email</FormLabel>
-                                        <Input w={['full', 'xs']} placeholder='Your Email' type='email' boxShadow={'xl'} border={'.5px solid #FAFAFA'} rounded={0} />
+                                        <Input
+                                            w={['full', 'xs']}
+                                            placeholder='Your Email'
+                                            type='email'
+                                            name='email'
+                                            onChange={Formik.handleChange}
+                                            boxShadow={'xl'}
+                                            border={'.5px solid #FAFAFA'}
+                                            rounded={0}
+                                        />
                                     </Stack>
                                 </FormControl>
                                 <FormControl>
                                     <Stack direction={['column', 'row']} spacing={[4, 8]}>
                                         <FormLabel fontSize={'xl'}>Password</FormLabel>
-                                        <Input w={['full', 'xs']} placeholder='Password' type='password' boxShadow={'xl'} border={'.5px solid #FAFAFA'} rounded={0} />
+                                        <InputGroup>
+                                            <Input
+                                                w={['full', 'xs']}
+                                                placeholder='Password'
+                                                type={isPasswordVisible ? 'text' : 'password'}
+                                                boxShadow={'xl'}
+                                                border={'.5px solid #FAFAFA'}
+                                                rounded={0}
+                                                name='password'
+                                                onChange={Formik.handleChange}
+                                            />
+                                            <InputRightElement
+                                                children={isPasswordVisible ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                                                onClick={() => setisPasswordVisible(!isPasswordVisible)}
+                                            />
+                                        </InputGroup>
                                     </Stack>
                                 </FormControl>
                                 <HStack>
                                     <Button colorScheme='yellow' variant={'outline'} onClick={() => setIsSignupOpen(!isSignupOpen)}>Cancel</Button>
-                                    <Button colorScheme='yellow'>Continue</Button>
+                                    <Button colorScheme='yellow' onClick={handleSignup}>Continue</Button>
                                 </HStack>
                             </VStack>
                             <VStack w={['full', 'xs']} gap={8}>

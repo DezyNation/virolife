@@ -6,13 +6,14 @@ import React from 'react'
 const CampaignCard = (props) => {
     return (
         <>
-            <Link href={'/campaigns/save-our-cows'}>
+            <Link href={props.link || "#"}>
                 <Box w={['100%', 'xs']}>
                     <Image
-                        src={props.coverImage}
+                        src={props.coverImage} h={48}
                         rounded={16} w={'full'} mb={4}
                         transition={'all .3s ease'}
                         _hover={{ boxShadow: 'xl' }}
+                        objectFit={'cover'}
                     />
                     <Text
                         fontSize={['xl', 'lg', 'xl']}
