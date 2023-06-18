@@ -47,7 +47,8 @@ const CampaignInfo = ({ params }) => {
                     <Text
                         fontSize={['md', 'lg', 'xl']}
                         className='serif' pb={8}
-                    >{campaign?.status == 1 ? "Published" : "In Review"} - {new Date(campaign?.updated_at).toDateString()}
+                        textTransform={'capitalize'}
+                    >{campaign?.status} - {new Date(campaign?.updated_at).toDateString()}
                     </Text>
                     <Stack direction={['column', 'row']} gap={8} mb={16}>
                         <Image

@@ -23,8 +23,8 @@ const CampaignCard = (props) => {
                     <Text
                         fontSize={['md', 'sm', 'md']}
                         fontWeight={'medium'}
-                        textTransform={'capitalize'}
-                        className='serif'>{props.userName}</Text>
+                        textTransform={'capitalize'}>
+                        {props.userName}</Text>
                     <Text pt={2}>
                         {props.description?.slice(0, 60)}...
                     </Text>
