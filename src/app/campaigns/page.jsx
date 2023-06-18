@@ -26,12 +26,7 @@ const Page = () => {
                 <Text
                     className='serif' fontSize={'xl'}
                     fontWeight={'semibold'} mb={12}
-                >Your Campaigns</Text>
-                <Link href={'/dashboard/campaigns/create'}>
-                    <Button colorScheme='yellow' rounded={'full'} leftIcon={<BsPlus size={24} />}>
-                        Create New
-                    </Button>
-                </Link>
+                >Campaigns</Text>
             </Stack>
             <Stack
                 direction={['column', 'row']} flexWrap={'wrap'}
