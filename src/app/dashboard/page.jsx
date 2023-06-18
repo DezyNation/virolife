@@ -35,6 +35,10 @@ const DashboardHome = () => {
                     description: err?.response?.data?.message || err?.response?.data || err?.message
                 })
             })
+            return
+        }
+        if(isExpired(cookies.jwt)){
+            window.location.replace("/")
         }
     }, [cookies])
 

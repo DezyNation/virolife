@@ -6,7 +6,8 @@ import {
     Text,
     Show,
     VStack,
-    HStack
+    HStack,
+    useToast
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import {
@@ -19,9 +20,11 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from 'next/navigation'
 import { useCookies } from 'react-cookie'
 import { isExpired } from 'react-jwt'
+import BackendAxios from '@/utils/axios'
 
 
 const Layout = ({ children }) => {
+    const Toast = useToast({position: 'top-right'})
     const Router = useRouter()
     const [cookies, setCookie, removeCookie] = useCookies(['jwt'])
     
@@ -32,7 +35,14 @@ const Layout = ({ children }) => {
     },[cookies])
 
     function handleLogout(){
-        removeCookie("jwt")
+        BackendAxios.post("/logout").then(res => {
+            removeCookie("jwt")
+        }).catch(err => {
+            Toast({
+                status: 'error',
+                description: err?.response?.data?.message || err?.response?.data || err?.message
+            })
+        })
     }
 
     return (
