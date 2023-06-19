@@ -6,7 +6,8 @@ import {
     Text,
     Show,
     VStack,
-    HStack
+    HStack,
+    useToast
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import {
@@ -17,16 +18,35 @@ import { BsCashCoin, BsCurrencyRupee, BsFill1CircleFill, BsHeartFill, BsMegaphon
 import { MdGroups } from 'react-icons/md';
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from 'next/navigation'
+import { useCookies } from 'react-cookie'
+import { isExpired } from 'react-jwt'
+import BackendAxios from '@/utils/axios'
 
 
 const Layout = ({ children }) => {
+    const Toast = useToast({position: 'top-right'})
     const Router = useRouter()
-    const { status } = useSession()
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt'])
+    
     useEffect(()=>{
-        if(status==="unauthenticated"){
+        if(isExpired(cookies.jwt)){
             Router.replace("/")
         }
-    },[status])
+    },[cookies])
+
+    function handleLogout(){
+        BackendAxios.post("/logout").then(res => {
+            removeCookie("jwt")
+            Router.replace("/")
+        }).catch(err => {
+            Toast({
+                status: 'error',
+                description: err?.response?.data?.message || err?.response?.data || err?.message
+            })
+            Router.replace("/")
+            removeCookie("jwt")
+        })
+    }
 
     return (
         <>
@@ -86,7 +106,7 @@ const Layout = ({ children }) => {
                                     <Text>Support</Text>
                                 </HStack>
                             </Link>
-                            <HStack gap={4} onClick={signOut}>
+                            <HStack gap={4} onClick={handleLogout} cursor={'pointer'}>
                                 <BsPower size={20} />
                                 <Text>Log Out</Text>
                             </HStack>
