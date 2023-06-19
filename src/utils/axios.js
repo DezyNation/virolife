@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import https from 'https'
 
 const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
 const clientURL = process.env.NEXT_PUBLIC_FRONTEND_URL
