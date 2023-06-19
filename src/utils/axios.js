@@ -11,7 +11,7 @@ const BackendAxios = axios.create({
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
-    },
+    }
 })
 
 BackendAxios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.get("jwt")}`

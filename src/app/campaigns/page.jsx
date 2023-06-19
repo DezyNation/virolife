@@ -10,7 +10,7 @@ const Page = () => {
     const Toast = useToast({ position: 'top-right' })
     const [campaigns, setCampaigns] = useState([])
     useEffect(() => {
-        BackendAxios.get("/api/campaigns").then(res => {
+        BackendAxios.get("/api/campaign").then(res => {
             setCampaigns(res.data)
         }).catch(err => {
             Toast({
