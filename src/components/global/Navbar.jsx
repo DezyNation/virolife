@@ -207,17 +207,17 @@ const Navbar = () => {
                         <VStack gap={4} p={4} w={'full'} alignItems={'flex-start'}>
                             <Text>Home</Text>
                             {
-                                isExpired ?
+                                sessionExpired ?
                                     <Text onClick={onToggle}>Login</Text>
                                     : null
                             }
                             {
-                                isExpired ?
+                                sessionExpired ?
                                     <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
                                     : null
                             }
                             {
-                                !isExpired ?
+                                !sessionExpired ?
                                     <Link href={'/dashboard'}>
                                         <Text>Dashboard</Text>
                                     </Link>
