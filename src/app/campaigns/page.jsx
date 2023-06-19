@@ -33,7 +33,7 @@ const Page = () => {
                 gap={[4, 8, 16]} justifyContent={'flex-start'}
             >
                 {
-                    campaigns.filter(item => item?.status).map((campaign, key) => (
+                    campaigns.filter(item => (item.status != "pending")).map((campaign, key) => (
                         <CampaignCard
                             key={key}
                             coverImage={campaign.file_path ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
