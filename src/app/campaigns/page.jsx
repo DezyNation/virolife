@@ -36,7 +36,7 @@ const Page = () => {
                     campaigns.filter(item => (item.status != "pending")).map((campaign, key) => (
                         <CampaignCard
                             key={key}
-                            coverImage={campaign.file_path ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
+                            coverImage={campaign.file_path ? `https://edulec.in/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
                             title={campaign.title}
                             userName={campaign.status ? "Published" : "In Review"}
                             description={campaign.description}
