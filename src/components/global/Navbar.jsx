@@ -206,25 +206,23 @@ const Navbar = () => {
                     <DrawerBody>
                         <VStack gap={4} p={4} w={'full'} alignItems={'flex-start'}>
                             <Text>Home</Text>
-                            {/* {
-                                status === "unauthenticated" ?
+                            {
+                                isExpired ?
                                     <Text onClick={onToggle}>Login</Text>
                                     : null
-                                } */}
-                            <Text onClick={onToggle}>Login</Text>
-                            {/* {
-                                status === "unauthenticated" ?
+                            }
+                            {
+                                isExpired ?
                                     <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
                                     : null
-                            } */}
-                            <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
-                            {/* {
-                                status === "authenticated" ?
+                            }
+                            {
+                                !isExpired ?
                                     <Link href={'/dashboard'}>
                                         <Text>Dashboard</Text>
                                     </Link>
                                     : null
-                            } */}
+                            }
                             <Accordion w={'full'} allowToggle>
                                 <AccordionItem border={'none'}>
                                     <AccordionButton px={0} justifyContent={'space-between'}>
