@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import https from 'https'
 
 const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
 const clientURL = process.env.NEXT_PUBLIC_FRONTEND_URL
@@ -12,6 +13,9 @@ const BackendAxios = axios.create({
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
     },
+    httpsAgent: new https.Agent({  
+        rejectUnauthorized: false
+      })
 })
 
 BackendAxios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.get("jwt")}`
@@ -30,6 +34,9 @@ export const FormAxios = axios.create({
         'Content-Type': 'multipart/form-data',
         'X-Requested-With': 'XMLHttpRequest'
     },
+    httpsAgent: new https.Agent({  
+        rejectUnauthorized: false
+      })
 })
 
 FormAxios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.get("jwt")}`
@@ -40,6 +47,9 @@ export const ClientAxios = axios.create({
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'multipart/form-data'
     },
+    httpsAgent: new https.Agent({  
+        rejectUnauthorized: false
+      })
 })
 
 export default BackendAxios
