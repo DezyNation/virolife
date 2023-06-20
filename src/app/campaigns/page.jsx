@@ -38,7 +38,7 @@ const Page = () => {
                             key={key}
                             coverImage={campaign.file_path ? `https://edulec.in/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
                             title={campaign.title}
-                            userName={campaign.status ? "Published" : "In Review"}
+                            userName={campaign.status}
                             description={campaign.description}
                             link={`/campaigns/${campaign.id}`}
                         />
