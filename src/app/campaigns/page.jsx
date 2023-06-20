@@ -33,7 +33,7 @@ const Page = () => {
                 gap={[4, 8, 16]} justifyContent={'flex-start'}
             >
                 {
-                    campaigns.filter(item => (item.status != "pending")).map((campaign, key) => (
+                    campaigns.filter(item => (item.status != "pending" || item.status != "rejected")).map((campaign, key) => (
                         <CampaignCard
                             key={key}
                             coverImage={campaign.file_path ? `https://edulec.in/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
