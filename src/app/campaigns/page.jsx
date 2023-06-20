@@ -22,7 +22,9 @@ const Page = () => {
 
     return (
         <>
-            <Stack direction={'row'} justifyContent={'space-between'}>
+            <Stack
+            p={[4, 8, 16]}
+            direction={'row'} justifyContent={'space-between'}>
                 <Text
                     className='serif' fontSize={'xl'}
                     fontWeight={'semibold'} mb={12}
@@ -31,6 +33,7 @@ const Page = () => {
             <Stack
                 direction={['column', 'row']} flexWrap={'wrap'}
                 gap={[4, 8, 16]} justifyContent={'flex-start'}
+                p={[4, 8, 16]} minH={'85vh'}
             >
                 {
                     campaigns.filter(item => (item.status != "pending" && item.status != "rejected")).map((campaign, key) => (
