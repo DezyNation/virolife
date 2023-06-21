@@ -37,7 +37,10 @@ const Info = () => {
       phone: "",
       email: "",
       attachment1: null,
-      attachment2: null
+      attachment2: null,
+      accountNumber: "",
+      bankName: "",
+      ifsc: "",
     },
     onSubmit: values => {
       FormAxios.post(`/update-user`, {
@@ -87,6 +90,7 @@ const Info = () => {
     <>
       <form action="#" onSubmit={Formik.handleSubmit}>
         <Box p={8}>
+
           <Stack w={'full'} pb={16} gap={8} direction={['column', 'row']} justifyContent={'space-between'}>
             <FormControl>
               <Box>
@@ -107,6 +111,7 @@ const Info = () => {
               </Box>
             </FormControl>
           </Stack>
+
           <Stack pb={16} gap={[8, 48]} direction={['column', 'row']} justifyContent={'flex-start'}>
             <HStack gap={4}>
               <FormLabel fontWeight={'bold'} textTransform={'uppercase'} fontSize={'lg'}>GENDER</FormLabel>
@@ -119,6 +124,7 @@ const Info = () => {
               <Input bg={'blanchedalmond'} w={['full', 'xs']} type='date' name='dob' value={Formik.values.dob} onChange={Formik.handleChange} />
             </HStack>
           </Stack>
+
           <Stack w={'full'} gap={8} pb={16} direction={['column', 'row']} justifyContent={'space-between'}>
             <FormControl>
               <FormLabel fontWeight={'bold'} textTransform={'uppercase'} fontSize={'lg'}>CONTACT NO</FormLabel>
@@ -135,6 +141,29 @@ const Info = () => {
               </HStack>
             </FormControl>
           </Stack>
+
+          <Text fontSize={'lg'} pb={8}>BANKING DETAILS</Text>
+          <Stack w={'full'} pb={16} gap={8} direction={['column', 'row']} justifyContent={'space-between'}>
+            <FormControl>
+              <Box>
+                <FormLabel fontWeight={'bold'} textTransform={'uppercase'} fontSize={'lg'}>ACCOUNT NUMBER</FormLabel>
+                <Input name='accountNumber' value={Formik.values.accountNumber} onChange={Formik.handleChange} bg={'blanchedalmond'} w={['full', 'xs']} />
+              </Box>
+            </FormControl>
+            <FormControl>
+              <Box>
+                <FormLabel fontWeight={'bold'} textTransform={'uppercase'} fontSize={'lg'}>BANK  NAME</FormLabel>
+                <Input name='bank' value={Formik.values.bank} onChange={Formik.handleChange} bg={'blanchedalmond'} w={['full', 'xs']} />
+              </Box>
+            </FormControl>
+            <FormControl>
+              <Box>
+                <FormLabel fontWeight={'bold'} textTransform={'uppercase'} fontSize={'lg'}>IFSC</FormLabel>
+                <Input name='ifsc' value={Formik.values.ifsc} onChange={Formik.handleChange} bg={'blanchedalmond'} w={['full', 'xs']} />
+              </Box>
+            </FormControl>
+          </Stack>
+
           <Stack w={'full'} pb={16} direction={['column', 'row']} justifyContent={'space-between'}>
             <FormControl>
               <FormLabel fontWeight={'bold'} textTransform={'uppercase'} fontSize={'lg'}>UPLOAD PDF</FormLabel>
@@ -144,10 +173,12 @@ const Info = () => {
               </HStack>
             </FormControl>
           </Stack>
+
           <HStack>
             <Checkbox required />
             <Text>I have read and accept the Terms & Conditions and Privacy Policy of Virolife Foundation With All My Attention</Text>
           </HStack>
+
           <HStack justifyContent={'flex-end'}>
             <Button rightIcon={<BsArrowRight />} colorScheme='yellow' type='submit'>Proceed</Button>
           </HStack>

@@ -4,10 +4,12 @@ import {
     Box,
     Button,
     FormLabel,
+    HStack,
     Image,
     Input,
     InputGroup,
     InputLeftElement,
+    Progress,
     Show,
     Stack, Text, useToast
 } from '@chakra-ui/react'
@@ -112,8 +114,13 @@ const CampaignInfo = ({params}) => {
                 <Show below='md'>
                     <Box width={'full'} h={'inherit'} position={'fixed'} bottom={0} left={0} right={0} p={4} zIndex={999}>
                         <Box p={4} boxShadow={'lg'} bg={'#FFF'} rounded={8} top={0}>
-                            <Text fontWeight={'semibold'} className='serif' fontSize={'xl'}>Donate To John Doe</Text>
+                            <Text fontWeight={'semibold'} className='serif' fontSize={'xl'}>Donate To Sangam Kumar</Text>
                             <br />
+                            <Progress value={80} />
+                            <HStack justifyContent={'space-between'}>
+                                <Text fontSize={'xs'}>₹80,000</Text>
+                                <Text fontSize={'xs'}>₹1,00,000</Text>
+                            </HStack>
                             <FormLabel>Enter Amount</FormLabel>
                             <InputGroup>
                                 <InputLeftElement children={'₹'} />

@@ -7,7 +7,7 @@ const CampaignCard = (props) => {
     return (
         <>
             <Link href={props.link || "#"}>
-                <Box w={['100%', 'xs']}>
+                <Box w={['100%', 'sm']}>
                     <Image
                         src={props.coverImage} h={48}
                         rounded={16} w={'full'} mb={4}
