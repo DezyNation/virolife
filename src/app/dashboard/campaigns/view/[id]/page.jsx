@@ -52,7 +52,7 @@ const CampaignInfo = ({ params }) => {
                     </Text>
                     <Stack direction={['column', 'row']} gap={8} mb={16}>
                         <Image
-                            src={campaign.file_path ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
+                            src={campaign.file_path ? `https://edulec.in/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
                             w={['100%', 'lg', '3xl']} objectFit={'cover'} h={['xs', 'lg']} rounded={16}
                         />
                         {/* <Stack

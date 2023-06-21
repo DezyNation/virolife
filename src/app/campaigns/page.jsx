@@ -10,7 +10,7 @@ const AllCampaigns = () => {
     const Toast = useToast({ position: 'top-right' })
     const [campaigns, setCampaigns] = useState([])
     useEffect(() => {
-        BackendAxios.get("/api/campaigns").then(res => {
+        BackendAxios.get("/api/campaign").then(res => {
             setCampaigns(res.data)
         }).catch(err => {
             Toast({
@@ -22,7 +22,9 @@ const AllCampaigns = () => {
 
     return (
         <>
-            <Stack direction={'row'} justifyContent={'space-between'}>
+            <Stack
+            p={[4, 8, 16]}
+            direction={'row'} justifyContent={'space-between'}>
                 <Text
                     className='serif' fontSize={'xl'}
                     fontWeight={'semibold'} mb={12}
@@ -31,14 +33,15 @@ const AllCampaigns = () => {
             <Stack
                 direction={['column', 'row']} flexWrap={'wrap'}
                 gap={[4, 8, 16]} justifyContent={'flex-start'}
+                p={[4, 8, 16]} minH={'85vh'}
             >
                 {
-                    campaigns.filter(item => item?.status).map((campaign, key) => (
+                    campaigns.filter(item => (item.status != "pending" && item.status != "rejected")).map((campaign, key) => (
                         <CampaignCard
                             key={key}
-                            coverImage={campaign.file_path ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
+                            coverImage={campaign.file_path ? `https://edulec.in/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
                             title={campaign.title}
-                            userName={campaign.status ? "Published" : "In Review"}
+                            userName={campaign.status}
                             description={campaign.description}
                             link={`/campaigns/${campaign.id}`}
                         />
