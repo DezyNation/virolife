@@ -55,6 +55,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import Cookies from 'js-cookie';
 import { useJwt, decodeToken, isExpired } from 'react-jwt'
 import { useCookies } from 'react-cookie';
+import axios from 'axios';
 
 const Navbar = () => {
     const Toast = useToast({ position: 'top-right' })
@@ -85,7 +86,7 @@ const Navbar = () => {
             })
             return
         }
-        BackendAxios.post("/login", { ...Formik.values }).then(res => {
+        axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, { ...Formik.values }).then(res => {
             Toast({
                 status: 'success',
                 description: 'Login successful!'
@@ -109,7 +110,7 @@ const Navbar = () => {
             })
             return
         }
-        BackendAxios.post("/register", { ...Formik.values, name: name }).then(res => {
+        axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, { ...Formik.values, name: name }).then(res => {
             Toast({
                 status: 'success',
                 description: 'Signup successful!'

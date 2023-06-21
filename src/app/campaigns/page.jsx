@@ -6,7 +6,7 @@ import { BsPlus } from 'react-icons/bs'
 import Link from 'next/link'
 import BackendAxios from '@/utils/axios'
 
-const Page = () => {
+const AllCampaigns = () => {
     const Toast = useToast({ position: 'top-right' })
     const [campaigns, setCampaigns] = useState([])
     useEffect(() => {
@@ -49,4 +49,4 @@ const Page = () => {
     )
 }
 
-export default Page
+export default AllCampaigns
