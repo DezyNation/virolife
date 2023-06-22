@@ -4,13 +4,13 @@ import { Box, Stack, Text, Button, useToast } from "@chakra-ui/react";
 import CampaignCard from "@/components/campaign/CampaignCard";
 import { BsPlus } from "react-icons/bs";
 import Link from "next/link";
-import BackendAxios from "@/utils/axios";
+import BackendAxios, { DefaultAxios } from "@/utils/axios";
 
 const AllCampaigns = () => {
   const Toast = useToast({ position: "top-right" });
   const [campaigns, setCampaigns] = useState([]);
   useEffect(() => {
-    BackendAxios.get("/api/campaign")
+    DefaultAxios.get("/api/campaign")
       .then((res) => {
         setCampaigns(res.data);
       })
