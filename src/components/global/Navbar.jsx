@@ -50,7 +50,7 @@ import Link from "next/link";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useFormik } from "formik";
-import BackendAxios from "@/utils/axios";
+import BackendAxios, { DefaultAxios } from "@/utils/axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Cookies from "js-cookie";
 import { useJwt, decodeToken, isExpired } from "react-jwt";
@@ -85,8 +85,8 @@ const Navbar = () => {
       });
       return;
     }
-    axios
-      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
+    DefaultAxios
+      .post(`/login`, {
         ...Formik.values,
       })
       .then((res) => {
@@ -117,8 +117,8 @@ const Navbar = () => {
       });
       return;
     }
-    axios
-      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
+    DefaultAxios
+      .post(`/register`, {
         ...Formik.values,
         name: name,
       })
