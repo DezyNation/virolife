@@ -67,13 +67,6 @@ const Layout = ({ children }) => {
                                     <Text>Dashboard</Text>
                                 </HStack>
                             </Link>
-                            <Link href={'/dashboard/videos'}>
-                                <HStack gap={4}>
-                                    <AiFillYoutube size={20} />
-                                    <Text>Watch Videos</Text>
-                                    <BsFill1CircleFill size={12} />
-                                </HStack>
-                            </Link>
                             <Link href={'/dashboard/campaigns'}>
                                 <HStack gap={4}>
                                     <BsMegaphoneFill size={20} />
