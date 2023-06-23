@@ -13,7 +13,8 @@ import {
     Textarea,
     HStack,
     Icon,
-    useToast
+    useToast,
+    Select
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { BsXCircleFill } from 'react-icons/bs';
@@ -76,6 +77,16 @@ const Page = () => {
     return (
         <>
             <Text pb={4} fontSize={'2xl'} className='serif'>Create New Campaign</Text>
+            <br />
+            <FormControl py={4} w={['full', 'xs']}>
+                <FormLabel>Select Category</FormLabel>
+                <Select>
+                    <option value="medical">Medical</option>
+                    <option value="education">Education</option>
+                    <option value="new startup">New Startup</option>
+                    <option value="sports">Sports Help</option>
+                </Select>
+            </FormControl>
             <FormControl py={4}>
                 <FormLabel>Enter title for your campaign</FormLabel>
                 <Input

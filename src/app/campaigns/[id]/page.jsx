@@ -19,6 +19,7 @@ const CampaignInfo = ({params}) => {
     const Toast = useToast({ position: 'top-right' })
     const [selectedImg, setSelectedImg] = useState("https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg")
     const { id } = params
+    const [amount, setAmount] = useState(1000)
     const [campaign, setCampaign] = useState({})
 
     useEffect(() => {
@@ -102,11 +103,19 @@ const CampaignInfo = ({params}) => {
                         <Box p={4} boxShadow={'lg'} rounded={8} position={'sticky'} top={0}>
                             <Text fontWeight={'semibold'} className='serif' fontSize={'xl'}>Donate To John Doe</Text>
                             <br />
+                            <Progress value={80} colorScheme='yellow' />
+                            <HStack justifyContent={'space-between'}>
+                                <Text fontSize={'xs'}>₹40,000</Text>
+                                <Text fontSize={'xs'}>₹50,000</Text>
+                            </HStack>
+                            <br />
                             <FormLabel>Enter Amount</FormLabel>
                             <InputGroup>
                                 <InputLeftElement children={'₹'} />
-                                <Input type='number' mb={2} />
+                                <Input type='number' value={amount} mb={2} />
                             </InputGroup>
+                            <Text py={4}>Platform Fees (5%) : ₹{0.05*Number(amount || 0)}</Text>
+                            <Text py={4} pt={0}>Total Payable Amt &nbsp; : ₹{0.05*Number(amount || 0) + amount}</Text>
                             <Button w={'full'} colorScheme='yellow'>Donate Now</Button>
                         </Box>
                     </Box>
@@ -116,7 +125,6 @@ const CampaignInfo = ({params}) => {
                         <Box p={4} boxShadow={'lg'} bg={'#FFF'} rounded={8} top={0}>
                             <Text fontWeight={'semibold'} className='serif' fontSize={'xl'}>Donate To Sangam Kumar</Text>
                             <br />
-                            <Progress value={80} />
                             <HStack justifyContent={'space-between'}>
                                 <Text fontSize={'xs'}>₹80,000</Text>
                                 <Text fontSize={'xs'}>₹1,00,000</Text>
@@ -124,8 +132,9 @@ const CampaignInfo = ({params}) => {
                             <FormLabel>Enter Amount</FormLabel>
                             <InputGroup>
                                 <InputLeftElement children={'₹'} />
-                                <Input type='number' mb={2} />
+                                <Input type='number' value={amount} onChange={(e)=>setAmount(e.target.value)} mb={2} />
                             </InputGroup>
+                            <Text py={4}>Platform Fees (5%) : ₹{0.05*Number(amount || 0)}</Text>
                             <Button w={'full'} colorScheme='yellow'>Donate Now</Button>
                         </Box>
                     </Box>

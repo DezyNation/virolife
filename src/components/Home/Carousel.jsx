@@ -19,146 +19,39 @@ const Carousel = () => {
   };
 
   return (
-    <Box minH={["auto", "100vh", "110vh"]}>
-      <Slider {...settings}>
-        <Box w={"full"}>
-          <Stack
-            p={8}
-            direction={["column", "row"]}
-            justifyContent={"space-between"}
-          >
-            <Image
-              w={["full", "4xl", "5xl"]}
-              h={["auto", "xl"]}
-              objectFit={"cover"}
-              src="https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg"
-            />
-            <VStack>
-              <Text
-                fontSize={["3xl", "5xl", "6xl"]}
-                className="serif"
-                textAlign={["center", "right"]}
-              >
-                We'll Support
-                <br />
-                Your Needs
-              </Text>
-              <Button
-                p={2}
-                w={["56"]}
-                mt={12}
-                rounded={6}
-                bgColor={"yellow.400"}
-                size={"lg"}
-                fontSize={"xl"}
-                fontWeight={"semibold"}
-                color={"#333"}
-              >
-                Watch Video
-              </Button>
-            </VStack>
-          </Stack>
-          <Box w={"90vw"} h={"0.5"} mx={"auto"} bgColor={"yellow.400"}></Box>
+    <Box w={"full"}>
+      <Stack
+        p={8}
+        direction={["column", "row"]}
+        justifyContent={"space-between"}
+      >
+        <Image
+          w={["full", "4xl"]}
+          objectFit={"contain"}
+          src="/hero.png"
+        />
+        <VStack>
           <Text
-            p={8}
-            textAlign={"center"}
+            fontSize={["3xl", "5xl", "6xl"]}
             className="serif"
-            fontSize={["md", "xl"]}
+            textAlign={["center", "right"]}
           >
-            You either master money, or on some level, money masters you!
+            We Know You
+            <br />
+            Need Funds
           </Text>
-        </Box>
-        <Box w={"full"}>
-          <Stack
-            p={8}
-            direction={["column", "row"]}
-            justifyContent={"space-between"}
+          <Button
+            mt={12} fontSize={"xl"}
+            rounded={6} size={"lg"}
+            bgColor={"yellow.400"}
+            fontWeight={"semibold"}
+            color={"#333"}
           >
-            <Image
-              w={["full", "4xl", "5xl"]}
-              h={["auto", "xl"]}
-              objectFit={"cover"}
-              src="https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg"
-            />
-            <VStack>
-              <Text
-                fontSize={["3xl", "6xl"]}
-                className="serif"
-                textAlign={["center", "right"]}
-              >
-                Building Bridges of Compassion
-              </Text>
-              <Button
-                p={2}
-                w={["56"]}
-                mt={12}
-                rounded={6}
-                bgColor={"yellow.400"}
-                size={"lg"}
-                fontSize={"xl"}
-                fontWeight={"semibold"}
-                color={"#333"}
-              >
-                Watch Video
-              </Button>
-            </VStack>
-          </Stack>
-          <Box w={"90vw"} h={"0.5"} mx={"auto"} bgColor={"yellow.400"}></Box>
-          <Text
-            p={8}
-            textAlign={"center"}
-            className="serif"
-            fontSize={["md", "xl"]}
-          >
-            You either master money, or on some level, money masters you!
-          </Text>
-        </Box>
-        <Box w={"full"}>
-          <Stack
-            p={8}
-            direction={["column", "row"]}
-            justifyContent={"space-between"}
-          >
-            <Image
-              w={["full", "4xl", "5xl"]}
-              h={["auto", "xl"]}
-              objectFit={"cover"}
-              src="https://www.nationstrust.com/images/life-moments/easily-save-money-1.jpg"
-            />
-            <VStack>
-              <Text
-                fontSize={["3xl", "6xl"]}
-                className="serif"
-                textAlign={["center", "right"]}
-              >
-                Helping Hands, Healing Hearts
-              </Text>
-              <Button
-                p={2}
-                w={["56"]}
-                mt={12}
-                rounded={6}
-                bgColor={"yellow.400"}
-                size={"lg"}
-                fontSize={"xl"}
-                fontWeight={"semibold"}
-                color={"#333"}
-              >
-                Watch Video
-              </Button>
-            </VStack>
-          </Stack>
-          <Box w={"90vw"} h={"0.5"} mx={"auto"} bgColor={"yellow.400"}></Box>
-          <Text
-            p={8}
-            textAlign={"center"}
-            className="serif"
-            fontSize={["md", "xl"]}
-          >
-            You either master money, or on some level, money masters you!
-          </Text>
-        </Box>
-      </Slider>
+            Let's Start a Fund Raiser
+          </Button>
+        </VStack>
+      </Stack>
+      <Box w={"90vw"} h={"0.5"} mx={"auto"} bgColor={"yellow.400"}></Box>
     </Box>
   );
 };

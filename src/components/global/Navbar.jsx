@@ -85,10 +85,9 @@ const Navbar = () => {
       });
       return;
     }
-    DefaultAxios
-      .post(`/login`, {
-        ...Formik.values,
-      })
+    axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
+      ...Formik.values,
+    })
       .then((res) => {
         Toast({
           status: "success",
@@ -117,11 +116,11 @@ const Navbar = () => {
       });
       return;
     }
-    DefaultAxios
-      .post(`/register`, {
-        ...Formik.values,
-        name: name,
-      })
+    axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
+      ...Formik.values,
+      name: name,
+      password_confirmation: Formik.values.password
+    })
       .then((res) => {
         Toast({
           status: "success",
@@ -170,17 +169,6 @@ const Navbar = () => {
                 Login
               </Box>
             ) : null}
-            {sessionExpired ? (
-              <Box
-                cursor={"pointer"}
-                fontSize={"lg"}
-                mr={4}
-                className="serif"
-                onClick={() => setIsSignupOpen(true)}
-              >
-                Signup
-              </Box>
-            ) : null}
             {!sessionExpired ? (
               <Link href={"/dashboard"}>
                 <Box
@@ -204,7 +192,7 @@ const Navbar = () => {
                 fontWeight={"bold"}
                 color={"#666"}
               >
-                Group Funding
+                Membership
               </Text>
             </PopoverTrigger>
             <PopoverContent>
@@ -247,14 +235,19 @@ const Navbar = () => {
           </Popover>
           <Spacer />
           <HStack spacing={8} fontWeight={"medium"}>
+            <Box>
+              <Text color={"transparent"}>Virolife</Text>
+            </Box>
             <Link href={"/blogs"}>
               <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
                 Blog
               </Box>
             </Link>
-            <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
-              Redeem Points
-            </Box>
+            {sessionExpired ? null : (
+              <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
+                Redeem Points
+              </Box>
+            )}
             <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
               Contact
             </Box>
@@ -294,7 +287,7 @@ const Navbar = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader>
-            <Link href={'/'}>
+            <Link href={"/"}>
               <Image src="/logo.png" width={16} />
             </Link>
             <DrawerCloseButton />
@@ -314,7 +307,7 @@ const Navbar = () => {
               <Accordion w={"full"} allowToggle>
                 <AccordionItem border={"none"}>
                   <AccordionButton px={0} justifyContent={"space-between"}>
-                    <Text className="serif">Group Funding</Text>
+                    <Text className="serif">Membership</Text>
                     <AccordionIcon />
                   </AccordionButton>
                   <AccordionPanel>
@@ -353,7 +346,11 @@ const Navbar = () => {
               <Link href={"/blogs"}>
                 <Text>Blog</Text>
               </Link>
-              <Text>Redeem Points</Text>
+              {sessionExpired ? null : (
+                <Link href={"#"}>
+                  <Text>Redeem Points</Text>
+                </Link>
+              )}
               <Text>Contact Us</Text>
             </VStack>
           </DrawerBody>
@@ -413,6 +410,20 @@ const Navbar = () => {
                     </InputGroup>
                   </Stack>
                 </FormControl>
+                <Box
+                  px={8}
+                  py={4}
+                  textAlign={"right"}
+                  cursor={"pointer"}
+                  onClick={() => {
+                    onToggle();
+                    setIsSignupOpen(true);
+                  }}
+                >
+                  <Text color={"#444"} fontSize={"lg"} fontWeight={"semibold"}>
+                    Don't Have An Account? &nbsp;&nbsp; Register here
+                  </Text>
+                </Box>
                 <HStack>
                   <Button
                     colorScheme="yellow"
@@ -515,6 +526,20 @@ const Navbar = () => {
                     </InputGroup>
                   </Stack>
                 </FormControl>
+                <Box
+                  px={8}
+                  py={4}
+                  textAlign={"right"}
+                  cursor={"pointer"}
+                  onClick={() => {
+                    onToggle();
+                    setIsSignupOpen(false);
+                  }}
+                >
+                  <Text color={"#444"} fontSize={"lg"} fontWeight={"semibold"}>
+                    Already Have An Account? &nbsp;&nbsp; Login here
+                  </Text>
+                </Box>
                 <HStack>
                   <Button
                     colorScheme="yellow"

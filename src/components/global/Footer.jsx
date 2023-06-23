@@ -14,9 +14,13 @@ const Footer = () => {
         <Spacer />
         <VStack w={'full'} alignItems={'flex-start'} justifyContent={'flex-start'} gap={2} flex={1}>
           <Text fontSize={'lg'} className='serif' fontWeight={'semibold'}>Services</Text>
-            <Text fontWeight={'normal'}>Raise Funds</Text>
-            <Text fontWeight={'normal'}>Investment Opportunities</Text>
-            <Text fontWeight={'normal'}>Payment Process</Text>
+            <Text fontWeight={'normal'}>Medical Funding</Text>
+            <Text fontWeight={'normal'}>Education Funding</Text>
+            <Text fontWeight={'normal'}>New Startup Funding</Text>
+            <br />
+            <Text fontWeight={'normal'}>Sports Funding Process</Text>
+            <Text fontWeight={'normal'}>Group Funding Process</Text>
+            <Text fontWeight={'normal'}>Veero Funding Process</Text>
         </VStack>
         <Spacer />
         <VStack w={'full'} alignItems={'flex-start'} justifyContent={'flex-start'} gap={2} flex={1}>
