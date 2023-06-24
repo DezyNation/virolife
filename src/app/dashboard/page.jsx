@@ -33,7 +33,7 @@ const DashboardHome = () => {
   const [authUser, setAuthUser] = useState({});
   const [campaigns, setCampaigns] = useState({});
 
-  const [campaignDate, setCampaignDate] = useState(new Date())
+  const [campaignDate, setCampaignDate] = useState(new Date());
 
   useEffect(() => {
     setSessionExpired(isExpired(cookies.jwt));
@@ -70,7 +70,7 @@ const DashboardHome = () => {
     BackendAxios.get("/api/user-campaigns")
       .then((res) => {
         setCampaigns(res.data);
-        setCampaignDate(new Date(campaigns[0]?.created_at))
+        setCampaignDate(new Date(campaigns[0]?.created_at));
       })
       .catch((err) => {
         Toast({
@@ -116,45 +116,54 @@ const DashboardHome = () => {
         >
           <Box flex={["unset", 4]}>
             <Text pb={8}>Your Most Recent Campaign</Text>
-            <Box
-              pos={"relative"}
-              boxShadow={"md"}
-              rounded={8}
-              overflow={"hidden"}
-              bgImage={campaigns[0]?.file_path ? `https://edulec.in/storage/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
-              bgSize={"cover"}
-              bgRepeat={"no-repeat"}
-              h={"sm"}
-              cursor={"pointer"}
-            >
+            {campaigns.length > 0 && (
               <Box
-                position={"absolute"}
-                w={"full"}
-                h={"sm"}
-                top={0}
-                left={0}
-                right={0}
-                bottom={0}
-                p={4}
+                pos={"relative"}
+                boxShadow={"md"}
+                rounded={8}
+                overflow={"hidden"}
                 bgImage={
-                  "linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.3))"
+                  campaigns[0]?.file_path
+                    ? `https://edulec.in/storage/${campaign.file_path}`
+                    : "https://idea.batumi.ge/files/default.jpg"
                 }
-                display={"flex"}
-                flexDirection={"column"}
-                alignItems={"flex-start"}
-                justifyContent={"flex-end"}
+                bgSize={"cover"}
+                bgRepeat={"no-repeat"}
+                h={"sm"}
+                cursor={"pointer"}
               >
-                <Text pos={"absolute"} top={4} right={4} color={"#FFF"}>
-                  {campaignDate.getDate() - campaignDate.getMonth() - campaignDate.getFullYear()}
-                </Text>
-                <Text className="serif" fontSize={"3xl"} color={"#FFF"}>
-                  {campaigns[0]?.title}
-                </Text>
-                <Text fontSize={"xs"} color={"#FFF"}>
-                  {campaigns[0]?.description}
-                </Text>
+                <Box
+                  position={"absolute"}
+                  w={"full"}
+                  h={"sm"}
+                  top={0}
+                  left={0}
+                  right={0}
+                  bottom={0}
+                  p={4}
+                  bgImage={
+                    "linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.3))"
+                  }
+                  display={"flex"}
+                  flexDirection={"column"}
+                  alignItems={"flex-start"}
+                  justifyContent={"flex-end"}
+                >
+                  <Text pos={"absolute"} top={4} right={4} color={"#FFF"}>
+                    {campaignDate.getDate() -
+                      campaignDate.getMonth() -
+                      campaignDate.getFullYear()}
+                  </Text>
+                  <Text className="serif" fontSize={"3xl"} color={"#FFF"}>
+                    {campaigns[0]?.title}
+                  </Text>
+                  <Text fontSize={"xs"} color={"#FFF"}>
+                    {campaigns[0]?.description}
+                  </Text>
+                </Box>
               </Box>
-            </Box>
+            )}
+
             <Link href={"/dashboard/campaigns"}>
               <Button mt={8} colorScheme="yellow" rightIcon={<BsArrowRight />}>
                 View All Campaigns
