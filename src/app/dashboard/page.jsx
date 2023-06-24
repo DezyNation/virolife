@@ -70,7 +70,7 @@ const DashboardHome = () => {
     BackendAxios.get("/api/user-campaigns")
       .then((res) => {
         setCampaigns(res.data);
-        setCampaignDate(new Date(campaigns[0]?.created_at));
+        setCampaignDate(new Date(res.data[0]?.created_at));
       })
       .catch((err) => {
         Toast({
@@ -124,7 +124,7 @@ const DashboardHome = () => {
                 overflow={"hidden"}
                 bgImage={
                   campaigns[0]?.file_path
-                    ? `https://edulec.in/storage/${campaign.file_path}`
+                    ? `https://edulec.in/storage/${campaigns[0]?.file_path}`
                     : "https://idea.batumi.ge/files/default.jpg"
                 }
                 bgSize={"cover"}
