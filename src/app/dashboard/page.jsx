@@ -33,6 +33,8 @@ const DashboardHome = () => {
   const [authUser, setAuthUser] = useState({});
   const [campaigns, setCampaigns] = useState({});
 
+  const [campaignDate, setCampaignDate] = useState(new Date())
+
   useEffect(() => {
     setSessionExpired(isExpired(cookies.jwt));
     if (!isExpired(cookies.jwt)) {
@@ -68,6 +70,7 @@ const DashboardHome = () => {
     BackendAxios.get("/api/user-campaigns")
       .then((res) => {
         setCampaigns(res.data);
+        setCampaignDate(new Date(campaigns[0]?.created_at))
       })
       .catch((err) => {
         Toast({
@@ -142,7 +145,7 @@ const DashboardHome = () => {
                 justifyContent={"flex-end"}
               >
                 <Text pos={"absolute"} top={4} right={4} color={"#FFF"}>
-                  {new Date(campaigns[0]?.created_at)}
+                  {campaignDate.getDate() - campaignDate.getMonth() - campaignDate.getFullYear()}
                 </Text>
                 <Text className="serif" fontSize={"3xl"} color={"#FFF"}>
                   {campaigns[0]?.title}

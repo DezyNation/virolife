@@ -22,14 +22,14 @@ const Footer = () => {
             <Text fontWeight={'normal'}>Group Funding Process</Text>
             <Text fontWeight={'normal'}>Veero Funding Process</Text>
         </VStack>
-        <Spacer />
+        
         <VStack w={'full'} alignItems={'flex-start'} justifyContent={'flex-start'} gap={2} flex={1}>
           <Text fontSize={'lg'} className='serif' fontWeight={'semibold'}>Important</Text>
           <Text fontWeight={'normal'}>Terms & Conditions</Text>
           <Text fontWeight={'normal'}>Privacy Policy</Text>
           <Text fontWeight={'normal'}>Refund Policy</Text>
         </VStack>
-        <Spacer />
+        
         <Box flex={1} w={'full'}>
           <HStack p={8} py={2}>
             <GrLocation color='#333' fontSize={36} />
