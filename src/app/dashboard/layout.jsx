@@ -37,21 +37,16 @@ const Layout = ({ children }) => {
 
     function handleLogout(){
         BackendAxios.post("/logout").then(res => {
-            removeCookie("jwt")
             Cookies.remove("jwt")
-            Router.replace("/")
+            window.location.reload()
         }).catch(err => {
             Toast({
                 status: 'error',
                 description: err?.response?.data?.message || err?.response?.data || err?.message
             })
-            removeCookie("jwt")
             Cookies.remove("jwt")
-            Router.replace("/")
+            window.location.reload()
         })
-        removeCookie("jwt")
-        Cookies.remove("jwt")
-        Router.replace("/")
     }
 
     return (

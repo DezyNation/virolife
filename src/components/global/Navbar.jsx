@@ -145,27 +145,19 @@ const Navbar = () => {
       });
   }
 
-  function handleLogout() {
-    BackendAxios.post("/logout")
-      .then((res) => {
-        removeCookie("jwt");
-        Cookies.remove("jwt");
-        Router.replace("/");
-      })
-      .catch((err) => {
+  function handleLogout(){
+    BackendAxios.post("/logout").then(res => {
+        Cookies.remove("jwt")
+        window.location.reload()
+    }).catch(err => {
         Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-        removeCookie("jwt");
-        Cookies.remove("jwt");
-        Router.replace("/");
-      });
-    removeCookie("jwt");
-    Cookies.remove("jwt");
-    Router.replace("/");
-  }
+            status: 'error',
+            description: err?.response?.data?.message || err?.response?.data || err?.message
+        })
+        Cookies.remove("jwt")
+        window.location.reload()
+    })
+}
 
   return (
     <>
