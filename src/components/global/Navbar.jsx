@@ -50,7 +50,7 @@ import Link from "next/link";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useFormik } from "formik";
-import BackendAxios, { DefaultAxios } from "@/utils/axios";
+import BackendAxios, { DefaultAxios, FormAxios } from "@/utils/axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Cookies from "js-cookie";
 import { useJwt, decodeToken, isExpired } from "react-jwt";
@@ -94,6 +94,9 @@ const Navbar = () => {
           description: "Login successful!",
         });
         BackendAxios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${res.data?.access_token}`;
+        FormAxios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${res.data?.access_token}`;
         // Cookies.set("jwt", res.data?.access_token)
