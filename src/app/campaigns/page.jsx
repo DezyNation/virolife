@@ -56,7 +56,7 @@ const AllCampaigns = () => {
                   : "https://idea.batumi.ge/files/default.jpg"
               }
               title={campaign.title}
-              userName={"Sangam Kumar"}
+              userName={`Need ₹ ${campaign?.target_amount}`}
               description={campaign.description}
               link={`/campaigns/${campaign.id}`}
             />

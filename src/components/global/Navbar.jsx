@@ -45,6 +45,7 @@ import {
   useToast,
   InputGroup,
   InputRightElement,
+  DrawerFooter,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { BiMenuAltLeft } from "react-icons/bi";
@@ -56,6 +57,7 @@ import Cookies from "js-cookie";
 import { useJwt, decodeToken, isExpired } from "react-jwt";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const Toast = useToast({ position: "top-right" });
@@ -66,6 +68,7 @@ const Navbar = () => {
   const [isPasswordVisible, setisPasswordVisible] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
+  const Router = useRouter();
 
   const Formik = useFormik({
     initialValues: {
@@ -85,9 +88,10 @@ const Navbar = () => {
       });
       return;
     }
-    axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
-      ...Formik.values,
-    })
+    axios
+      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
+        ...Formik.values,
+      })
       .then((res) => {
         Toast({
           status: "success",
@@ -119,11 +123,12 @@ const Navbar = () => {
       });
       return;
     }
-    axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
-      ...Formik.values,
-      name: name,
-      password_confirmation: Formik.values.password
-    })
+    axios
+      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
+        ...Formik.values,
+        name: name,
+        password_confirmation: Formik.values.password,
+      })
       .then((res) => {
         Toast({
           status: "success",
@@ -138,6 +143,28 @@ const Navbar = () => {
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
+  }
+
+  function handleLogout() {
+    BackendAxios.post("/logout")
+      .then((res) => {
+        removeCookie("jwt");
+        Cookies.remove("jwt");
+        Router.replace("/");
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+        removeCookie("jwt");
+        Cookies.remove("jwt");
+        Router.replace("/");
+      });
+    removeCookie("jwt");
+    Cookies.remove("jwt");
+    Router.replace("/");
   }
 
   return (
@@ -357,6 +384,9 @@ const Navbar = () => {
               <Text>Contact Us</Text>
             </VStack>
           </DrawerBody>
+          <DrawerFooter justifyContent={'center'}>
+            {sessionExpired ? null : <Text textAlign={'center'} onClick={handleLogout}>Logout</Text>}
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
 

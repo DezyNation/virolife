@@ -22,10 +22,11 @@ import {
 import { useFormik } from "formik";
 import { BsXCircleFill } from "react-icons/bs";
 import BackendAxios, { FormAxios } from "@/utils/axios";
+import { RangeDatepicker } from "chakra-dayzed-datepicker";
 
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
-
+  const [selectedDates, setSelectedDates] = useState([new Date(), new Date()]);
   const onDrop = useCallback(async (acceptedFiles) => {
     console.log(acceptedFiles[0]);
     Formik.setFieldValue("files", acceptedFiles[0]);
@@ -101,10 +102,19 @@ const Page = () => {
         Create New Campaign
       </Text>
       <br />
-      <Stack justifyContent={"space-between"} gap={8} py={6}>
+      <Stack
+        direction={["column", "row"]}
+        justifyContent={"space-between"}
+        gap={8}
+        py={6}
+      >
         <FormControl py={4} w={["full", "xs"]}>
           <FormLabel>Select Category</FormLabel>
-          <Select name="category_id" placeholder="Select Here" onChange={Formik.handleChange}>
+          <Select
+            name="category_id"
+            placeholder="Select Here"
+            onChange={Formik.handleChange}
+          >
             <option value="1">Medical</option>
             <option value="2">Education</option>
             <option value="3">New Startup</option>
@@ -115,8 +125,19 @@ const Page = () => {
           <FormLabel>How much amount you need?</FormLabel>
           <InputGroup>
             <InputLeftElement children={"₹"} />
-            <Input type="number" name={"target_amount"} onChange={Formik.handleChange} />
+            <Input
+              type="number"
+              name={"target_amount"}
+              onChange={Formik.handleChange}
+            />
           </InputGroup>
+        </FormControl>
+        <FormControl py={4} w={["full", "xs"]}>
+          <FormLabel>Duration</FormLabel>
+          <RangeDatepicker
+            selectedDates={selectedDates}
+            onDateChange={setSelectedDates}
+          />
         </FormControl>
       </Stack>
       <FormControl py={4}>
