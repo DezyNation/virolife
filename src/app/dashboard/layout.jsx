@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation'
 import { useCookies } from 'react-cookie'
 import { isExpired } from 'react-jwt'
 import BackendAxios from '@/utils/axios'
+import Cookies from 'js-cookie'
 
 
 const Layout = ({ children }) => {
@@ -37,15 +38,20 @@ const Layout = ({ children }) => {
     function handleLogout(){
         BackendAxios.post("/logout").then(res => {
             removeCookie("jwt")
+            Cookies.remove("jwt")
             Router.replace("/")
         }).catch(err => {
             Toast({
                 status: 'error',
                 description: err?.response?.data?.message || err?.response?.data || err?.message
             })
-            Router.replace("/")
             removeCookie("jwt")
+            Cookies.remove("jwt")
+            Router.replace("/")
         })
+        removeCookie("jwt")
+        Cookies.remove("jwt")
+        Router.replace("/")
     }
 
     return (
