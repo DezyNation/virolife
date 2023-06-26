@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Stack,
     Box,
@@ -28,12 +28,17 @@ const Layout = ({ children }) => {
     const Toast = useToast({position: 'top-right'})
     const Router = useRouter()
     const [cookies, setCookie, removeCookie] = useCookies(['jwt'])
+    const [userName, setUserName] = useState("")
     
     useEffect(()=>{
         if(isExpired(cookies.jwt)){
             Router.replace("/")
         }
     },[cookies])
+
+    useEffect(()=>{
+        setUserName(localStorage?.getItem("userName"))
+    },[])
 
     function handleLogout(){
         BackendAxios.post("/logout").then(res => {
@@ -55,6 +60,7 @@ const Layout = ({ children }) => {
                 <Show above='md'>
                     <Box p={4} bg={'blanchedalmond'} w={'xs'}>
                         <Text className='serif' fontSize={'xl'} fontWeight={'semibold'}>Virolife</Text>
+
                         <VStack w={'full'} gap={4} pt={8} alignItems={'flex-start'}>
                             <Link href={'/auth/info'}>
                                 <HStack gap={4}>

@@ -68,6 +68,7 @@ const Navbar = () => {
   const [isPasswordVisible, setisPasswordVisible] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
+  const [userName, setUserName] = useState("")
   const Router = useRouter();
 
   const Formik = useFormik({
@@ -158,6 +159,10 @@ const Navbar = () => {
         window.location.reload()
     })
 }
+
+useEffect(()=>{
+  setUserName(localStorage?.getItem("userName"))
+},[])
 
   return (
     <>
@@ -311,6 +316,8 @@ const Navbar = () => {
           <DrawerHeader>
             <Link href={"/"}>
               <Image src="/logo.png" width={16} />
+              <br />
+              <Text>{userName}</Text>
             </Link>
             <DrawerCloseButton />
           </DrawerHeader>

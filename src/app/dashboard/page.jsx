@@ -41,6 +41,7 @@ const DashboardHome = () => {
       BackendAxios.post("/auth-user")
         .then((res) => {
           setAuthUser(res.data);
+          localStorage.setItem("userName", res.data?.name)
         })
         .catch((err) => {
           Toast({
