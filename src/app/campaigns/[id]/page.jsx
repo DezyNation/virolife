@@ -125,10 +125,12 @@ const CampaignInfo = ({params}) => {
                         <Box p={4} boxShadow={'lg'} bg={'#FFF'} rounded={8} top={0}>
                             <Text fontWeight={'semibold'} className='serif' fontSize={'xl'}>Donate To Sangam Kumar</Text>
                             <br />
+                            <Progress value={80} colorScheme='yellow' />
                             <HStack justifyContent={'space-between'}>
                                 <Text fontSize={'xs'}>₹80,000</Text>
                                 <Text fontSize={'xs'}>₹1,00,000</Text>
                             </HStack>
+                            <br />
                             <FormLabel>Enter Amount</FormLabel>
                             <InputGroup>
                                 <InputLeftElement children={'₹'} />
