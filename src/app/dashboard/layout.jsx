@@ -43,6 +43,7 @@ const Layout = ({ children }) => {
     function handleLogout(){
         BackendAxios.post("/logout").then(res => {
             Cookies.remove("jwt")
+            localStorage.clear()
             window.location.reload()
         }).catch(err => {
             Toast({
@@ -50,6 +51,7 @@ const Layout = ({ children }) => {
                 description: err?.response?.data?.message || err?.response?.data || err?.message
             })
             Cookies.remove("jwt")
+            localStorage.clear()
             window.location.reload()
         })
     }
