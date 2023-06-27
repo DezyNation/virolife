@@ -68,7 +68,7 @@ const Navbar = () => {
   const [isPasswordVisible, setisPasswordVisible] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
-  const [userName, setUserName] = useState("")
+  const [userName, setUserName] = useState("");
   const Router = useRouter();
 
   const Formik = useFormik({
@@ -146,25 +146,36 @@ const Navbar = () => {
       });
   }
 
-  function handleLogout(){
-    BackendAxios.post("/logout").then(res => {
-        Cookies.remove("jwt")
-        localStorage.clear()
-        window.location.reload()
-    }).catch(err => {
+  function handleLogout() {
+    BackendAxios.post("/logout")
+      .then((res) => {
+        Cookies.remove("jwt");
+        localStorage.clear();
+        window.location.reload();
+      })
+      .catch((err) => {
         Toast({
-            status: 'error',
-            description: err?.response?.data?.message || err?.response?.data || err?.message
-        })
-        Cookies.remove("jwt")
-        localStorage.clear()
-        window.location.reload()
-    })
-}
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+        Cookies.remove("jwt");
+        localStorage.clear();
+        window.location.reload();
+      });
+  }
 
-useEffect(()=>{
-  setUserName(localStorage?.getItem("userName"))
-},[])
+  useEffect(() => {
+    if (!isExpired(cookies.jwt)) {
+      BackendAxios.post("/auth-user")
+        .then((res) => {
+          setUserName(res.data?.name);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
   return (
     <>
@@ -319,7 +330,7 @@ useEffect(()=>{
             <Link href={"/"}>
               <Image src="/logo.png" width={16} />
               <br />
-              <Text>{userName}</Text>
+              <Text fontSize={"sm"}>{userName}</Text>
             </Link>
             <DrawerCloseButton />
           </DrawerHeader>
@@ -385,8 +396,12 @@ useEffect(()=>{
               <Text>Contact Us</Text>
             </VStack>
           </DrawerBody>
-          <DrawerFooter justifyContent={'center'}>
-            {sessionExpired ? null : <Text textAlign={'center'} onClick={handleLogout}>Logout</Text>}
+          <DrawerFooter justifyContent={"center"}>
+            {sessionExpired ? null : (
+              <Text textAlign={"center"} onClick={handleLogout}>
+                Logout
+              </Text>
+            )}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
