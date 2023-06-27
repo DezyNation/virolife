@@ -37,7 +37,7 @@ const AllCampaigns = () => {
       <Stack
         direction={["column", "row"]}
         flexWrap={"wrap"}
-        gap={[4, 8, 16]}
+        gap={[16, 8, 16]}
         justifyContent={"center"}
         alignItems={"flex-start"}
         minH={"85vh"} pt={4}
@@ -45,7 +45,7 @@ const AllCampaigns = () => {
       >
         {campaigns
           .filter(
-            (item) => item.status != "pending" && item.status != "rejected"
+            (item) => item.status == "approved"
           )
           .map((campaign, key) => (
             <CampaignCard
@@ -55,6 +55,7 @@ const AllCampaigns = () => {
                   ? `https://edulec.in/storage/${campaign.file_path}`
                   : "https://idea.batumi.ge/files/default.jpg"
               }
+              category={campaign?.category?.name}
               title={campaign.title}
               userName={`Need ₹ ${campaign?.target_amount}`}
               description={campaign.description}
