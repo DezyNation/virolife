@@ -5,6 +5,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../../styles/blog.css'
+import Footer from '@/components/global/Footer';
 
 const Post = () => {
     const settings = {
@@ -64,6 +65,7 @@ const Post = () => {
                     </Slider>
                 </Box>
             </Stack>
+            <Footer />
         </>
     )
 }

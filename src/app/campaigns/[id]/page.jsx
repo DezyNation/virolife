@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import BackendAxios from "@/utils/axios";
 import { BsHeartFill } from "react-icons/bs";
+import Footer from "@/components/global/Footer";
 
 const CampaignInfo = ({ params }) => {
   const Toast = useToast({ position: "top-right" });
@@ -143,7 +144,7 @@ const CampaignInfo = ({ params }) => {
               <FormLabel>Enter Amount</FormLabel>
               <InputGroup>
                 <InputLeftElement children={"₹"} />
-                <Input type="number" value={amount} mb={2} />
+                <Input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} mb={2} />
               </InputGroup>
               <br />
               <Text fontSize={"sm"}>Choose Platform Fees</Text>
@@ -260,6 +261,7 @@ const CampaignInfo = ({ params }) => {
           </Box>
         </Show>
       </Stack>
+            <Footer />
     </>
   );
 };

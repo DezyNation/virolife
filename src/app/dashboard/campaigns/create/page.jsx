@@ -26,6 +26,7 @@ import { RangeDatepicker } from "chakra-dayzed-datepicker";
 
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
+  const [loading, setLoading] = useState(false)
   const [selectedDates, setSelectedDates] = useState([new Date(), new Date()]);
   const onDrop = useCallback(async (acceptedFiles) => {
     console.log(acceptedFiles[0]);
@@ -69,6 +70,7 @@ const Page = () => {
       target_amount: "",
     },
     onSubmit: () => {
+      setLoading(true)
       const formData = new FormData();
       formData.append("files", Formik.values.files);
       formData.append("title", Formik.values.title);
@@ -76,8 +78,11 @@ const Page = () => {
       formData.append("full_description", Formik.values.full_description);
       formData.append("category_id", Formik.values.category_id);
       formData.append("target_amount", Formik.values.target_amount);
+      formData.append("from", new Date(selectedDates[0]).getUTCSeconds());
+      formData.append("to", new Date(selectedDates[1]).getUTCSeconds());
       FormAxios.post("/api/campaign", formData)
         .then((res) => {
+          setLoading(false)
           Toast({
             status: "success",
             description: "Your campaign was sent for review!",
@@ -85,6 +90,7 @@ const Page = () => {
           console.log(formData);
         })
         .catch((err) => {
+          setLoading(false)
           Toast({
             status: "error",
             description:
@@ -213,7 +219,7 @@ const Page = () => {
         ></Textarea>
       </FormControl>
       <HStack justifyContent={"flex-end"} py={4}>
-        <Button colorScheme="yellow" onClick={Formik.handleSubmit}>
+        <Button colorScheme="yellow" isLoading={loading} onClick={Formik.handleSubmit}>
           Send For Review
         </Button>
       </HStack>

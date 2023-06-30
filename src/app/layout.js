@@ -21,7 +21,6 @@ export default function RootLayout({ children, session }) {
           <SessionProvider>
             <Navbar />
             {children}
-            <Footer />
           </SessionProvider>
         </ChakraProvider>
       </body>

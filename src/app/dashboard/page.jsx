@@ -151,9 +151,7 @@ const DashboardHome = () => {
                   justifyContent={"flex-end"}
                 >
                   <Text pos={"absolute"} top={4} right={4} color={"#FFF"}>
-                    {campaignDate.getDate() -
-                      campaignDate.getMonth() -
-                      campaignDate.getFullYear()}
+                    {new Date(campaigns[0]?.updated_at).toDateString()}
                   </Text>
                   <Text className="serif" fontSize={"3xl"} color={"#FFF"}>
                     {campaigns[0]?.title}

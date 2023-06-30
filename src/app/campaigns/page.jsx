@@ -5,6 +5,7 @@ import CampaignCard from "@/components/campaign/CampaignCard";
 import { BsPlus } from "react-icons/bs";
 import Link from "next/link";
 import BackendAxios, { DefaultAxios } from "@/utils/axios";
+import Footer from "@/components/global/Footer";
 
 const AllCampaigns = () => {
   const Toast = useToast({ position: "top-right" });
@@ -63,6 +64,8 @@ const AllCampaigns = () => {
             />
           ))}
       </Stack>
+
+      <Footer />
     </>
   );
 };
