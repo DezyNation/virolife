@@ -69,6 +69,7 @@ const Navbar = () => {
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [userName, setUserName] = useState("");
+  const [code, setCode] = useState("");
   const Router = useRouter();
 
   const Formik = useFormik({
@@ -129,6 +130,7 @@ const Navbar = () => {
         ...Formik.values,
         name: name,
         password_confirmation: Formik.values.password,
+        code: code
       })
       .then((res) => {
         Toast({
@@ -573,6 +575,23 @@ const Navbar = () => {
                         onClick={() => setisPasswordVisible(!isPasswordVisible)}
                       />
                     </InputGroup>
+                  </Stack>
+                </FormControl>
+                <FormControl>
+                  <Stack
+                    direction={["column", "row"]}
+                    spacing={[4, 8]}
+                    justifyContent={"space-between"}
+                  >
+                    <FormLabel fontSize={"xl"}>Referral Code</FormLabel>
+                    <Input
+                      w={["full", "xs"]}
+                      placeholder="Referral/Group Code"
+                      boxShadow={"xl"}
+                      border={".5px solid #FAFAFA"}
+                      rounded={0}
+                      onChange={(e) => setCode(e.target.value)}
+                    />
                   </Stack>
                 </FormControl>
                 <Box
