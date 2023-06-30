@@ -130,7 +130,7 @@ const Navbar = () => {
         ...Formik.values,
         name: name,
         password_confirmation: Formik.values.password,
-        code: code
+        code: code,
       })
       .then((res) => {
         Toast({
@@ -344,9 +344,17 @@ const Navbar = () => {
                 <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
               ) : null}
               {!sessionExpired ? (
-                <Link href={"/dashboard"}>
-                  <Text>Dashboard</Text>
-                </Link>
+                <VStack gap={4} alignItems={'flex-start'} w={'full'}>
+                  <Link href={"/dashboard"}>
+                    <Text>Dashboard</Text>
+                  </Link>
+                  <Link href={"/dashboard/campaigns"}>
+                    <Text>My Campaigns</Text>
+                  </Link>
+                  <Link href={"/dashboard/groups"}>
+                    <Text>Groups</Text>
+                  </Link>
+                </VStack>
               ) : null}
               <Accordion w={"full"} allowToggle>
                 <AccordionItem border={"none"}>
