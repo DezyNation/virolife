@@ -8,8 +8,6 @@ export default function Home() {
     <>
       <Carousel />
       <AllCampaigns />
-
-      <Footer />
     </>
   )
 }

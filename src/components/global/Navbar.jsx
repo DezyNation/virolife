@@ -585,7 +585,7 @@ const Navbar = () => {
                     </InputGroup>
                   </Stack>
                 </FormControl>
-                <FormControl>
+                {/* <FormControl>
                   <Stack
                     direction={["column", "row"]}
                     spacing={[4, 8]}
@@ -601,7 +601,7 @@ const Navbar = () => {
                       onChange={(e) => setCode(e.target.value)}
                     />
                   </Stack>
-                </FormControl>
+                </FormControl> */}
                 <Box
                   px={8}
                   py={4}

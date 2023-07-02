@@ -96,18 +96,18 @@ const Layout = ({ children }) => {
                 </HStack>
               </Link>
               <br />
-              <Link href={"/dashboard"}>
+              <Link href={"/dashboard/collection"}>
                 <HStack gap={4}>
                   <BsCurrencyRupee size={20} />
                   <Text>Collection</Text>
                 </HStack>
               </Link>
-              <Link href={"/dashboard"}>
+              {/* <Link href={"/dashboard"}>
                 <HStack gap={4}>
                   <BsCashCoin size={20} />
                   <Text>Withdrawals</Text>
                 </HStack>
-              </Link>
+              </Link> */}
               <Link href={"/dashboard/groups"}>
                 <HStack gap={4}>
                   <MdGroups size={20} />
