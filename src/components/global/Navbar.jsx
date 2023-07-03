@@ -344,7 +344,7 @@ const Navbar = () => {
                 <Text onClick={() => setIsSignupOpen(true)}>Signup</Text>
               ) : null}
               {!sessionExpired ? (
-                <VStack gap={4} alignItems={'flex-start'} w={'full'}>
+                <VStack gap={4} alignItems={"flex-start"} w={"full"}>
                   <Link href={"/dashboard"}>
                     <Text>Dashboard</Text>
                   </Link>
@@ -353,6 +353,9 @@ const Navbar = () => {
                   </Link>
                   <Link href={"/dashboard/groups"}>
                     <Text>Groups</Text>
+                  </Link>
+                  <Link href={"/dashboard/collection"}>
+                    <Text>Collection</Text>
                   </Link>
                 </VStack>
               ) : null}
