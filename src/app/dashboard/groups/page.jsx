@@ -134,7 +134,7 @@ const MyChildren = ({ childMembers }) => {
                 <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
                   {item?.name}
                 </Text>
-                <Text fontSize={"xs"}>ID: {item?.id}</Text>
+                <Text fontSize={"xs"}>ID: {item?.id}; Phone: {item?.phone_number}</Text>
               </Box>
             </HStack>
             <Button
