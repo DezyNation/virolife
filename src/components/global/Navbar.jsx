@@ -108,6 +108,7 @@ const Navbar = () => {
         // Cookies.set("jwt", res.data?.access_token)
         setCookie("jwt", res.data?.access_token);
         onToggle();
+        Router.push("/dashboard")
       })
       .catch((err) => {
         Toast({
