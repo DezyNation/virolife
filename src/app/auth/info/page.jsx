@@ -85,6 +85,10 @@ const Info = () => {
           Formik.setFieldValue("gender", res.data?.gender);
           Formik.setFieldValue("phone", res.data?.phone_number);
           Formik.setFieldValue("email", res.data?.email);
+          Formik.setFieldValue("upi", res.data?.upi_id);
+          Formik.setFieldValue("ifsc", res.data?.ifsc);
+          Formik.setFieldValue("bankName", res.data?.bank_name);
+          Formik.setFieldValue("accountNumber", res.data?.account_number);
         })
         .catch((err) => {
           Toast({
