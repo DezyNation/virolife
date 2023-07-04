@@ -320,7 +320,7 @@ const Info = () => {
                 </FormLabel>
                 <Input
                   name="bankName"
-                  value={Formik.values.bank}
+                  value={Formik.values.bankName}
                   onChange={Formik.handleChange}
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
