@@ -22,25 +22,26 @@ import {
 import { LuStars } from "react-icons/lu";
 import BackendAxios from "@/utils/axios";
 import QRCode from "react-qr-code";
+import Tree from "react-d3-tree";
 
 const MyParents = ({ parentUsers }) => {
-  const Toast = useToast({position: 'top-right'});
+  const Toast = useToast({ position: "top-right" });
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
-  const [receiver, setReceiver] = useState("")
+  const [receiver, setReceiver] = useState("");
 
   function showUpiModal(id, receiver) {
     setUpi(id);
-    setReceiver(receiver)
+    setReceiver(receiver);
     setQrModal(true);
   }
 
-  function donationInitiated(){
+  function donationInitiated() {
     Toast({
-      status: 'success',
-      description: 'Notification sent to senior'
-    })
-    setQrModal(false)
+      status: "success",
+      description: "Notification sent to senior",
+    });
+    setQrModal(false);
   }
 
   return (
@@ -73,7 +74,7 @@ const MyParents = ({ parentUsers }) => {
         ))}
       </Box>
 
-      <Modal size={'xs'} isOpen={qrModal} onClose={() => setQrModal(false)}>
+      <Modal size={"xs"} isOpen={qrModal} onClose={() => setQrModal(false)}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Donate ₹200 to {receiver}</ModalHeader>
@@ -81,7 +82,9 @@ const MyParents = ({ parentUsers }) => {
             <QRCode size={256} value={`upi://pay?cu=INR&pa=${upi}`} />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="yellow" rounded={'full'}>Done</Button>
+            <Button colorScheme="yellow" rounded={"full"}>
+              Done
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -93,9 +96,28 @@ const MyChildren = ({ childMembers }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
   const [groupInfo, setGroupInfo] = useState({});
+  const [groupMembers, setGroupMembers] = useState([
+    {
+      name: "Sangam",
+      children: [
+        {
+          name: "User",
+        },
+        {
+          name: "Another User",
+        },
+        {
+          name: "Great User",
+        },
+        {
+          name: "Awesome User",
+        },
+      ],
+    },
+  ]);
 
   function viewGroup(id) {
-    BackendAxios.get(`/api/group/${id}`)
+    BackendAxios.get(`/api/my-group`)
       .then((res) => {
         setGroupModal(true);
         if (!res.data?.length) {
@@ -105,6 +127,22 @@ const MyChildren = ({ childMembers }) => {
         }
 
         if (res.data?.length) {
+          setGroupMembers([
+            {
+              name: res.data[0]?.user?.name,
+              attributes: {
+                ID: res.data[0]?.user?.id,
+                Phone: res.data[0]?.user?.phone_number,
+              },
+              children: res.data[0]?.members?.map((user) => ({
+                name: user?.name,
+                attributes: {
+                  ID: user?.id,
+                  Phone: user?.phone_number,
+                },
+              })),
+            },
+          ]);
           setGroupInfo(res.data[0]);
           return;
         }
@@ -134,27 +172,43 @@ const MyChildren = ({ childMembers }) => {
                 <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
                   {item?.name}
                 </Text>
-                <Text fontSize={"xs"}>ID: {item?.id}; Phone: {item?.phone_number}</Text>
+                <Text fontSize={"xs"}>
+                  ID: {item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
+                </Text>
               </Box>
             </HStack>
-            <Button
-              size={"xs"}
-              onClick={() => viewGroup(item?.pivot?.group_id)}
-            >
-              View Group
-            </Button>
           </HStack>
         ))}
+        {childMembers?.length ? (
+          <HStack justifyContent={"flex-end"} py={4}>
+            <Button
+              size={"sm"}
+              colorScheme="twitter"
+              onClick={() => viewGroup()}
+            >
+              View Hierarchy
+            </Button>
+          </HStack>
+        ) : null}
       </Box>
 
-      <Modal isOpen={groupModal} onClose={() => setGroupModal(false)}>
+      <Modal
+        isOpen={groupModal}
+        onClose={() => setGroupModal(false)}
+        size={["full", "4xl"]}
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Group Info</ModalHeader>
-          <ModalBody
-            alignItems={"center"}
-            justifyContent={"center"}
-          ></ModalBody>
+          <ModalHeader>You Group Members</ModalHeader>
+          <ModalBody>
+            <Box w={"full"} h={"80vh"}>
+              <Tree
+                data={groupMembers}
+                orientation="vertical"
+                translate={{ x: 300, y: 200 }}
+              />
+            </Box>
+          </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
@@ -168,14 +222,22 @@ const Page = () => {
   const [joinGroupId, setJoinGroupId] = useState("");
   const [myGroupExists, setMyGroupExists] = useState(false);
   const [invitationModal, setInvitationModal] = useState(false);
-  const { value, setValue, onCopy, hasCopied } = useClipboard(`SANG02`);
+  const { value, setValue, onCopy, hasCopied } = useClipboard(
+    `${process.env.NEXT_PUBLIC_FRONTEND_URL}?refid=SANG02`
+  );
   const [parentUsers, setParentUsers] = useState([]);
   const [childMembers, setChildMembers] = useState([]);
+  const [primaryIdRequested, setPrimaryIdRequested] = useState(false);
+  const [secondaryIdRequested, setSecondaryIdRequested] = useState(false);
 
   useEffect(() => {
     fetchChildren();
     fetchParents();
   }, []);
+  useEffect(() => {
+    if (primaryIdRequested) setSecondaryIdRequested(false);
+    if (secondaryIdRequested) setPrimaryIdRequested(false);
+  }, [secondaryIdRequested, primaryIdRequested]);
 
   function createGroup() {
     BackendAxios.post(`/api/group`, {
@@ -220,7 +282,9 @@ const Page = () => {
         if (res?.data?.length) {
           setMyGroupExists(true);
           setChildMembers(res.data[0]?.members);
-          setValue(res.data[0]?.joining_code);
+          setValue(
+            `${process.env.NEXT_PUBLIC_FRONTEND_URL}/ref_id=${res.data[0]?.joining_code}`
+          );
         }
       })
       .catch((err) => {
@@ -285,36 +349,49 @@ const Page = () => {
         </Stack>
       </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Join Group</ModalHeader>
+          <ModalHeader textAlign={"center"}>Join Group</ModalHeader>
           <ModalBody alignItems={"center"} justifyContent={"center"}>
-            <Text textAlign={"center"}>Enter Group Code To Join</Text>
+            <HStack>
+              <Button
+                onClick={() => setPrimaryIdRequested(true)}
+                colorScheme="yellow"
+              >
+                Activate Primary ID
+              </Button>
+              <Button
+                onClick={() => setSecondaryIdRequested(true)}
+                colorScheme="twitter"
+              >
+                Activate Secondary ID
+              </Button>
+            </HStack>
             <br />
-            <VStack w={"full"}>
-              <Input
-                variant={"flushed"}
-                w={"36"}
-                textAlign={"center"}
-                placeholder="Senior ID"
-                value={joinGroupId}
-                onChange={(e) => setJoinGroupId(e.target.value)}
-              />
-              <br />
-              <Button onClick={joinGroup} colorScheme="yellow">
-                Join with Code
-              </Button>
-              <br />
-              <br />
-              <Text textAlign={"center"}>
-                Or Let Our System Add You In A Group Automatically!
-              </Text>
-              <br />
-              <Button colorScheme="twitter" leftIcon={<LuStars />}>
-                Join Automatically
-              </Button>
-            </VStack>
+            {primaryIdRequested ? (
+              <HStack>
+                <Input
+                  onChange={(e) => setJoinGroupId(e.target.value)}
+                  variant={"flushed"}
+                  w={"70%"}
+                  placeholder="Enter Senior ID To Join"
+                />
+                <Button size={"sm"} colorScheme="yellow" onClick={joinGroup}>
+                  Join with ₹250
+                </Button>
+              </HStack>
+            ) : null}
+            {secondaryIdRequested ? (
+              <HStack>
+                <Text w={"70%"} fontSize={"xs"}>
+                  Our system will automatically join you with a random senior ID
+                </Text>
+                <Button size={"sm"} colorScheme="twitter" onClick={joinGroup}>
+                  Join with ₹250
+                </Button>
+              </HStack>
+            ) : null}
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>
@@ -326,7 +403,7 @@ const Page = () => {
           <ModalHeader>Invite To Your Group</ModalHeader>
           <ModalBody alignItems={"center"} justifyContent={"center"}>
             <Text textAlign={"center"}>
-              Copy your referral code and invite your friends.
+              Share this link and invite your friends.
               <br />
               <b>
                 They will be automatically added to your group once they signup
