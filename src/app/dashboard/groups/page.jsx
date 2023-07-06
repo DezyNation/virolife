@@ -23,6 +23,7 @@ import { LuStars } from "react-icons/lu";
 import BackendAxios from "@/utils/axios";
 import QRCode from "react-qr-code";
 import Tree from "react-d3-tree";
+import VideoPlayer from "@/components/global/VideoPlayer";
 
 const MyParents = ({ parentUsers }) => {
   const Toast = useToast({ position: "top-right" });
@@ -206,6 +207,7 @@ const MyChildren = ({ childMembers }) => {
                 data={groupMembers}
                 orientation="vertical"
                 translate={{ x: 300, y: 200 }}
+                separation={{ siblings: 4, nonSiblings: 4 }}
               />
             </Box>
           </ModalBody>
@@ -230,10 +232,19 @@ const Page = () => {
   const [primaryIdRequested, setPrimaryIdRequested] = useState(false);
   const [secondaryIdRequested, setSecondaryIdRequested] = useState(false);
 
+  const [videoStatus, setVideoStatus] = useState(false);
+  const [videoData, setVideoData] = useState({
+    title: "Watch this video to proceed.",
+    onVideoClose: () => {
+      return null;
+    },
+  });
+
   useEffect(() => {
     fetchChildren();
     fetchParents();
   }, []);
+
   useEffect(() => {
     if (primaryIdRequested) setSecondaryIdRequested(false);
     if (secondaryIdRequested) setPrimaryIdRequested(false);
@@ -256,20 +267,37 @@ const Page = () => {
   }
 
   function joinGroup() {
-    BackendAxios.get(`/api/join-group/${joinGroupId}`)
-      .then((res) => {
-        Toast({
-          status: "success",
-          description: "Group Joined Successfully!",
-        });
-      })
-      .catch((err) => {
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
+    if (!joinGroupId) {
+      Toast({
+        description: "Senior ID is required",
       });
+      return;
+    }
+    setVideoStatus(true);
+    setVideoData({
+      onVideoClose: () => {
+        BackendAxios.get(`/api/join-group/${joinGroupId}`)
+          .then((res) => {
+            Toast({
+              status: "success",
+              description: "Group Joined Successfully!",
+            });
+            setVideoStatus(false);
+            onClose();
+          })
+          .catch((err) => {
+            setVideoStatus(false);
+            onClose();
+            Toast({
+              status: "error",
+              description:
+                err?.response?.data?.message ||
+                err?.response?.data ||
+                err?.message,
+            });
+          });
+      },
+    });
   }
 
   function fetchChildren() {
@@ -349,6 +377,7 @@ const Page = () => {
         </Stack>
       </Box>
 
+      {/* Join Group Modal */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
@@ -432,6 +461,12 @@ const Page = () => {
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
+
+      <VideoPlayer
+        status={videoStatus}
+        title={videoData.title}
+        onVideoClose={videoData.onVideoClose}
+      />
     </>
   );
 };
