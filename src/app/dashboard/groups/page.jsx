@@ -18,6 +18,8 @@ import {
   VStack,
   useClipboard,
   useToast,
+  InputGroup,
+  InputRightAddon,
 } from "@chakra-ui/react";
 import { LuStars } from "react-icons/lu";
 import BackendAxios from "@/utils/axios";
@@ -32,12 +34,18 @@ const MyParents = ({ parentUsers }) => {
   const [receiver, setReceiver] = useState("");
 
   function showUpiModal(id, receiver) {
+    if (!id) {
+      Toast({
+        description: "Senior doesn't have UPI ID",
+      });
+      return;
+    }
     setUpi(id);
     setReceiver(receiver);
     setQrModal(true);
   }
 
-  function donationInitiated() {
+  function donate() {
     Toast({
       status: "success",
       description: "Notification sent to senior",
@@ -56,18 +64,20 @@ const MyParents = ({ parentUsers }) => {
             justifyContent={"space-between"}
           >
             <HStack>
-              <Avatar name={item?.name} />
+              <Avatar name={item?.parent_name} />
               <Box>
                 <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
-                  {item?.name}
+                  {item?.parent_name}
                 </Text>
-                <Text fontSize={"xs"}>ID: {item?.id}</Text>
+                <Text fontSize={"xs"}>
+                  ID: {item?.id} &nbsp; | &nbsp; Phone: {item?.parent_phone}{" "}
+                </Text>
               </Box>
             </HStack>
             <Button
               size={"xs"}
               colorScheme="yellow"
-              onClick={() => showUpiModal(item?.upi_id, item?.name)}
+              onClick={() => showUpiModal(item?.upi_id, item?.parent_name)}
             >
               Donate
             </Button>
@@ -83,7 +93,7 @@ const MyParents = ({ parentUsers }) => {
             <QRCode size={256} value={`upi://pay?cu=INR&pa=${upi}`} />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="yellow" rounded={"full"}>
+            <Button colorScheme="yellow" rounded={"full"} onClick={donate}>
               Done
             </Button>
           </ModalFooter>
@@ -184,10 +194,11 @@ const MyChildren = ({ childMembers }) => {
           <HStack justifyContent={"flex-end"} py={4}>
             <Button
               size={"sm"}
+              rounded={"full"}
               colorScheme="twitter"
               onClick={() => viewGroup()}
             >
-              View Hierarchy
+              View Group Tree
             </Button>
           </HStack>
         ) : null}
@@ -224,6 +235,12 @@ const Page = () => {
   const [joinGroupId, setJoinGroupId] = useState("");
   const [myGroupExists, setMyGroupExists] = useState(false);
   const [invitationModal, setInvitationModal] = useState(false);
+
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    phone: "",
+  });
+
   const { value, setValue, onCopy, hasCopied } = useClipboard(
     `${process.env.NEXT_PUBLIC_FRONTEND_URL}?refid=SANG02`
   );
@@ -249,6 +266,26 @@ const Page = () => {
     if (primaryIdRequested) setSecondaryIdRequested(false);
     if (secondaryIdRequested) setPrimaryIdRequested(false);
   }, [secondaryIdRequested, primaryIdRequested]);
+
+  function getUserInfo(id) {
+    BackendAxios.get(`/api/users/${joinGroupId}`)
+      .then((res) => {
+        if (res.data?.length) {
+          setUserInfo(res.data[0]);
+        } else {
+          Toast({
+            description: "Invalid senior ID",
+          });
+        }
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
 
   function createGroup() {
     BackendAxios.post(`/api/group`, {
@@ -282,8 +319,9 @@ const Page = () => {
               status: "success",
               description: "Group Joined Successfully!",
             });
-            setVideoStatus(false);
             onClose();
+            setVideoStatus(false);
+            fetchParents();
           })
           .catch((err) => {
             setVideoStatus(false);
@@ -324,7 +362,19 @@ const Page = () => {
       });
   }
 
-  function fetchParents() {}
+  function fetchParents() {
+    BackendAxios.get(`/api/my-admin`)
+      .then((res) => {
+        setParentUsers(res.data);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
 
   return (
     <>
@@ -341,19 +391,6 @@ const Page = () => {
           >
             Join Group
           </Button>
-          {myGroupExists ? (
-            <Button
-              size={["xs", "md"]}
-              rounded={"full"}
-              onClick={() => setInvitationModal(true)}
-            >
-              Invite To Your Group
-            </Button>
-          ) : !childMembers?.length ? (
-            <Button size={["xs", "md"]} rounded={"full"} onClick={createGroup}>
-              Create Your Group
-            </Button>
-          ) : null}
         </HStack>
       </HStack>
       <br />
@@ -376,6 +413,18 @@ const Page = () => {
           </Box>
         </Stack>
       </Box>
+
+      <Button
+        position={"fixed"}
+        bottom={4}
+        size={["xs", "md"]}
+        right={4}
+        rounded={"full"}
+        colorScheme="twitter"
+        onClick={() => setInvitationModal(true)}
+      >
+        Invite Friends
+      </Button>
 
       {/* Join Group Modal */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -400,15 +449,33 @@ const Page = () => {
             <br />
             {primaryIdRequested ? (
               <HStack>
-                <Input
-                  onChange={(e) => setJoinGroupId(e.target.value)}
-                  variant={"flushed"}
-                  w={"70%"}
-                  placeholder="Enter Senior ID To Join"
-                />
-                <Button size={"sm"} colorScheme="yellow" onClick={joinGroup}>
-                  Join with ₹250
-                </Button>
+                <Box>
+                  <InputGroup>
+                    <Input
+                      onChange={(e) => setJoinGroupId(e.target.value)}
+                      variant={"flushed"}
+                      placeholder="Enter Senior ID To Join"
+                    />
+                    <InputRightAddon
+                      bgColor={"#FFF"}
+                      borderRight={"0"}
+                      borderTop={"0"}
+                      onClick={() => getUserInfo()}
+                      children={
+                        <Text
+                          fontSize={"xs"}
+                          color={"twitter.500"}
+                          fontWeight={"semibold"}
+                        >
+                          Verify
+                        </Text>
+                      }
+                    />
+                  </InputGroup>
+                  <Text mt={2} fontSize={"xs"}>
+                    {userInfo?.name} - {userInfo?.phone}
+                  </Text>
+                </Box>
               </HStack>
             ) : null}
             {secondaryIdRequested ? (
@@ -416,16 +483,29 @@ const Page = () => {
                 <Text w={"70%"} fontSize={"xs"}>
                   Our system will automatically join you with a random senior ID
                 </Text>
-                <Button size={"sm"} colorScheme="twitter" onClick={joinGroup}>
-                  Join with ₹250
-                </Button>
               </HStack>
             ) : null}
           </ModalBody>
-          <ModalFooter></ModalFooter>
+          <ModalFooter justifyContent={"flex-end"}>
+            {primaryIdRequested && (
+              <Button
+                w={["auto", "auto"]}
+                colorScheme="yellow"
+                onClick={joinGroup}
+              >
+                Join with ₹250
+              </Button>
+            )}
+            {secondaryIdRequested && (
+              <Button size={"sm"} colorScheme="twitter" onClick={joinGroup}>
+                Join with ₹250
+              </Button>
+            )}
+          </ModalFooter>
         </ModalContent>
       </Modal>
 
+      {/* Invitation Modal */}
       <Modal isOpen={invitationModal} onClose={() => setInvitationModal(false)}>
         <ModalOverlay />
         <ModalContent>
