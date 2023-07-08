@@ -1,7 +1,8 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import {
-    Button,
+  Button,
+  HStack,
   Table,
   TableContainer,
   Tbody,
@@ -19,7 +20,7 @@ const page = () => {
       <Text fontSize={["2xl", "3xl"]}>Your Collection</Text>
       <br />
       <TableContainer>
-        <Table variant={'striped'} colorScheme="gray">
+        <Table variant={"striped"} colorScheme="gray">
           <Thead>
             <Tr>
               <Th>Trnxn ID</Th>
@@ -39,7 +40,14 @@ const page = () => {
                 <Td>₹ 200</Td>
                 <Td>{new Date().toLocaleDateString()}</Td>
                 <Td>
-                    <Button size={'sm'} rounded={'full'} colorScheme="yellow">Confirm</Button>
+                  <HStack>
+                    <Button size={"sm"} rounded={"full"} colorScheme="yellow">
+                      Confirm
+                    </Button>
+                    <Button size={"sm"} rounded={"full"} colorScheme="red">
+                      Delete
+                    </Button>
+                  </HStack>
                 </Td>
               </Tr>
             ))}

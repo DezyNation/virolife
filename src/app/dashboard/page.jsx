@@ -22,6 +22,7 @@ import Link from "next/link";
 import { useCookies } from "react-cookie";
 import { isExpired } from "react-jwt";
 import BackendAxios from "@/utils/axios";
+import { MdGroups } from "react-icons/md";
 
 const DashboardHome = () => {
   const [selectedImg, setSelectedImg] = useState(
@@ -83,6 +84,10 @@ const DashboardHome = () => {
       });
   }, []);
 
+  function getOverview(){
+    
+  }
+
   return (
     <>
       <Text
@@ -99,14 +104,14 @@ const DashboardHome = () => {
         gap={[8, 16]}
         justifyContent={"space-between"}
       >
-        <StatsCard icon={<BsYoutube size={28} />} title={"videos watched"} />
+        <StatsCard icon={<MdGroups size={28} />} title={"my team"} />
         <StatsCard
           icon={<BsMegaphoneFill size={28} />}
           title={"active campaigns"}
         />
         <StatsCard
           icon={<BsCurrencyRupee size={28} />}
-          title={"funds collected"}
+          title={"self earning"}
         />
         <StatsCard icon={<BsCashCoin size={28} />} title={"amount settled"} />
       </Stack>

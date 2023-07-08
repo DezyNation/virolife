@@ -57,7 +57,7 @@ import Cookies from "js-cookie";
 import { useJwt, decodeToken, isExpired } from "react-jwt";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Navbar = () => {
   const Toast = useToast({ position: "top-right" });
@@ -69,8 +69,12 @@ const Navbar = () => {
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [userName, setUserName] = useState("");
-  const [code, setCode] = useState("");
+  const [seniorInfo, setSeniorInfo] = useState({})
   const Router = useRouter();
+  const params = useSearchParams()
+  const referralId = params.get("ref_id")
+  const [code, setCode] = useState(params.get("ref_id"));
+  
 
   const Formik = useFormik({
     initialValues: {
@@ -82,6 +86,32 @@ const Navbar = () => {
   useEffect(() => {
     setSessionExpired(isExpired(cookies.jwt));
   }, [cookies]);
+
+  useEffect(()=>{
+    if(!referralId) return
+    setCode(referralId)
+    getUserInfo()
+  },[params.get("ref_id")])
+
+  function getUserInfo() {
+    BackendAxios.get(`/api/users/${code}`)
+      .then((res) => {
+        if (res.data?.length) {
+          setSeniorInfo(res.data[0]);
+        } else {
+          Toast({
+            description: "Invalid senior ID",
+          });
+        }
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
 
   function handleLogin() {
     if (!Formik.values.email || !Formik.values.password) {
@@ -108,7 +138,7 @@ const Navbar = () => {
         // Cookies.set("jwt", res.data?.access_token)
         setCookie("jwt", res.data?.access_token);
         onToggle();
-        Router.push("/dashboard")
+        Router.push("/dashboard");
       })
       .catch((err) => {
         Toast({
@@ -589,23 +619,36 @@ const Navbar = () => {
                     </InputGroup>
                   </Stack>
                 </FormControl>
-                {/* <FormControl>
+                <FormControl>
                   <Stack
                     direction={["column", "row"]}
                     spacing={[4, 8]}
                     justifyContent={"space-between"}
                   >
-                    <FormLabel fontSize={"xl"}>Referral Code</FormLabel>
-                    <Input
-                      w={["full", "xs"]}
-                      placeholder="Referral/Group Code"
-                      boxShadow={"xl"}
-                      border={".5px solid #FAFAFA"}
-                      rounded={0}
-                      onChange={(e) => setCode(e.target.value)}
-                    />
+                    <FormLabel fontSize={"xl"}>Senior ID</FormLabel>
+                    <Box>
+                      <InputGroup w={["full", "xs"]}>
+                        <Input
+                          placeholder="Senior ID"
+                          boxShadow={"xl"}
+                          border={".5px solid #FAFAFA"}
+                          rounded={0} value={code}
+                          onChange={(e) => setCode(e.target.value)}
+                        />
+                        <InputRightElement
+                        onClick={getUserInfo}
+                          children={
+                            <Text cursor={'pointer'} fontSize={"xs"} color={"twitter.500"}>
+                              Verify
+                            </Text>
+                          }
+                          paddingRight={4}
+                        />
+                      </InputGroup>
+                      <Text fontSize={'xs'}>{seniorInfo?.name}</Text>
+                    </Box>
                   </Stack>
-                </FormControl> */}
+                </FormControl>
                 <Box
                   px={8}
                   py={4}

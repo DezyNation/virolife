@@ -475,6 +475,7 @@ const Page = () => {
                           fontSize={"xs"}
                           color={"twitter.500"}
                           fontWeight={"semibold"}
+                          cursor={'pointer'}
                         >
                           Verify
                         </Text>
