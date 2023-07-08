@@ -42,6 +42,7 @@ const DashboardHome = () => {
         .then((res) => {
           setAuthUser(res.data);
           localStorage.setItem("userName", res.data?.name)
+          localStorage.setItem("userId", res.data?.id)
         })
         .catch((err) => {
           Toast({
@@ -90,7 +91,7 @@ const DashboardHome = () => {
         py={4}
         textTransform={"capitalize"}
       >
-        Welcome, {authUser?.name}
+        Welcome, {authUser?.name} - ({authUser?.id})
       </Text>
       <Stack
         w={"full"}

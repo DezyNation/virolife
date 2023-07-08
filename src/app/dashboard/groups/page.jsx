@@ -107,6 +107,8 @@ const MyChildren = ({ childMembers }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
   const [groupInfo, setGroupInfo] = useState({});
+  const [myId, setMyId] = useState("");
+  const [myName, setMyName] = useState("");
   const [groupMembers, setGroupMembers] = useState([
     {
       name: "Sangam",
@@ -127,10 +129,28 @@ const MyChildren = ({ childMembers }) => {
     },
   ]);
 
+  useEffect(() => {
+    setMyId(localStorage.getItem("userId"));
+    setMyName(localStorage.getItem("userName"));
+  }, []);
+
+  function buildHierarchy(items, parentId = null) {
+    const nestedArray = [];
+    for (const item of items) {
+      if (item.parent_id == parentId) {
+        const children = buildHierarchy(items, item.id);
+        if (children.length > 0) {
+          item.children = children;
+        }
+        nestedArray.push(item);
+      }
+    }
+    return nestedArray;
+  }
+
   function viewGroup(id) {
     BackendAxios.get(`/api/my-group`)
       .then((res) => {
-        setGroupModal(true);
         if (!res.data?.length) {
           Toast({
             description: "Group doesn't exist!",
@@ -138,27 +158,16 @@ const MyChildren = ({ childMembers }) => {
         }
 
         if (res.data?.length) {
-          setGroupMembers([
-            {
-              name: res.data[0]?.user?.name,
-              attributes: {
-                ID: res.data[0]?.user?.id,
-                Phone: res.data[0]?.user?.phone_number,
-              },
-              children: res.data[0]?.members?.map((user) => ({
-                name: user?.name,
-                attributes: {
-                  ID: user?.id,
-                  Phone: user?.phone_number,
-                },
-              })),
-            },
-          ]);
-          setGroupInfo(res.data[0]);
+          const data = res.data;
+          const hierarchyArray = buildHierarchy(data, myId);
+          console.log(hierarchyArray);
+          setGroupMembers([{ name: myName, children: hierarchyArray }]);
+          setGroupModal(true);
           return;
         }
       })
       .catch((err) => {
+        console.log(err);
         Toast({
           status: "error",
           description:
@@ -170,7 +179,7 @@ const MyChildren = ({ childMembers }) => {
   return (
     <>
       <Box>
-        {childMembers.map((item, key) => (
+        {groupMembers?.map((item, key) => (
           <HStack
             py={4}
             key={key}
@@ -190,7 +199,7 @@ const MyChildren = ({ childMembers }) => {
             </HStack>
           </HStack>
         ))}
-        {childMembers?.length ? (
+        {groupMembers?.length ? (
           <HStack justifyContent={"flex-end"} py={4}>
             <Button
               size={"sm"}
@@ -218,7 +227,7 @@ const MyChildren = ({ childMembers }) => {
                 data={groupMembers}
                 orientation="vertical"
                 translate={{ x: 300, y: 200 }}
-                separation={{ siblings: 4, nonSiblings: 4 }}
+                separation={{ siblings: 3, nonSiblings: 3 }}
               />
             </Box>
           </ModalBody>
