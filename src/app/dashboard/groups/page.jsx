@@ -36,24 +36,31 @@ const MyParents = ({ parentUsers }) => {
     name: "",
   });
 
-  function showUpiModal(upi_id, receiver, id) {
-    if (!upi_id) {
+  function showUpiModal(user) {
+    console.log(user);
+    if (!user?.primary_activated) {
+      Toast({
+        description: "Senior's Primary ID is on hold.",
+      });
+      return;
+    }
+    if (!user?.upi_id) {
       Toast({
         description: "Senior doesn't have UPI ID",
       });
       return;
     }
-    setUpi(upi_id);
+    setUpi(user?.upi_id);
     setReceiver({
-      id: id,
-      name: receiver,
+      id: user?.id,
+      name: user?.parent_name,
     });
     setQrModal(true);
   }
 
   function donate(id) {
     BackendAxios.post(`/api/donation`, {
-      donatable_id: id,
+      donatable_id: receiver?.id,
       amount: 200,
       remarks: "Donation to senior",
     })
@@ -91,16 +98,16 @@ const MyParents = ({ parentUsers }) => {
                   {item?.parent_name}
                 </Text>
                 <Text fontSize={"xs"}>
-                  ID: {item?.id} &nbsp; | &nbsp; Phone: {item?.parent_phone}{" "}
+                  ID: {item?.id} &nbsp; | &nbsp; Phone: {item?.parent_phone}
                 </Text>
               </Box>
             </HStack>
             <Button
               size={"xs"}
               colorScheme="yellow"
-              onClick={() =>
-                showUpiModal(item?.upi_id, item?.parent_name, item?.id)
-              }
+              onClick={() => {
+                showUpiModal(item);
+              }}
             >
               Donate
             </Button>
@@ -165,10 +172,10 @@ const MyChildren = ({ childMembers }) => {
       });
       return;
     }
-    setGroupModal(true)
+    setGroupModal(true);
   }
 
-  function loadGroup(){
+  function loadGroup() {
     BackendAxios.get(`/api/my-group`)
       .then((res) => {
         const hierarchyArray = buildHierarchy(res.data, myId);
@@ -187,27 +194,34 @@ const MyChildren = ({ childMembers }) => {
   return (
     <>
       <Box>
-        {myGroup?.filter(user => user?.parent_id == parseInt(myId))?.map((item, key) => (
-          <HStack
-            py={4}
-            key={key}
-            w={["full", "xs"]}
-            justifyContent={"space-between"}
-          >
-            <HStack>
-              <Avatar name={item?.name} />
-              <Box>
-                <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
-                  {item?.name}
-                </Text>
-                <Text fontSize={"xs"}>
-                  ID: {item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
-                </Text>
-              </Box>
+        {myGroup
+          ?.filter((user) => user?.parent_id == parseInt(myId))
+          ?.map((item, key) => (
+            <HStack
+              py={4}
+              key={key}
+              w={["full", "xs"]}
+              justifyContent={"space-between"}
+            >
+              <HStack>
+                <Avatar name={item?.name} />
+                <Box>
+                  <Text
+                    className="serif"
+                    fontWeight={"semibold"}
+                    fontSize={"lg"}
+                  >
+                    {item?.name}
+                  </Text>
+                  <Text fontSize={"xs"}>
+                    ID: {item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
+                  </Text>
+                </Box>
+              </HStack>
             </HStack>
-          </HStack>
-        ))}
-        {myGroup?.filter(user => user?.parent_id == parseInt(myId))?.length ? (
+          ))}
+        {myGroup?.filter((user) => user?.parent_id == parseInt(myId))
+          ?.length ? (
           <HStack justifyContent={"flex-end"} py={4}>
             <Button
               size={"sm"}
@@ -272,6 +286,8 @@ const Page = () => {
   const [videoStatus, setVideoStatus] = useState(false);
   const [videoData, setVideoData] = useState({
     title: "Watch this video to proceed.",
+    id: "",
+    provider: "",
     onVideoClose: () => {
       return null;
     },

@@ -15,7 +15,7 @@ import BackendAxios from "@/utils/axios";
 import Plyr from "plyr-react";
 import "plyr/dist/plyr.css";
 
-const VideoPlayer = ({ title, onVideoClose, status }) => {
+const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
   const Toast = useToast({ position: "top-right" });
   const [isDisabled, setIsDisabled] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -23,8 +23,8 @@ const VideoPlayer = ({ title, onVideoClose, status }) => {
     type: "video",
     sources: [
       {
-        src: "5IqHGB9_N50",
-        provider: "youtube",
+        src: videoId,
+        provider: provider || "youtube",
       },
     ],
   });
@@ -37,8 +37,8 @@ const VideoPlayer = ({ title, onVideoClose, status }) => {
           type: "video",
           sources: [
             {
-              src: res.data?.url,
-              provider: res.data?.provider,
+              src: res.data?.video_id,
+              provider: "youtube",
             },
           ]
         });
@@ -53,7 +53,9 @@ const VideoPlayer = ({ title, onVideoClose, status }) => {
       });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getRandomVideo()
+  }, []);
 
   return (
     <>
