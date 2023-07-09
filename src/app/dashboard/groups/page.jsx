@@ -31,26 +31,47 @@ const MyParents = ({ parentUsers }) => {
   const Toast = useToast({ position: "top-right" });
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
-  const [receiver, setReceiver] = useState("");
+  const [receiver, setReceiver] = useState({
+    id: "",
+    name: "",
+  });
 
-  function showUpiModal(id, receiver) {
-    if (!id) {
+  function showUpiModal(upi_id, receiver, id) {
+    if (!upi_id) {
       Toast({
         description: "Senior doesn't have UPI ID",
       });
       return;
     }
-    setUpi(id);
-    setReceiver(receiver);
+    setUpi(upi_id);
+    setReceiver({
+      id: id,
+      name: receiver,
+    });
     setQrModal(true);
   }
 
-  function donate() {
-    Toast({
-      status: "success",
-      description: "Notification sent to senior",
-    });
-    setQrModal(false);
+  function donate(id) {
+    BackendAxios.post(`/api/donation`, {
+      donatable_id: id,
+      amount: 200,
+      remarks: "Donation to senior",
+    })
+      .then((res) => {
+        Toast({
+          status: "success",
+          description: "Notification sent to senior",
+        });
+        setQrModal(false);
+      })
+      .catch((err) => {
+        setQrModal(false);
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
   }
 
   return (
@@ -77,7 +98,9 @@ const MyParents = ({ parentUsers }) => {
             <Button
               size={"xs"}
               colorScheme="yellow"
-              onClick={() => showUpiModal(item?.upi_id, item?.parent_name)}
+              onClick={() =>
+                showUpiModal(item?.upi_id, item?.parent_name, item?.id)
+              }
             >
               Donate
             </Button>
@@ -88,12 +111,16 @@ const MyParents = ({ parentUsers }) => {
       <Modal size={"xs"} isOpen={qrModal} onClose={() => setQrModal(false)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Donate ₹200 to {receiver}</ModalHeader>
+          <ModalHeader>Donate ₹200 to {receiver.name}</ModalHeader>
           <ModalBody alignItems={"center"} justifyContent={"center"}>
             <QRCode size={256} value={`upi://pay?cu=INR&pa=${upi}`} />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="yellow" rounded={"full"} onClick={donate}>
+            <Button
+              colorScheme="yellow"
+              rounded={"full"}
+              onClick={() => donate(receiver.id)}
+            >
               Done
             </Button>
           </ModalFooter>
@@ -106,32 +133,15 @@ const MyParents = ({ parentUsers }) => {
 const MyChildren = ({ childMembers }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
-  const [groupInfo, setGroupInfo] = useState({});
   const [myId, setMyId] = useState("");
   const [myName, setMyName] = useState("");
-  const [groupMembers, setGroupMembers] = useState([
-    {
-      name: "Sangam",
-      children: [
-        {
-          name: "User",
-        },
-        {
-          name: "Another User",
-        },
-        {
-          name: "Great User",
-        },
-        {
-          name: "Awesome User",
-        },
-      ],
-    },
-  ]);
+  const [myGroup, setMyGroup] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
 
   useEffect(() => {
     setMyId(localStorage.getItem("userId"));
     setMyName(localStorage.getItem("userName"));
+    loadGroup();
   }, []);
 
   function buildHierarchy(items, parentId = null) {
@@ -149,25 +159,23 @@ const MyChildren = ({ childMembers }) => {
   }
 
   function viewGroup(id) {
+    if (!myGroup?.length) {
+      Toast({
+        description: "Group doesn't exist!",
+      });
+      return;
+    }
+    setGroupModal(true)
+  }
+
+  function loadGroup(){
     BackendAxios.get(`/api/my-group`)
       .then((res) => {
-        if (!res.data?.length) {
-          Toast({
-            description: "Group doesn't exist!",
-          });
-        }
-
-        if (res.data?.length) {
-          const data = res.data;
-          const hierarchyArray = buildHierarchy(data, myId);
-          console.log(hierarchyArray);
-          setGroupMembers([{ name: myName, children: hierarchyArray }]);
-          setGroupModal(true);
-          return;
-        }
+        const hierarchyArray = buildHierarchy(res.data, myId);
+        setGroupMembers([{ name: myName, children: hierarchyArray }]);
+        setMyGroup(res.data);
       })
       .catch((err) => {
-        console.log(err);
         Toast({
           status: "error",
           description:
@@ -179,7 +187,7 @@ const MyChildren = ({ childMembers }) => {
   return (
     <>
       <Box>
-        {groupMembers?.map((item, key) => (
+        {myGroup?.filter(user => user?.parent_id == parseInt(myId))?.map((item, key) => (
           <HStack
             py={4}
             key={key}
@@ -199,7 +207,7 @@ const MyChildren = ({ childMembers }) => {
             </HStack>
           </HStack>
         ))}
-        {groupMembers?.length ? (
+        {myGroup?.filter(user => user?.parent_id == parseInt(myId))?.length ? (
           <HStack justifyContent={"flex-end"} py={4}>
             <Button
               size={"sm"}
@@ -245,13 +253,16 @@ const Page = () => {
   const [myGroupExists, setMyGroupExists] = useState(false);
   const [invitationModal, setInvitationModal] = useState(false);
 
+  const [myId, setMyId] = useState("");
+  const [myName, setMyName] = useState("");
+
   const [userInfo, setUserInfo] = useState({
     name: "",
     phone: "",
   });
 
   const { value, setValue, onCopy, hasCopied } = useClipboard(
-    `${process.env.NEXT_PUBLIC_FRONTEND_URL}?refid=SANG02`
+    `${process.env.NEXT_PUBLIC_FRONTEND_URL}?refid=`
   );
   const [parentUsers, setParentUsers] = useState([]);
   const [childMembers, setChildMembers] = useState([]);
@@ -275,6 +286,16 @@ const Page = () => {
     if (primaryIdRequested) setSecondaryIdRequested(false);
     if (secondaryIdRequested) setPrimaryIdRequested(false);
   }, [secondaryIdRequested, primaryIdRequested]);
+
+  useEffect(() => {
+    setMyId(localStorage.getItem("userId"));
+    setMyName(localStorage.getItem("userName"));
+    setValue(
+      `${process.env.NEXT_PUBLIC_FRONTEND_URL}/ref_id=${localStorage.getItem(
+        "userId"
+      )}`
+    );
+  }, []);
 
   function getUserInfo(id) {
     BackendAxios.get(`/api/users/${joinGroupId}`)
@@ -356,10 +377,7 @@ const Page = () => {
         }
         if (res?.data?.length) {
           setMyGroupExists(true);
-          setChildMembers(res.data[0]?.members);
-          setValue(
-            `${process.env.NEXT_PUBLIC_FRONTEND_URL}/ref_id=${res.data[0]?.joining_code}`
-          );
+          setChildMembers(res.data);
         }
       })
       .catch((err) => {
@@ -475,7 +493,7 @@ const Page = () => {
                           fontSize={"xs"}
                           color={"twitter.500"}
                           fontWeight={"semibold"}
-                          cursor={'pointer'}
+                          cursor={"pointer"}
                         >
                           Verify
                         </Text>
