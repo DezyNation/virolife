@@ -307,7 +307,7 @@ const Page = () => {
     setMyId(localStorage.getItem("userId"));
     setMyName(localStorage.getItem("userName"));
     setValue(
-      `${process.env.NEXT_PUBLIC_FRONTEND_URL}/ref_id=${localStorage.getItem(
+      `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
         "userId"
       )}`
     );
