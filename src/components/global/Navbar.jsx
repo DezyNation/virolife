@@ -69,12 +69,11 @@ const Navbar = () => {
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [userName, setUserName] = useState("");
-  const [seniorInfo, setSeniorInfo] = useState({})
+  const [seniorInfo, setSeniorInfo] = useState({});
   const Router = useRouter();
-  const params = useSearchParams()
-  const referralId = params.get("ref_id")
+  const params = useSearchParams();
+  const referralId = params.get("ref_id");
   const [code, setCode] = useState(params.get("ref_id"));
-  
 
   const Formik = useFormik({
     initialValues: {
@@ -87,11 +86,11 @@ const Navbar = () => {
     setSessionExpired(isExpired(cookies.jwt));
   }, [cookies]);
 
-  useEffect(()=>{
-    if(!referralId) return
-    setCode(referralId)
-    getUserInfo()
-  },[params.get("ref_id")])
+  useEffect(() => {
+    if (!referralId) return;
+    setCode(referralId);
+    getUserInfo();
+  }, [params.get("ref_id")]);
 
   function getUserInfo() {
     BackendAxios.get(`/api/users/${code}`)
@@ -256,56 +255,18 @@ const Navbar = () => {
             ) : null}
           </HStack>
           <Spacer />
-          <Popover>
-            <PopoverTrigger>
-              <Text
-                cursor={"pointer"}
-                fontSize={"xl"}
-                className="serif"
-                fontWeight={"bold"}
-                color={"#666"}
-              >
-                Membership
-              </Text>
-            </PopoverTrigger>
-            <PopoverContent>
-              <PopoverArrow />
-              <PopoverBody>
-                <VStack gap={4}>
-                  <Link href={"/campaigns"} style={{ width: "100%" }}>
-                    <Box
-                      className="serif"
-                      fontSize={"lg"}
-                      p={2}
-                      _hover={{ bg: "blanchedalmond" }}
-                    >
-                      Self Funding
-                    </Box>
-                  </Link>
-                  <Link href={"/campaigns"} style={{ width: "100%" }}>
-                    <Box
-                      className="serif"
-                      fontSize={"lg"}
-                      p={2}
-                      _hover={{ bg: "blanchedalmond" }}
-                    >
-                      Group Funding
-                    </Box>
-                  </Link>
-                  <Link href={"/campaigns"} style={{ width: "100%" }}>
-                    <Box
-                      className="serif"
-                      fontSize={"lg"}
-                      p={2}
-                      _hover={{ bg: "blanchedalmond" }}
-                    >
-                      Viro Team Funding
-                    </Box>
-                  </Link>
-                </VStack>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
+          <HStack>
+            <Image src="/whatsapp.png" boxSize={"8"} objectFit={"contain"} />
+            <Text
+              cursor={"pointer"}
+              fontSize={"xl"}
+              className="serif"
+              fontWeight={"bold"}
+              color={"#666"}
+            >
+              Join Group
+            </Text>
+          </HStack>
           <Spacer />
           <HStack spacing={8} fontWeight={"medium"}>
             <Box>
@@ -437,6 +398,22 @@ const Navbar = () => {
                   <Text>Redeem Points</Text>
                 </Link>
               )}
+              <HStack w={"full"}>
+                <Image
+                  src="/whatsapp.png"
+                  boxSize={"8"}
+                  objectFit={"contain"}
+                />
+                <Text
+                  cursor={"pointer"}
+                  fontSize={["lg", "xl"]}
+                  className="serif"
+                  fontWeight={"bold"}
+                  color={"#666"}
+                >
+                  Join Group
+                </Text>
+              </HStack>
               <Text>Contact Us</Text>
             </VStack>
           </DrawerBody>
@@ -632,20 +609,25 @@ const Navbar = () => {
                           placeholder="Senior ID"
                           boxShadow={"xl"}
                           border={".5px solid #FAFAFA"}
-                          rounded={0} value={code}
+                          rounded={0}
+                          value={code}
                           onChange={(e) => setCode(e.target.value)}
                         />
                         <InputRightElement
-                        onClick={getUserInfo}
+                          onClick={getUserInfo}
                           children={
-                            <Text cursor={'pointer'} fontSize={"xs"} color={"twitter.500"}>
+                            <Text
+                              cursor={"pointer"}
+                              fontSize={"xs"}
+                              color={"twitter.500"}
+                            >
                               Verify
                             </Text>
                           }
                           paddingRight={4}
                         />
                       </InputGroup>
-                      <Text fontSize={'xs'}>{seniorInfo?.name}</Text>
+                      <Text fontSize={"xs"}>{seniorInfo?.name}</Text>
                     </Box>
                   </Stack>
                 </FormControl>

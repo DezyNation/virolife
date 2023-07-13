@@ -58,7 +58,7 @@ const AllCampaigns = () => {
               }
               category={campaign?.category?.name}
               title={campaign.title}
-              userName={`Need ₹ ${campaign?.target_amount}`}
+              userName={`Need ₹ ${Number(campaign?.target_amount)?.toLocaleString("en-IN")}`}
               description={campaign.description}
               link={`/campaigns/${campaign.id}`}
             />

@@ -20,6 +20,7 @@ import {
   useToast,
   InputGroup,
   InputRightAddon,
+  Image,
 } from "@chakra-ui/react";
 import { LuStars } from "react-icons/lu";
 import BackendAxios from "@/utils/axios";
@@ -121,6 +122,13 @@ const MyParents = ({ parentUsers }) => {
           <ModalHeader>Donate ₹200 to {receiver.name}</ModalHeader>
           <ModalBody alignItems={"center"} justifyContent={"center"}>
             <QRCode size={256} value={`upi://pay?cu=INR&pa=${upi}`} />
+            <br />
+            <Text textAlign={"center"}>Pay with any UPI app</Text>
+            <Image
+              w={"80%"}
+              src={"https://mytechtrips.com/wp-content/uploads/2023/01/upi.png"}
+              objectFit={"contain"}
+            />
           </ModalBody>
           <ModalFooter>
             <Button

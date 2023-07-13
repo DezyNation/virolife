@@ -9,6 +9,12 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Progress,
   Show,
   Slider,
@@ -18,21 +24,30 @@ import {
   SliderTrack,
   Stack,
   Text,
+  VStack,
+  useClipboard,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import BackendAxios from "@/utils/axios";
-import { BsHeartFill } from "react-icons/bs";
+import { BsClipboard, BsHeartFill, BsShareFill } from "react-icons/bs";
 import Footer from "@/components/global/Footer";
 
 const CampaignInfo = ({ params }) => {
+  const { id } = params;
   const Toast = useToast({ position: "top-right" });
+  const { value, setValue, onCopy, hasCopied } = useClipboard(
+    `
+    ${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}
+    `
+  );
   const [selectedImg, setSelectedImg] = useState(
     "https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg"
   );
-  const { id } = params;
   const [amount, setAmount] = useState(1000);
   const [fees, setFees] = useState(5);
   const [campaign, setCampaign] = useState({});
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     BackendAxios.get(`/api/campaign/${id}`)
@@ -42,6 +57,11 @@ const CampaignInfo = ({ params }) => {
           return;
         }
         setCampaign(res.data[0]);
+        setValue(`
+        ${res.data[0]?.description}
+        Make your contribution now at Virolife.
+        ${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}
+        `);
       })
       .catch((err) => {
         Toast({
@@ -68,14 +88,15 @@ const CampaignInfo = ({ params }) => {
             {campaign?.title}
           </Text>
           <Text pb={8}>
-            Need ₹{campaign?.target_amount} till &nbsp;
+            Need ₹{Number(campaign?.target_amount)?.toLocaleString("en-IN")}{" "}
+            till &nbsp;
             {new Date(campaign?.updated_at).toDateString()}
           </Text>
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
               src={
                 campaign.file_path
-                  ? `https://virolife.in/${campaign.file_path}`
+                  ? `https://api.virolife.in/${campaign.file_path}`
                   : "https://idea.batumi.ge/files/default.jpg"
               }
               w={["100%", "lg", "3xl"]}
@@ -116,6 +137,16 @@ const CampaignInfo = ({ params }) => {
                         </Stack> 
                         */}
           </Stack>
+          <HStack justifyContent={"flex-end"}>
+            <Button
+              variant={"ghost"}
+              leftIcon={<BsShareFill />}
+              onClick={onOpen}
+              colorScheme="yellow"
+            >
+              Share This Campaign
+            </Button>
+          </HStack>
           <Text fontWeight={"semibold"}>
             Category: {campaign?.category?.name}
           </Text>
@@ -137,14 +168,23 @@ const CampaignInfo = ({ params }) => {
               <br />
               <Progress value={80} colorScheme="yellow" />
               <HStack justifyContent={"space-between"}>
-                <Text fontSize={"xs"}>₹40,000</Text>
-                <Text fontSize={"xs"}>₹{campaign?.target_amount}</Text>
+                <Text fontSize={"xs"}>
+                  ₹ {Number(40000).toLocaleString("en-IN")}
+                </Text>
+                <Text fontSize={"xs"}>
+                  ₹{Number(campaign?.target_amount)?.toLocaleString("en-IN")}
+                </Text>
               </HStack>
               <br />
               <FormLabel>Enter Amount</FormLabel>
               <InputGroup>
                 <InputLeftElement children={"₹"} />
-                <Input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} mb={2} />
+                <Input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  mb={2}
+                />
               </InputGroup>
               <br />
               <Text fontSize={"sm"}>Choose Platform Fees</Text>
@@ -175,11 +215,17 @@ const CampaignInfo = ({ params }) => {
               </Slider>
               <br />
               <Text py={4}>
-                Platform Fees : ₹{(Number(fees) / 100) * Number(amount || 0)}
+                Platform Fees : ₹
+                {((Number(fees) / 100) * Number(amount || 0)).toLocaleString(
+                  "en-IN"
+                )}
               </Text>
               <Text py={4} pt={0}>
                 Total Payable Amt &nbsp; : ₹
-                {(Number(fees) / 100) * Number(amount || 0) + Number(amount)}
+                {(
+                  (Number(fees) / 100) * Number(amount || 0) +
+                  Number(amount)
+                ).toLocaleString("en-IN")}
               </Text>
               <Button w={"full"} colorScheme="yellow">
                 Donate Now
@@ -248,11 +294,17 @@ const CampaignInfo = ({ params }) => {
               </Slider>
               <br />
               <Text py={4}>
-                Platform Fees : ₹{(Number(fees) / 100) * Number(amount || 0)}
+                Platform Fees : ₹
+                {((Number(fees) / 100) * Number(amount || 0)).toLocaleString(
+                  "en-IN"
+                )}
               </Text>
               <Text py={4} pt={0}>
                 Total Payable Amt &nbsp; : ₹
-                {(Number(fees) / 100) * Number(amount || 0) + Number(amount)}
+                {(
+                  (Number(fees) / 100) * Number(amount || 0) +
+                  Number(amount)
+                ).toLocaleString("en-IN")}
               </Text>
               <Button w={"full"} colorScheme="yellow">
                 Donate Now
@@ -261,7 +313,85 @@ const CampaignInfo = ({ params }) => {
           </Box>
         </Show>
       </Stack>
-            <Footer />
+      <Footer />
+
+      <Modal isCentered={true} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Share this campaign</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack
+              p={4}
+              w={"full"}
+              border={"1px"}
+              borderStyle={"dashed"}
+              rounded={12}
+              bgColor={"blanchedalmond"}
+              color={"#333"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              onClick={onCopy}
+              cursor={"pointer"}
+            >
+              <HStack w={"full"} justifyContent={"center"}>
+                <BsClipboard />
+                <Text>{hasCopied ? "Link Copied!" : "Click To Copy Link"}</Text>
+              </HStack>
+            </VStack>
+            <Text pt={4} textAlign={"center"}>
+              Other ways to share
+            </Text>
+            <HStack
+              py={4}
+              gap={6}
+              w={"full"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <Image
+                cursor={"pointer"}
+                src="/whatsapp.png"
+                onClick={() =>
+                  window.open(
+                    `https://wa.me/send?text=\r\n${campaign?.description}\r\nMake your contribution at Virolife.\r\n${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}
+              `,
+                    "_blank"
+                  )
+                }
+                boxSize={8}
+                objectFit={"contain"}
+              />
+              <Image
+                cursor={"pointer"}
+                src="/facebook.png"
+                onClick={() =>
+                  window.open(
+                    `https://www.facebook.com/sharer/sharer.php?u=\r\n${campaign?.description}\r\nMake your contribution now at Virolife.\r\n${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}
+              `,
+                    "_blank"
+                  )
+                }
+                boxSize={8}
+                objectFit={"contain"}
+              />
+              <Image
+                cursor={"pointer"}
+                src="/linkedin.png"
+                onClick={() =>
+                  window.open(
+                    `https://www.linkedin.com/sharing/share-offsite?url=${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}&title=Make your contribution now at Virolife.
+              `,
+                    "_blank"
+                  )
+                }
+                boxSize={6}
+                objectFit={"contain"}
+              />
+            </HStack>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

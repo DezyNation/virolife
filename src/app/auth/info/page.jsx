@@ -39,8 +39,9 @@ const Info = () => {
       attachment2: null,
       accountNumber: "",
       bankName: "",
+      micr: "",
       ifsc: "",
-      upi:""
+      upi: "",
     },
     onSubmit: (values) => {
       FormAxios.post(`/update-user`, {
@@ -276,7 +277,7 @@ const Info = () => {
                   value={Formik.values.email}
                   disabled
                 />
-                {/* <Text>Verify</Text> */}
+                <Text>Verify</Text>
               </HStack>
             </FormControl>
           </Stack>
@@ -364,7 +365,135 @@ const Info = () => {
               </Box>
             </FormControl>
           </Stack>
+          <Stack
+            w={"full"}
+            pb={16}
+            gap={8}
+            direction={["column", "row"]}
+            justifyContent={"space-between"}
+          >
+            <FormControl>
+              <Box>
+                <FormLabel
+                  fontWeight={"bold"}
+                  textTransform={"uppercase"}
+                  fontSize={"lg"}
+                >
+                  MICR (optional)
+                </FormLabel>
+                <Input
+                  name="micr"
+                  value={Formik.values.micr}
+                  onChange={Formik.handleChange}
+                  bg={"blanchedalmond"}
+                  w={["full", "xs"]}
+                />
+              </Box>
+            </FormControl>
+          </Stack>
 
+          <Text fontSize={"lg"} pb={8}>
+            ADDRESS
+          </Text>
+          <FormControl w={"full"} pb={8}>
+            <Box w={'full'}>
+              <FormLabel
+                fontWeight={"bold"}
+                textTransform={"uppercase"}
+                fontSize={"lg"}
+              >
+                Street
+              </FormLabel>
+              <Input
+                name="street"
+                value={Formik.values.accountNumber}
+                onChange={Formik.handleChange}
+                bg={"blanchedalmond"}
+                w={["full", "full"]}
+              />
+            </Box>
+          </FormControl>
+          <Stack
+            w={"full"}
+            gap={8}
+            direction={["column", "row"]}
+            justifyContent={"space-between"}
+          >
+            <FormControl>
+              <Box>
+                <FormLabel
+                  fontWeight={"bold"}
+                  textTransform={"uppercase"}
+                  fontSize={"lg"}
+                >
+                  Landmark
+                </FormLabel>
+                <Input
+                  name="landmark"
+                  value={Formik.values.bankName}
+                  onChange={Formik.handleChange}
+                  bg={"blanchedalmond"}
+                  w={["full", "xs"]}
+                />
+              </Box>
+            </FormControl>
+            <FormControl>
+              <Box>
+                <FormLabel
+                  fontWeight={"bold"}
+                  textTransform={"uppercase"}
+                  fontSize={"lg"}
+                >
+                  City
+                </FormLabel>
+                <Input
+                  name="city"
+                  value={Formik.values.ifsc}
+                  onChange={Formik.handleChange}
+                  bg={"blanchedalmond"}
+                  w={["full", "xs"]}
+                />
+              </Box>
+            </FormControl>
+            <FormControl>
+              <Box>
+                <FormLabel
+                  fontWeight={"bold"}
+                  textTransform={"uppercase"}
+                  fontSize={"lg"}
+                >
+                  State
+                </FormLabel>
+                <Input
+                  name="state"
+                  value={Formik.values.upi}
+                  onChange={Formik.handleChange}
+                  bg={"blanchedalmond"}
+                  w={["full", "xs"]}
+                />
+              </Box>
+            </FormControl>
+            <FormControl>
+              <Box>
+                <FormLabel
+                  fontWeight={"bold"}
+                  textTransform={"uppercase"}
+                  fontSize={"lg"}
+                >
+                  Pin Code
+                </FormLabel>
+                <Input
+                  name="pincode"
+                  value={Formik.values.upi}
+                  onChange={Formik.handleChange}
+                  bg={"blanchedalmond"}
+                  w={["full", "xs"]}
+                />
+              </Box>
+            </FormControl>
+          </Stack>
+
+<br /><br />
           <Stack
             w={"full"}
             pb={16}

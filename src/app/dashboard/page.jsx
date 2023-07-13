@@ -42,8 +42,8 @@ const DashboardHome = () => {
       BackendAxios.post("/auth-user")
         .then((res) => {
           setAuthUser(res.data);
-          localStorage.setItem("userName", res.data?.name)
-          localStorage.setItem("userId", res.data?.id)
+          localStorage.setItem("userName", res.data?.name);
+          localStorage.setItem("userId", res.data?.id);
         })
         .catch((err) => {
           Toast({
@@ -84,9 +84,7 @@ const DashboardHome = () => {
       });
   }, []);
 
-  function getOverview(){
-    
-  }
+  function getOverview() {}
 
   return (
     <>
@@ -115,7 +113,7 @@ const DashboardHome = () => {
         />
         <StatsCard icon={<BsCashCoin size={28} />} title={"amount settled"} />
       </Stack>
-      <Box pt={16}>
+      {/* <Box pt={16}>
         <Stack
           direction={["column", "row"]}
           gap={8}
@@ -176,8 +174,8 @@ const DashboardHome = () => {
             </Link>
           </Box>
           <Box flex={["unset", 2]}>
-            {/* <Text pb={8}>Your Top Contributors</Text> */}
-            {/* 
+            <Text pb={8}>Your Top Contributors</Text>
+            
                         <VStack gap={4} w={'full'} p={4} boxShadow={'md'} rounded={8}>
                             <Box w={'full'} p={2} borderBottom={'1px'} borderColor={'#DDD'}>
                                 <HStack justifyContent={'space-between'} alignItems={'flex-start'}>
@@ -228,10 +226,10 @@ const DashboardHome = () => {
                                 View All Contributors
                             </Button>
                         </VStack>
-                        */}
+                       
           </Box>
         </Stack>
-      </Box>
+      </Box> */}
     </>
   );
 };
