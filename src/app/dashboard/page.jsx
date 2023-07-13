@@ -131,7 +131,7 @@ const DashboardHome = () => {
                 overflow={"hidden"}
                 bgImage={
                   campaigns[0]?.file_path
-                    ? `https://edulec.in/storage/${campaigns[0]?.file_path}`
+                    ? `https://virolife.in/${campaigns[0]?.file_path}`
                     : "https://idea.batumi.ge/files/default.jpg"
                 }
                 bgSize={"cover"}

@@ -53,7 +53,7 @@ const AllCampaigns = () => {
               key={key}
               coverImage={
                 campaign.file_path
-                  ? `https://edulec.in/storage/${campaign.file_path}`
+                  ? `https://api.virolife.in/${campaign.file_path}`
                   : "https://idea.batumi.ge/files/default.jpg"
               }
               category={campaign?.category?.name}
