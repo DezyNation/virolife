@@ -31,6 +31,27 @@ const Info = () => {
     pincode: "",
   });
   const [cookies] = useCookies(["jwt"]);
+  const [disabledInputs, setDisabledInputs] = useState({
+    line: true,
+    landmark: true,
+    city: true,
+    state: true,
+    pincode: true,
+    firstName: false,
+    middleName: false,
+    lastName: false,
+    gender: false,
+    dob: false,
+    phone: false,
+    email: false,
+    attachment1: false,
+    attachment2: false,
+    accountNumber: false,
+    bankName: false,
+    micr: false,
+    ifsc: false,
+    upi: false,
+  });
 
   const Formik = useFormik({
     initialValues: {
@@ -116,6 +137,27 @@ const Info = () => {
           pincode: address?.pincode,
           landmark: address?.landmark,
         });
+        setDisabledInputs({
+          ...disabledInputs,
+          firstName: Boolean(res.data?.name),
+          middleName: Boolean(res.data?.name),
+          lastName: Boolean(res.data?.name),
+          dob: Boolean(res.data?.dob),
+          gender: Boolean(res.data?.gender),
+          phone: Boolean(res.data?.phone_number),
+          email: Boolean(res.data?.email),
+          upi: Boolean(res.data?.upi_id),
+          ifsc: Boolean(res.data?.ifsc),
+          bankName: Boolean(res.data?.bank_name),
+          accountNumber: Boolean(res.data?.account_number),
+          micr: Boolean(res.data?.micr),
+          line: Boolean(res.data?.address),
+          landmark: Boolean(res.data?.address),
+          city: Boolean(res.data?.address),
+          state: Boolean(res.data?.address),
+          attachment1: Boolean(res.data?.attachment1),
+          attachment2: Boolean(res.data?.attachment2),
+        });
       })
       .catch((err) => {
         Toast({
@@ -147,6 +189,7 @@ const Info = () => {
                   FIRST NAME
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.firstName}
                   name="firstName"
                   value={Formik.values.firstName}
                   onChange={Formik.handleChange}
@@ -165,6 +208,7 @@ const Info = () => {
                   MIDDLE NAME
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.middleName}
                   name="middleName"
                   value={Formik.values.middleName}
                   onChange={Formik.handleChange}
@@ -183,6 +227,7 @@ const Info = () => {
                   LAST NAME
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.lastName}
                   name="lastName"
                   value={Formik.values.lastName}
                   onChange={Formik.handleChange}
@@ -209,6 +254,7 @@ const Info = () => {
               </FormLabel>
               <HStack gap={4} w={["full", "xs"]}>
                 <Button
+                  isDisabled={disabledInputs.gender}
                   rounded={"full"}
                   colorScheme="yellow"
                   onClick={() => setGender("male")}
@@ -217,6 +263,7 @@ const Info = () => {
                   M
                 </Button>
                 <Button
+                  isDisabled={disabledInputs.gender}
                   rounded={"full"}
                   colorScheme="yellow"
                   onClick={() => setGender("female")}
@@ -225,6 +272,7 @@ const Info = () => {
                   F
                 </Button>
                 <Button
+                  isDisabled={disabledInputs.gender}
                   rounded={"full"}
                   colorScheme="yellow"
                   onClick={() => setGender("others")}
@@ -244,6 +292,7 @@ const Info = () => {
                 date of birth
               </FormLabel>
               <Input
+                isDisabled={disabledInputs.dob}
                 bg={"blanchedalmond"}
                 w={["full", "xs"]}
                 type="date"
@@ -271,6 +320,7 @@ const Info = () => {
               </FormLabel>
               <HStack>
                 <Input
+                  isDisabled={disabledInputs.phone}
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
                   name="phone"
@@ -321,6 +371,7 @@ const Info = () => {
                   ACCOUNT NUMBER
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.accountNumber}
                   name="accountNumber"
                   value={Formik.values.accountNumber}
                   onChange={Formik.handleChange}
@@ -339,6 +390,7 @@ const Info = () => {
                   BANK NAME
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.bankName}
                   name="bankName"
                   value={Formik.values.bankName}
                   onChange={Formik.handleChange}
@@ -357,6 +409,7 @@ const Info = () => {
                   IFSC
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.ifsc}
                   name="ifsc"
                   value={Formik.values.ifsc}
                   onChange={Formik.handleChange}
@@ -375,6 +428,7 @@ const Info = () => {
                   UPI ID
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.upi}
                   name="upi"
                   value={Formik.values.upi}
                   onChange={Formik.handleChange}
@@ -401,6 +455,7 @@ const Info = () => {
                   MICR (optional)
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.micr}
                   name="micr"
                   value={Formik.values.micr}
                   onChange={Formik.handleChange}
@@ -424,6 +479,7 @@ const Info = () => {
                 Street
               </FormLabel>
               <Input
+                isDisabled={disabledInputs.line}
                 name="street"
                 value={addressObj.line}
                 onChange={(e) =>
@@ -450,6 +506,7 @@ const Info = () => {
                   Landmark
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.landmark}
                   name="landmark"
                   value={addressObj.landmark}
                   onChange={(e) =>
@@ -470,6 +527,7 @@ const Info = () => {
                   City
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.city}
                   name="city"
                   value={addressObj.city}
                   onChange={(e) =>
@@ -490,6 +548,7 @@ const Info = () => {
                   State
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.state}
                   name="state"
                   value={addressObj.state}
                   onChange={(e) =>
@@ -510,6 +569,7 @@ const Info = () => {
                   Pin Code
                 </FormLabel>
                 <Input
+                  isDisabled={disabledInputs.pincode}
                   name="pincode"
                   value={addressObj.pincode}
                   onChange={(e) =>
@@ -540,6 +600,7 @@ const Info = () => {
               </FormLabel>
               <HStack>
                 <Input
+                  isDisabled={disabledInputs.attachment1}
                   type="file"
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
@@ -552,6 +613,7 @@ const Info = () => {
                   }
                 />
                 <Input
+                  isDisabled={disabledInputs.attachment2}
                   type="file"
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
