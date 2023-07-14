@@ -65,10 +65,10 @@ const Navbar = () => {
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
   const [isPasswordVisible, setisPasswordVisible] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
-  const [userName, setUserName] = useState("");
   const [seniorInfo, setSeniorInfo] = useState({});
   const Router = useRouter();
   const params = useSearchParams();

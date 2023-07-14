@@ -23,7 +23,13 @@ const Info = () => {
   const Toast = useToast({ position: "top-right" });
   const [gender, setGender] = useState("");
   const [authUser, setAuthUser] = useState({});
-
+  const [addressObj, setAddressObj] = useState({
+    line: "",
+    landmark: "",
+    city: "",
+    state: "",
+    pincode: "",
+  });
   const [cookies] = useCookies(["jwt"]);
 
   const Formik = useFormik({
@@ -42,10 +48,12 @@ const Info = () => {
       micr: "",
       ifsc: "",
       upi: "",
+      address: "",
     },
     onSubmit: (values) => {
       FormAxios.post(`/update-user`, {
         ...values,
+        address: JSON.stringify(addressObj),
         name:
           values.firstName +
           (values.middleName && values.lastName
@@ -72,40 +80,51 @@ const Info = () => {
 
   useEffect(() => {
     if (!isExpired(cookies.jwt)) {
-      BackendAxios.post("/auth-user")
-        .then((res) => {
-          setAuthUser(res.data);
-          Formik.setFieldValue("firstName", res.data?.name?.split(" ")[0]);
-          if (res.data?.name?.split(" ")?.length >= 3)
-            Formik.setFieldValue("middleName", res.data?.name?.split(" ")[1]);
-          if (res.data?.name?.split(" ")?.length >= 3)
-            Formik.setFieldValue("lastName", res.data?.name?.split(" ")[2]);
-          if (res.data?.name?.split(" ")?.length >= 2)
-            Formik.setFieldValue("lastName", res.data?.name?.split(" ")[1]);
-          Formik.setFieldValue("dob", res.data?.dob);
-          Formik.setFieldValue("gender", res.data?.gender);
-          Formik.setFieldValue("phone", res.data?.phone_number);
-          Formik.setFieldValue("email", res.data?.email);
-          Formik.setFieldValue("upi", res.data?.upi_id);
-          Formik.setFieldValue("ifsc", res.data?.ifsc);
-          Formik.setFieldValue("bankName", res.data?.bank_name);
-          Formik.setFieldValue("accountNumber", res.data?.account_number);
-        })
-        .catch((err) => {
-          Toast({
-            status: "error",
-            description:
-              err?.response?.data?.message ||
-              err?.response?.data ||
-              err?.message,
-          });
-        });
+      fetchInfo();
       return;
     }
     if (isExpired(cookies.jwt)) {
       window.location.replace("/");
     }
   }, [cookies]);
+
+  function fetchInfo() {
+    BackendAxios.post("/auth-user")
+      .then((res) => {
+        setAuthUser(res.data);
+        const address = JSON.parse(res.data.address);
+        Formik.setFieldValue("firstName", res.data?.name?.split(" ")[0]);
+        if (res.data?.name?.split(" ")?.length >= 3)
+          Formik.setFieldValue("middleName", res.data?.name?.split(" ")[1]);
+        if (res.data?.name?.split(" ")?.length >= 3)
+          Formik.setFieldValue("lastName", res.data?.name?.split(" ")[2]);
+        if (res.data?.name?.split(" ")?.length >= 2)
+          Formik.setFieldValue("lastName", res.data?.name?.split(" ")[1]);
+        Formik.setFieldValue("dob", res.data?.dob);
+        Formik.setFieldValue("gender", res.data?.gender);
+        Formik.setFieldValue("phone", res.data?.phone_number);
+        Formik.setFieldValue("email", res.data?.email);
+        Formik.setFieldValue("upi", res.data?.upi_id);
+        Formik.setFieldValue("ifsc", res.data?.ifsc);
+        Formik.setFieldValue("bankName", res.data?.bank_name);
+        Formik.setFieldValue("accountNumber", res.data?.account_number);
+        Formik.setFieldValue("micr", res.data?.micr);
+        setAddressObj({
+          line: address?.line,
+          city: address?.city,
+          state: address?.state,
+          pincode: address?.pincode,
+          landmark: address?.landmark,
+        });
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
 
   return (
     <>
@@ -258,7 +277,7 @@ const Info = () => {
                   value={Formik.values.phone}
                   onChange={Formik.handleChange}
                 />
-                <Text>Verify</Text>
+                <Text cursor={"pointer"}>Verify</Text>
               </HStack>
             </FormControl>
             <FormControl>
@@ -277,7 +296,7 @@ const Info = () => {
                   value={Formik.values.email}
                   disabled
                 />
-                <Text>Verify</Text>
+                <Text cursor={"pointer"}>Verify</Text>
               </HStack>
             </FormControl>
           </Stack>
@@ -396,7 +415,7 @@ const Info = () => {
             ADDRESS
           </Text>
           <FormControl w={"full"} pb={8}>
-            <Box w={'full'}>
+            <Box w={"full"}>
               <FormLabel
                 fontWeight={"bold"}
                 textTransform={"uppercase"}
@@ -406,8 +425,10 @@ const Info = () => {
               </FormLabel>
               <Input
                 name="street"
-                value={Formik.values.accountNumber}
-                onChange={Formik.handleChange}
+                value={addressObj.line}
+                onChange={(e) =>
+                  setAddressObj({ ...addressObj, line: e.target.value })
+                }
                 bg={"blanchedalmond"}
                 w={["full", "full"]}
               />
@@ -430,8 +451,10 @@ const Info = () => {
                 </FormLabel>
                 <Input
                   name="landmark"
-                  value={Formik.values.bankName}
-                  onChange={Formik.handleChange}
+                  value={addressObj.landmark}
+                  onChange={(e) =>
+                    setAddressObj({ ...addressObj, landmark: e.target.value })
+                  }
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
                 />
@@ -448,8 +471,10 @@ const Info = () => {
                 </FormLabel>
                 <Input
                   name="city"
-                  value={Formik.values.ifsc}
-                  onChange={Formik.handleChange}
+                  value={addressObj.city}
+                  onChange={(e) =>
+                    setAddressObj({ ...addressObj, city: e.target.value })
+                  }
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
                 />
@@ -466,8 +491,10 @@ const Info = () => {
                 </FormLabel>
                 <Input
                   name="state"
-                  value={Formik.values.upi}
-                  onChange={Formik.handleChange}
+                  value={addressObj.state}
+                  onChange={(e) =>
+                    setAddressObj({ ...addressObj, state: e.target.value })
+                  }
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
                 />
@@ -484,8 +511,10 @@ const Info = () => {
                 </FormLabel>
                 <Input
                   name="pincode"
-                  value={Formik.values.upi}
-                  onChange={Formik.handleChange}
+                  value={addressObj.pincode}
+                  onChange={(e) =>
+                    setAddressObj({ ...addressObj, pincode: e.target.value })
+                  }
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
                 />
@@ -493,7 +522,8 @@ const Info = () => {
             </FormControl>
           </Stack>
 
-<br /><br />
+          <br />
+          <br />
           <Stack
             w={"full"}
             pb={16}

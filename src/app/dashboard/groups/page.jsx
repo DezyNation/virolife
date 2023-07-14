@@ -156,6 +156,9 @@ const MyChildren = ({ childMembers }) => {
   useEffect(() => {
     setMyId(localStorage.getItem("userId"));
     setMyName(localStorage.getItem("userName"));
+  }, []);
+
+  useEffect(() => {
     loadGroup();
   }, []);
 
@@ -186,8 +189,8 @@ const MyChildren = ({ childMembers }) => {
   function loadGroup() {
     BackendAxios.get(`/api/my-group`)
       .then((res) => {
-        const hierarchyArray = buildHierarchy(res.data, myId);
-        setGroupMembers([{ name: myName, children: hierarchyArray }]);
+        const hierarchyArray = buildHierarchy(res.data, localStorage.getItem("userId"));
+        setGroupMembers([{ name: localStorage.getItem("userName"), children: hierarchyArray }]);
         setMyGroup(res.data);
       })
       .catch((err) => {

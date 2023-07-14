@@ -26,8 +26,14 @@ import { RangeDatepicker } from "chakra-dayzed-datepicker";
 
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [selectedDates, setSelectedDates] = useState([new Date(), new Date()]);
+  const [beneficiaryDetails, setBeneficiaryDetails] = useState({
+    type: "myself",
+    name: "",
+    address: "",
+    contact: "",
+  });
   const onDrop = useCallback(async (acceptedFiles) => {
     console.log(acceptedFiles[0]);
     Formik.setFieldValue("files", acceptedFiles[0]);
@@ -70,7 +76,7 @@ const Page = () => {
       target_amount: "",
     },
     onSubmit: () => {
-      setLoading(true)
+      setLoading(true);
       const formData = new FormData();
       formData.append("files", Formik.values.files);
       formData.append("title", Formik.values.title);
@@ -80,9 +86,10 @@ const Page = () => {
       formData.append("target_amount", Formik.values.target_amount);
       formData.append("from", new Date(selectedDates[0]).getUTCSeconds());
       formData.append("to", new Date(selectedDates[1]).getUTCSeconds());
+      formData.append("beneficiaryDetails", JSON.stringify(beneficiaryDetails));
       FormAxios.post("/api/campaign", formData)
         .then((res) => {
-          setLoading(false)
+          setLoading(false);
           Toast({
             status: "success",
             description: "Your campaign was sent for review!",
@@ -90,7 +97,7 @@ const Page = () => {
           console.log(formData);
         })
         .catch((err) => {
-          setLoading(false)
+          setLoading(false);
           Toast({
             status: "error",
             description:
@@ -155,6 +162,7 @@ const Page = () => {
           className="serif"
           p={2}
           name="title"
+          placeholder="e.g: Help us build a school for underpreviliged children"
           onChange={Formik.handleChange}
         />
       </FormControl>
@@ -184,11 +192,11 @@ const Page = () => {
           {selectedImages.map((image, index) => (
             <Box key={index} pos={"relative"}>
               {/* <Icon
-                                    as={BsXCircleFill}
-                                    color={'red'} pos={'absolute'}
-                                    size={12} top={0} right={0}
-                                    onClick={() => removeImage(index)}
-                                /> */}
+                  as={BsXCircleFill}
+                  color={'red'} pos={'absolute'}
+                  size={12} top={0} right={0}
+                  onClick={() => removeImage(index)}
+              /> */}
               <Image
                 src={image}
                 w={36}
@@ -218,8 +226,120 @@ const Page = () => {
           placeholder="Tell us about your campaign"
         ></Textarea>
       </FormControl>
+      <VStack
+        w={"full"}
+        py={4}
+        alignItems={"flex-start"}
+        justifyContent={"flex-start"}
+      >
+        <Text fontSize={"lg"} className="serif">
+          Who will benefit from this campaign?
+        </Text>
+        <FormControl>
+          <Stack direction={["column", "row"]} gap={"4"}>
+            <Button
+              colorScheme="yellow"
+              variant={
+                beneficiaryDetails.type == "myself" ? "solid" : "outline"
+              }
+              onClick={() =>
+                setBeneficiaryDetails({ ...beneficiaryDetails, type: "myself" })
+              }
+            >
+              Myself
+            </Button>
+            <Button
+              colorScheme="yellow"
+              variant={
+                beneficiaryDetails.type == "myfamily" ? "solid" : "outline"
+              }
+              onClick={() =>
+                setBeneficiaryDetails({
+                  ...beneficiaryDetails,
+                  type: "myfamily",
+                })
+              }
+            >
+              My Family
+            </Button>
+            <Button
+              colorScheme="yellow"
+              variant={
+                beneficiaryDetails.type == "individual" ? "solid" : "outline"
+              }
+              onClick={() =>
+                setBeneficiaryDetails({
+                  ...beneficiaryDetails,
+                  type: "individual",
+                })
+              }
+            >
+              Other Individual
+            </Button>
+            <Button
+              colorScheme="yellow"
+              variant={beneficiaryDetails.type == "group" ? "solid" : "outline"}
+              onClick={() =>
+                setBeneficiaryDetails({ ...beneficiaryDetails, type: "group" })
+              }
+            >
+              Group or Community
+            </Button>
+          </Stack>
+        </FormControl>
+              <br />
+        {beneficiaryDetails.type == "myself" || (
+          <VStack
+            w={"full"}
+            py={4} gap={8}
+            alignItems={"flex-start"}
+            justifyContent={"flex-start"}
+          >
+            <FormControl w={['full', 'xs']}>
+              <FormLabel>Name</FormLabel>
+              <Input
+                placeholder="Enter beneficiary name"
+                onChange={(e) =>
+                  setBeneficiaryDetails({
+                    ...beneficiaryDetails,
+                    name: e.target.value,
+                  })
+                }
+              />
+            </FormControl>
+            <FormControl w={['full', 'xs']}>
+              <FormLabel>Contact</FormLabel>
+              <Input
+                placeholder="Beneficiary contact details"
+                onChange={(e) =>
+                  setBeneficiaryDetails({
+                    ...beneficiaryDetails,
+                    contact: e.target.value,
+                  })
+                }
+              />
+            </FormControl>
+            <FormControl w={['full', 'xs']}>
+              <FormLabel>Address</FormLabel>
+              <Input
+                placeholder="Beneficiary address"
+                onChange={(e) =>
+                  setBeneficiaryDetails({
+                    ...beneficiaryDetails,
+                    address: e.target.value,
+                  })
+                }
+              />
+            </FormControl>
+          </VStack>
+        )}
+      </VStack>
       <HStack justifyContent={"flex-end"} py={4}>
-        <Button colorScheme="yellow" isLoading={loading} onClick={Formik.handleSubmit}>
+        <Button
+          colorScheme="yellow"
+          isLoading={loading}
+          onClick={Formik.handleSubmit}
+        >
           Send For Review
         </Button>
       </HStack>

@@ -151,11 +151,26 @@ const CampaignInfo = ({ params }) => {
             Category: {campaign?.category?.name}
           </Text>
           <br />
-
-          <Text pb={16} maxW={["full", "xl", "4xl"]}>
+          <Text></Text>
+          <Text
+            maxW={["full", "xl", "4xl"]}
+            p={4}
+            bgColor={"blue.50"}
+            rounded={"12"}
+          >
+            {campaign.beneficiary_details ? (
+              <>
+                This campaign will benefit{" "}
+                {JSON.parse(campaign?.beneficiary_details)?.name} of{" "}
+                {JSON.parse(campaign?.beneficiary_details)?.address}
+                <br />
+              </>
+            ) : null}
             {campaign.description}
-            <br />
-            <br />
+          </Text>
+          <br />
+          <br />
+          <Text pb={16} maxW={["full", "xl", "4xl"]}>
             {campaign.full_description}
           </Text>
         </Box>
