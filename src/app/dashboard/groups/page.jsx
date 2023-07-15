@@ -162,10 +162,11 @@ const MyChildren = ({ childMembers }) => {
     loadGroup();
   }, []);
 
-  function buildHierarchy(items, parentId = null) {
+  function buildHierarchy(items, parentId) {
+    console.log(parentId);
     const nestedArray = [];
     for (const item of items) {
-      if (item.parent_id == parentId) {
+      if (parseInt(item.parent_id) == parseInt(parentId)) {
         const children = buildHierarchy(items, item.id);
         if (children.length > 0) {
           item.children = children;
@@ -189,9 +190,14 @@ const MyChildren = ({ childMembers }) => {
   function loadGroup() {
     BackendAxios.get(`/api/my-group`)
       .then((res) => {
-        const hierarchyArray = buildHierarchy(res.data, localStorage.getItem("userId"));
-        setGroupMembers([{ name: localStorage.getItem("userName"), children: hierarchyArray }]);
         setMyGroup(res.data);
+        const hierarchyArray = buildHierarchy(
+          res.data,
+          localStorage.getItem("userId")
+        );
+        setGroupMembers([
+          { name: localStorage.getItem("userName"), children: hierarchyArray },
+        ]);
       })
       .catch((err) => {
         Toast({
@@ -291,6 +297,10 @@ const Page = () => {
   );
   const [parentUsers, setParentUsers] = useState([]);
   const [childMembers, setChildMembers] = useState([]);
+
+  const [primaryActive, setPrimaryActive] = useState(false);
+  const [secondaryActive, setSecondaryActive] = useState(false);
+
   const [primaryIdRequested, setPrimaryIdRequested] = useState(false);
   const [secondaryIdRequested, setSecondaryIdRequested] = useState(false);
 
@@ -317,6 +327,8 @@ const Page = () => {
   useEffect(() => {
     setMyId(localStorage.getItem("userId"));
     setMyName(localStorage.getItem("userName"));
+    setPrimaryActive(localStorage.getItem("primaryActive"));
+    setSecondaryActive(localStorage.getItem("secondaryActive"));
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
         "userId"
@@ -490,48 +502,54 @@ const Page = () => {
               <Button
                 onClick={() => setPrimaryIdRequested(true)}
                 colorScheme="yellow"
+                isDisabled={parseInt(primaryActive)}
               >
                 Activate Primary ID
               </Button>
               <Button
                 onClick={() => setSecondaryIdRequested(true)}
                 colorScheme="twitter"
+                isDisabled={parseInt(secondaryActive)}
               >
                 Activate Secondary ID
               </Button>
             </HStack>
             <br />
             {primaryIdRequested ? (
-              <HStack>
-                <Box>
-                  <InputGroup>
-                    <Input
-                      onChange={(e) => setJoinGroupId(e.target.value)}
-                      variant={"flushed"}
-                      placeholder="Enter Senior ID To Join"
-                    />
-                    <InputRightAddon
-                      bgColor={"#FFF"}
-                      borderRight={"0"}
-                      borderTop={"0"}
-                      onClick={() => getUserInfo()}
-                      children={
-                        <Text
-                          fontSize={"xs"}
-                          color={"twitter.500"}
-                          fontWeight={"semibold"}
-                          cursor={"pointer"}
-                        >
-                          Verify
-                        </Text>
-                      }
-                    />
-                  </InputGroup>
-                  <Text mt={2} fontSize={"xs"}>
-                    {userInfo?.name} - {userInfo?.phone}
-                  </Text>
-                </Box>
-              </HStack>
+              <Box
+                py={4}
+                w={"full"}
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <InputGroup>
+                  <Input
+                    onChange={(e) => setJoinGroupId(e.target.value)}
+                    variant={"flushed"}
+                    placeholder="Enter Senior ID To Join"
+                  />
+                  <InputRightAddon
+                    bgColor={"#FFF"}
+                    borderRight={"0"}
+                    borderTop={"0"}
+                    onClick={() => getUserInfo()}
+                    children={
+                      <Text
+                        fontSize={"xs"}
+                        color={"twitter.500"}
+                        fontWeight={"semibold"}
+                        cursor={"pointer"}
+                      >
+                        Verify
+                      </Text>
+                    }
+                  />
+                </InputGroup>
+                <Text mt={2} fontSize={"xs"}>
+                  {userInfo?.name} - {userInfo?.phone}
+                </Text>
+              </Box>
             ) : null}
             {secondaryIdRequested ? (
               <HStack>

@@ -63,7 +63,7 @@ const Layout = ({ children }) => {
         localStorage.clear();
       })
       .finally(() => {
-        window.location.reload();
+        Router.replace("/");
       });
   }
 

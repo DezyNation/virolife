@@ -279,7 +279,7 @@ const Carousel = () => {
         isOpen={isSignupOpen}
         isCentered={true}
         onClose={() => setIsSignupOpen(!isSignupOpen)}
-        size={"4xl"}
+        size={"xl"}
       >
         <ModalOverlay />
         <ModalContent>
@@ -322,7 +322,7 @@ const Carousel = () => {
                     />
                   </Stack>
                 </FormControl>
-                <FormControl>
+                {/* <FormControl>
                   <Stack direction={["column", "row"]} spacing={[4, 8]}>
                     <FormLabel fontSize={"xl"}>Password</FormLabel>
                     <InputGroup>
@@ -348,8 +348,8 @@ const Carousel = () => {
                       />
                     </InputGroup>
                   </Stack>
-                </FormControl>
-                <FormControl>
+                </FormControl> */}
+                {/* <FormControl>
                   <Stack
                     direction={["column", "row"]}
                     spacing={[4, 8]}
@@ -383,7 +383,7 @@ const Carousel = () => {
                       <Text fontSize={"xs"}>{seniorInfo?.name}</Text>
                     </Box>
                   </Stack>
-                </FormControl>
+                </FormControl> */}
                 <Box
                   px={8}
                   py={4}
@@ -410,15 +410,6 @@ const Carousel = () => {
                     Continue
                   </Button>
                 </HStack>
-              </VStack>
-              <VStack w={["full", "xs"]} gap={8}>
-                <Text textAlign={"center"}>Or Register With</Text>
-                <Image
-                  src="/gmail.png"
-                  w={20}
-                  cursor={"pointer"}
-                  onClick={() => signIn("google")}
-                />
               </VStack>
             </Stack>
           </ModalBody>

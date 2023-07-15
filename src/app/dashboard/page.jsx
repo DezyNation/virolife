@@ -44,6 +44,8 @@ const DashboardHome = () => {
           setAuthUser(res.data);
           localStorage.setItem("userName", res.data?.name);
           localStorage.setItem("userId", res.data?.id);
+          localStorage.setItem("primaryActive", res.data?.primary_activated);
+          localStorage.setItem("secondaryActive", res.data?.secondary_activated);
         })
         .catch((err) => {
           Toast({
