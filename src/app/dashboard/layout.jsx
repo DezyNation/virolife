@@ -35,6 +35,10 @@ const Layout = ({ children }) => {
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [userName, setUserName] = useState("");
 
+  useEffect(()=>{
+    isExpired(Cookies.get("jwt"))
+  },[])
+
   function handleLogout() {
     BackendAxios.post("/logout")
       .then((res) => {

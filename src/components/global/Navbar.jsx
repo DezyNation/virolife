@@ -71,8 +71,12 @@ const Navbar = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [seniorInfo, setSeniorInfo] = useState({});
   const Router = useRouter();
+
   const params = useSearchParams();
   const referralId = params.get("ref_id");
+  const emailFromParams = params.get("email");
+  const nameFromParams = params.get("name");
+  const intentFromParams = params.get("intent");
   const [code, setCode] = useState(params.get("ref_id"));
 
   const Formik = useFormik({
@@ -91,10 +95,15 @@ const Navbar = () => {
   }, [Cookies.get()]);
 
   useEffect(() => {
-    if (!referralId) return;
+    if(!intentFromParams && !params.get("ref_id")) return
+    if(intentFromParams == "register"){
+      Formik.setFieldValue("email", emailFromParams ? emailFromParams : "")
+      setName(nameFromParams ? nameFromParams : "")
+    }
     setCode(referralId);
     getUserInfo();
-  }, [params.get("ref_id")]);
+    setIsSignupOpen(true)
+  }, [params]);
 
   function getUserInfo() {
     BackendAxios.get(`/api/users/${code}`)

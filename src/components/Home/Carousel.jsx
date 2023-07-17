@@ -125,6 +125,15 @@ const Carousel = () => {
       });
   }
 
+  function sendInvite(){
+    Toast({
+      status: 'success',
+      title: 'Email sent!',
+      description: "Please check your inbox for invitation."
+    })
+    setIsSignupOpen(false)
+  }
+
   function getUserInfo() {
     BackendAxios.get(`/api/users/${code}`)
       .then((res) => {
@@ -406,7 +415,7 @@ const Carousel = () => {
                   >
                     Cancel
                   </Button>
-                  <Button colorScheme="yellow" onClick={handleSignup}>
+                  <Button colorScheme="yellow" onClick={sendInvite}>
                     Continue
                   </Button>
                 </HStack>
