@@ -83,8 +83,12 @@ const Navbar = () => {
   });
 
   useEffect(() => {
-    setSessionExpired(isExpired(cookies.jwt));
-  }, [cookies]);
+    if(isExpired(Cookies.get("jwt"))){
+      setSessionExpired(true);
+    } else {
+      setSessionExpired(false)
+    }
+  }, [Cookies.get()]);
 
   useEffect(() => {
     if (!referralId) return;
@@ -134,8 +138,8 @@ const Navbar = () => {
         FormAxios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${res.data?.access_token}`;
-        // Cookies.set("jwt", res.data?.access_token)
-        setCookie("jwt", res.data?.access_token);
+        Cookies.set("jwt", res.data?.access_token)
+        // setCookie("jwt", res.data?.access_token);
         onToggle();
         Router.push("/dashboard");
       })

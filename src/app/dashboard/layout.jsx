@@ -35,20 +35,10 @@ const Layout = ({ children }) => {
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [userName, setUserName] = useState("");
 
-  useEffect(() => {
-    if (isExpired(cookies.jwt)) {
-      Router.replace("/");
-    }
-  }, [cookies]);
-
-  useEffect(() => {
-    setUserName(localStorage?.getItem("userName"));
-  }, []);
-
   function handleLogout() {
     BackendAxios.post("/logout")
       .then((res) => {
-        removeCookie("jwt")
+        // removeCookie("jwt")
         Cookies.remove("jwt");
         localStorage.clear();
       })
@@ -58,7 +48,7 @@ const Layout = ({ children }) => {
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
-        removeCookie("jwt")
+        // removeCookie("jwt")
         Cookies.remove("jwt");
         localStorage.clear();
       })

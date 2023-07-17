@@ -301,6 +301,9 @@ const Page = () => {
   const [primaryActive, setPrimaryActive] = useState(false);
   const [secondaryActive, setSecondaryActive] = useState(false);
 
+  const [primaryJoined, setPrimaryJoined] = useState(false)
+  const [secondaryJoined, setSecondaryJoined] = useState(false)
+
   const [primaryIdRequested, setPrimaryIdRequested] = useState(false);
   const [secondaryIdRequested, setSecondaryIdRequested] = useState(false);
 
@@ -327,7 +330,10 @@ const Page = () => {
   useEffect(() => {
     setMyId(localStorage.getItem("userId"));
     setMyName(localStorage.getItem("userName"));
+
     setPrimaryActive(localStorage.getItem("primaryActive"));
+    setPrimaryJoined(Boolean(localStorage.getItem("parentId")));
+
     setSecondaryActive(localStorage.getItem("secondaryActive"));
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
@@ -502,7 +508,7 @@ const Page = () => {
               <Button
                 onClick={() => setPrimaryIdRequested(true)}
                 colorScheme="yellow"
-                isDisabled={parseInt(primaryActive)}
+                isDisabled={primaryJoined}
               >
                 Activate Primary ID
               </Button>

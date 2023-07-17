@@ -23,6 +23,7 @@ import { useCookies } from "react-cookie";
 import { isExpired } from "react-jwt";
 import BackendAxios from "@/utils/axios";
 import { MdGroups } from "react-icons/md";
+import Cookies from "js-cookie";
 
 const DashboardHome = () => {
   const [selectedImg, setSelectedImg] = useState(
@@ -35,47 +36,20 @@ const DashboardHome = () => {
   const [campaigns, setCampaigns] = useState({});
 
   const [campaignDate, setCampaignDate] = useState(new Date());
+  
+  useEffect(()=>{
+    setSessionExpired(isExpired(Cookies.get("jwt")));
+  },[Cookies.get()])
 
   useEffect(() => {
-    setSessionExpired(isExpired(cookies.jwt));
-    if (!isExpired(cookies.jwt)) {
-      BackendAxios.post("/auth-user")
-        .then((res) => {
-          setAuthUser(res.data);
-          localStorage.setItem("userName", res.data?.name);
-          localStorage.setItem("userId", res.data?.id);
-          localStorage.setItem("primaryActive", res.data?.primary_activated);
-          localStorage.setItem("secondaryActive", res.data?.secondary_activated);
-        })
-        .catch((err) => {
-          Toast({
-            status: "error",
-            description:
-              err?.response?.data?.message ||
-              err?.response?.data ||
-              err?.message,
-          });
-        });
-      return;
-    }
-    if (isExpired(cookies.jwt)) {
-      window.location.replace("/");
-    }
-  }, [cookies]);
-
-  if (sessionExpired) {
-    return (
-      <>
-        <Text>You need to login to view this page</Text>
-      </>
-    );
-  }
-
-  useEffect(() => {
-    BackendAxios.get("/api/user-campaigns")
+    BackendAxios.post("/auth-user")
       .then((res) => {
-        setCampaigns(res.data);
-        setCampaignDate(new Date(res.data[0]?.created_at));
+        setAuthUser(res.data);
+        localStorage.setItem("userName", res.data?.name);
+        localStorage.setItem("userId", res.data?.id);
+        localStorage.setItem("primaryActive", res.data?.primary_activated);
+        localStorage.setItem("secondaryActive", res.data?.secondary_activated);
+        localStorage.setItem("parentId", res.data?.parent_id);
       })
       .catch((err) => {
         Toast({
@@ -85,6 +59,29 @@ const DashboardHome = () => {
         });
       });
   }, []);
+
+  if (sessionExpired) {
+    return (
+      <>
+        <Text>You need to login to view this page</Text>
+      </>
+    );
+  }
+
+  // useEffect(() => {
+  //   BackendAxios.get("/api/user-campaigns")
+  //     .then((res) => {
+  //       setCampaigns(res.data);
+  //       setCampaignDate(new Date(res.data[0]?.created_at));
+  //     })
+  //     .catch((err) => {
+  //       Toast({
+  //         status: "error",
+  //         description:
+  //           err?.response?.data?.message || err?.response?.data || err?.message,
+  //       });
+  //     });
+  // }, []);
 
   function getOverview() {}
 
