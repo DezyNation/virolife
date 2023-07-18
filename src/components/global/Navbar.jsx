@@ -633,6 +633,7 @@ const Navbar = () => {
                             </Text>
                           }
                           paddingLeft={4}
+                          paddingRight={4}
                         />
                         <Input
                           placeholder="Senior ID"
