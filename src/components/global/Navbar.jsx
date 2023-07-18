@@ -47,6 +47,7 @@ import {
   InputRightElement,
   DrawerFooter,
   InputRightAddon,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { BiMenuAltLeft } from "react-icons/bi";
@@ -621,7 +622,7 @@ const Navbar = () => {
                     <FormLabel fontSize={"xl"}>Senior ID</FormLabel>
                     <Box>
                       <InputGroup w={["full", "xs"]}>
-                      <InputRightElement
+                      <InputLeftElement
                           onClick={getUserInfo}
                           children={
                             <Text
