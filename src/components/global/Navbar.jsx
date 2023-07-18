@@ -629,7 +629,7 @@ const Navbar = () => {
                               cursor={"pointer"}
                               fontSize={"sm"}
                             >
-                              {process.env.NEXT_PUBLIC_CODE}]
+                              {process.env.NEXT_PUBLIC_CODE}
                             </Text>
                           }
                           paddingX={4}
