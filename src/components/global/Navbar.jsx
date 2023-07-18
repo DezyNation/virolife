@@ -560,6 +560,7 @@ const Navbar = () => {
                       border={".5px solid #FAFAFA"}
                       rounded={0}
                       onChange={(e) => setName(e.target.value)}
+                      value={name}
                     />
                   </Stack>
                 </FormControl>
@@ -579,6 +580,7 @@ const Navbar = () => {
                       boxShadow={"xl"}
                       border={".5px solid #FAFAFA"}
                       rounded={0}
+                      value={Formik.values.email}
                     />
                   </Stack>
                 </FormControl>
