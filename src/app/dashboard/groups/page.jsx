@@ -99,7 +99,7 @@ const MyParents = ({ parentUsers }) => {
                   {item?.parent_name}
                 </Text>
                 <Text fontSize={"xs"}>
-                  ID: {item?.id} &nbsp; | &nbsp; Phone: {item?.parent_phone}
+                  ID: {process.env.NEXT_PUBLIC_CODE}{item?.id} &nbsp; | &nbsp; Phone: {item?.parent_phone}
                 </Text>
               </Box>
             </HStack>
@@ -231,7 +231,7 @@ const MyChildren = ({ childMembers }) => {
                     {item?.name}
                   </Text>
                   <Text fontSize={"xs"}>
-                    ID: {item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
+                    ID: {process.env.NEXT_PUBLIC_CODE}{item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
                   </Text>
                 </Box>
               </HStack>

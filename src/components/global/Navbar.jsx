@@ -46,6 +46,7 @@ import {
   InputGroup,
   InputRightElement,
   DrawerFooter,
+  InputRightAddon,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { BiMenuAltLeft } from "react-icons/bi";
@@ -87,22 +88,22 @@ const Navbar = () => {
   });
 
   useEffect(() => {
-    if(isExpired(Cookies.get("jwt"))){
+    if (isExpired(Cookies.get("jwt"))) {
       setSessionExpired(true);
     } else {
-      setSessionExpired(false)
+      setSessionExpired(false);
     }
   }, [Cookies.get()]);
 
   useEffect(() => {
-    if(!intentFromParams && !params.get("ref_id")) return
-    if(intentFromParams == "register"){
-      Formik.setFieldValue("email", emailFromParams ? emailFromParams : "")
-      setName(nameFromParams ? nameFromParams : "")
+    if (!intentFromParams && !params.get("ref_id")) return;
+    if (intentFromParams == "register") {
+      Formik.setFieldValue("email", emailFromParams ? emailFromParams : "");
+      setName(nameFromParams ? nameFromParams : "");
     }
     setCode(referralId);
     getUserInfo();
-    setIsSignupOpen(true)
+    setIsSignupOpen(true);
   }, [params]);
 
   function getUserInfo() {
@@ -147,7 +148,7 @@ const Navbar = () => {
         FormAxios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${res.data?.access_token}`;
-        Cookies.set("jwt", res.data?.access_token)
+        Cookies.set("jwt", res.data?.access_token);
         // setCookie("jwt", res.data?.access_token);
         onToggle();
         Router.push("/dashboard");
@@ -588,6 +589,9 @@ const Navbar = () => {
                   <Stack direction={["column", "row"]} spacing={[4, 8]}>
                     <FormLabel fontSize={"xl"}>Password</FormLabel>
                     <InputGroup>
+                      <InputRightAddon
+                        children={process.env.NEXT_PUBLIC_CODE}
+                      />
                       <Input
                         w={["full", "xs"]}
                         placeholder="Password"

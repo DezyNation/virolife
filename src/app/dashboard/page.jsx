@@ -93,7 +93,7 @@ const DashboardHome = () => {
         py={4}
         textTransform={"capitalize"}
       >
-        Welcome, {authUser?.name} - ({authUser?.id})
+        Welcome, {authUser?.name} - ({process.env.NEXT_PUBLIC_CODE}{authUser?.id})
       </Text>
       <Stack
         w={"full"}
