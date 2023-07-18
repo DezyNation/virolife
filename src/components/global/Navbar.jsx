@@ -632,7 +632,7 @@ const Navbar = () => {
                               {process.env.NEXT_PUBLIC_CODE}
                             </Text>
                           }
-                          paddingX={4}
+                          paddingLeft={4}
                         />
                         <Input
                           placeholder="Senior ID"
