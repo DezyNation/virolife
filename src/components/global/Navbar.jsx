@@ -589,9 +589,6 @@ const Navbar = () => {
                   <Stack direction={["column", "row"]} spacing={[4, 8]}>
                     <FormLabel fontSize={"xl"}>Password</FormLabel>
                     <InputGroup>
-                      <InputRightAddon
-                        children={process.env.NEXT_PUBLIC_CODE}
-                      />
                       <Input
                         w={["full", "xs"]}
                         placeholder="Password"
@@ -624,6 +621,18 @@ const Navbar = () => {
                     <FormLabel fontSize={"xl"}>Senior ID</FormLabel>
                     <Box>
                       <InputGroup w={["full", "xs"]}>
+                      <InputRightElement
+                          onClick={getUserInfo}
+                          children={
+                            <Text
+                              cursor={"pointer"}
+                              fontSize={"sm"}
+                            >
+                              {process.env.NEXT_PUBLIC_CODE}]
+                            </Text>
+                          }
+                          paddingX={4}
+                        />
                         <Input
                           placeholder="Senior ID"
                           boxShadow={"xl"}
