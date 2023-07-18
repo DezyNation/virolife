@@ -111,8 +111,8 @@ const Layout = ({ children }) => {
               <br />
               <Link href={"/dashboard"}>
                 <HStack gap={4}>
-                  <BsHeartFill size={20} />
-                  <Text>Support</Text>
+                  <BsMegaphoneFill size={20} />
+                  <Text>Broadcast</Text>
                 </HStack>
               </Link>
               <HStack gap={4} onClick={handleLogout} cursor={"pointer"}>
