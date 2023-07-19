@@ -395,6 +395,7 @@ const CampaignInfo = ({ params }) => {
               <FacebookShareButton
                 url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
                 quote={campaign.description}
+                title={campaign.description}
               >
                 <FacebookIcon size={36} round={true} />
               </FacebookShareButton>
