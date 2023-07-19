@@ -178,7 +178,7 @@ const CampaignInfo = ({ params }) => {
           <Box width={"sm"} h={"inherit"} position={"relative"} p={4}>
             <Box p={4} boxShadow={"lg"} rounded={8} position={"sticky"} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>
-                Donate To John Doe
+                Donate To {campaign?.user?.name}
               </Text>
               <br />
               <Progress value={80} colorScheme="yellow" />
@@ -261,7 +261,7 @@ const CampaignInfo = ({ params }) => {
           >
             <Box p={4} boxShadow={"lg"} bg={"#FFF"} rounded={8} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>
-                Donate To Sangam Kumar
+                Donate To {campaign?.user?.name}
               </Text>
               <br />
               <Progress value={80} colorScheme="yellow" />
