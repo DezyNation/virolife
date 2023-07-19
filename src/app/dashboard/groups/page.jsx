@@ -99,7 +99,8 @@ const MyParents = ({ parentUsers }) => {
                   {item?.parent_name}
                 </Text>
                 <Text fontSize={"xs"}>
-                  ID: {process.env.NEXT_PUBLIC_CODE}{item?.id} &nbsp; | &nbsp; Phone: {item?.parent_phone}
+                  ID: {process.env.NEXT_PUBLIC_CODE}
+                  {item?.id} &nbsp; | &nbsp; Phone: {item?.parent_phone}
                 </Text>
               </Box>
             </HStack>
@@ -153,6 +154,27 @@ const MyChildren = ({ childMembers }) => {
   const [myGroup, setMyGroup] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
 
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [showTooltip, setShowTooltip] = useState({
+    status: false,
+    id: "",
+    donation: "0",
+  });
+
+  useEffect(() => {
+    const handleWindowMouseMove = (event) => {
+      setCoords({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    };
+    window.addEventListener("mousemove", handleWindowMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleWindowMouseMove);
+    };
+  }, []);
+
   useEffect(() => {
     setMyId(localStorage.getItem("userId"));
     setMyName(localStorage.getItem("userName"));
@@ -163,7 +185,6 @@ const MyChildren = ({ childMembers }) => {
   }, []);
 
   function buildHierarchy(items, parentId) {
-    console.log(parentId);
     const nestedArray = [];
     for (const item of items) {
       if (parseInt(item.parent_id) == parseInt(parentId)) {
@@ -196,7 +217,12 @@ const MyChildren = ({ childMembers }) => {
           localStorage.getItem("userId")
         );
         setGroupMembers([
-          { name: localStorage.getItem("userName"), children: hierarchyArray },
+          {
+            name: localStorage.getItem("userName"),
+            children: hierarchyArray,
+            id: localStorage.getItem("userId"),
+            donation: 0,
+          },
         ]);
       })
       .catch((err) => {
@@ -231,7 +257,8 @@ const MyChildren = ({ childMembers }) => {
                     {item?.name}
                   </Text>
                   <Text fontSize={"xs"}>
-                    ID: {process.env.NEXT_PUBLIC_CODE}{item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
+                    ID: {process.env.NEXT_PUBLIC_CODE}
+                    {item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
                   </Text>
                 </Box>
               </HStack>
@@ -261,13 +288,35 @@ const MyChildren = ({ childMembers }) => {
         <ModalContent>
           <ModalHeader>You Group Members</ModalHeader>
           <ModalBody>
-            <Box w={"full"} h={"80vh"}>
+            <Box w={"full"} h={"80vh"} pos={"relative"}>
               <Tree
                 data={groupMembers}
                 orientation="vertical"
                 translate={{ x: 300, y: 200 }}
                 separation={{ siblings: 3, nonSiblings: 3 }}
+                onNodeMouseOver={(data) => {
+                  setShowTooltip({
+                    status: true,
+                    id: `VCF${data?.data?.id}`,
+                    donation: 0,
+                  });
+                }}
+                onNodeMouseOut={() => setShowTooltip({ status: false })}
               />
+            </Box>
+            <Box
+              display={showTooltip.status ? "flex" : "none"}
+              flexDirection={'column'}
+              pos={"absolute"}
+              top={coords.y - 100}
+              left={coords.x - 400}
+              p={3}
+              rounded={4}
+              boxShadow={"sm"}
+              bgColor={"#FFF"}
+            >
+              <Text fontSize={"sm"}>ID: {showTooltip.id}</Text>
+              <Text fontSize={"sm"}>Collection: {showTooltip.donation}</Text>
             </Box>
           </ModalBody>
           <ModalFooter></ModalFooter>
@@ -301,8 +350,8 @@ const Page = () => {
   const [primaryActive, setPrimaryActive] = useState(false);
   const [secondaryActive, setSecondaryActive] = useState(false);
 
-  const [primaryJoined, setPrimaryJoined] = useState(false)
-  const [secondaryJoined, setSecondaryJoined] = useState(false)
+  const [primaryJoined, setPrimaryJoined] = useState(false);
+  const [secondaryJoined, setSecondaryJoined] = useState(false);
 
   const [primaryIdRequested, setPrimaryIdRequested] = useState(false);
   const [secondaryIdRequested, setSecondaryIdRequested] = useState(false);

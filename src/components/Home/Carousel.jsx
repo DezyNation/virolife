@@ -56,6 +56,7 @@ const Carousel = () => {
     initialValues: {
       email: "",
       password: "",
+      phone: ""
     },
   });
 
@@ -324,6 +325,25 @@ const Carousel = () => {
                       placeholder="Your Email"
                       type="email"
                       name="email"
+                      onChange={Formik.handleChange}
+                      boxShadow={"xl"}
+                      border={".5px solid #FAFAFA"}
+                      rounded={0}
+                    />
+                  </Stack>
+                </FormControl>
+                <FormControl>
+                  <Stack
+                    direction={["column", "row"]}
+                    spacing={[4, 8]}
+                    justifyContent={"space-between"}
+                  >
+                    <FormLabel fontSize={"xl"}>Phone Number</FormLabel>
+                    <Input
+                      w={["full", "xs"]}
+                      placeholder="Phone Number"
+                      type="tel"
+                      name="phone"
                       onChange={Formik.handleChange}
                       boxShadow={"xl"}
                       border={".5px solid #FAFAFA"}
