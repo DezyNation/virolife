@@ -32,6 +32,14 @@ import {
 import BackendAxios from "@/utils/axios";
 import { BsClipboard, BsHeartFill, BsShareFill } from "react-icons/bs";
 import Footer from "@/components/global/Footer";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  WhatsappShareButton,
+  WhatsappIcon,
+  LinkedinShareButton,
+  LinkedinIcon,
+} from "react-share";
 
 const CampaignInfo = ({ params }) => {
   const { id } = params;
@@ -90,7 +98,8 @@ const CampaignInfo = ({ params }) => {
           <Text pb={8}>
             Need ₹{Number(campaign?.target_amount)?.toLocaleString("en-IN")}{" "}
             till &nbsp;
-            {new Date(campaign?.updated_at).toDateString()} - Campaign By {campaign?.user?.name}
+            {new Date(campaign?.updated_at).toDateString()} - Campaign By{" "}
+            {campaign?.user?.name}
           </Text>
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
@@ -364,7 +373,13 @@ const CampaignInfo = ({ params }) => {
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <Image
+              <WhatsappShareButton
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
+                title={campaign.description}
+              >
+                <WhatsappIcon size={36} round={true} />
+              </WhatsappShareButton>
+              {/* <Image
                 cursor={"pointer"}
                 src="/whatsapp.png"
                 onClick={() =>
@@ -376,8 +391,14 @@ const CampaignInfo = ({ params }) => {
                 }
                 boxSize={8}
                 objectFit={"contain"}
-              />
-              <Image
+              /> */}
+              <FacebookShareButton
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
+                quote={campaign.description}
+              >
+                <FacebookIcon size={36} round={true} />
+              </FacebookShareButton>
+              {/* <Image
                 cursor={"pointer"}
                 src="/facebook.png"
                 onClick={() =>
@@ -389,8 +410,14 @@ const CampaignInfo = ({ params }) => {
                 }
                 boxSize={8}
                 objectFit={"contain"}
-              />
-              <Image
+              /> */}
+              <LinkedinShareButton
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
+                summary={campaign.description}
+              >
+                <LinkedinIcon size={36} round={true} />
+              </LinkedinShareButton>
+              {/* <Image
                 cursor={"pointer"}
                 src="/linkedin.png"
                 onClick={() =>
@@ -402,7 +429,7 @@ const CampaignInfo = ({ params }) => {
                 }
                 boxSize={6}
                 objectFit={"contain"}
-              />
+              /> */}
             </HStack>
           </ModalBody>
         </ModalContent>
