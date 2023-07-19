@@ -415,6 +415,7 @@ const CampaignInfo = ({ params }) => {
               <LinkedinShareButton
                 url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
                 summary={campaign.description}
+                title={campaign.description}
               >
                 <LinkedinIcon size={36} round={true} />
               </LinkedinShareButton>
