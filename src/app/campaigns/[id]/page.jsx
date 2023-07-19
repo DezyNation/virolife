@@ -90,7 +90,7 @@ const CampaignInfo = ({ params }) => {
           <Text pb={8}>
             Need ₹{Number(campaign?.target_amount)?.toLocaleString("en-IN")}{" "}
             till &nbsp;
-            {new Date(campaign?.updated_at).toDateString()}
+            {new Date(campaign?.updated_at).toDateString()} - Campaign By {campaign?.user?.name}
           </Text>
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
