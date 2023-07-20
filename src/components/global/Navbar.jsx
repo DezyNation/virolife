@@ -197,12 +197,11 @@ const Navbar = () => {
       });
   }
 
-  function handleLogout() {
-    BackendAxios.post("/logout")
+  async function handleLogout() {
+    await BackendAxios.post("/logout")
       .then((res) => {
         Cookies.remove("jwt");
         localStorage.clear();
-        window.location.reload();
       })
       .catch((err) => {
         Toast({
@@ -212,8 +211,8 @@ const Navbar = () => {
         });
         Cookies.remove("jwt");
         localStorage.clear();
-        window.location.reload();
       });
+      Router.replace("/");
   }
 
   useEffect(() => {
