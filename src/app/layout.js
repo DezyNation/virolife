@@ -1,9 +1,9 @@
-'use client'
-import Footer from "@/components/global/Footer"
-import Navbar from "@/components/global/Navbar"
-import { ChakraProvider } from "@chakra-ui/react"
-import { SessionProvider } from "next-auth/react"
-import '../app/styles/globals.css'
+"use client";
+import Footer from "@/components/global/Footer";
+import Navbar from "@/components/global/Navbar";
+import { ChakraProvider } from "@chakra-ui/react";
+import { SessionProvider } from "next-auth/react";
+import "../app/styles/globals.css";
 
 // export const metadata = {
 //   title: 'Create Next App',
@@ -12,7 +12,10 @@ import '../app/styles/globals.css'
 
 export default function RootLayout({ children, session }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+    >
       <head>
         <title>Virolife</title>
       </head>
@@ -25,5 +28,5 @@ export default function RootLayout({ children, session }) {
         </ChakraProvider>
       </body>
     </html>
-  )
+  );
 }

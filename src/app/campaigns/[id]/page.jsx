@@ -40,6 +40,7 @@ import {
   LinkedinShareButton,
   LinkedinIcon,
 } from "react-share";
+import Head from "next/head";
 
 const CampaignInfo = ({ params }) => {
   const { id } = params;
@@ -81,6 +82,24 @@ const CampaignInfo = ({ params }) => {
   }, []);
   return (
     <>
+      <Head>
+        <meta
+          property="og:image"
+          content={
+            campaign.file_path
+              ? `https://api.virolife.in/${campaign.file_path}`
+              : "https://idea.batumi.ge/files/default.jpg"
+          }
+        />
+        <meta
+          property="twitter:image"
+          content={
+            campaign.file_path
+              ? `https://api.virolife.in/${campaign.file_path}`
+              : "https://idea.batumi.ge/files/default.jpg"
+          }
+        />
+      </Head>
       <Stack
         p={[4, 16, 24]}
         direction={["column", "row"]}
@@ -375,63 +394,26 @@ const CampaignInfo = ({ params }) => {
             >
               <WhatsappShareButton
                 url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
-                title={campaign.description}
+                title={`*${campaign?.title}*\n${campaign.description}\nEven a single contribution can make a difference.\nDonate Now`}
               >
                 <WhatsappIcon size={36} round={true} />
               </WhatsappShareButton>
-              {/* <Image
-                cursor={"pointer"}
-                src="/whatsapp.png"
-                onClick={() =>
-                  window.open(
-                    `https://wa.me/send?text=\r\n${campaign?.description}\r\nMake your contribution at Virolife.\r\n${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}
-              `,
-                    "_blank"
-                  )
-                }
-                boxSize={8}
-                objectFit={"contain"}
-              /> */}
+              
               <FacebookShareButton
                 url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
-                quote={campaign.description}
-                title={campaign.description}
+                quote={`${campaign?.title}\n${campaign.description}\nEven a single contribution can make a difference.\nDonate Now`}
+                title={`${campaign?.title}\n${campaign.description}\nEven a single contribution can make a difference.\nDonate Now`}
               >
                 <FacebookIcon size={36} round={true} />
               </FacebookShareButton>
-              {/* <Image
-                cursor={"pointer"}
-                src="/facebook.png"
-                onClick={() =>
-                  window.open(
-                    `https://www.facebook.com/sharer/sharer.php?u=\r\n${campaign?.description}\r\nMake your contribution now at Virolife.\r\n${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}
-              `,
-                    "_blank"
-                  )
-                }
-                boxSize={8}
-                objectFit={"contain"}
-              /> */}
+              
               <LinkedinShareButton
                 url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
-                summary={campaign.description}
-                title={campaign.description}
+                summary={`${campaign?.title}\n${campaign.description}\nEven a single contribution can make a difference.\nDonate Now`}
+                title={`${campaign?.title}\n${campaign.description}\nEven a single contribution can make a difference.\nDonate Now`}
               >
                 <LinkedinIcon size={36} round={true} />
               </LinkedinShareButton>
-              {/* <Image
-                cursor={"pointer"}
-                src="/linkedin.png"
-                onClick={() =>
-                  window.open(
-                    `https://www.linkedin.com/sharing/share-offsite?url=${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}&title=Make your contribution now at Virolife.
-              `,
-                    "_blank"
-                  )
-                }
-                boxSize={6}
-                objectFit={"contain"}
-              /> */}
             </HStack>
           </ModalBody>
         </ModalContent>

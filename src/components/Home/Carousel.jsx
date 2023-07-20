@@ -28,35 +28,25 @@ import { useFormik } from "formik";
 import { isExpired } from "react-jwt";
 
 const Carousel = () => {
-  const Toast = useToast({position: 'top-right'})
+  const Toast = useToast({ position: "top-right" });
   const { isOpen, onToggle } = useDisclosure();
-  const [code, setCode] = useState("")
   const [isSignupOpen, setIsSignupOpen] = useState(false);
-  const [seniorInfo, setSeniorInfo] = useState({});
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const Router = useRouter();
-  const params = useSearchParams();
-  const referralId = params.get("ref_id");
   const [sessionExpired, setSessionExpired] = useState(false);
-  const [name, setName] = useState("");
-  const [userName, setUserName] = useState("");
-
-
-  useEffect(() => {
-    if (!referralId) return;
-    setCode(referralId);
-    getUserInfo();
-  }, [params.get("ref_id")]);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     setSessionExpired(isExpired(cookies.jwt));
   }, [cookies]);
+
   const Formik = useFormik({
     initialValues: {
       email: "",
       password: "",
-      phone: ""
+      phone: "",
+      name: "",
     },
   });
 
@@ -69,7 +59,8 @@ const Carousel = () => {
     }
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
-        ...Formik.values,
+        email: Formik.values.email,
+        password: Formik.values.password,
       })
       .then((res) => {
         Toast({
@@ -96,64 +87,30 @@ const Carousel = () => {
       });
   }
 
-  function handleSignup() {
-    if (!Formik.values.email || !Formik.values.password) {
-      Toast({
-        description: "Email and password must not be empty",
-      });
-      return;
-    }
-    axios
-      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
-        ...Formik.values,
-        name: name,
-        password_confirmation: Formik.values.password,
-        code: code,
-      })
+  function sendInvite() {
+    BackendAxios.post(`/invitation`, {
+      url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}?intent=register&name=${Formik.values.name.replace(/ /g, "%20")}&email=${Formik.values.email}&phone=${Formik.values.phone}`,
+      email: Formik.values.email,
+    })
       .then((res) => {
         Toast({
           status: "success",
-          description: "Signup successful!",
+          title: "Email sent!",
+          description: "Please check your inbox for invitation.",
         });
         setIsSignupOpen(false);
       })
       .catch((err) => {
         Toast({
           status: "error",
+          title: "Error while sending invitation",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
+        setIsSignupOpen(false);
       });
   }
 
-  function sendInvite(){
-    Toast({
-      status: 'success',
-      title: 'Email sent!',
-      description: "Please check your inbox for invitation."
-    })
-    setIsSignupOpen(false)
-  }
-
-  function getUserInfo() {
-    BackendAxios.get(`/api/users/${code}`)
-      .then((res) => {
-        if (res.data?.length) {
-          setSeniorInfo(res.data[0]);
-        } else {
-          Toast({
-            description: "Invalid senior ID",
-          });
-        }
-      })
-      .catch((err) => {
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
   return (
     <>
       <Box w={"full"}>
@@ -181,7 +138,11 @@ const Carousel = () => {
               bgColor={"yellow.400"}
               fontWeight={"semibold"}
               color={"#333"}
-              onClick={()=>{sessionExpired ? setIsSignupOpen(true) : Router.push("/dashboard/campaigns/create")}}
+              onClick={() => {
+                sessionExpired
+                  ? setIsSignupOpen(true)
+                  : Router.push("/dashboard/campaigns/create");
+              }}
             >
               Let's Start a Fund Raiser
             </Button>
@@ -306,10 +267,11 @@ const Carousel = () => {
                     <Input
                       w={["full", "xs"]}
                       placeholder="Your Full Name"
+                      name="name"
                       boxShadow={"xl"}
                       border={".5px solid #FAFAFA"}
                       rounded={0}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={Formik.handleChange}
                     />
                   </Stack>
                 </FormControl>
@@ -351,68 +313,7 @@ const Carousel = () => {
                     />
                   </Stack>
                 </FormControl>
-                {/* <FormControl>
-                  <Stack direction={["column", "row"]} spacing={[4, 8]}>
-                    <FormLabel fontSize={"xl"}>Password</FormLabel>
-                    <InputGroup>
-                      <Input
-                        w={["full", "xs"]}
-                        placeholder="Password"
-                        type={isPasswordVisible ? "text" : "password"}
-                        boxShadow={"xl"}
-                        border={".5px solid #FAFAFA"}
-                        rounded={0}
-                        name="password"
-                        onChange={Formik.handleChange}
-                      />
-                      <InputRightElement
-                        children={
-                          isPasswordVisible ? (
-                            <AiOutlineEyeInvisible />
-                          ) : (
-                            <AiOutlineEye />
-                          )
-                        }
-                        onClick={() => setisPasswordVisible(!isPasswordVisible)}
-                      />
-                    </InputGroup>
-                  </Stack>
-                </FormControl> */}
-                {/* <FormControl>
-                  <Stack
-                    direction={["column", "row"]}
-                    spacing={[4, 8]}
-                    justifyContent={"space-between"}
-                  >
-                    <FormLabel fontSize={"xl"}>Senior ID</FormLabel>
-                    <Box>
-                      <InputGroup w={["full", "xs"]}>
-                        <Input
-                          placeholder="Senior ID"
-                          boxShadow={"xl"}
-                          border={".5px solid #FAFAFA"}
-                          rounded={0}
-                          value={code}
-                          onChange={(e) => setCode(e.target.value)}
-                        />
-                        <InputRightElement
-                          onClick={getUserInfo}
-                          children={
-                            <Text
-                              cursor={"pointer"}
-                              fontSize={"xs"}
-                              color={"twitter.500"}
-                            >
-                              Verify
-                            </Text>
-                          }
-                          paddingRight={4}
-                        />
-                      </InputGroup>
-                      <Text fontSize={"xs"}>{seniorInfo?.name}</Text>
-                    </Box>
-                  </Stack>
-                </FormControl> */}
+
                 <Box
                   px={8}
                   py={4}

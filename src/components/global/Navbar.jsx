@@ -77,8 +77,9 @@ const Navbar = () => {
   const params = useSearchParams();
   const referralId = params.get("ref_id");
   const emailFromParams = params.get("email");
-  const nameFromParams = params.get("name");
   const intentFromParams = params.get("intent");
+  const nameFromParams = params.get("name");
+  const phoneFromParams = params.get("phone");
   const [code, setCode] = useState(params.get("ref_id"));
 
   const Formik = useFormik({
@@ -100,10 +101,13 @@ const Navbar = () => {
     if (!intentFromParams && !params.get("ref_id")) return;
     if (intentFromParams == "register") {
       Formik.setFieldValue("email", emailFromParams ? emailFromParams : "");
+      Formik.setFieldValue("password", phoneFromParams ? phoneFromParams : "");
       setName(nameFromParams ? nameFromParams : "");
     }
     setCode(referralId);
-    getUserInfo();
+    if (referralId) {
+      getUserInfo();
+    }
     setIsSignupOpen(true);
   }, [params]);
 
@@ -598,6 +602,7 @@ const Navbar = () => {
                         border={".5px solid #FAFAFA"}
                         rounded={0}
                         name="password"
+                        value={Formik.values.password}
                         onChange={Formik.handleChange}
                       />
                       <InputRightElement
@@ -622,13 +627,10 @@ const Navbar = () => {
                     <FormLabel fontSize={"xl"}>Senior ID</FormLabel>
                     <Box>
                       <InputGroup w={["full", "xs"]}>
-                      <InputLeftElement
+                        <InputLeftElement
                           onClick={getUserInfo}
                           children={
-                            <Text
-                              cursor={"pointer"}
-                              fontSize={"sm"}
-                            >
+                            <Text cursor={"pointer"} fontSize={"sm"}>
                               {process.env.NEXT_PUBLIC_CODE}
                             </Text>
                           }
