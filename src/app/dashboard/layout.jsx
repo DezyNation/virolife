@@ -39,8 +39,8 @@ const Layout = ({ children }) => {
     isExpired(Cookies.get("jwt"))
   },[])
 
-  function handleLogout() {
-    BackendAxios.post("/logout")
+  async function handleLogout() {
+    await BackendAxios.post("/logout")
       .then((res) => {
         // removeCookie("jwt")
         Cookies.remove("jwt");
@@ -56,9 +56,7 @@ const Layout = ({ children }) => {
         Cookies.remove("jwt");
         localStorage.clear();
       })
-      .finally(() => {
-        Router.replace("/");
-      });
+      Router.replace("/");
   }
 
   return (
