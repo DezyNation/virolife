@@ -153,6 +153,7 @@ const MyParents = ({ parentUsers }) => {
   );
 };
 
+
 const MyChildren = ({ childMembers }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
@@ -333,11 +334,192 @@ const MyChildren = ({ childMembers }) => {
   );
 };
 
+
+const MySecondaryChildren = ({ childMembers }) => {
+  const Toast = useToast({ position: "top-right" });
+  const [groupModal, setGroupModal] = useState(false);
+  const [myId, setMyId] = useState("");
+  const [myName, setMyName] = useState("");
+  const [myGroup, setMyGroup] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
+
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [showTooltip, setShowTooltip] = useState({
+    status: false,
+    id: "",
+    donation: "0",
+  });
+
+  useEffect(() => {
+    const handleWindowMouseMove = (event) => {
+      setCoords({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    };
+    window.addEventListener("mousemove", handleWindowMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleWindowMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    setMyId(localStorage.getItem("userId"));
+    setMyName(localStorage.getItem("userName"));
+  }, []);
+
+  useEffect(() => {
+    loadGroup();
+  }, []);
+
+  function buildHierarchy(items, parentId) {
+    const nestedArray = [];
+    for (const item of items) {
+      if (parseInt(item.secondary_parent_id) == parseInt(parentId)) {
+        const children = buildHierarchy(items, item.id);
+        if (children.length > 0) {
+          item.children = children;
+        }
+        nestedArray.push(item);
+      }
+    }
+    return nestedArray;
+  }
+
+  function viewGroup(id) {
+    if (!myGroup?.length) {
+      Toast({
+        description: "Group doesn't exist!",
+      });
+      return;
+    }
+    setGroupModal(true);
+  }
+
+  function loadGroup() {
+    BackendAxios.get(`/api/my-group/secondary`)
+      .then((res) => {
+        setMyGroup(res.data);
+        const hierarchyArray = buildHierarchy(
+          res.data,
+          localStorage.getItem("userId")
+        );
+        setGroupMembers([
+          {
+            name: localStorage.getItem("userName"),
+            children: hierarchyArray,
+            id: localStorage.getItem("userId"),
+            donation: 0,
+          },
+        ]);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
+  return (
+    <>
+      <Box>
+        {myGroup
+          ?.filter((user) => user?.secondary_parent_id == parseInt(myId))
+          ?.map((item, key) => (
+            <HStack
+              py={4}
+              key={key}
+              w={["full", "xs"]}
+              justifyContent={"space-between"}
+            >
+              <HStack>
+                <Avatar name={item?.name} />
+                <Box>
+                  <Text
+                    className="serif"
+                    fontWeight={"semibold"}
+                    fontSize={"lg"}
+                  >
+                    {item?.name}
+                  </Text>
+                  <Text fontSize={"xs"}>
+                    ID: {process.env.NEXT_PUBLIC_CODE}
+                    {item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
+                  </Text>
+                </Box>
+              </HStack>
+            </HStack>
+          ))}
+        {myGroup?.filter((user) => user?.secondary_parent_id == parseInt(myId))
+          ?.length ? (
+          <HStack justifyContent={"flex-end"} py={4}>
+            <Button
+              size={"sm"}
+              rounded={"full"}
+              colorScheme="twitter"
+              onClick={() => viewGroup()}
+            >
+              View Group Tree
+            </Button>
+          </HStack>
+        ) : null}
+      </Box>
+
+      <Modal
+        isOpen={groupModal}
+        onClose={() => setGroupModal(false)}
+        size={["full", "4xl"]}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>You Group Members</ModalHeader>
+          <ModalBody>
+            <Box w={"full"} h={"80vh"} pos={"relative"}>
+              <Tree
+                data={groupMembers}
+                orientation="vertical"
+                translate={{ x: 300, y: 200 }}
+                separation={{ siblings: 3, nonSiblings: 3 }}
+                onNodeMouseOver={(data) => {
+                  setShowTooltip({
+                    status: true,
+                    id: `VCF${data?.data?.id}`,
+                    donation: 0,
+                  });
+                }}
+                onNodeMouseOut={() => setShowTooltip({ status: false })}
+              />
+            </Box>
+            <Box
+              display={showTooltip.status ? "flex" : "none"}
+              flexDirection={"column"}
+              pos={"absolute"}
+              top={coords.y - 100}
+              left={coords.x - 400}
+              p={3}
+              rounded={4}
+              boxShadow={"sm"}
+              bgColor={"#FFF"}
+            >
+              <Text fontSize={"sm"}>ID: {showTooltip.id}</Text>
+              <Text fontSize={"sm"}>Collection: {showTooltip.donation}</Text>
+            </Box>
+          </ModalBody>
+          <ModalFooter></ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
+
+
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [joinGroupId, setJoinGroupId] = useState("");
-  const [myGroupExists, setMyGroupExists] = useState(false);
+  const [joinGroupId, setJoinGroupId] = useState("")
   const [invitationModal, setInvitationModal] = useState(false);
 
   const [myId, setMyId] = useState("");
@@ -352,9 +534,8 @@ const Page = () => {
     `${process.env.NEXT_PUBLIC_FRONTEND_URL}?refid=`
   );
   const [primaryParentUsers, setPrimaryParentUsers] = useState([]);
-  const [primaryChildMembers, setPrimaryChildMembers] = useState([]);
+  const [secondaryParentUsers, setSecondaryParentUsers] = useState([]);
 
-  const [primaryActive, setPrimaryActive] = useState(false);
   const [secondaryActive, setSecondaryActive] = useState(false);
 
   const [primaryJoined, setPrimaryJoined] = useState(false);
@@ -374,8 +555,8 @@ const Page = () => {
   });
 
   useEffect(() => {
-    fetchPrimaryChildren();
     fetchPrimaryParents();
+    fetchSecondaryParents();
   }, []);
 
   useEffect(() => {
@@ -387,10 +568,9 @@ const Page = () => {
     setMyId(localStorage.getItem("userId"));
     setMyName(localStorage.getItem("userName"));
 
-    setPrimaryActive(localStorage.getItem("primaryActive"));
     setPrimaryJoined(Boolean(localStorage.getItem("primaryParentId")));
 
-    setSecondaryActive(localStorage.getItem("secondaryActive"));
+    setSecondaryJoined(localStorage.getItem("secondaryParentId"));
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
         "userId"
@@ -426,10 +606,11 @@ const Page = () => {
           description: "Group Joined Successfully!",
         });
         onClose();
+        localStorage.setItem("secondaryParentId", true)
         setVideoStatus(false);
         setSecondaryJoined(true);
-        setPrimaryIdRequested(false);
-        fetchPrimaryParents();
+        setSecondaryIdRequested(false);
+        fetchSecondaryParents();
       })
       .catch((err) => {
         setVideoStatus(false);
@@ -486,17 +667,11 @@ const Page = () => {
     });
   }
 
-  function fetchPrimaryChildren() {
-    BackendAxios.get(`/api/my-group`)
+
+  function fetchPrimaryParents() {
+    BackendAxios.get(`/api/my-admin`)
       .then((res) => {
-        if (!res?.data?.length) {
-          setMyGroupExists(false);
-          return;
-        }
-        if (res?.data?.length) {
-          setMyGroupExists(true);
-          setPrimaryChildMembers(res.data);
-        }
+        setPrimaryParentUsers(res.data);
       })
       .catch((err) => {
         Toast({
@@ -506,11 +681,10 @@ const Page = () => {
         });
       });
   }
-
-  function fetchPrimaryParents() {
-    BackendAxios.get(`/api/my-admin`)
+  function fetchSecondaryParents() {
+    BackendAxios.get(`/api/my-admin/secondary`)
       .then((res) => {
-        setPrimaryParentUsers(res.data);
+        setSecondaryParentUsers(res.data);
       })
       .catch((err) => {
         Toast({
@@ -554,7 +728,7 @@ const Page = () => {
           <Box>
             <Text fontSize={"xl"}>My Seniors (Secondary ID)</Text>
             <br />
-            <MyParents parentUsers={primaryParentUsers} />
+            <MyParents parentUsers={secondaryParentUsers} />
           </Box>
         </Stack>
       </Box>
@@ -570,12 +744,12 @@ const Page = () => {
           <Box>
             <Text fontSize={"xl"}>My Juniors (Primary ID)</Text>
             <br />
-            <MyChildren childMembers={primaryChildMembers} />
+            <MyChildren />
           </Box>
           <Box>
             <Text fontSize={"xl"}>My Juniors (Secondary ID)</Text>
             <br />
-            <MyChildren childMembers={primaryChildMembers} />
+            <MySecondaryChildren />
           </Box>
         </Stack>
       </Box>

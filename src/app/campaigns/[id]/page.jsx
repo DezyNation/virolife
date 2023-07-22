@@ -133,37 +133,37 @@ const CampaignInfo = ({ params }) => {
               rounded={16}
             />
             {/* 
-            <Stack
-                            direction={['row', 'column']}
-                            w={['full', '48']}
-                            h={['auto', 'lg']} gap={6}
-                            overflowX={['scroll', 'visible']}
-                            overflowY={['visible', 'scroll']}
-                            className='hide-scrollbar'
-                        >
-                            <Image
-                                src={"https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg"}
-                                boxSize={['24']} objectFit={'cover'}
-                                rounded={16} cursor={'pointer'}
-                                onClick={() => setSelectedImg("https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg")}
-                                border={'2px'} borderColor={selectedImg == "https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg" ? "yellow.400" : 'transparent'}
-                            />
-                            <Image
-                                src={"https://imgnew.outlookindia.com/uploadimage/library/16_9/16_9_5/IMAGE_1675431757.jpg"}
-                                boxSize={['24']} objectFit={'cover'}
-                                rounded={16} cursor={'pointer'}
-                                onClick={() => setSelectedImg("https://imgnew.outlookindia.com/uploadimage/library/16_9/16_9_5/IMAGE_1675431757.jpg")}
-                                border={'2px'} borderColor={selectedImg == "https://imgnew.outlookindia.com/uploadimage/library/16_9/16_9_5/IMAGE_1675431757.jpg" ? "yellow.400" : 'transparent'}
-                            />
-                            <Image
-                                src={"https://wellnessworks.in/wp-content/uploads/2019/10/indian-cow.jpg"}
-                                boxSize={['24']} objectFit={'cover'}
-                                rounded={16} cursor={'pointer'}
-                                onClick={() => setSelectedImg("https://wellnessworks.in/wp-content/uploads/2019/10/indian-cow.jpg")}
-                                border={'2px'} borderColor={selectedImg == "https://wellnessworks.in/wp-content/uploads/2019/10/indian-cow.jpg" ? "yellow.400" : 'transparent'}
-                            />
-                        </Stack> 
-                        */}
+                <Stack
+                  direction={['row', 'column']}
+                  w={['full', '48']}
+                  h={['auto', 'lg']} gap={6}
+                  overflowX={['scroll', 'visible']}
+                  overflowY={['visible', 'scroll']}
+                  className='hide-scrollbar'
+              >
+                  <Image
+                      src={"https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg"}
+                      boxSize={['24']} objectFit={'cover'}
+                      rounded={16} cursor={'pointer'}
+                      onClick={() => setSelectedImg("https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg")}
+                      border={'2px'} borderColor={selectedImg == "https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg" ? "yellow.400" : 'transparent'}
+                  />
+                  <Image
+                      src={"https://imgnew.outlookindia.com/uploadimage/library/16_9/16_9_5/IMAGE_1675431757.jpg"}
+                      boxSize={['24']} objectFit={'cover'}
+                      rounded={16} cursor={'pointer'}
+                      onClick={() => setSelectedImg("https://imgnew.outlookindia.com/uploadimage/library/16_9/16_9_5/IMAGE_1675431757.jpg")}
+                      border={'2px'} borderColor={selectedImg == "https://imgnew.outlookindia.com/uploadimage/library/16_9/16_9_5/IMAGE_1675431757.jpg" ? "yellow.400" : 'transparent'}
+                  />
+                  <Image
+                      src={"https://wellnessworks.in/wp-content/uploads/2019/10/indian-cow.jpg"}
+                      boxSize={['24']} objectFit={'cover'}
+                      rounded={16} cursor={'pointer'}
+                      onClick={() => setSelectedImg("https://wellnessworks.in/wp-content/uploads/2019/10/indian-cow.jpg")}
+                      border={'2px'} borderColor={selectedImg == "https://wellnessworks.in/wp-content/uploads/2019/10/indian-cow.jpg" ? "yellow.400" : 'transparent'}
+                  />
+              </Stack>
+            */}
           </Stack>
           <HStack justifyContent={"flex-end"}>
             <Button
@@ -179,7 +179,6 @@ const CampaignInfo = ({ params }) => {
             Category: {campaign?.category?.name}
           </Text>
           <br />
-          <Text></Text>
           <Text
             maxW={["full", "xl", "4xl"]}
             p={4}
@@ -398,7 +397,7 @@ const CampaignInfo = ({ params }) => {
               >
                 <WhatsappIcon size={36} round={true} />
               </WhatsappShareButton>
-              
+
               <FacebookShareButton
                 url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
                 quote={`${campaign?.title}\n${campaign.description}\nEven a single contribution can make a difference.\nDonate Now`}
@@ -406,7 +405,7 @@ const CampaignInfo = ({ params }) => {
               >
                 <FacebookIcon size={36} round={true} />
               </FacebookShareButton>
-              
+
               <LinkedinShareButton
                 url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${id}`}
                 summary={`${campaign?.title}\n${campaign.description}\nEven a single contribution can make a difference.\nDonate Now`}
