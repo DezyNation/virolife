@@ -21,6 +21,7 @@ import {
   InputGroup,
   InputRightAddon,
   Image,
+  AvatarBadge,
 } from "@chakra-ui/react";
 import { LuStars } from "react-icons/lu";
 import BackendAxios from "@/utils/axios";
@@ -93,7 +94,13 @@ const MyParents = ({ parentUsers }) => {
             justifyContent={"space-between"}
           >
             <HStack>
-              <Avatar name={item?.parent_name} />
+              <Avatar name={item?.parent_name}>
+                <AvatarBadge
+                  boxSize="1.25em"
+                  bg="yellow.500"
+                  children={<Text fontSize="12px">{key + 1}</Text>}
+                />
+              </Avatar>
               <Box>
                 <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
                   {item?.parent_name}
@@ -306,7 +313,7 @@ const MyChildren = ({ childMembers }) => {
             </Box>
             <Box
               display={showTooltip.status ? "flex" : "none"}
-              flexDirection={'column'}
+              flexDirection={"column"}
               pos={"absolute"}
               top={coords.y - 100}
               left={coords.x - 400}
@@ -344,8 +351,8 @@ const Page = () => {
   const { value, setValue, onCopy, hasCopied } = useClipboard(
     `${process.env.NEXT_PUBLIC_FRONTEND_URL}?refid=`
   );
-  const [parentUsers, setParentUsers] = useState([]);
-  const [childMembers, setChildMembers] = useState([]);
+  const [primaryParentUsers, setPrimaryParentUsers] = useState([]);
+  const [primaryChildMembers, setPrimaryChildMembers] = useState([]);
 
   const [primaryActive, setPrimaryActive] = useState(false);
   const [secondaryActive, setSecondaryActive] = useState(false);
@@ -367,8 +374,8 @@ const Page = () => {
   });
 
   useEffect(() => {
-    fetchChildren();
-    fetchParents();
+    fetchPrimaryChildren();
+    fetchPrimaryParents();
   }, []);
 
   useEffect(() => {
@@ -381,7 +388,7 @@ const Page = () => {
     setMyName(localStorage.getItem("userName"));
 
     setPrimaryActive(localStorage.getItem("primaryActive"));
-    setPrimaryJoined(Boolean(localStorage.getItem("parentId")));
+    setPrimaryJoined(Boolean(localStorage.getItem("primaryParentId")));
 
     setSecondaryActive(localStorage.getItem("secondaryActive"));
     setValue(
@@ -411,14 +418,47 @@ const Page = () => {
       });
   }
 
-  function createGroup() {
-    BackendAxios.post(`/api/group`, {
-      title: `My Group`,
-    })
+  function joinSecondaryGroup() {
+    BackendAxios.post(`/api/join-group/${joinGroupId}`)
       .then((res) => {
-        fetchChildren();
+        Toast({
+          status: "success",
+          description: "Group Joined Successfully!",
+        });
+        onClose();
+        setVideoStatus(false);
+        setSecondaryJoined(true);
+        setPrimaryIdRequested(false);
+        fetchPrimaryParents();
       })
       .catch((err) => {
+        setVideoStatus(false);
+        onClose();
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
+  function joinPrimaryGroup() {
+    BackendAxios.get(`/api/join-group/${joinGroupId}`)
+      .then((res) => {
+        Toast({
+          status: "success",
+          description: "Group Joined Successfully!",
+        });
+        onClose();
+        localStorage.setItem("primaryParentId", joinGroupId)
+        setVideoStatus(false);
+        setPrimaryJoined(true);
+        setPrimaryIdRequested(false);
+        fetchPrimaryParents();
+      })
+      .catch((err) => {
+        setVideoStatus(false);
+        onClose();
         Toast({
           status: "error",
           description:
@@ -437,32 +477,16 @@ const Page = () => {
     setVideoStatus(true);
     setVideoData({
       onVideoClose: () => {
-        BackendAxios.get(`/api/join-group/${joinGroupId}`)
-          .then((res) => {
-            Toast({
-              status: "success",
-              description: "Group Joined Successfully!",
-            });
-            onClose();
-            setVideoStatus(false);
-            fetchParents();
-          })
-          .catch((err) => {
-            setVideoStatus(false);
-            onClose();
-            Toast({
-              status: "error",
-              description:
-                err?.response?.data?.message ||
-                err?.response?.data ||
-                err?.message,
-            });
-          });
+        if (joinGroupId == "secondary") {
+          joinSecondaryGroup();
+          return;
+        }
+        joinPrimaryGroup();
       },
     });
   }
 
-  function fetchChildren() {
+  function fetchPrimaryChildren() {
     BackendAxios.get(`/api/my-group`)
       .then((res) => {
         if (!res?.data?.length) {
@@ -471,7 +495,7 @@ const Page = () => {
         }
         if (res?.data?.length) {
           setMyGroupExists(true);
-          setChildMembers(res.data);
+          setPrimaryChildMembers(res.data);
         }
       })
       .catch((err) => {
@@ -483,10 +507,10 @@ const Page = () => {
       });
   }
 
-  function fetchParents() {
+  function fetchPrimaryParents() {
     BackendAxios.get(`/api/my-admin`)
       .then((res) => {
-        setParentUsers(res.data);
+        setPrimaryParentUsers(res.data);
       })
       .catch((err) => {
         Toast({
@@ -520,17 +544,38 @@ const Page = () => {
         <Stack
           direction={["column", "row"]}
           justifyContent={"space-around"}
-          gap={16}
+          gap={8}
         >
           <Box>
-            <Text fontSize={"xl"}>My Seniors</Text>
+            <Text fontSize={"xl"}>My Seniors (Primary ID)</Text>
             <br />
-            <MyParents parentUsers={parentUsers} />
+            <MyParents parentUsers={primaryParentUsers} />
           </Box>
           <Box>
-            <Text fontSize={"xl"}>My Juniors</Text>
+            <Text fontSize={"xl"}>My Seniors (Secondary ID)</Text>
             <br />
-            <MyChildren childMembers={childMembers} />
+            <MyParents parentUsers={primaryParentUsers} />
+          </Box>
+        </Stack>
+      </Box>
+      <br />
+      <br />
+      <br />
+      <Box>
+        <Stack
+          direction={["column", "row"]}
+          justifyContent={"space-around"}
+          gap={8}
+        >
+          <Box>
+            <Text fontSize={"xl"}>My Juniors (Primary ID)</Text>
+            <br />
+            <MyChildren childMembers={primaryChildMembers} />
+          </Box>
+          <Box>
+            <Text fontSize={"xl"}>My Juniors (Secondary ID)</Text>
+            <br />
+            <MyChildren childMembers={primaryChildMembers} />
           </Box>
         </Stack>
       </Box>
@@ -562,7 +607,10 @@ const Page = () => {
                 Activate Primary ID
               </Button>
               <Button
-                onClick={() => setSecondaryIdRequested(true)}
+                onClick={() => {
+                  setJoinGroupId("secondary");
+                  setSecondaryIdRequested(true);
+                }}
                 colorScheme="twitter"
                 isDisabled={parseInt(secondaryActive)}
               >
@@ -575,6 +623,7 @@ const Page = () => {
                 py={4}
                 w={"full"}
                 display={"flex"}
+                flexDir={"column"}
                 alignItems={"center"}
                 justifyContent={"center"}
               >
@@ -602,7 +651,8 @@ const Page = () => {
                   />
                 </InputGroup>
                 <Text mt={2} fontSize={"xs"}>
-                  {userInfo?.name} - {userInfo?.phone}
+                  {userInfo?.name} - ({userInfo?.phone || "Phone No. not added"}
+                  )
                 </Text>
               </Box>
             ) : null}
