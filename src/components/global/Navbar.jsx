@@ -80,6 +80,9 @@ const Navbar = () => {
   const intentFromParams = params.get("intent");
   const nameFromParams = params.get("name");
   const phoneFromParams = params.get("phone");
+
+  const [isSeniorInputDisabled, setIsSeniorInputDisabled] = useState(false)
+
   const [code, setCode] = useState(params.get("ref_id"));
 
   const Formik = useFormik({
@@ -106,6 +109,7 @@ const Navbar = () => {
     }
     setCode(referralId);
     if (referralId) {
+      setIsSeniorInputDisabled(true)
       getUserInfo();
     }
     setIsSignupOpen(true);
@@ -633,8 +637,7 @@ const Navbar = () => {
                               {process.env.NEXT_PUBLIC_CODE}
                             </Text>
                           }
-                          paddingLeft={4}
-                          paddingRight={4}
+                          paddingX={4}
                         />
                         <Input
                           placeholder="Senior ID"
@@ -642,6 +645,7 @@ const Navbar = () => {
                           border={".5px solid #FAFAFA"}
                           rounded={0}
                           value={code}
+                          isDisabled={isSeniorInputDisabled}
                           onChange={(e) => setCode(e.target.value)}
                         />
                         <InputRightElement
