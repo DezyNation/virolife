@@ -22,6 +22,7 @@ import {
   InputRightAddon,
   Image,
   AvatarBadge,
+  Select,
 } from "@chakra-ui/react";
 import { LuStars } from "react-icons/lu";
 import BackendAxios from "@/utils/axios";
@@ -43,7 +44,7 @@ const MyParents = ({ parentUsers }) => {
     if (!user?.primary_activated) {
       Toast({
         title: "Senior's Primary ID is on hold.",
-        description: "This user is yet to donate to his seniors."
+        description: "This user is yet to donate to his seniors.",
       });
       return;
     }
@@ -153,7 +154,6 @@ const MyParents = ({ parentUsers }) => {
     </>
   );
 };
-
 
 const MyChildren = ({ childMembers }) => {
   const Toast = useToast({ position: "top-right" });
@@ -335,7 +335,6 @@ const MyChildren = ({ childMembers }) => {
   );
 };
 
-
 const MySecondaryChildren = ({ childMembers }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
@@ -516,11 +515,10 @@ const MySecondaryChildren = ({ childMembers }) => {
   );
 };
 
-
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [joinGroupId, setJoinGroupId] = useState("")
+  const [joinGroupId, setJoinGroupId] = useState("");
   const [invitationModal, setInvitationModal] = useState(false);
 
   const [myId, setMyId] = useState("");
@@ -607,7 +605,7 @@ const Page = () => {
           description: "Group Joined Successfully!",
         });
         onClose();
-        localStorage.setItem("secondaryParentId", true)
+        localStorage.setItem("secondaryParentId", true);
         setVideoStatus(false);
         setSecondaryJoined(true);
         setSecondaryIdRequested(false);
@@ -632,7 +630,7 @@ const Page = () => {
           description: "Group Joined Successfully!",
         });
         onClose();
-        localStorage.setItem("primaryParentId", joinGroupId)
+        localStorage.setItem("primaryParentId", joinGroupId);
         setVideoStatus(false);
         setPrimaryJoined(true);
         setPrimaryIdRequested(false);
@@ -667,7 +665,6 @@ const Page = () => {
       },
     });
   }
-
 
   function fetchPrimaryParents() {
     BackendAxios.get(`/api/my-admin`)
@@ -743,12 +740,40 @@ const Page = () => {
           gap={8}
         >
           <Box>
-            <Text fontSize={"xl"}>My Juniors (Primary ID)</Text>
+            <HStack w={"full"} justifyContent={"space-between"}>
+              <Text fontSize={"xl"}>My Juniors (Primary ID)</Text>
+              <Select width={28}>
+                <option value="1">Level1</option>
+                <option value="2">Level2</option>
+                <option value="3">Level3</option>
+                <option value="4">Level4</option>
+                <option value="5">Level5</option>
+                <option value="6">Level6</option>
+                <option value="7">Level7</option>
+                <option value="8">Level8</option>
+                <option value="9">Level9</option>
+                <option value="10">Level10</option>
+              </Select>
+            </HStack>
             <br />
             <MyChildren />
           </Box>
           <Box>
-            <Text fontSize={"xl"}>My Juniors (Secondary ID)</Text>
+            <HStack w={"full"} justifyContent={"space-between"}>
+              <Text fontSize={"xl"}>My Juniors (Secondary ID)</Text>
+              <Select width={28}>
+                <option value="1">Level1</option>
+                <option value="2">Level2</option>
+                <option value="3">Level3</option>
+                <option value="4">Level4</option>
+                <option value="5">Level5</option>
+                <option value="6">Level6</option>
+                <option value="7">Level7</option>
+                <option value="8">Level8</option>
+                <option value="9">Level9</option>
+                <option value="10">Level10</option>
+              </Select>
+            </HStack>
             <br />
             <MySecondaryChildren />
           </Box>
