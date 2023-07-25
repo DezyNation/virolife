@@ -42,7 +42,8 @@ const MyParents = ({ parentUsers }) => {
     console.log(user);
     if (!user?.primary_activated) {
       Toast({
-        description: "Senior's Primary ID is on hold.",
+        title: "Senior's Primary ID is on hold.",
+        description: "This user is yet to donate to his seniors."
       });
       return;
     }
