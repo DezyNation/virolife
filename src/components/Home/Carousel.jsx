@@ -91,7 +91,7 @@ const Carousel = () => {
     BackendAxios.post(`/invitation`, {
       url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}?intent=register&name=${Formik.values.name.replace(/ /g, "%20")}&email=${Formik.values.email}&phone=${Formik.values.phone}`,
       email: Formik.values.email,
-      phone: Formik.values.phone,
+      phone_number: Formik.values.phone,
     })
       .then((res) => {
         Toast({
