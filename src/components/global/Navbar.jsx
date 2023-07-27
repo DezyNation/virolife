@@ -70,7 +70,7 @@ const Navbar = () => {
   const nameFromParams = params.get("name");
   const phoneFromParams = params.get("phone");
 
-  const [isSeniorInputDisabled, setIsSeniorInputDisabled] = useState(false)
+  const [isSeniorInputDisabled, setIsSeniorInputDisabled] = useState(false);
 
   const [code, setCode] = useState(params.get("ref_id"));
 
@@ -98,7 +98,7 @@ const Navbar = () => {
     }
     setCode(referralId);
     if (referralId) {
-      setIsSeniorInputDisabled(true)
+      setIsSeniorInputDisabled(true);
       getUserInfo();
     }
     setIsSignupOpen(true);
@@ -205,7 +205,7 @@ const Navbar = () => {
         Cookies.remove("jwt");
         localStorage.clear();
       });
-      Router.replace("/");
+    Router.replace("/");
   }
 
   useEffect(() => {
@@ -238,9 +238,11 @@ const Navbar = () => {
             <Link href={"/"}>
               <Image src="/logo.png" width={16} />
             </Link>
-            <Box cursor={"pointer"} fontSize={"lg"} mr={4} className="serif">
-              About Us
-            </Box>
+            <Link href={"/about-us"}>
+              <Box fontSize={"lg"} mr={4} className="serif">
+                About Us
+              </Box>
+            </Link>
             {sessionExpired ? (
               <Box
                 cursor={"pointer"}
