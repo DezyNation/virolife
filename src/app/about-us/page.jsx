@@ -7,7 +7,6 @@ import React from "react";
 const page = () => {
   return (
     <>
-      <Navbar />
       <Box w={["full"]} p={[4, 8]}>
         <Container>
           <Text fontSize={"xl"}>About Us</Text>
