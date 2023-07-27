@@ -5,6 +5,7 @@ import {
   Button,
   FormLabel,
   HStack,
+  IconButton,
   Image,
   Input,
   InputGroup,
@@ -30,7 +31,13 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import BackendAxios from "@/utils/axios";
-import { BsClipboard, BsHeartFill, BsShareFill } from "react-icons/bs";
+import {
+  BsChevronDoubleDown,
+  BsChevronDoubleUp,
+  BsClipboard,
+  BsHeartFill,
+  BsShareFill,
+} from "react-icons/bs";
 import Footer from "@/components/global/Footer";
 import {
   FacebookShareButton,
@@ -41,6 +48,7 @@ import {
   LinkedinIcon,
 } from "react-share";
 import Head from "next/head";
+import { useFormik } from "formik";
 
 const CampaignInfo = ({ params }) => {
   const { id } = params;
@@ -57,6 +65,16 @@ const CampaignInfo = ({ params }) => {
   const [fees, setFees] = useState(5);
   const [campaign, setCampaign] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [donationCardStatus, setDonationCardStatus] = useState(true);
+
+  const Formik = useFormik({
+    initialValues: {
+      amount: 1000,
+      fees: 5,
+      name: "",
+      phone: "",
+    },
+  });
 
   useEffect(() => {
     BackendAxios.get(`/api/campaign/${id}`)
@@ -201,8 +219,15 @@ const CampaignInfo = ({ params }) => {
             {campaign.full_description}
           </Text>
         </Box>
+
         <Show above="md">
-          <Box width={"sm"} h={"inherit"} position={"relative"} p={4}>
+          <Box
+            pos={"relative"}
+            width={"sm"}
+            h={"inherit"}
+            position={"relative"}
+            p={4}
+          >
             <Box p={4} boxShadow={"lg"} rounded={8} position={"sticky"} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>
                 Donate To {campaign?.user?.name}
@@ -222,12 +247,28 @@ const CampaignInfo = ({ params }) => {
               <InputGroup>
                 <InputLeftElement children={"₹"} />
                 <Input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  name="amount"
+                  value={Formik.values.amount}
+                  onChange={Formik.handleChange}
                   mb={2}
                 />
               </InputGroup>
+              <br />
+              <FormLabel>Your Name</FormLabel>
+              <Input
+                name="name"
+                value={Formik.values.name}
+                onChange={Formik.handleChange}
+                mb={2}
+              />
+              <br />
+              <FormLabel>Your Phone No.</FormLabel>
+              <Input
+                name="phone"
+                value={Formik.values.phone}
+                onChange={Formik.handleChange}
+                mb={2}
+              />
               <br />
               <Text fontSize={"sm"}>Choose Platform Fees</Text>
               <Slider
@@ -275,17 +316,45 @@ const CampaignInfo = ({ params }) => {
             </Box>
           </Box>
         </Show>
+
+        {/* Mobile donation card */}
         <Show below="md">
+          {donationCardStatus ? (
+            <Box
+              position={"fixed"}
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              bgColor={"blackAlpha.600"}
+              w={"full"}
+              h={"100vh"}
+            ></Box>
+          ) : null}
           <Box
             width={"full"}
             h={"inherit"}
             position={"fixed"}
-            bottom={0}
+            bottom={donationCardStatus ? 0 : "-60vh"}
             left={0}
             right={0}
             p={4}
             zIndex={999}
+            transition={"all .3s ease-in-out"}
           >
+            <IconButton
+              p={2}
+              rounded={"full"}
+              boxShadow={"md"}
+              pos={"absolute"}
+              top={"-2"}
+              right={2}
+              as={donationCardStatus ? BsChevronDoubleDown : BsChevronDoubleUp}
+              bgColor={"#FFF"}
+              color={"#000"}
+              size={"sm"}
+              onClick={() => setDonationCardStatus(!donationCardStatus)}
+            />
             <Box p={4} boxShadow={"lg"} bg={"#FFF"} rounded={8} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>
                 Donate To {campaign?.user?.name}
@@ -301,12 +370,28 @@ const CampaignInfo = ({ params }) => {
               <InputGroup>
                 <InputLeftElement children={"₹"} />
                 <Input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  name="amount"
+                  value={Formik.values.amount}
+                  onChange={Formik.handleChange}
                   mb={2}
                 />
               </InputGroup>
+              <br />
+              <FormLabel>Your Name</FormLabel>
+              <Input
+                name="name"
+                value={Formik.values.name}
+                onChange={Formik.handleChange}
+                mb={2}
+              />
+              <br />
+              <FormLabel>Your Phone No.</FormLabel>
+              <Input
+                name="phone"
+                value={Formik.values.phone}
+                onChange={Formik.handleChange}
+                mb={2}
+              />
               <br />
               <Text fontSize={"sm"}>Choose Platform Fees</Text>
               <Slider
