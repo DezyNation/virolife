@@ -29,6 +29,7 @@ import BackendAxios from "@/utils/axios";
 import QRCode from "react-qr-code";
 import Tree from "react-d3-tree";
 import VideoPlayer from "@/components/global/VideoPlayer";
+import ChildMemberCard from "@/components/dashboard/ChildMemberCard";
 
 const MyParents = ({ parentUsers }) => {
   const Toast = useToast({ position: "top-right" });
@@ -155,6 +156,31 @@ const MyParents = ({ parentUsers }) => {
   );
 };
 
+const NestedChildren = ({ data, level, currentLevel = 1 }) => {
+  if (parseInt(currentLevel) != parseInt(level)) return null;
+
+  return (
+    <ul>
+      {data.map((item) => (
+        <li key={item.id} style={{ listStyle: "none" }}>
+          <ChildMemberCard
+            name={item?.name}
+            id={item?.id}
+            phone_number={item?.phone_number}
+          />
+          {item.children && (
+            <NestedChildren
+              data={item.children}
+              level={level}
+              currentLevel={currentLevel + 1}
+            />
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 const MyChildren = ({ childMembers }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
@@ -162,6 +188,8 @@ const MyChildren = ({ childMembers }) => {
   const [myName, setMyName] = useState("");
   const [myGroup, setMyGroup] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
+
+  const [selectedLevel, setSelectedLevel] = useState("1");
 
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [showTooltip, setShowTooltip] = useState({
@@ -246,40 +274,33 @@ const MyChildren = ({ childMembers }) => {
   return (
     <>
       <Box>
-        {myGroup
-          ?.filter((user) => user?.parent_id == parseInt(myId))
-          ?.map((item, key) => (
-            <HStack
-              py={4}
-              key={key}
-              w={["full", "xs"]}
-              justifyContent={"space-between"}
-            >
-              <HStack>
-                <Avatar name={item?.name} />
-                <Box>
-                  <Text
-                    className="serif"
-                    fontWeight={"semibold"}
-                    fontSize={"lg"}
-                  >
-                    {item?.name}
-                  </Text>
-                  <Text fontSize={"xs"}>
-                    ID: {process.env.NEXT_PUBLIC_CODE}
-                    {item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
-                  </Text>
-                </Box>
-              </HStack>
-            </HStack>
-          ))}
+        <HStack w={"full"} justifyContent={"space-between"}>
+          <Text fontSize={"xl"}>My Juniors (Primary ID)</Text>
+          <Select width={28} onChange={(e) => setSelectedLevel(e.target.value)}>
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4</option>
+            <option value="5">Level 5</option>
+            <option value="6">Level 6</option>
+            <option value="7">Level 7</option>
+            <option value="8">Level 8</option>
+            <option value="9">Level 9</option>
+            <option value="10">Level 10</option>
+          </Select>
+        </HStack>
+        <br />
+        <NestedChildren
+          level={selectedLevel}
+          data={groupMembers[0]?.children || []}
+        />
         {myGroup?.filter((user) => user?.parent_id == parseInt(myId))
           ?.length ? (
           <HStack justifyContent={"flex-end"} py={4}>
             <Button
               size={"sm"}
               rounded={"full"}
-              colorScheme="twitter"
+              colorScheme="yellow"
               onClick={() => viewGroup()}
             >
               View Group Tree
@@ -349,6 +370,8 @@ const MySecondaryChildren = ({ childMembers }) => {
     id: "",
     donation: "0",
   });
+
+  const [selectedLevel, setSelectedLevel] = useState("1");
 
   useEffect(() => {
     const handleWindowMouseMove = (event) => {
@@ -423,43 +446,40 @@ const MySecondaryChildren = ({ childMembers }) => {
       });
   }
 
+  useEffect(() => {
+    console.log(groupMembers);
+  }, [groupMembers]);
+
   return (
     <>
       <Box>
-        {myGroup
-          ?.filter((user) => user?.secondary_parent_id == parseInt(myId))
-          ?.map((item, key) => (
-            <HStack
-              py={4}
-              key={key}
-              w={["full", "xs"]}
-              justifyContent={"space-between"}
-            >
-              <HStack>
-                <Avatar name={item?.name} />
-                <Box>
-                  <Text
-                    className="serif"
-                    fontWeight={"semibold"}
-                    fontSize={"lg"}
-                  >
-                    {item?.name}
-                  </Text>
-                  <Text fontSize={"xs"}>
-                    ID: {process.env.NEXT_PUBLIC_CODE}
-                    {item?.id} &nbsp; | &nbsp; Phone: {item?.phone_number}
-                  </Text>
-                </Box>
-              </HStack>
-            </HStack>
-          ))}
+        <HStack w={"full"} justifyContent={"space-between"}>
+          <Text fontSize={"xl"}>My Juniors (Secondary ID)</Text>
+          <Select width={28} onChange={(e) => setSelectedLevel(e.target.value)}>
+            <option value="1">Level1</option>
+            <option value="2">Level2</option>
+            <option value="3">Level3</option>
+            <option value="4">Level4</option>
+            <option value="5">Level5</option>
+            <option value="6">Level6</option>
+            <option value="7">Level7</option>
+            <option value="8">Level8</option>
+            <option value="9">Level9</option>
+            <option value="10">Level10</option>
+          </Select>
+        </HStack>
+        <br />
+        <NestedChildren
+          data={groupMembers[0]?.children || []}
+          level={selectedLevel}
+        />
         {myGroup?.filter((user) => user?.secondary_parent_id == parseInt(myId))
           ?.length ? (
           <HStack justifyContent={"flex-end"} py={4}>
             <Button
               size={"sm"}
               rounded={"full"}
-              colorScheme="twitter"
+              colorScheme="yellow"
               onClick={() => viewGroup()}
             >
               View Group Tree
@@ -740,41 +760,9 @@ const Page = () => {
           gap={8}
         >
           <Box>
-            <HStack w={"full"} justifyContent={"space-between"}>
-              <Text fontSize={"xl"}>My Juniors (Primary ID)</Text>
-              <Select width={28}>
-                <option value="1">Level1</option>
-                <option value="2">Level2</option>
-                <option value="3">Level3</option>
-                <option value="4">Level4</option>
-                <option value="5">Level5</option>
-                <option value="6">Level6</option>
-                <option value="7">Level7</option>
-                <option value="8">Level8</option>
-                <option value="9">Level9</option>
-                <option value="10">Level10</option>
-              </Select>
-            </HStack>
-            <br />
             <MyChildren />
           </Box>
           <Box>
-            <HStack w={"full"} justifyContent={"space-between"}>
-              <Text fontSize={"xl"}>My Juniors (Secondary ID)</Text>
-              <Select width={28}>
-                <option value="1">Level1</option>
-                <option value="2">Level2</option>
-                <option value="3">Level3</option>
-                <option value="4">Level4</option>
-                <option value="5">Level5</option>
-                <option value="6">Level6</option>
-                <option value="7">Level7</option>
-                <option value="8">Level8</option>
-                <option value="9">Level9</option>
-                <option value="10">Level10</option>
-              </Select>
-            </HStack>
-            <br />
             <MySecondaryChildren />
           </Box>
         </Stack>
