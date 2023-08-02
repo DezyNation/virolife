@@ -39,9 +39,29 @@ const MyParents = ({ parentUsers }) => {
     id: "",
     name: "",
   });
+  const [videoStatus, setVideoStatus] = useState(false)
+  const [videoData, setVideoData] = useState({
+    title: "Watch this video to proceed.",
+    id: "",
+    provider: "",
+    onVideoClose: () => {
+      return null;
+    },
+  });
+
+
+  function showVideo(user){
+    setVideoStatus(true)
+    setVideoData({
+      ...videoData,
+      onVideoClose: ()=>{
+        setVideoStatus(false)
+        showUpiModal(user)
+      }
+    })
+  }
 
   function showUpiModal(user) {
-    console.log(user);
     if (!user?.primary_activated) {
       Toast({
         title: "Senior's Primary ID is on hold.",
@@ -118,7 +138,7 @@ const MyParents = ({ parentUsers }) => {
               size={"xs"}
               colorScheme="yellow"
               onClick={() => {
-                showUpiModal(item);
+                showVideo(item);
               }}
             >
               Donate
@@ -152,6 +172,12 @@ const MyParents = ({ parentUsers }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      <VideoPlayer
+        status={videoStatus}
+        title={videoData.title}
+        onVideoClose={videoData.onVideoClose}
+      />
     </>
   );
 };

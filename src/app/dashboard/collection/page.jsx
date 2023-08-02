@@ -14,9 +14,20 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import BackendAxios from "@/utils/axios";
+import VideoPlayer from "@/components/global/VideoPlayer";
 
 const page = () => {
   const [transactions, setTransactions] = useState([]);
+  const [videoStatus, setVideoStatus] = useState(false)
+  const [videoData, setVideoData] = useState({
+    title: "Watch this video to proceed.",
+    id: "",
+    provider: "",
+    onVideoClose: () => {
+      return null;
+    },
+  });
+
   const Toast = useToast({
     position: "top-right",
   });
@@ -38,6 +49,17 @@ const page = () => {
   useEffect(() => {
     fetchMyCollections();
   }, []);
+
+  function showVideo(id){
+    setVideoStatus(true)
+    setVideoData({
+      ...videoData,
+      onVideoClose: ()=>{
+        setVideoStatus(false)
+        approveDonation(id)
+      }
+    })
+  }
 
   function approveDonation(id) {
     if (!id) return;
@@ -107,7 +129,7 @@ const page = () => {
                         size={"sm"}
                         rounded={"full"}
                         colorScheme="yellow"
-                        onClick={() => approveDonation(item.id)}
+                        onClick={() => showVideo(item.id)}
                       >
                         Confirm
                       </Button>
@@ -127,6 +149,13 @@ const page = () => {
           </Tbody>
         </Table>
       </TableContainer>
+
+
+      <VideoPlayer
+        status={videoStatus}
+        title={videoData.title}
+        onVideoClose={videoData.onVideoClose}
+      />
     </>
   );
 };
