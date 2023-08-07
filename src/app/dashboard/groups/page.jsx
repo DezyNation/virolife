@@ -31,7 +31,7 @@ import Tree from "react-d3-tree";
 import VideoPlayer from "@/components/global/VideoPlayer";
 import ChildMemberCard from "@/components/dashboard/ChildMemberCard";
 
-const MyParents = ({ parentUsers }) => {
+const MyParents = ({ parentUsers, beneficiaries }) => {
   const Toast = useToast({ position: "top-right" });
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
@@ -39,7 +39,7 @@ const MyParents = ({ parentUsers }) => {
     id: "",
     name: "",
   });
-  const [videoStatus, setVideoStatus] = useState(false)
+  const [videoStatus, setVideoStatus] = useState(false);
   const [videoData, setVideoData] = useState({
     title: "Watch this video to proceed.",
     id: "",
@@ -49,24 +49,29 @@ const MyParents = ({ parentUsers }) => {
     },
   });
 
-
-  function showVideo(user){
-    setVideoStatus(true)
+  function showVideo(user) {
+    setVideoStatus(true);
     setVideoData({
       ...videoData,
-      onVideoClose: ()=>{
-        setVideoStatus(false)
-        showUpiModal(user)
-      }
-    })
+      onVideoClose: () => {
+        setVideoStatus(false);
+        showUpiModal(user);
+      },
+    });
   }
 
   function showUpiModal(user) {
     if (!user?.primary_activated) {
-      Toast({
-        title: "Senior's Primary ID is on hold.",
-        description: "This user is yet to donate to his seniors.",
+      // Toast({
+      //   title: "Senior's Primary ID is on hold.",
+      //   description: "This user is yet to donate to his seniors.",
+      // });
+      setUpi("9022853554@okbizaxis");
+      setReceiver({
+        id: 115,
+        name: "Virolife Foundation",
       });
+      setQrModal(true);
       return;
     }
     if (!user?.upi_id) {
@@ -85,7 +90,7 @@ const MyParents = ({ parentUsers }) => {
 
   function donate(id) {
     BackendAxios.post(`/api/donation`, {
-      donatable_id: receiver?.id,
+      donatable_id: id || receiver?.id,
       amount: 200,
       remarks: "Donation to senior",
     })
@@ -134,15 +139,17 @@ const MyParents = ({ parentUsers }) => {
                 </Text>
               </Box>
             </HStack>
-            <Button
-              size={"xs"}
-              colorScheme="yellow"
-              onClick={() => {
-                showVideo(item);
-              }}
-            >
-              Donate
-            </Button>
+            {!beneficiaries?.includes(item?.id) ? (
+              <Button
+                size={"xs"}
+                colorScheme="yellow"
+                onClick={() => {
+                  showVideo(item);
+                }}
+              >
+                Donate
+              </Button>
+            ) : null}
           </HStack>
         ))}
       </Box>
@@ -159,6 +166,7 @@ const MyParents = ({ parentUsers }) => {
               w={"80%"}
               src={"https://mytechtrips.com/wp-content/uploads/2023/01/upi.png"}
               objectFit={"contain"}
+              mx={'auto'}
             />
           </ModalBody>
           <ModalFooter>
@@ -182,7 +190,7 @@ const MyParents = ({ parentUsers }) => {
   );
 };
 
-const NestedChildren = ({ data, level, currentLevel = 1 }) => {
+const NestedChildren = ({ data, donors, level, currentLevel = 1 }) => {
   if (parseInt(currentLevel) != parseInt(level)) return null;
 
   return (
@@ -193,6 +201,7 @@ const NestedChildren = ({ data, level, currentLevel = 1 }) => {
             name={item?.name}
             id={item?.id}
             phone_number={item?.phone_number}
+            donation_received={donors?.includes(item?.id) ? true : false}
           />
           {item.children && (
             <NestedChildren
@@ -207,7 +216,7 @@ const NestedChildren = ({ data, level, currentLevel = 1 }) => {
   );
 };
 
-const MyChildren = ({ childMembers }) => {
+const MyChildren = ({ childMembers, donors }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
   const [myId, setMyId] = useState("");
@@ -319,6 +328,7 @@ const MyChildren = ({ childMembers }) => {
         <NestedChildren
           level={selectedLevel}
           data={groupMembers[0]?.children || []}
+          donors={donors}
         />
         {myGroup?.filter((user) => user?.parent_id == parseInt(myId))
           ?.length ? (
@@ -382,7 +392,7 @@ const MyChildren = ({ childMembers }) => {
   );
 };
 
-const MySecondaryChildren = ({ childMembers }) => {
+const MySecondaryChildren = ({ childMembers, donors }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
   const [myId, setMyId] = useState("");
@@ -498,6 +508,7 @@ const MySecondaryChildren = ({ childMembers }) => {
         <NestedChildren
           data={groupMembers[0]?.children || []}
           level={selectedLevel}
+          donors={donors}
         />
         {myGroup?.filter((user) => user?.secondary_parent_id == parseInt(myId))
           ?.length ? (
@@ -599,9 +610,13 @@ const Page = () => {
     },
   });
 
+  const [collections, setCollections] = useState([]);
+  const [donations, setDonations] = useState([]);
+
   useEffect(() => {
     fetchPrimaryParents();
     fetchSecondaryParents();
+    fetchMyCollections();
   }, []);
 
   useEffect(() => {
@@ -739,6 +754,20 @@ const Page = () => {
       });
   }
 
+  function fetchMyCollections() {
+    BackendAxios.get(`/api/my-collections`)
+      .then((res) => {
+        setCollections(res.data);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
   return (
     <>
       <HStack justifyContent={"space-between"}>
@@ -767,12 +796,18 @@ const Page = () => {
           <Box>
             <Text fontSize={"xl"}>My Seniors (Primary ID)</Text>
             <br />
-            <MyParents parentUsers={primaryParentUsers} />
+            <MyParents
+              parentUsers={primaryParentUsers}
+              beneficiaries={donations?.map((item) => item?.user?.id)}
+            />
           </Box>
           <Box>
             <Text fontSize={"xl"}>My Seniors (Secondary ID)</Text>
             <br />
-            <MyParents parentUsers={secondaryParentUsers} />
+            <MyParents
+              parentUsers={secondaryParentUsers}
+              beneficiaries={donations?.map((item) => item?.user?.id)}
+            />
           </Box>
         </Stack>
       </Box>
@@ -786,10 +821,12 @@ const Page = () => {
           gap={8}
         >
           <Box>
-            <MyChildren />
+            <MyChildren donors={collections?.map((item) => item?.user?.id)} />
           </Box>
           <Box>
-            <MySecondaryChildren />
+            <MySecondaryChildren
+              donors={collections?.map((item) => item?.user?.id)}
+            />
           </Box>
         </Stack>
       </Box>

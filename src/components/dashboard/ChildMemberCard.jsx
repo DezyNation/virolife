@@ -1,8 +1,8 @@
 "use client";
-import { Avatar, Box, HStack, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 
-const ChildMemberCard = ({name, id, phone_number}) => {
+const ChildMemberCard = ({name, id, phone_number, donation_received}) => {
   return (
     <>
       <HStack
@@ -12,7 +12,7 @@ const ChildMemberCard = ({name, id, phone_number}) => {
       >
         <HStack>
           <Avatar name={name} />
-          <Box>
+          <Box w={'full'}>
             <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
               {name}
             </Text>
@@ -21,6 +21,7 @@ const ChildMemberCard = ({name, id, phone_number}) => {
               {id} &nbsp; | &nbsp; Phone: {phone_number}
             </Text>
           </Box>
+          {donation_received ? <Button size={'xs'} colorScheme="yellow">Donated</Button> : null}
         </HStack>
       </HStack>
     </>
