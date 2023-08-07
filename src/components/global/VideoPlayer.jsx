@@ -14,6 +14,7 @@ import {
 import BackendAxios from "@/utils/axios";
 import Plyr from "plyr-react";
 import "plyr/dist/plyr.css";
+import AdSenseVideoAd from "./AdSenseVideoAd";
 
 const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
   const Toast = useToast({ position: "top-right" });
@@ -57,6 +58,12 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
     getRandomVideo()
   }, []);
 
+  const getRandomAdSlotId = () => {
+    const adSlots = ['5151821226', '5151821226', '5151821226'];
+    const randomIndex = Math.floor(Math.random() * adSlots.length);
+    return adSlots[randomIndex];
+  };
+
   return (
     <>
       <Modal
@@ -71,7 +78,8 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
           <ModalHeader bgColor={'#FFF'} rounded={'full'} py={2}>{title || "Watch this video to proceed."}</ModalHeader>
           <ModalBody>
             <Box rounded={'16'} overflow={'hidden'}>
-            <Plyr source={videoProps} options={{ ratio: "16:9" }} />
+            {/* <Plyr source={videoProps} options={{ ratio: "16:9" }} /> */}
+            <AdSenseVideoAd adSlot={getRandomAdSlotId()} />
             </Box>
           </ModalBody>
           <ModalFooter justifyContent={"flex-end"}>

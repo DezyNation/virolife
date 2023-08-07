@@ -12,12 +12,14 @@ import "../app/styles/globals.css";
 
 export default function RootLayout({ children, session }) {
   return (
-    <html
-      lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
-    >
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
       <head>
         <title>Virolife</title>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480119685720701"
+          crossorigin="anonymous"
+        ></script>
       </head>
       <body>
         <ChakraProvider>
