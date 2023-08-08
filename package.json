@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@vercel/og": "^0.5.10",
     "axios": "^1.4.0",
     "chakra-dayzed-datepicker": "^0.2.9",
     "date-fns": "^2.30.0",

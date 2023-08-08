@@ -100,7 +100,7 @@ const CampaignInfo = ({ params }) => {
   }, []);
   return (
     <>
-      <Head>
+      <head>
         <meta
           property="og:image"
           content={
@@ -117,7 +117,16 @@ const CampaignInfo = ({ params }) => {
               : "https://idea.batumi.ge/files/default.jpg"
           }
         />
-      </Head>
+        <meta property="og:title" content={campaign?.title || "Virolife Foundation"} />
+
+        <meta
+          property="og:description"
+          content={campaign.description || "Donate Now"}
+        />
+
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+      </head>
       <Stack
         p={[4, 16, 24]}
         direction={["column", "row"]}
@@ -203,7 +212,8 @@ const CampaignInfo = ({ params }) => {
             bgColor={"blue.50"}
             rounded={"12"}
           >
-            {campaign.beneficiary_details != null && campaign.beneficiary_details != "null" ? (
+            {campaign.beneficiary_details != null &&
+            campaign.beneficiary_details != "null" ? (
               <>
                 This campaign will benefit{" "}
                 {JSON.parse(campaign?.beneficiary_details)?.name} of{" "}
