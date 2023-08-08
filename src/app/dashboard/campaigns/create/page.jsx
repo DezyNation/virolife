@@ -243,7 +243,7 @@ const Page = () => {
                 beneficiaryDetails.type == "myself" ? "solid" : "outline"
               }
               onClick={() =>
-                setBeneficiaryDetails({ ...beneficiaryDetails, type: localStorage.getItem("userName") })
+                setBeneficiaryDetails({ ...beneficiaryDetails, type: "myself", name: localStorage.getItem("userName") })
               }
             >
               Myself
