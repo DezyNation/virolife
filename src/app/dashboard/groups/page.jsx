@@ -23,6 +23,7 @@ import {
   Image,
   AvatarBadge,
   Select,
+  Spacer,
 } from "@chakra-ui/react";
 import { LuStars } from "react-icons/lu";
 import BackendAxios from "@/utils/axios";
@@ -30,8 +31,9 @@ import QRCode from "react-qr-code";
 import Tree from "react-d3-tree";
 import VideoPlayer from "@/components/global/VideoPlayer";
 import ChildMemberCard from "@/components/dashboard/ChildMemberCard";
+import VerticalSpacer from "@/components/global/VerticalSpacer";
 
-const MyParents = ({ parentUsers, beneficiaries }) => {
+const MyParents = ({ parentUsers }) => {
   const Toast = useToast({ position: "top-right" });
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
@@ -48,6 +50,12 @@ const MyParents = ({ parentUsers, beneficiaries }) => {
       return null;
     },
   });
+
+  const [beneficiaries, setBeneficiaries] = useState([])
+
+  useEffect(()=>{
+    fetchMyDonations();
+  },[])
 
   function showVideo(user) {
     setVideoStatus(true);
@@ -68,7 +76,7 @@ const MyParents = ({ parentUsers, beneficiaries }) => {
       // });
       setUpi("9022853554@okbizaxis");
       setReceiver({
-        id: 115,
+        id: user?.id,
         name: "Virolife Foundation",
       });
       setQrModal(true);
@@ -89,12 +97,13 @@ const MyParents = ({ parentUsers, beneficiaries }) => {
   }
 
   function donate(id) {
-    BackendAxios.post(`/api/donation`, {
-      donatable_id: id || receiver?.id,
+    BackendAxios.post(receiver?.name == "Virolife Foundation" ? `/api/donate/admin` : `/api/donation`, {
+      donatable_id: receiver?.id,
       amount: 200,
-      remarks: "Donation to senior",
+      remarks: `Donation to senior user ${receiver.id}`,
     })
       .then((res) => {
+        fetchMyDonations()
         Toast({
           status: "success",
           description: "Notification sent to senior",
@@ -103,6 +112,20 @@ const MyParents = ({ parentUsers, beneficiaries }) => {
       })
       .catch((err) => {
         setQrModal(false);
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
+  function fetchMyDonations(){
+    BackendAxios.get(`/api/my-donations`)
+      .then((res) => {
+        setBeneficiaries(res.data?.map((item) => item?.donatable_id));
+      })
+      .catch((err) => {
         Toast({
           status: "error",
           description:
@@ -166,7 +189,7 @@ const MyParents = ({ parentUsers, beneficiaries }) => {
               w={"80%"}
               src={"https://mytechtrips.com/wp-content/uploads/2023/01/upi.png"}
               objectFit={"contain"}
-              mx={'auto'}
+              mx={"auto"}
             />
           </ModalBody>
           <ModalFooter>
@@ -220,7 +243,7 @@ const MyChildren = ({ childMembers, donors }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
   const [myId, setMyId] = useState("");
-  const [myName, setMyName] = useState("");
+  
   const [myGroup, setMyGroup] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
 
@@ -249,7 +272,6 @@ const MyChildren = ({ childMembers, donors }) => {
 
   useEffect(() => {
     setMyId(localStorage.getItem("userId"));
-    setMyName(localStorage.getItem("userName"));
   }, []);
 
   useEffect(() => {
@@ -578,9 +600,6 @@ const Page = () => {
   const [joinGroupId, setJoinGroupId] = useState("");
   const [invitationModal, setInvitationModal] = useState(false);
 
-  const [myId, setMyId] = useState("");
-  const [myName, setMyName] = useState("");
-
   const [userInfo, setUserInfo] = useState({
     name: "",
     phone: "",
@@ -591,8 +610,6 @@ const Page = () => {
   );
   const [primaryParentUsers, setPrimaryParentUsers] = useState([]);
   const [secondaryParentUsers, setSecondaryParentUsers] = useState([]);
-
-  const [secondaryActive, setSecondaryActive] = useState(false);
 
   const [primaryJoined, setPrimaryJoined] = useState(false);
   const [secondaryJoined, setSecondaryJoined] = useState(false);
@@ -625,11 +642,7 @@ const Page = () => {
   }, [secondaryIdRequested, primaryIdRequested]);
 
   useEffect(() => {
-    setMyId(localStorage.getItem("userId"));
-    setMyName(localStorage.getItem("userName"));
-
     setPrimaryJoined(Boolean(localStorage.getItem("primaryParentId")));
-
     setSecondaryJoined(localStorage.getItem("secondaryParentId"));
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
@@ -766,17 +779,6 @@ const Page = () => {
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
-      BackendAxios.get(`/api/my-donations`)
-      .then((res) => {
-        setDonations(res.data);
-      })
-      .catch((err) => {
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
   }
 
   return (
@@ -809,7 +811,6 @@ const Page = () => {
             <br />
             <MyParents
               parentUsers={primaryParentUsers}
-              beneficiaries={donations?.map((item) => item?.user?.id)}
             />
           </Box>
           <Box>
@@ -817,7 +818,6 @@ const Page = () => {
             <br />
             <MyParents
               parentUsers={secondaryParentUsers}
-              beneficiaries={donations?.map((item) => item?.user?.id)}
             />
           </Box>
         </Stack>
@@ -832,11 +832,13 @@ const Page = () => {
           gap={8}
         >
           <Box>
-            <MyChildren donors={collections?.map((item) => item?.user?.id)} />
+            <MyChildren
+              donors={collections?.map((item) => item?.user_id)}
+            />
           </Box>
           <Box>
             <MySecondaryChildren
-              donors={collections?.map((item) => item?.user?.id)}
+              donors={collections?.map((item) => item?.user_id)}
             />
           </Box>
         </Stack>
@@ -987,6 +989,8 @@ const Page = () => {
         title={videoData.title}
         onVideoClose={videoData.onVideoClose}
       />
+
+      <VerticalSpacer />
     </>
   );
 };

@@ -2,17 +2,13 @@
 import { Avatar, Box, Button, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 
-const ChildMemberCard = ({name, id, phone_number, donation_received}) => {
+const ChildMemberCard = ({ name, id, phone_number, donation_received }) => {
   return (
     <>
-      <HStack
-        py={4}
-        w={["full", "xs"]}
-        justifyContent={"space-between"}
-      >
-        <HStack>
+      <HStack py={4} w={["full", "xs"]} justifyContent={"space-between"}>
+        <HStack alignItems={'flex-start'}>
           <Avatar name={name} />
-          <Box w={'full'}>
+          <Box w={"full"}>
             <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
               {name}
             </Text>
@@ -21,7 +17,11 @@ const ChildMemberCard = ({name, id, phone_number, donation_received}) => {
               {id} &nbsp; | &nbsp; Phone: {phone_number}
             </Text>
           </Box>
-          {donation_received ? <Button size={'xs'} colorScheme="yellow">Donated</Button> : null}
+            {donation_received ? (
+              <Button size={"xs"} variant={"ghost"} colorScheme="yellow">
+                Donated
+              </Button>
+            ) : null}
         </HStack>
       </HStack>
     </>
