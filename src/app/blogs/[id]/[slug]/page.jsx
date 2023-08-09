@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "../../../styles/blog.css";
 import Footer from "@/components/global/Footer";
 import blogs from "@/utils/blogs/blogs";
+import Navbar from "@/components/global/Navbar";
 
 const Post = ({ params }) => {
   const { id, slug } = params;
@@ -34,6 +35,7 @@ const Post = ({ params }) => {
 
   return (
     <>
+    <Navbar />
       <Stack
         direction={["column", "row"]}
         minH={"100vh"}

@@ -34,7 +34,7 @@ const Footer = () => {
           gap={2}
           flex={1}
         >
-          <Text fontSize={"lg"} className="serif" fontWeight={"semibold"}>
+          {/* <Text fontSize={"lg"} className="serif" fontWeight={"semibold"}>
             Services
           </Text>
           <Text fontWeight={"normal"}>Medical Funding</Text>
@@ -43,7 +43,7 @@ const Footer = () => {
           <br />
           <Text fontWeight={"normal"}>Sports Funding Process</Text>
           <Text fontWeight={"normal"}>Group Funding Process</Text>
-          <Text fontWeight={"normal"}>Veero Funding Process</Text>
+          <Text fontWeight={"normal"}>Veero Funding Process</Text> */}
         </VStack>
 
         <VStack

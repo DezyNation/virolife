@@ -49,6 +49,7 @@ import {
 } from "react-share";
 import Head from "next/head";
 import { useFormik } from "formik";
+import Navbar from "@/components/global/Navbar";
 
 const CampaignInfo = ({ params }) => {
   const { id } = params;
@@ -127,6 +128,8 @@ const CampaignInfo = ({ params }) => {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
       </head>
+
+      <Navbar />
       <Stack
         p={[4, 16, 24]}
         direction={["column", "row"]}

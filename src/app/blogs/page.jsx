@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
 import Footer from "@/components/global/Footer";
 import blogs from "@/utils/blogs/blogs";
+import Navbar from "@/components/global/Navbar";
 
 const Index = () => {
   const settings = {
@@ -50,6 +51,8 @@ const Index = () => {
   };
   return (
     <>
+
+<Navbar />
       <Stack
         p={[8, 16, 24]}
         gap={12}

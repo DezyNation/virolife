@@ -53,7 +53,7 @@ const DashboardHome = () => {
           localStorage.setItem("primaryParentId", res.data?.parent_id);
         }
         if(res.data.secondary_parent_id){
-          localStorage.setItem("primaryParentId", res.data?.secondary_parent_id);
+          localStorage.setItem("secondaryParentId", res.data?.secondary_parent_id);
         }
       })
       .catch((err) => {

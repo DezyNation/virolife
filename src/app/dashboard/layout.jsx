@@ -28,6 +28,7 @@ import { useCookies } from "react-cookie";
 import { isExpired } from "react-jwt";
 import BackendAxios from "@/utils/axios";
 import Cookies from "js-cookie";
+import Navbar from "@/components/global/Navbar";
 
 const Layout = ({ children }) => {
   const Toast = useToast({ position: "top-right" });
@@ -56,6 +57,8 @@ const Layout = ({ children }) => {
 
   return (
     <>
+
+<Navbar />
       <Stack direction={"row"} justifyContent={"space-between"}>
         <Show above="md">
           <Box p={4} bg={"blanchedalmond"} w={"xs"}>

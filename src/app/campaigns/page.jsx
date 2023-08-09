@@ -6,6 +6,7 @@ import { BsPlus } from "react-icons/bs";
 import Link from "next/link";
 import BackendAxios, { DefaultAxios } from "@/utils/axios";
 import Footer from "@/components/global/Footer";
+import Navbar from "@/components/global/Navbar";
 
 const AllCampaigns = () => {
   const Toast = useToast({ position: "top-right" });
@@ -26,9 +27,12 @@ const AllCampaigns = () => {
 
   return (
     <>
+      <Navbar />
       <Stack
-        px={[4, 8, 16]} pt={[4, 8, 16]}
-        direction={"row"} pb={4}
+        px={[4, 8, 16]}
+        pt={[4, 8, 16]}
+        direction={"row"}
+        pb={4}
         justifyContent={"space-between"}
       >
         <Text className="serif" fontSize={"xl"} fontWeight={"semibold"} mb={0}>
@@ -41,13 +45,13 @@ const AllCampaigns = () => {
         gap={[16, 8, 16]}
         justifyContent={"center"}
         alignItems={"flex-start"}
-        minH={"85vh"} pt={4}
-        px={[4, 8, 16]}  pb={[4, 8, 16]}
+        minH={"85vh"}
+        pt={4}
+        px={[4, 8, 16]}
+        pb={[4, 8, 16]}
       >
         {campaigns
-          .filter(
-            (item) => item.status == "approved"
-          )
+          .filter((item) => item.status == "approved")
           .map((campaign, key) => (
             <CampaignCard
               key={key}
@@ -58,7 +62,9 @@ const AllCampaigns = () => {
               }
               category={campaign?.category?.name}
               title={campaign.title}
-              userName={`Need ₹ ${Number(campaign?.target_amount)?.toLocaleString("en-IN")}`}
+              userName={`Need ₹ ${Number(
+                campaign?.target_amount
+              )?.toLocaleString("en-IN")}`}
               description={campaign.description}
               link={`/campaigns/${campaign.id}`}
             />

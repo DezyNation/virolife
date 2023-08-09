@@ -33,7 +33,7 @@ const page = () => {
   });
 
   function fetchMyCollections() {
-    BackendAxios.get(`/api/my-collections`)
+    BackendAxios.get(`/api/collections-for-me`)
       .then((res) => {
         setTransactions(res.data);
       })
@@ -118,9 +118,9 @@ const page = () => {
             {transactions.map((item, key) => (
               <Tr key={key}>
                 <Td>{item?.id}</Td>
-                <Td>{item?.user?.name}</Td>
+                <Td>{item?.user?.name} (VCF{item?.user_id})</Td>
                 <Td>{item?.remarks}</Td>
-                <Td>₹ {item?.amount}</Td>
+                <Td>₹ {item?.amount || 200}</Td>
                 <Td>{new Date(item?.created_at).toLocaleDateString()}</Td>
                 <Td>
                   {!item?.approved && !item?.deleted_at ? (
