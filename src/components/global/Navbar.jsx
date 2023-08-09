@@ -618,7 +618,11 @@ const Navbar = () => {
                     spacing={[4, 8]}
                     justifyContent={"space-between"}
                   >
-                    <FormLabel fontSize={"xl"}>Senior ID</FormLabel>
+                    <Box>
+                      <FormLabel fontSize={"xl"}>Senior ID</FormLabel>
+                      <Text fontSize={'xs'}>(optional)</Text>
+                    </Box>
+
                     <Box>
                       <InputGroup w={["full", "xs"]}>
                         <InputLeftElement
