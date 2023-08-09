@@ -246,7 +246,7 @@ const CampaignInfo = ({ params }) => {
               <Progress value={80} colorScheme="yellow" />
               <HStack justifyContent={"space-between"}>
                 <Text fontSize={"xs"}>
-                  ₹ {Number(40000).toLocaleString("en-IN")}
+                  ₹ {Number(0).toLocaleString("en-IN")}
                 </Text>
                 <Text fontSize={"xs"}>
                   ₹{Number(campaign?.target_amount)?.toLocaleString("en-IN")}
@@ -372,7 +372,7 @@ const CampaignInfo = ({ params }) => {
               <br />
               <Progress value={80} colorScheme="yellow" />
               <HStack justifyContent={"space-between"}>
-                <Text fontSize={"xs"}>₹80,000</Text>
+                <Text fontSize={"xs"}>₹0</Text>
                 <Text fontSize={"xs"}>₹{campaign?.target_amount}</Text>
               </HStack>
               <br />
