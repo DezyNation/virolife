@@ -8,7 +8,7 @@ import BackendAxios, { DefaultAxios } from "@/utils/axios";
 import Footer from "@/components/global/Footer";
 import Navbar from "@/components/global/Navbar";
 
-const AllCampaigns = () => {
+const AllCampaigns = ({ showNavbar = true }) => {
   const Toast = useToast({ position: "top-right" });
   const [campaigns, setCampaigns] = useState([]);
   useEffect(() => {
@@ -27,7 +27,7 @@ const AllCampaigns = () => {
 
   return (
     <>
-      <Navbar />
+      {showNavbar ? <Navbar /> : null}
       <Stack
         px={[4, 8, 16]}
         pt={[4, 8, 16]}
