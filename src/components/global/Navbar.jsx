@@ -197,11 +197,6 @@ const Navbar = () => {
         localStorage.clear();
       })
       .catch((err) => {
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
         Cookies.remove("jwt");
         localStorage.clear();
       });
