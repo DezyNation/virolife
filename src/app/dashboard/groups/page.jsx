@@ -51,11 +51,11 @@ const MyParents = ({ parentUsers }) => {
     },
   });
 
-  const [beneficiaries, setBeneficiaries] = useState([])
+  const [beneficiaries, setBeneficiaries] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchMyDonations();
-  },[])
+  }, []);
 
   function showVideo(user) {
     setVideoStatus(true);
@@ -97,13 +97,18 @@ const MyParents = ({ parentUsers }) => {
   }
 
   function donate(id) {
-    BackendAxios.post(receiver?.name == "Virolife Foundation" ? `/api/donate/admin` : `/api/donation`, {
-      donatable_id: receiver?.id,
-      amount: 200,
-      remarks: `Donation to senior user ${receiver.id}`,
-    })
+    BackendAxios.post(
+      receiver?.name == "Virolife Foundation"
+        ? `/api/donate/admin`
+        : `/api/donation`,
+      {
+        donatable_id: receiver?.id,
+        amount: 200,
+        remarks: `Donation to senior user ${receiver.id}`,
+      }
+    )
       .then((res) => {
-        fetchMyDonations()
+        fetchMyDonations();
         Toast({
           status: "success",
           description: "Notification sent to senior",
@@ -120,7 +125,7 @@ const MyParents = ({ parentUsers }) => {
       });
   }
 
-  function fetchMyDonations(){
+  function fetchMyDonations() {
     BackendAxios.get(`/api/my-donations`)
       .then((res) => {
         setBeneficiaries(res.data?.map((item) => item?.donatable_id));
@@ -214,18 +219,25 @@ const MyParents = ({ parentUsers }) => {
 };
 
 const NestedChildren = ({ data, donors, level, currentLevel = 1 }) => {
-  if (parseInt(currentLevel) != parseInt(level)) return null;
-
-  return (
-    <ul>
-      {data.map((item) => (
-        <li key={item.id} style={{ listStyle: "none" }}>
+  if (parseInt(currentLevel) == parseInt(level)) {
+    return (
+      <>
+        {data.map((item) => (
           <ChildMemberCard
             name={item?.name}
             id={item?.id}
             phone_number={item?.phone_number}
             donation_received={donors?.includes(item?.id) ? true : false}
           />
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <ul>
+      {data.map((item) => (
+        <li key={item.id} style={{ listStyle: "none" }}>
           {item.children && (
             <NestedChildren
               data={item.children}
@@ -243,7 +255,7 @@ const MyChildren = ({ childMembers, donors }) => {
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
   const [myId, setMyId] = useState("");
-  
+
   const [myGroup, setMyGroup] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
 
@@ -514,16 +526,16 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
         <HStack w={"full"} justifyContent={"space-between"}>
           <Text fontSize={"xl"}>My Juniors (Secondary ID)</Text>
           <Select width={28} onChange={(e) => setSelectedLevel(e.target.value)}>
-            <option value="1">Level1</option>
-            <option value="2">Level2</option>
-            <option value="3">Level3</option>
-            <option value="4">Level4</option>
-            <option value="5">Level5</option>
-            <option value="6">Level6</option>
-            <option value="7">Level7</option>
-            <option value="8">Level8</option>
-            <option value="9">Level9</option>
-            <option value="10">Level10</option>
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4</option>
+            <option value="5">Level 5</option>
+            <option value="6">Level 6</option>
+            <option value="7">Level 7</option>
+            <option value="8">Level 8</option>
+            <option value="9">Level 9</option>
+            <option value="10">Level 10</option>
           </Select>
         </HStack>
         <br />
@@ -809,16 +821,12 @@ const Page = () => {
           <Box>
             <Text fontSize={"xl"}>My Seniors (Primary ID)</Text>
             <br />
-            <MyParents
-              parentUsers={primaryParentUsers}
-            />
+            <MyParents parentUsers={primaryParentUsers} />
           </Box>
           <Box>
             <Text fontSize={"xl"}>My Seniors (Secondary ID)</Text>
             <br />
-            <MyParents
-              parentUsers={secondaryParentUsers}
-            />
+            <MyParents parentUsers={secondaryParentUsers} />
           </Box>
         </Stack>
       </Box>
@@ -832,9 +840,7 @@ const Page = () => {
           gap={8}
         >
           <Box>
-            <MyChildren
-              donors={collections?.map((item) => item?.user_id)}
-            />
+            <MyChildren donors={collections?.map((item) => item?.user_id)} />
           </Box>
           <Box>
             <MySecondaryChildren
