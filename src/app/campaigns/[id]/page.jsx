@@ -101,8 +101,8 @@ const CampaignInfo = ({ params }) => {
   }, []);
   return (
     <>
-      {campaign ? (
-        <Head>
+      {campaign?.title ? (
+        <head>
           <meta
             property="og:image"
             content={
@@ -131,7 +131,7 @@ const CampaignInfo = ({ params }) => {
 
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
-        </Head>
+        </head>
       ) : null}
 
       <Navbar />
