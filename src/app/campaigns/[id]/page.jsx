@@ -10,7 +10,8 @@ export async function generateMetadata({ params }) {
   await BackendAxios.get(`/api/campaign/${id}`)
     .then((res) => {
       campaign = res.data[0];
-    }).catch((err) => {
+    })
+    .catch((err) => {
       console.log(err);
     });
 
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }) {
         campaign?.file_path
           ? `https://api.virolife.in/${campaign?.file_path}`
           : "https://idea.batumi.ge/files/default.jpg",
+        "https://idea.batumi.ge/files/default.jpg",
       ],
     },
   };
@@ -28,7 +30,7 @@ export async function generateMetadata({ params }) {
 
 const CampaignInfo = async ({ params }) => {
   const { id } = params;
-  
+
   let campaign;
   await BackendAxios.get(`/api/campaign/${id}`)
     .then((res) => {
