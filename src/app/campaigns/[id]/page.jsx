@@ -101,33 +101,38 @@ const CampaignInfo = ({ params }) => {
   }, []);
   return (
     <>
-      <head>
-        <meta
-          property="og:image"
-          content={
-            campaign.file_path
-              ? `https://api.virolife.in/${campaign.file_path}`
-              : "https://idea.batumi.ge/files/default.jpg"
-          }
-        />
-        <meta
-          property="twitter:image"
-          content={
-            campaign.file_path
-              ? `https://api.virolife.in/${campaign.file_path}`
-              : "https://idea.batumi.ge/files/default.jpg"
-          }
-        />
-        <meta property="og:title" content={campaign?.title || "Virolife Foundation"} />
+      {campaign ? (
+        <Head>
+          <meta
+            property="og:image"
+            content={
+              campaign.file_path
+                ? `https://api.virolife.in/${campaign.file_path}`
+                : "https://idea.batumi.ge/files/default.jpg"
+            }
+          />
+          <meta
+            property="twitter:image"
+            content={
+              campaign.file_path
+                ? `https://api.virolife.in/${campaign.file_path}`
+                : "https://idea.batumi.ge/files/default.jpg"
+            }
+          />
+          <meta
+            property="og:title"
+            content={campaign?.title || "Virolife Foundation"}
+          />
 
-        <meta
-          property="og:description"
-          content={campaign.description || "Donate Now"}
-        />
+          <meta
+            property="og:description"
+            content={campaign.description || "Donate Now"}
+          />
 
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-      </head>
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+        </Head>
+      ) : null}
 
       <Navbar />
       <Stack
