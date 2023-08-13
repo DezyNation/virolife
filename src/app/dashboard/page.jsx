@@ -49,6 +49,7 @@ const DashboardHome = () => {
         localStorage.setItem("userId", res.data?.id);
         localStorage.setItem("primaryActive", res.data?.primary_activated);
         localStorage.setItem("secondaryActive", res.data?.secondary_activated);
+        localStorage.setItem("myPlan", res.data?.subscription);
         if(res.data.parent_id){
           localStorage.setItem("primaryParentId", res.data?.parent_id);
         }

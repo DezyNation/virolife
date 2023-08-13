@@ -1,4 +1,5 @@
 "use client";
+import BackendAxios from "@/utils/axios";
 import {
   Box,
   Button,
@@ -8,24 +9,41 @@ import {
   Text,
   Tr,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 const Plan = ({
+  id,
   bgColor,
   color = "#FFF",
   title,
   price,
   description,
-  onClick,
+  subscribedByMe,
+  subscribedBySenior,
+  onClick
 }) => {
+  const Toast = useToast({position: 'top-right'})
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleClick() {
+  async function handleClick() {
     setIsLoading(true);
-    setTimeout(() => {
-        setIsLoading(false)
-    }, 2000);
+    await BackendAxios.post(`/api/subscription`, {planId: id}).then(res => {
+      Toast({
+        status: 'success',
+        description: `${title} purchased successfully`
+      })
+      setIsLoading(false);
+    }).catch(err => {
+      Toast({
+        status: 'error',
+        description: err?.response?.data?.message || err?.response?.data || err?.message
+      })
+      setIsLoading(false);
+    }).finally(()=>{
+      onClick()
+    })
   }
   return (
     <>
@@ -55,28 +73,42 @@ const Plan = ({
             Joining Fees ₹{price}
           </Text>
         </VStack>
-        <Box >
-          <Table size={'sm'}>
+        <Box>
+          <Table size={"sm"}>
             <Tbody>
               {description?.map((content, key) => (
                 <Tr key={key}>
-                  <Td py={2} fontSize={'xs'}>{content}</Td>
+                  <Td py={2} fontSize={"xs"}>
+                    {content}
+                  </Td>
                 </Tr>
               ))}
             </Tbody>
           </Table>
         </Box>
         <Box p={4}>
-          <Button
-            w={"full"}
-            bgColor={bgColor}
-            _hover={{ bgColor: bgColor }}
-            color={color}
-            isLoading={isLoading}
-            onClick={handleClick}
-          >
-            Join with ₹{price}
-          </Button>
+          {subscribedByMe ? (
+            <Button
+              w={"full"}
+              bgColor={bgColor}
+              _hover={{ bgColor: bgColor }}
+              color={color}
+            >
+              Already Joined
+            </Button>
+          ) : (
+            <Button
+              w={"full"}
+              bgColor={bgColor}
+              _hover={{ bgColor: bgColor }}
+              color={color}
+              isLoading={isLoading}
+              isDisabled={subscribedBySenior ? subscribedBySenior != id : false}
+              onClick={handleClick}
+            >
+              Join with ₹{price}
+            </Button>
+          )}
         </Box>
       </Box>
     </>

@@ -1,9 +1,22 @@
 "use client";
 import Plan from "@/components/dashboard/team-funding/Plan";
-import { Box, HStack, Text, VStack } from "@chakra-ui/react";
-import React from "react";
+import BackendAxios from "@/utils/axios";
+import {
+  Box,
+  HStack,
+  Table,
+  TableContainer,
+  Text,
+  Thead,
+  Tr,
+  VStack,
+  useEditable,
+  useToast,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 
 const index = () => {
+  const Toast = useToast({ position: "top-right" });
   const plans = [
     {
       id: "1",
@@ -120,6 +133,41 @@ const index = () => {
       ],
     },
   ];
+  const [myPlan, setMyPlan] = useState({});
+  const [seniorPlan, setSeniorPlan] = useState({});
+
+  useEffect(() => {
+    getMyPlan();
+  }, []);
+
+  useEffect(() => {
+    BackendAxios.get(`/api/senior-plan`)
+      .then((res) => {
+        setSeniorPlan(res.data);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }, []);
+
+  function getMyPlan() {
+    BackendAxios.post(`/auth-user`)
+      .then((res) => {
+        const plan = plans.find((plan) => plan.id == res.data?.subscription);
+        setMyPlan(plan);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
 
   return (
     <>
@@ -134,7 +182,7 @@ const index = () => {
           className="serif"
           fontWeight={"semibold"}
         >
-          Choose a plan to start earning points
+          Buy your plan to start earning points
         </Text>
       </VStack>
 
@@ -142,20 +190,53 @@ const index = () => {
       <HStack
         gap={6}
         alignItems={"center"}
-        justifyContent={"center"}
+        justifyContent={"space-between"}
         flexWrap={"wrap"}
       >
-        {plans.map((plan, key) => (
+        {myPlan?.id ? (
+          <>
+            <Text>Members who bought subscription</Text>
+            <TableContainer height={"md"}>
+              <Table size={"sm"}>
+                <Thead>
+                  <Tr>#</Tr>
+                  <Tr>User ID</Tr>
+                  <Tr>User Name</Tr>
+                  <Tr>Parent ID</Tr>
+                  <Tr>Parent Name</Tr>
+                  <Tr>Points Received</Tr>
+                  <Tr>Timestamp</Tr>
+                </Thead>
+              </Table>
+            </TableContainer>
+          </>
+        ) : null}
+        {myPlan?.id ? (
           <Plan
-            key={key}
-            onClick={() => console.log(plan?.id)}
-            title={plan?.title}
-            price={plan?.price}
-            bgColor={plan?.bgColor}
-            color={plan?.color}
-            description={plan?.description}
+            id={myPlan?.id}
+            onClick={() => console.log(myPlan?.id)}
+            title={myPlan?.title}
+            price={myPlan?.price}
+            bgColor={myPlan?.bgColor}
+            color={myPlan?.color}
+            description={myPlan?.description}
+            subscribedByMe={true}
           />
-        ))}
+        ) : (
+          plans.map((plan, key) => (
+            <Plan
+              key={key}
+              onClick={() => getMyPlan()}
+              id={plan?.id}
+              title={plan?.title}
+              price={plan?.price}
+              bgColor={plan?.bgColor}
+              color={plan?.color}
+              description={plan?.description}
+              subscribedByMe={false}
+            />
+          ))
+        )}
       </HStack>
     </>
   );
