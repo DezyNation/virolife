@@ -22,7 +22,7 @@ import {
   BsPower,
 } from "react-icons/bs";
 import { MdGroups } from "react-icons/md";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { FaHandshake } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { isExpired } from "react-jwt";
@@ -92,16 +92,16 @@ const Layout = ({ children }) => {
                   <Text>Collection</Text>
                 </HStack>
               </Link>
-              {/* <Link href={"/dashboard"}>
-                <HStack gap={4}>
-                  <BsCashCoin size={20} />
-                  <Text>Withdrawals</Text>
-                </HStack>
-              </Link> */}
               <Link href={"/dashboard/groups"}>
                 <HStack gap={4}>
                   <MdGroups size={20} />
                   <Text>Groups</Text>
+                </HStack>
+              </Link>
+              <Link href={"/dashboard/team-funding"}>
+                <HStack gap={4}>
+                  <FaHandshake size={20} />
+                  <Text>Viro Team Funding</Text>
                 </HStack>
               </Link>
               <br />
