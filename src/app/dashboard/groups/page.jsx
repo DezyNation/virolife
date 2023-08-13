@@ -163,7 +163,7 @@ const MyParents = ({ parentUsers }) => {
                 </Text>
                 <Text fontSize={"xs"}>
                   ID: {process.env.NEXT_PUBLIC_CODE}
-                  {item?.id} &nbsp; | &nbsp; Phone: {item?.parent_phone}
+                  {item?.user_parent} &nbsp; | &nbsp; Phone: {item?.parent_phone}
                 </Text>
               </Box>
             </HStack>
