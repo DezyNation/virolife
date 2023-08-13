@@ -103,7 +103,7 @@ const Plan = ({
               _hover={{ bgColor: bgColor }}
               color={color}
               isLoading={isLoading}
-              isDisabled={subscribedBySenior ? subscribedBySenior != id : false}
+              isDisabled={subscribedBySenior}
               onClick={handleClick}
             >
               Join with ₹{price}

@@ -7,6 +7,7 @@ import {
   Table,
   TableContainer,
   Text,
+  Th,
   Thead,
   Tr,
   VStack,
@@ -143,7 +144,7 @@ const index = () => {
   useEffect(() => {
     BackendAxios.get(`/api/senior-plan`)
       .then((res) => {
-        setSeniorPlan(res.data);
+        setSeniorPlan(res.data?.length ? res.data[0]?.plan?.id : "");
       })
       .catch((err) => {
         Toast({
@@ -157,7 +158,10 @@ const index = () => {
   function getMyPlan() {
     BackendAxios.post(`/auth-user`)
       .then((res) => {
-        const plan = plans.find((plan) => plan.id == res.data?.subscription);
+        const plan = plans.find(
+          (plan) => plan.id == res.data[0]?.subscription?.plan?.id
+        );
+        console.log(plan);
         setMyPlan(plan);
       })
       .catch((err) => {
@@ -174,42 +178,47 @@ const index = () => {
       <Text fontSize={"lg"} className="serif">
         Veero Team Funding
       </Text>
-      <VStack w={"full"} py={6}>
-        <Text textAlign={"center"}>You don't have any subscription.</Text>
-        <Text
-          textAlign={"center"}
-          fontSize={"xl"}
-          className="serif"
-          fontWeight={"semibold"}
-        >
-          Buy your plan to start earning points
-        </Text>
-      </VStack>
+      {myPlan?.id ? null : (
+        <VStack w={"full"} py={6}>
+          <Text textAlign={"center"}>You don't have any subscription.</Text>
+          <Text
+            textAlign={"center"}
+            fontSize={"xl"}
+            className="serif"
+            fontWeight={"semibold"}
+          >
+            Buy your plan to start earning points
+          </Text>
+        </VStack>
+      )}
 
       {/* Plans */}
       <HStack
-        gap={6}
+        gap={6} py={4}
         alignItems={"center"}
         justifyContent={"space-between"}
         flexWrap={"wrap"}
       >
         {myPlan?.id ? (
-          <>
+          <Box>
             <Text>Members who bought subscription</Text>
+            <br />
             <TableContainer height={"md"}>
               <Table size={"sm"}>
                 <Thead>
-                  <Tr>#</Tr>
-                  <Tr>User ID</Tr>
-                  <Tr>User Name</Tr>
-                  <Tr>Parent ID</Tr>
-                  <Tr>Parent Name</Tr>
-                  <Tr>Points Received</Tr>
-                  <Tr>Timestamp</Tr>
+                  <Tr>
+                    <Th>#</Th>
+                    <Th>User ID</Th>
+                    <Th>User Name</Th>
+                    <Th>Parent ID</Th>
+                    <Th>Parent Name</Th>
+                    <Th>Points Received</Th>
+                    <Th>Timestamp</Th>
+                  </Tr>
                 </Thead>
               </Table>
             </TableContainer>
-          </>
+          </Box>
         ) : null}
         {myPlan?.id ? (
           <Plan
@@ -234,6 +243,7 @@ const index = () => {
               color={plan?.color}
               description={plan?.description}
               subscribedByMe={false}
+              subscribedBySenior={seniorPlan ? parseInt(seniorPlan) == parseInt(plan?.id) ? false : true : false}
             />
           ))
         )}

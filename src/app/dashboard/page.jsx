@@ -44,17 +44,17 @@ const DashboardHome = () => {
   useEffect(() => {
     BackendAxios.post("/auth-user")
       .then((res) => {
-        setAuthUser(res.data);
-        localStorage.setItem("userName", res.data?.name);
-        localStorage.setItem("userId", res.data?.id);
-        localStorage.setItem("primaryActive", res.data?.primary_activated);
-        localStorage.setItem("secondaryActive", res.data?.secondary_activated);
-        localStorage.setItem("myPlan", res.data?.subscription);
+        setAuthUser(res.data[0]);
+        localStorage.setItem("userName", res.data[0]?.name);
+        localStorage.setItem("userId", res.data[0]?.id);
+        localStorage.setItem("primaryActive", res.data[0]?.primary_activated);
+        localStorage.setItem("secondaryActive", res.data[0]?.secondary_activated);
+        localStorage.setItem("myPlan", res.data[0]?.subscription?.plan?.id);
         if(res.data.parent_id){
-          localStorage.setItem("primaryParentId", res.data?.parent_id);
+          localStorage.setItem("primaryParentId", res.data[0]?.parent_id);
         }
         if(res.data.secondary_parent_id){
-          localStorage.setItem("secondaryParentId", res.data?.secondary_parent_id);
+          localStorage.setItem("secondaryParentId", res.data[0]?.secondary_parent_id);
         }
       })
       .catch((err) => {
