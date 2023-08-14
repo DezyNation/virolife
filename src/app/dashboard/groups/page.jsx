@@ -33,7 +33,7 @@ import VideoPlayer from "@/components/global/VideoPlayer";
 import ChildMemberCard from "@/components/dashboard/ChildMemberCard";
 import VerticalSpacer from "@/components/global/VerticalSpacer";
 
-const MyParents = ({ parentUsers }) => {
+const MyParents = ({ parentUsers, myParentId }) => {
   const Toast = useToast({ position: "top-right" });
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
@@ -163,7 +163,8 @@ const MyParents = ({ parentUsers }) => {
                 </Text>
                 <Text fontSize={"xs"}>
                   ID: {process.env.NEXT_PUBLIC_CODE}
-                  {item?.user_parent} &nbsp; | &nbsp; Phone: {item?.parent_phone}
+                  {key == 0 ? myParentId : item?.id} &nbsp; | &nbsp; Phone:{" "}
+                  {item?.parent_phone}
                 </Text>
               </Box>
             </HStack>
@@ -654,7 +655,7 @@ const Page = () => {
   }, [secondaryIdRequested, primaryIdRequested]);
 
   useEffect(() => {
-    setPrimaryJoined(Boolean(localStorage.getItem("primaryParentId")));
+    setPrimaryJoined(localStorage.getItem("primaryParentId"));
     setSecondaryJoined(localStorage.getItem("secondaryParentId"));
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
@@ -821,12 +822,18 @@ const Page = () => {
           <Box>
             <Text fontSize={"xl"}>My Seniors (Primary ID)</Text>
             <br />
-            <MyParents parentUsers={primaryParentUsers} />
+            <MyParents
+              parentUsers={primaryParentUsers}
+              myParentId={primaryJoined}
+            />
           </Box>
           <Box>
             <Text fontSize={"xl"}>My Seniors (Secondary ID)</Text>
             <br />
-            <MyParents parentUsers={secondaryParentUsers} />
+            <MyParents
+              parentUsers={secondaryParentUsers}
+              myParentId={secondaryJoined}
+            />
           </Box>
         </Stack>
       </Box>
