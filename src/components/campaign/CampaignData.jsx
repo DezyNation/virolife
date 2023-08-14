@@ -78,7 +78,7 @@ const CampaignData = ({ campaign }) => {
         justifyContent={"space-between"}
       >
         {/* Campaign Details */}
-        <Box>
+        <Box flex={['unset', 3]}>
           <Text
             fontSize={["2xl", "3xl", "4xl"]}
             fontWeight={"semibold"}
@@ -182,6 +182,7 @@ const CampaignData = ({ campaign }) => {
             h={"inherit"}
             position={"relative"}
             p={4}
+            flex={['unset', 1]}
           >
             <Box p={4} boxShadow={"lg"} rounded={8} position={"sticky"} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>
