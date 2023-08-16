@@ -88,6 +88,12 @@ const Carousel = () => {
   }
 
   function sendInvite() {
+    if(!Formik.values.name || !Formik.values.phone || !Formik.values.email){
+      Toast({
+        description: "All fields are required"
+      })
+      return
+    }
     BackendAxios.post(`/invitation`, {
       url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}?intent=register&name=${Formik.values.name.replace(/ /g, "%20")}&email=${Formik.values.email}&phone=${Formik.values.phone}`,
       name: Formik.values.name,

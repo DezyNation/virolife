@@ -17,15 +17,19 @@ export default async function Image({ params }) {
 
   return new ImageResponse(
     (
-      <img
-        src={
-          post?.file_path
-            ? `https://api.virolife.in/${post?.file_path}`
-            : "https://idea.batumi.ge/files/default.jpg"
-        }
-        width={'1200px'}
-        height={'630px'}
-      />
+      <div
+        style={{
+          backgroundImage: URL(
+            post?.file_path
+              ? `https://api.virolife.in/${post?.file_path}`
+              : "https://idea.batumi.ge/files/default.jpg"
+          ),
+          backgroundSize: 'cover',
+          backgroundRepeat: "no-repeat",
+          width:"1200px",
+          height:"630px"
+        }}
+      ></div>
     ),
     {
       ...size,

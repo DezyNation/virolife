@@ -17,7 +17,14 @@ export async function generateMetadata({ params }) {
 
   return {
     title: campaign?.title,
-    description: campaign?.description
+    description: campaign?.description,
+    openGraph: {
+      images: [
+        campaign?.file_path
+            ? `https://api.virolife.in/${campaign?.file_path}`
+            : "https://idea.batumi.ge/files/default.jpg"
+      ]
+    }
   };
 }
 
