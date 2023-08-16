@@ -190,17 +190,18 @@ const Navbar = () => {
       });
   }
 
-  async function handleLogout() {
-    await BackendAxios.post("/logout")
+  function handleLogout() {
+    BackendAxios.post("/logout")
       .then((res) => {
         Cookies.remove("jwt");
         localStorage.clear();
+        Router.replace("/");
       })
       .catch((err) => {
         Cookies.remove("jwt");
         localStorage.clear();
+        Router.replace("/");
       });
-    Router.replace("/");
   }
 
   useEffect(() => {
