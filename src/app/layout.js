@@ -2,7 +2,6 @@
 import Footer from "@/components/global/Footer";
 import Navbar from "@/components/global/Navbar";
 import { ChakraProvider } from "@chakra-ui/react";
-import { SessionProvider } from "next-auth/react";
 import "../app/styles/globals.css";
 
 // export const metadata = {
@@ -23,9 +22,15 @@ export default function RootLayout({ children, session }) {
       </head>
       <body>
         <ChakraProvider>
-          <SessionProvider>
-            {children}
-          </SessionProvider>
+          {children}
+          <script
+            type="text/javascript"
+            src="https://www.freevisitorcounters.com/auth.php?id=3ec73f1933e470581d15ee61c30ac054d0c29459"
+          ></script>
+          <script
+            type="text/javascript"
+            src="https://www.freevisitorcounters.com/en/home/counter/1063121/t/6"
+          ></script>
         </ChakraProvider>
       </body>
     </html>
