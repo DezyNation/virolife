@@ -291,9 +291,11 @@ const Navbar = () => {
                 Redeem Points
               </Box>
             )}
+            <Link href={'/contact'}>
             <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
               Contact
             </Box>
+            </Link>
           </HStack>
         </Flex>
         <Flex
@@ -423,7 +425,9 @@ const Navbar = () => {
                   Join Group
                 </Text>
               </HStack>
+              <Link href={'/contact'}>
               <Text>Contact Us</Text>
+              </Link>
             </VStack>
           </DrawerBody>
           <DrawerFooter justifyContent={"center"}>
