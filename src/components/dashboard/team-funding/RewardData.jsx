@@ -22,12 +22,15 @@ const RewardData = ({
   }, [data]);
 
   useEffect(() => {
+    // fetchMyGroup()
     getRewardData(localStorage.getItem("userId"));
   }, []);
 
   const getRewardData = (id) => {
     BackendAxios.get(`/api/my-group-points/${id}`)
-      .then((res) => {})
+      .then((res) => {
+        setSortedData(res.data)
+      })
       .catch((err) => {
         Toast({
             status: 'error',
@@ -41,17 +44,12 @@ const RewardData = ({
       {sortedData?.map((data, key) => (
         <Tr>
           <Td>{key + 1}</Td>
-          {/* <Td>{userId}</Td>
-          <Td>{userName}</Td>
-          <Td>{parentId}</Td>
-          <Td>{parentName}</Td>
-          <Td>{points}</Td>
-          <Td>{timestamp}</Td> */}
-          <Td>
-            <Button size={"xs"} onClick={() => getRewardData()}>
-              View Junior Rewards
-            </Button>
-          </Td>
+          <Td>{data?.user_id}</Td>
+          <Td>{data?.user_name}</Td>
+          <Td>{data?.parent_id}</Td>
+          <Td>{data?.name}</Td>
+          <Td>{data?.points}</Td>
+          <Td>{data?.created_at}</Td>
         </Tr>
       ))}
     </>

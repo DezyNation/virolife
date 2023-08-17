@@ -203,7 +203,7 @@ const index = () => {
       >
         {myPlan?.id ? (
           <Box>
-            <Text>Members who bought subscription</Text>
+            {/* <Text>Members who bought subscription</Text> */}
             <br />
             <TableContainer height={"md"}>
               <Table size={"sm"}>
@@ -213,7 +213,7 @@ const index = () => {
                     <Th>User ID</Th>
                     <Th>User Name</Th>
                     <Th>Parent ID</Th>
-                    <Th>Parent Name</Th>
+                    <Th>Plan Purchased</Th>
                     <Th>Points Received</Th>
                     <Th>Timestamp</Th>
                   </Tr>
