@@ -1,11 +1,13 @@
 "use client";
 import Plan from "@/components/dashboard/team-funding/Plan";
+import RewardData from "@/components/dashboard/team-funding/RewardData";
 import BackendAxios from "@/utils/axios";
 import {
   Box,
   HStack,
   Table,
   TableContainer,
+  Tbody,
   Text,
   Th,
   Thead,
@@ -216,6 +218,9 @@ const index = () => {
                     <Th>Timestamp</Th>
                   </Tr>
                 </Thead>
+                <Tbody>
+                  <RewardData />
+                </Tbody>
               </Table>
             </TableContainer>
           </Box>
