@@ -169,8 +169,8 @@ const CampaignData = ({ campaign }) => {
             campaign?.beneficiary_details != "null" ? (
               <>
                 This campaign will benefit{" "}
-                {JSON.parse(campaign?.beneficiary_details)?.name} of{" "}
-                {JSON.parse(campaign?.beneficiary_details)?.address}
+                {JSON.parse(campaign?.beneficiary_details)?.name}
+                {JSON.parse(campaign?.beneficiary_details)?.address ? ` of ${JSON.parse(campaign?.beneficiary_details)?.address}` : ""}
                 <br />
               </>
             ) : null}
