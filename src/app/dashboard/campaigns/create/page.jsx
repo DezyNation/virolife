@@ -35,8 +35,8 @@ const Page = () => {
     contact: "",
   });
   const onDrop = useCallback(async (acceptedFiles) => {
-    console.log(acceptedFiles[0]);
-    Formik.setFieldValue("files", acceptedFiles[0]);
+    console.log(acceptedFiles);
+    Formik.setFieldValue("files", acceptedFiles);
     const newImages = acceptedFiles.map((file) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -45,25 +45,27 @@ const Page = () => {
         reader.readAsDataURL(file);
       });
     });
-    console.log(newImages);
+    
     Promise.all(newImages)
       .then((imagePreviews) =>
         setSelectedImages((prevImages) => [...prevImages, ...imagePreviews])
       )
       .catch((error) => console.error("Error reading file:", error));
   }, []);
+
   const removeImage = (index) => {
     setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
     Formik.setFieldValue(
       "files",
-      Formik.values.files.filter((_, i) => i !== index)
+      Formik.values.files?.filter((_, i) => i !== index)
     );
   };
+
   const [selectedImages, setSelectedImages] = useState([]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: "image/*",
-    multiple: false,
+    multiple: true,
   });
 
   const Formik = useFormik({
@@ -75,7 +77,7 @@ const Page = () => {
       category_id: "",
       target_amount: "",
     },
-    onSubmit: () => {
+    onSubmit: (values) => {
       setLoading(true);
       const formData = new FormData();
       formData.append("files", Formik.values.files);
@@ -87,14 +89,18 @@ const Page = () => {
       formData.append("from", new Date(selectedDates[0]).getUTCSeconds());
       formData.append("to", new Date(selectedDates[1]).getUTCSeconds());
       formData.append("beneficiaryDetails", JSON.stringify(beneficiaryDetails));
-      FormAxios.post("/api/campaign", formData)
+      FormAxios.post("/api/campaign", {
+        ...values,
+        beneficiaryDetails: JSON.stringify(beneficiaryDetails),
+        from: new Date(selectedDates[0]).getUTCSeconds(),
+        to: new Date(selectedDates[1]).getUTCSeconds(),
+      })
         .then((res) => {
           setLoading(false);
           Toast({
             status: "success",
             description: "Your campaign was sent for review!",
           });
-          console.log(formData);
         })
         .catch((err) => {
           setLoading(false);
@@ -191,12 +197,12 @@ const Page = () => {
         <HStack py={4}>
           {selectedImages.map((image, index) => (
             <Box key={index} pos={"relative"}>
-              {/* <Icon
+              <Icon
                   as={BsXCircleFill}
                   color={'red'} pos={'absolute'}
                   size={12} top={0} right={0}
                   onClick={() => removeImage(index)}
-              /> */}
+              />
               <Image
                 src={image}
                 w={36}

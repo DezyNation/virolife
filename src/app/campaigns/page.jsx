@@ -56,8 +56,8 @@ const AllCampaigns = ({ showNavbar = true }) => {
             <CampaignCard
               key={key}
               coverImage={
-                campaign.file_path
-                  ? `https://api.virolife.in/${campaign.file_path}`
+                campaign?.file_path
+                  ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${JSON.parse(campaign?.file_path)[0]}`
                   : "https://idea.batumi.ge/files/default.jpg"
               }
               category={campaign?.category?.name}

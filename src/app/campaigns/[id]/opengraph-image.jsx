@@ -21,7 +21,7 @@ export default async function Image({ params }) {
         style={{
           backgroundImage: URL(
             post?.file_path
-              ? `https://api.virolife.in/${post?.file_path}`
+              ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${JSON.parse(campaign?.file_path)[0]}`
               : "https://idea.batumi.ge/files/default.jpg"
           ),
           backgroundSize: 'cover',

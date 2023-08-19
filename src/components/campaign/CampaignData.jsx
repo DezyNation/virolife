@@ -45,7 +45,7 @@ import {
   LinkedinIcon,
 } from "react-share";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const CampaignData = ({ campaign }) => {
   const Toast = useToast({ position: "top-right" });
@@ -55,8 +55,9 @@ const CampaignData = ({ campaign }) => {
       `
   );
   const [selectedImg, setSelectedImg] = useState(
-    "https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg"
+    "https://idea.batumi.ge/files/default.jpg"
   );
+  const [images, setImages] = useState([]);
   const [amount, setAmount] = useState(1000);
   const [fees, setFees] = useState(5);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,6 +71,23 @@ const CampaignData = ({ campaign }) => {
       phone: "",
     },
   });
+
+  useEffect(() => {
+    console.log(campaign)
+    if (campaign?.file_path) {
+      setSelectedImg(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/${
+          JSON.parse(campaign?.file_path)[0]
+        }`
+      );
+      setImages(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/${JSON.parse(
+          campaign?.file_path
+        )}`
+      );
+    }
+  }, []);
+
   return (
     <>
       <Stack
@@ -78,7 +96,7 @@ const CampaignData = ({ campaign }) => {
         justifyContent={"space-between"}
       >
         {/* Campaign Details */}
-        <Box flex={['unset', 3]}>
+        <Box flex={["unset", 3]}>
           <Text
             fontSize={["2xl", "3xl", "4xl"]}
             fontWeight={"semibold"}
@@ -94,48 +112,38 @@ const CampaignData = ({ campaign }) => {
           </Text>
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
-              src={
-                campaign?.file_path
-                  ? `https://api.virolife.in/${campaign?.file_path}`
-                  : "https://idea.batumi.ge/files/default.jpg"
-              }
+              src={selectedImg}
               w={["100%", "lg", "3xl"]}
               objectFit={"cover"}
               h={["xs", "sm"]}
               rounded={16}
             />
-            {/* 
-                <Stack
-                  direction={['row', 'column']}
-                  w={['full', '48']}
-                  h={['auto', 'lg']} gap={6}
-                  overflowX={['scroll', 'visible']}
-                  overflowY={['visible', 'scroll']}
-                  className='hide-scrollbar'
-              >
-                  <Image
-                      src={"https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg"}
-                      boxSize={['24']} objectFit={'cover'}
-                      rounded={16} cursor={'pointer'}
-                      onClick={() => setSelectedImg("https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg")}
-                      border={'2px'} borderColor={selectedImg == "https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg" ? "yellow.400" : 'transparent'}
-                  />
-                  <Image
-                      src={"https://imgnew.outlookindia.com/uploadimage/library/16_9/16_9_5/IMAGE_1675431757.jpg"}
-                      boxSize={['24']} objectFit={'cover'}
-                      rounded={16} cursor={'pointer'}
-                      onClick={() => setSelectedImg("https://imgnew.outlookindia.com/uploadimage/library/16_9/16_9_5/IMAGE_1675431757.jpg")}
-                      border={'2px'} borderColor={selectedImg == "https://imgnew.outlookindia.com/uploadimage/library/16_9/16_9_5/IMAGE_1675431757.jpg" ? "yellow.400" : 'transparent'}
-                  />
-                  <Image
-                      src={"https://wellnessworks.in/wp-content/uploads/2019/10/indian-cow.jpg"}
-                      boxSize={['24']} objectFit={'cover'}
-                      rounded={16} cursor={'pointer'}
-                      onClick={() => setSelectedImg("https://wellnessworks.in/wp-content/uploads/2019/10/indian-cow.jpg")}
-                      border={'2px'} borderColor={selectedImg == "https://wellnessworks.in/wp-content/uploads/2019/10/indian-cow.jpg" ? "yellow.400" : 'transparent'}
-                  />
-              </Stack>
-            */}
+
+            <Stack
+              direction={["row", "column"]}
+              w={["full", "48"]}
+              h={["auto", "lg"]}
+              gap={6}
+              overflowX={["scroll", "visible"]}
+              overflowY={["visible", "scroll"]}
+              className="hide-scrollbar"
+            >
+              {images.map((img, key) => (
+                <Image
+                  key={key}
+                  src={img}
+                  boxSize={["24"]}
+                  objectFit={"cover"}
+                  rounded={16}
+                  cursor={"pointer"}
+                  onClick={() => setSelectedImg(img)}
+                  border={"2px"}
+                  borderColor={
+                    selectedImg == img ? "yellow.400" : "transparent"
+                  }
+                />
+              ))}
+            </Stack>
           </Stack>
           <HStack justifyContent={"flex-end"}>
             <Button
@@ -182,7 +190,7 @@ const CampaignData = ({ campaign }) => {
             h={"inherit"}
             position={"relative"}
             p={4}
-            flex={['unset', 1]}
+            flex={["unset", 1]}
           >
             <Box p={4} boxShadow={"lg"} rounded={8} position={"sticky"} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>

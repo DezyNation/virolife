@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       images: [
         campaign?.file_path
-            ? `https://api.virolife.in/${campaign?.file_path}`
+            ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${JSON.parse(campaign?.file_path)[0]}`
             : "https://idea.batumi.ge/files/default.jpg"
       ]
     }
