@@ -26,10 +26,10 @@ import { RangeDatepicker } from "chakra-dayzed-datepicker";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {	
-	ssr: false,
-	loading: () => <p>Loading ...</p>,
-	})
+const QuillNoSSRWrapper = dynamic(async()=>{
+  const {default: RQ}=await import("react-quill");
+  return ({ ...props }) => <RQ {...props} />;
+})
 
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
