@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import {
   Text,
@@ -23,13 +23,16 @@ import { useFormik } from "formik";
 import { BsXCircleFill } from "react-icons/bs";
 import BackendAxios, { FormAxios } from "@/utils/axios";
 import { RangeDatepicker } from "chakra-dayzed-datepicker";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {	
+	ssr: false,
+	loading: () => <p>Loading ...</p>,
+	})
 
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
   const [loading, setLoading] = useState(false);
-  const [isClient, setIsClient] = useState(false);
   const [selectedDates, setSelectedDates] = useState([new Date(), new Date()]);
   const [beneficiaryDetails, setBeneficiaryDetails] = useState({
     type: "myself",
@@ -108,10 +111,7 @@ const Page = () => {
         });
     },
   });
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  
 
   return (
     <>
@@ -232,20 +232,14 @@ const Page = () => {
           onChange={Formik.handleChange}
           placeholder="Tell us about your campaign"
         ></Textarea> */}
-        {isClient ? (
-          <ReactQuill
-            theme="snow"
-            value={Formik.values.full_description}
-            onChange={(value) =>
-              Formik.setFieldValue("full_description", value)
-            }
-            style={{ height: "400px" }}
-          />
-        ) : null}
+        <QuillNoSSRWrapper
+          theme="snow"
+          value={Formik.values.full_description}
+          onChange={(value) => Formik.setFieldValue("full_description", value)}
+          style={{height: "400px"}}
+        />
       </FormControl>
-      <br />
-      <br />
-      <br />
+      <br /><br /><br />
       <VStack
         w={"full"}
         py={4}
