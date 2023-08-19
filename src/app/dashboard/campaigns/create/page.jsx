@@ -24,6 +24,7 @@ import { BsXCircleFill } from "react-icons/bs";
 import BackendAxios, { FormAxios } from "@/utils/axios";
 import { RangeDatepicker } from "chakra-dayzed-datepicker";
 import "react-quill/dist/quill.snow.css";
+import dynamic from "next/dynamic";
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {	
 	ssr: false,
