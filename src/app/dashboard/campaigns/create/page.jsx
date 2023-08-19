@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import {
   Text,
@@ -29,6 +29,7 @@ import "react-quill/dist/quill.snow.css";
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
   const [loading, setLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [selectedDates, setSelectedDates] = useState([new Date(), new Date()]);
   const [beneficiaryDetails, setBeneficiaryDetails] = useState({
     type: "myself",
@@ -36,6 +37,7 @@ const Page = () => {
     address: "",
     contact: "",
   });
+
   const onDrop = useCallback(async (acceptedFiles) => {
     console.log(acceptedFiles);
     Formik.setFieldValue("files", acceptedFiles);
@@ -106,6 +108,10 @@ const Page = () => {
         });
     },
   });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <>
@@ -226,14 +232,20 @@ const Page = () => {
           onChange={Formik.handleChange}
           placeholder="Tell us about your campaign"
         ></Textarea> */}
-        <ReactQuill
-          theme="snow"
-          value={Formik.values.full_description}
-          onChange={(value) => Formik.setFieldValue("full_description", value)}
-          style={{height: "400px"}}
-        />
+        {isClient ? (
+          <ReactQuill
+            theme="snow"
+            value={Formik.values.full_description}
+            onChange={(value) =>
+              Formik.setFieldValue("full_description", value)
+            }
+            style={{ height: "400px" }}
+          />
+        ) : null}
       </FormControl>
-      <br /><br /><br />
+      <br />
+      <br />
+      <br />
       <VStack
         w={"full"}
         py={4}
