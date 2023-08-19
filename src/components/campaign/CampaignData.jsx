@@ -46,6 +46,7 @@ import {
 } from "react-share";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
+import parse from "html-react-parser";
 
 const CampaignData = ({ campaign }) => {
   const Toast = useToast({ position: "top-right" });
@@ -177,9 +178,12 @@ const CampaignData = ({ campaign }) => {
           </Text>
           <br />
           <br />
-          <Text pb={16} maxW={["full", "xl", "4xl"]}>
+          <Box pb={16} maxW={["full", "xl", "4xl"]}>
+            {parse(campaign?.full_description)}
+          </Box>
+          {/* <Text pb={16} maxW={["full", "xl", "4xl"]}>
             {campaign?.full_description}
-          </Text>
+          </Text> */}
         </Box>
 
         <Show above="md">

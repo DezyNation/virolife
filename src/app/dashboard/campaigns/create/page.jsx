@@ -23,6 +23,8 @@ import { useFormik } from "formik";
 import { BsXCircleFill } from "react-icons/bs";
 import BackendAxios, { FormAxios } from "@/utils/axios";
 import { RangeDatepicker } from "chakra-dayzed-datepicker";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
@@ -45,7 +47,7 @@ const Page = () => {
         reader.readAsDataURL(file);
       });
     });
-    
+
     Promise.all(newImages)
       .then((imagePreviews) =>
         setSelectedImages((prevImages) => [...prevImages, ...imagePreviews])
@@ -79,16 +81,6 @@ const Page = () => {
     },
     onSubmit: (values) => {
       setLoading(true);
-      const formData = new FormData();
-      formData.append("files", Formik.values.files);
-      formData.append("title", Formik.values.title);
-      formData.append("description", Formik.values.description);
-      formData.append("full_description", Formik.values.full_description);
-      formData.append("category_id", Formik.values.category_id);
-      formData.append("target_amount", Formik.values.target_amount);
-      formData.append("from", new Date(selectedDates[0]).getUTCSeconds());
-      formData.append("to", new Date(selectedDates[1]).getUTCSeconds());
-      formData.append("beneficiaryDetails", JSON.stringify(beneficiaryDetails));
       FormAxios.post("/api/campaign", {
         ...values,
         beneficiaryDetails: JSON.stringify(beneficiaryDetails),
@@ -198,10 +190,13 @@ const Page = () => {
           {selectedImages.map((image, index) => (
             <Box key={index} pos={"relative"}>
               <Icon
-                  as={BsXCircleFill}
-                  color={'red'} pos={'absolute'}
-                  size={12} top={0} right={0}
-                  onClick={() => removeImage(index)}
+                as={BsXCircleFill}
+                color={"red"}
+                pos={"absolute"}
+                size={12}
+                top={0}
+                right={0}
+                onClick={() => removeImage(index)}
               />
               <Image
                 src={image}
@@ -225,13 +220,20 @@ const Page = () => {
       </FormControl>
       <FormControl py={4}>
         <FormLabel>Your message</FormLabel>
-        <Textarea
+        {/* <Textarea
           w={"full"}
           name="full_description"
           onChange={Formik.handleChange}
           placeholder="Tell us about your campaign"
-        ></Textarea>
+        ></Textarea> */}
+        <ReactQuill
+          theme="snow"
+          value={Formik.values.full_description}
+          onChange={(value) => Formik.setFieldValue("full_description", value)}
+          style={{height: "400px"}}
+        />
       </FormControl>
+      <br /><br /><br />
       <VStack
         w={"full"}
         py={4}
@@ -249,7 +251,11 @@ const Page = () => {
                 beneficiaryDetails.type == "myself" ? "solid" : "outline"
               }
               onClick={() =>
-                setBeneficiaryDetails({ ...beneficiaryDetails, type: "myself", name: localStorage.getItem("userName") })
+                setBeneficiaryDetails({
+                  ...beneficiaryDetails,
+                  type: "myself",
+                  name: localStorage.getItem("userName"),
+                })
               }
             >
               Myself
@@ -293,15 +299,16 @@ const Page = () => {
             </Button>
           </Stack>
         </FormControl>
-              <br />
+        <br />
         {beneficiaryDetails.type == "myself" || (
           <VStack
             w={"full"}
-            py={4} gap={8}
+            py={4}
+            gap={8}
             alignItems={"flex-start"}
             justifyContent={"flex-start"}
           >
-            <FormControl w={['full', 'xs']}>
+            <FormControl w={["full", "xs"]}>
               <FormLabel>Name</FormLabel>
               <Input
                 placeholder="Enter beneficiary name"
@@ -313,7 +320,7 @@ const Page = () => {
                 }
               />
             </FormControl>
-            <FormControl w={['full', 'xs']}>
+            <FormControl w={["full", "xs"]}>
               <FormLabel>Contact</FormLabel>
               <Input
                 placeholder="Beneficiary contact details"
@@ -325,7 +332,7 @@ const Page = () => {
                 }
               />
             </FormControl>
-            <FormControl w={['full', 'xs']}>
+            <FormControl w={["full", "xs"]}>
               <FormLabel>Address</FormLabel>
               <Input
                 placeholder="Beneficiary address"
