@@ -73,18 +73,17 @@ const CampaignData = ({ campaign }) => {
   });
 
   useEffect(() => {
-    console.log(campaign)
+    console.log(campaign);
     if (campaign?.file_path) {
       setSelectedImg(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/${
           JSON.parse(campaign?.file_path)[0]
         }`
       );
-      setImages(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/${JSON.parse(
-          campaign?.file_path
-        )}`
+      const campaignImages = JSON.parse(campaign?.file_path)?.map(
+        (img) => `${process.env.NEXT_PUBLIC_BACKEND_URL}/${img}`
       );
+      setImages(campaignImages);
     }
   }, []);
 
