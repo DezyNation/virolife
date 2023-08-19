@@ -11,7 +11,7 @@ const AdSenseVideoAd = ({adSlot}) => {
     <ins
       className="adsbygoogle"
       style={{ display: 'inline-block', width: '300px', height: '250px' }}
-      data-ad-client="ca-pub-2480119685720701"
+      data-ad-client="ca-pub-9467251738078516"
       data-ad-slot={adSlot}
       data-ad-format="video"
       data-full-width-responsive="true"

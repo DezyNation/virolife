@@ -16,7 +16,7 @@ export default function RootLayout({ children, session }) {
         <title>Virolife</title>
         <script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2480119685720701"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9467251738078516"
           crossorigin="anonymous"
         ></script>
       </head>
