@@ -3,12 +3,22 @@ import BackendAxios from "@/utils/axios";
 import {
   Box,
   Button,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Table,
   Tbody,
   Td,
   Text,
   Tr,
   VStack,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
@@ -22,29 +32,42 @@ const Plan = ({
   description,
   subscribedByMe,
   subscribedBySenior,
-  onClick
+  onClick,
 }) => {
-  const Toast = useToast({position: 'top-right'})
+  const Toast = useToast({ position: "top-right" });
   const [isLoading, setIsLoading] = useState(false);
+  const [parentId, setParentId] = useState("");
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   async function handleClick() {
+    if(!parentId) return
     setIsLoading(true);
-    await BackendAxios.post(`/api/subscription`, {planId: id}).then(res => {
-      Toast({
-        status: 'success',
-        description: `${title} purchased successfully`
-      })
-      setIsLoading(false);
-    }).catch(err => {
-      Toast({
-        status: 'error',
-        description: err?.response?.data?.message || err?.response?.data || err?.message
-      })
-      setIsLoading(false);
-    }).finally(()=>{
-      onClick()
+    await BackendAxios.post(`/api/subscription`, {
+      planId: id,
+      parentId: parentId,
     })
+      .then((res) => {
+        Toast({
+          status: "success",
+          description: `${title} purchased successfully`,
+        });
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+        setIsLoading(false);
+      })
+      .finally(() => {
+        onClose()
+        onClick();
+      });
   }
+
   return (
     <>
       <Box
@@ -103,13 +126,32 @@ const Plan = ({
               _hover={{ bgColor: bgColor }}
               color={color}
               isLoading={isLoading}
-              onClick={handleClick}
+              onClick={onOpen}
             >
               Join with ₹{price}
             </Button>
           )}
         </Box>
       </Box>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Enter Senior ID</ModalHeader>
+          <ModalBody>
+            <InputGroup>
+              <InputLeftAddon children={"VCF"} />
+              <Input
+                value={parentId}
+                onChange={(e) => setParentId(e.target.value)}
+              />
+            </InputGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="twitter" onClick={handleClick}>Join</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
