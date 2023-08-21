@@ -42,6 +42,9 @@ const Plan = ({
 
   async function handleClick() {
     if(!parentId) return
+    if(parentId == localStorage.getItem("userId")) {Toast({
+      description: "You can not join yourself!"
+    })}
     setIsLoading(true);
     await BackendAxios.post(`/api/subscription`, {
       planId: id,
@@ -137,13 +140,14 @@ const Plan = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Enter Senior ID</ModalHeader>
+          <ModalHeader>Enter Referral ID</ModalHeader>
           <ModalBody>
             <InputGroup>
               <InputLeftAddon children={"VCF"} />
               <Input
                 value={parentId}
                 onChange={(e) => setParentId(e.target.value)}
+                placeholder="ID of the user you would like to join with."
               />
             </InputGroup>
           </ModalBody>
