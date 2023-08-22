@@ -136,7 +136,7 @@ const Progress = () => {
                 Campaign Donations :
               </Text>
               <Text flex={3}>
-                Donate ₹{nextRoundInfo?.campaign_amount} in{" "}
+                Donate ₹{parseInt(nextRoundInfo?.campaign_amount)?.toFixed(0)} in{" "}
                 {nextRoundInfo?.campaign_count} {nextRoundInfo?.campaign_type}{" "}
                 campaigns
               </Text>
