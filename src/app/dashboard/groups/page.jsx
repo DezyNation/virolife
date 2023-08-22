@@ -32,6 +32,8 @@ import Tree from "react-d3-tree";
 import VideoPlayer from "@/components/global/VideoPlayer";
 import ChildMemberCard from "@/components/dashboard/ChildMemberCard";
 import VerticalSpacer from "@/components/global/VerticalSpacer";
+import Progress from "@/components/dashboard/group-funding/Progress";
+import Cookies from "js-cookie";
 
 const MyParents = ({ parentUsers, myParentId }) => {
   const Toast = useToast({ position: "top-right" });
@@ -786,6 +788,11 @@ const Page = () => {
         setCollections(res.data);
       })
       .catch((err) => {
+        if(err?.response?.status == 401){
+          Cookies.remove("jwt")
+          localStorage.clear()
+          window.location.assign("/")
+        }
         Toast({
           status: "error",
           description:
@@ -811,6 +818,9 @@ const Page = () => {
           </Button>
         </HStack>
       </HStack>
+      <br />
+      <br />
+      <Progress />
       <br />
       <br />
       <Box>
