@@ -42,7 +42,7 @@ const DashboardHome = () => {
   },[Cookies.get()])
 
   useEffect(() => {
-    BackendAxios.post("/auth-user")
+    BackendAxios.get("/auth-user")
       .then((res) => {
         setAuthUser(res.data[0]);
         localStorage.setItem("userName", res.data[0]?.name);

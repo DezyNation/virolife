@@ -103,6 +103,7 @@ const MyParents = ({ parentUsers, myParentId }) => {
       receiver?.name == "Virolife Foundation"
         ? `/api/donate/admin`
         : `/api/donation`,
+      // `/api/donation`,
       {
         donatable_id: receiver?.id,
         amount: 200,
@@ -118,6 +119,12 @@ const MyParents = ({ parentUsers, myParentId }) => {
         setQrModal(false);
       })
       .catch((err) => {
+        if(err?.response?.status == 401){
+        Cookies.remove("jwt")
+        localStorage.clear()
+        window.location.assign("/")
+        return
+      }
         setQrModal(false);
         Toast({
           status: "error",
@@ -133,6 +140,12 @@ const MyParents = ({ parentUsers, myParentId }) => {
         setBeneficiaries(res.data?.map((item) => item?.donatable_id));
       })
       .catch((err) => {
+        if(err?.response?.status == 401){
+        Cookies.remove("jwt")
+        localStorage.clear()
+        window.location.assign("/")
+        return
+      }
         Toast({
           status: "error",
           description:
@@ -643,7 +656,6 @@ const Page = () => {
   });
 
   const [collections, setCollections] = useState([]);
-  const [donations, setDonations] = useState([]);
 
   useEffect(() => {
     fetchPrimaryParents();
@@ -761,6 +773,12 @@ const Page = () => {
         setPrimaryParentUsers(res.data);
       })
       .catch((err) => {
+        if(err?.response?.status == 401){
+          Cookies.remove("jwt")
+          localStorage.clear()
+          window.location.assign("/")
+          return
+        }
         Toast({
           status: "error",
           description:
@@ -768,12 +786,19 @@ const Page = () => {
         });
       });
   }
+
   function fetchSecondaryParents() {
     BackendAxios.get(`/api/my-admin/secondary`)
       .then((res) => {
         setSecondaryParentUsers(res.data);
       })
       .catch((err) => {
+        if(err?.response?.status == 401){
+          Cookies.remove("jwt")
+          localStorage.clear()
+          window.location.assign("/")
+          return
+        }
         Toast({
           status: "error",
           description:
@@ -792,6 +817,7 @@ const Page = () => {
           Cookies.remove("jwt")
           localStorage.clear()
           window.location.assign("/")
+          return
         }
         Toast({
           status: "error",

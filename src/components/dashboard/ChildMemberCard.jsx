@@ -14,7 +14,7 @@ const ChildMemberCard = ({ name, id, phone_number, donation_received }) => {
             </Text>
             <Text fontSize={"xs"}>
               ID: {process.env.NEXT_PUBLIC_CODE}
-              {id} &nbsp; | &nbsp; Phone: {phone_number}
+              {id} &nbsp; | &nbsp; Phone: {phone_number?.slice(0,9)}
             </Text>
           </Box>
             {donation_received ? (

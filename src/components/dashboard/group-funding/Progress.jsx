@@ -1,4 +1,5 @@
 "use client";
+import FullPageLoader from "@/components/global/FullPageLoader";
 import BackendAxios from "@/utils/axios";
 import {
   Box,
@@ -23,18 +24,30 @@ import {
   Text,
   useDisclosure,
   useSteps,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { BsInfo, BsInfoCircleFill } from "react-icons/bs";
+import { BsCheckCircleFill, BsClock, BsInfo, BsInfoCircleFill } from "react-icons/bs";
 
 const Progress = () => {
+  const Toast = useToast({ position: "top-right" });
   const [steps, setSteps] = useState([]);
+  const [nextRoundInfo, setNextRoundInfo] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [myProgress, setMyProgress] = useState({
+    round: "0",
+    collection: false,
+    campaign_donation: false,
+    virolife_donation: false,
+    primary_junior_donation: false,
+    primary_senior_donation: false,
+    secondary_junior_donation: false,
+    secondary_senior_donation: false,
+  });
   const { activeStep, setActiveStep } = useSteps({
-    index: 0,
+    index: myProgress?.round,
     count: steps.length,
   });
-  const [nextRoundInfo, setNextRoundInfo] = useState({});
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
@@ -56,8 +69,55 @@ const Progress = () => {
     setNextRoundInfo(steps?.find((step) => step?.round == activeStep + 1));
   }, [activeStep, steps]);
 
+  useEffect(() => {
+    fetchMyProgress();
+  }, []);
+
+  async function fetchMyProgress() {
+    setIsLoading(true)
+    await BackendAxios.get(`/auth-user`)
+      .then((res) => {
+        const userInfo = res.data[0];
+        if (
+          parseInt(userInfo?.group_collection) >=
+          parseInt(nextRoundInfo?.target_amount)
+        ) {
+          setMyProgress({
+            ...myProgress,
+            round: userInfo?.round,
+            collection: true,
+          });
+        }
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          title: "Error while fetching your info",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+      // await fetchMyDonations()
+      setIsLoading(false)
+  }
+
+  async function fetchMyDonations(){
+    await BackendAxios.get(`/api/my-donations`)
+      .then((res) => {
+        
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
   return (
     <>
+      {isLoading ? <FullPageLoader /> : null}
       <Stepper index={activeStep}>
         {steps.map((step, index) => (
           <Step key={index}>
@@ -81,7 +141,7 @@ const Progress = () => {
       >
         <Box flexShrink="0">
           <Text>
-            <b>Next Round</b> :{" "}
+            <b>Current Round</b> :{" "}
             {steps.find((step) => step?.round == activeStep + 1)?.round}
           </Text>
           <Text>
@@ -99,7 +159,7 @@ const Progress = () => {
         />
       </HStack>
 
-      <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
+      <Modal isOpen={isOpen} onClose={onClose} size={"3xl"}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Round {activeStep + 1} Information</ModalHeader>
@@ -110,77 +170,157 @@ const Progress = () => {
               gap={4}
               py={2}
             >
-              <Text flex={2} fontWeight={"bold"}>
+              <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
                 Target Amount :
               </Text>
-              <Text flex={3}>₹{nextRoundInfo?.target_amount}</Text>
-            </HStack>
-            <HStack
-              alignItems={"flex-start"}
-              justifyContent={"flex-start"}
-              gap={4}
-              py={2}
-            >
-              <Text flex={2} fontWeight={"bold"}>
-                Virolife's Share :
+              <Text fontSize={"sm"} flex={3}>
+                ₹{parseInt(nextRoundInfo?.target_amount)?.toFixed(0)}
               </Text>
-              <Text flex={3}>₹{nextRoundInfo?.virolife_donation}</Text>
-            </HStack>
-            <HStack
-              alignItems={"flex-start"}
-              justifyContent={"flex-start"}
-              gap={4}
-              py={2}
-            >
-              <Text flex={2} fontWeight={"bold"}>
-                Campaign Donations :
-              </Text>
-              <Text flex={3}>
-                Donate ₹{nextRoundInfo?.campaign_amount ? parseInt(nextRoundInfo?.campaign_amount)?.toFixed(0) : "0"} in{" "}
-                {nextRoundInfo?.campaign_count} {nextRoundInfo?.campaign_type}{" "}
-                campaigns
-              </Text>
-            </HStack>
-            <HStack
-              alignItems={"flex-start"}
-              justifyContent={"flex-start"}
-              gap={4}
-              py={2}
-            >
-              <Text flex={2} fontWeight={"bold"}>
-                Senior Donations :
-              </Text>
-              <Text flex={3}>₹{nextRoundInfo?.junior_donation1}</Text>
-            </HStack>
-            <HStack
-              alignItems={"flex-start"}
-              justifyContent={"flex-start"}
-              gap={4}
-              py={2}
-            >
-              <Text flex={2} fontWeight={"bold"}>
-                Junior Donations :
-              </Text>
-              <Text flex={3}>₹{nextRoundInfo?.junior_donation2}</Text>
-            </HStack>
-            <HStack
-              alignItems={"flex-start"}
-              justifyContent={"flex-start"}
-              gap={4}
-              py={2}
-            >
-              <Text flex={2} fontWeight={"bold"}>
-                Instructions :
-              </Text>
-              <Box flex={3}>
-                <Text>• {nextRoundInfo?.message}</Text>
-                <Text>
-                  {nextRoundInfo?.message2
-                    ? `• ${nextRoundInfo?.message2}`
-                    : ""}
-                </Text>
+              <Box flex={1}>
+                {myProgress?.collection ? <BsCheckCircleFill color="green" /> :<BsClock />}
               </Box>
             </HStack>
+            <HStack
+              alignItems={"flex-start"}
+              justifyContent={"flex-start"}
+              gap={4}
+              py={2}
+            >
+              <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                Virolife's Share :
+              </Text>
+              <Text fontSize={"sm"} flex={3}>
+                Donate ₹{parseInt(nextRoundInfo?.virolife_donation)?.toFixed(0)}{" "}
+                to Virolife Foundation
+              </Text>
+              <Box flex={1}>
+                {myProgress?.virolife_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
+              </Box>
+            </HStack>
+            <HStack
+              alignItems={"flex-start"}
+              justifyContent={"flex-start"}
+              gap={4}
+              py={2}
+            >
+              <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                Campaign Donations :
+              </Text>
+              <Text fontSize={"sm"} flex={3}>
+                Donate ₹
+                {nextRoundInfo?.campaign_amount
+                  ? parseInt(nextRoundInfo?.campaign_amount)?.toFixed(0)
+                  : "0"}{" "}
+                in {nextRoundInfo?.campaign_count}{" "}
+                {nextRoundInfo?.campaign_type}{" "}
+                {parseInt(nextRoundInfo?.campaign_count) > 1
+                  ? "campaigns"
+                  : "campaign"}
+              </Text>
+              <Box flex={1}>
+                {myProgress?.campaign_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
+              </Box>
+            </HStack>
+
+            {nextRoundInfo?.primary_senior_count ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Primary Group Senior Donations :
+                </Text>
+                <Text fontSize={"sm"} flex={3}>
+                  ₹{parseInt(nextRoundInfo?.primary_senior_amount)?.toFixed(0)}{" "}
+                  to {nextRoundInfo?.primary_senior_count} seniors each
+                </Text>
+              <Box flex={1}>
+                {myProgress?.primary_senior_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
+              </Box>
+              </HStack>
+            ) : null}
+
+            {nextRoundInfo?.primary_junior_count ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Primary Group Junior Donations :
+                </Text>
+                <Text fontSize={"sm"} flex={3}>
+                  ₹{parseInt(nextRoundInfo?.primary_junior_amount)?.toFixed(0)}{" "}
+                  to {nextRoundInfo?.primary_junior_count} juniors each
+                </Text>
+              <Box flex={1}>
+                {myProgress?.primary_junior_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
+              </Box>
+              </HStack>
+            ) : null}
+
+            {nextRoundInfo?.secondary_senior_count ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Secondary Group Senior Donations :
+                </Text>
+                <Text fontSize={"sm"} flex={3}>
+                  ₹
+                  {parseInt(nextRoundInfo?.secondary_senior_amount)?.toFixed(0)}{" "}
+                  to {nextRoundInfo?.secondary_senior_count} seniors each
+                </Text>
+              <Box flex={1}>
+                {myProgress?.secondary_senior_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
+              </Box>
+              </HStack>
+            ) : null}
+
+            {nextRoundInfo?.secondary_junior_count ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Secondary Group Junior Donations :
+                </Text>
+                <Text fontSize={"sm"} flex={3}>
+                  ₹
+                  {parseInt(nextRoundInfo?.secondary_junior_amount)?.toFixed(0)}{" "}
+                  to {nextRoundInfo?.secondary_junior_count} juniors each
+                </Text>
+              <Box flex={1}>
+                {myProgress?.secondary_junior_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
+              </Box>
+              </HStack>
+            ) : null}
+
+            {nextRoundInfo?.message ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Instructions :
+                </Text>
+                <Box flex={3}>
+                  <Text fontSize={"sm"}>{nextRoundInfo?.message}</Text>
+                </Box>
+              <Box flex={1}>
+              </Box>
+              </HStack>
+            ) : null}
           </ModalBody>
           <ModalFooter justifyContent={"flex-end"} gap={4}>
             <Button onClick={onClose}>Close</Button>
