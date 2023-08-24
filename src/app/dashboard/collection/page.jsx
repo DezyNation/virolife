@@ -123,7 +123,7 @@ const page = () => {
                 <Td>₹ {item?.amount || 200}</Td>
                 <Td>{new Date(item?.created_at).toLocaleDateString()}</Td>
                 <Td>
-                  {!item?.approved && !item?.deleted_at ? (
+                  {!item?.approved && !item?.deleted_at && !item?.donated_to_admin ? (
                     <HStack>
                       <Button
                         size={"sm"}

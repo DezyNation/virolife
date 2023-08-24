@@ -27,7 +27,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { BsCheckCircleFill, BsClock, BsInfo, BsInfoCircleFill } from "react-icons/bs";
+import {
+  BsCheckCircleFill,
+  BsClock,
+  BsInfo,
+  BsInfoCircleFill,
+} from "react-icons/bs";
 
 const Progress = () => {
   const Toast = useToast({ position: "top-right" });
@@ -73,8 +78,35 @@ const Progress = () => {
     fetchMyProgress();
   }, []);
 
+  useEffect(() => {
+    if (
+      myProgress.campaign_donation &&
+      myProgress.collection &&
+      myProgress.primary_junior_donation &&
+      myProgress.primary_senior_donation &&
+      myProgress.secondary_junior_donation &&
+      myProgress.secondary_senior_donation &&
+      myProgress.virolife_donation
+    ) {
+      setActiveStep(activeStep + 1);
+      updateMyRound(activeStep + 1);
+    }
+  }, [myProgress]);
+
+  async function updateMyRound(round) {
+    await BackendAxios.post(`/api/update-round`, {
+      round: round,
+    })
+      .then((res) => {
+        fetchMyProgress();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   async function fetchMyProgress() {
-    setIsLoading(true)
+    setIsLoading(true);
     await BackendAxios.get(`/auth-user`)
       .then((res) => {
         const userInfo = res.data[0];
@@ -97,14 +129,94 @@ const Progress = () => {
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
-      // await fetchMyDonations()
-      setIsLoading(false)
+    await fetchMySeniorDonations();
+    await fetchMyJuniorDonations();
+    await fetchCampaignDonations();
+    setIsLoading(false);
   }
 
-  async function fetchMyDonations(){
-    await BackendAxios.get(`/api/my-donations`)
+  async function fetchMySeniorDonations() {
+    await BackendAxios.get(
+      `/api/senior-donations/${localStorage.getItem("userId")}`
+    )
       .then((res) => {
-        
+        let sum = 0;
+        const amounts = res.data?.map((item) => parseInt(item?.amount));
+        amounts?.forEach((amt) => (sum += amt));
+
+        if (
+          res.data?.length >=
+            nextRoundInfo?.primary_senior_count +
+              nextRoundInfo?.secondary_senior_count &&
+          sum >=
+            nextRoundInfo?.primary_senior_amount +
+              nextRoundInfo?.secondary_senior_amount
+        ) {
+          setMyProgress({
+            ...myProgress,
+            primary_senior_donation: true,
+            secondary_senior_donation: true,
+          });
+        }
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
+  async function fetchMyJuniorDonations() {
+    await BackendAxios.get(
+      `/api/junior-donations/${localStorage.getItem("userId")}`
+    )
+      .then((res) => {
+        let sum = 0;
+        const amounts = res.data?.map((item) => parseInt(item?.amount));
+        amounts?.forEach((amt) => (sum += amt));
+
+        if (
+          res.data?.length >=
+            nextRoundInfo?.primary_junior_count +
+              nextRoundInfo?.secondary_junior_count &&
+          sum >=
+            nextRoundInfo?.primary_junior_amount +
+              nextRoundInfo?.secondary_junior_amount
+        ) {
+          setMyProgress({
+            ...myProgress,
+            primary_junior_donation: true,
+            secondary_junior_donation: true,
+          });
+        }
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
+  async function fetchCampaignDonations() {
+    await BackendAxios.get(`/api/campaign-donations/${activeStep}`)
+      .then((res) => {
+        let sum = 0;
+        const amounts = res.data?.map((item) => parseInt(item?.amount));
+        amounts?.forEach((amt) => (sum += amt));
+
+        if (
+          res.data?.length >= nextRoundInfo?.campaign_count &&
+          sum >= nextRoundInfo?.campaign_amount
+        ) {
+          setMyProgress({
+            ...myProgress,
+            campaign_donation: true,
+          });
+        }
       })
       .catch((err) => {
         Toast({
@@ -118,6 +230,15 @@ const Progress = () => {
   return (
     <>
       {isLoading ? <FullPageLoader /> : null}
+      <HStack justifyContent={"flex-end"}>
+        <Button
+          onClick={() => fetchMyProgress()}
+          variant={"ghost"}
+          colorScheme="teal"
+        >
+          Refresh Progress
+        </Button>
+      </HStack>
       <Stepper index={activeStep}>
         {steps.map((step, index) => (
           <Step key={index}>
@@ -177,7 +298,11 @@ const Progress = () => {
                 ₹{parseInt(nextRoundInfo?.target_amount)?.toFixed(0)}
               </Text>
               <Box flex={1}>
-                {myProgress?.collection ? <BsCheckCircleFill color="green" /> :<BsClock />}
+                {myProgress?.collection ? (
+                  <BsCheckCircleFill color="green" />
+                ) : (
+                  <BsClock />
+                )}
               </Box>
             </HStack>
             <HStack
@@ -194,7 +319,11 @@ const Progress = () => {
                 to Virolife Foundation
               </Text>
               <Box flex={1}>
-                {myProgress?.virolife_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
+                {myProgress?.virolife_donation ? (
+                  <BsCheckCircleFill color="green" />
+                ) : (
+                  <BsClock />
+                )}
               </Box>
             </HStack>
             <HStack
@@ -218,7 +347,11 @@ const Progress = () => {
                   : "campaign"}
               </Text>
               <Box flex={1}>
-                {myProgress?.campaign_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
+                {myProgress?.campaign_donation ? (
+                  <BsCheckCircleFill color="green" />
+                ) : (
+                  <BsClock />
+                )}
               </Box>
             </HStack>
 
@@ -236,9 +369,13 @@ const Progress = () => {
                   ₹{parseInt(nextRoundInfo?.primary_senior_amount)?.toFixed(0)}{" "}
                   to {nextRoundInfo?.primary_senior_count} seniors each
                 </Text>
-              <Box flex={1}>
-                {myProgress?.primary_senior_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
-              </Box>
+                <Box flex={1}>
+                  {myProgress?.primary_senior_donation ? (
+                    <BsCheckCircleFill color="green" />
+                  ) : (
+                    <BsClock />
+                  )}
+                </Box>
               </HStack>
             ) : null}
 
@@ -256,9 +393,13 @@ const Progress = () => {
                   ₹{parseInt(nextRoundInfo?.primary_junior_amount)?.toFixed(0)}{" "}
                   to {nextRoundInfo?.primary_junior_count} juniors each
                 </Text>
-              <Box flex={1}>
-                {myProgress?.primary_junior_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
-              </Box>
+                <Box flex={1}>
+                  {myProgress?.primary_junior_donation ? (
+                    <BsCheckCircleFill color="green" />
+                  ) : (
+                    <BsClock />
+                  )}
+                </Box>
               </HStack>
             ) : null}
 
@@ -277,9 +418,13 @@ const Progress = () => {
                   {parseInt(nextRoundInfo?.secondary_senior_amount)?.toFixed(0)}{" "}
                   to {nextRoundInfo?.secondary_senior_count} seniors each
                 </Text>
-              <Box flex={1}>
-                {myProgress?.secondary_senior_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
-              </Box>
+                <Box flex={1}>
+                  {myProgress?.secondary_senior_donation ? (
+                    <BsCheckCircleFill color="green" />
+                  ) : (
+                    <BsClock />
+                  )}
+                </Box>
               </HStack>
             ) : null}
 
@@ -298,9 +443,13 @@ const Progress = () => {
                   {parseInt(nextRoundInfo?.secondary_junior_amount)?.toFixed(0)}{" "}
                   to {nextRoundInfo?.secondary_junior_count} juniors each
                 </Text>
-              <Box flex={1}>
-                {myProgress?.secondary_junior_donation ? <BsCheckCircleFill color="green" /> :<BsClock />}
-              </Box>
+                <Box flex={1}>
+                  {myProgress?.secondary_junior_donation ? (
+                    <BsCheckCircleFill color="green" />
+                  ) : (
+                    <BsClock />
+                  )}
+                </Box>
               </HStack>
             ) : null}
 
@@ -317,8 +466,7 @@ const Progress = () => {
                 <Box flex={3}>
                   <Text fontSize={"sm"}>{nextRoundInfo?.message}</Text>
                 </Box>
-              <Box flex={1}>
-              </Box>
+                <Box flex={1}></Box>
               </HStack>
             ) : null}
           </ModalBody>
