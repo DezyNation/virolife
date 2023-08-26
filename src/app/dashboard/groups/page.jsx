@@ -59,18 +59,18 @@ const MyParents = ({ parentUsers, myParentId }) => {
     fetchMyDonations();
   }, []);
 
-  function showVideo(user) {
+  function showVideo(user, key) {
     setVideoStatus(true);
     setVideoData({
       ...videoData,
       onVideoClose: () => {
         setVideoStatus(false);
-        showUpiModal(user);
+        showUpiModal(user, key);
       },
     });
   }
 
-  function showUpiModal(user) {
+  function showUpiModal(user, key) {
     if (!user?.primary_activated) {
       // Toast({
       //   title: "Senior's Primary ID is on hold.",
@@ -78,7 +78,7 @@ const MyParents = ({ parentUsers, myParentId }) => {
       // });
       setUpi("9022853554@okbizaxis");
       setReceiver({
-        id: user?.id,
+        id: key == 0 ? myParentId : user?.id,
         name: "Virolife Foundation",
       });
       setQrModal(true);
@@ -92,13 +92,13 @@ const MyParents = ({ parentUsers, myParentId }) => {
     }
     setUpi(user?.upi_id);
     setReceiver({
-      id: user?.id,
+      id: key == 0 ? myParentId : user?.id,
       name: user?.parent_name,
     });
     setQrModal(true);
   }
 
-  function donate(id) {
+  function donate() {
     BackendAxios.post(
       receiver?.name == "Virolife Foundation"
         ? `/api/donate/admin`
@@ -119,12 +119,12 @@ const MyParents = ({ parentUsers, myParentId }) => {
         setQrModal(false);
       })
       .catch((err) => {
-        if(err?.response?.status == 401){
-        Cookies.remove("jwt")
-        localStorage.clear()
-        window.location.assign("/")
-        return
-      }
+        if (err?.response?.status == 401) {
+          Cookies.remove("jwt");
+          localStorage.clear();
+          window.location.assign("/");
+          return;
+        }
         setQrModal(false);
         Toast({
           status: "error",
@@ -140,12 +140,12 @@ const MyParents = ({ parentUsers, myParentId }) => {
         setBeneficiaries(res.data?.map((item) => item?.donatable_id));
       })
       .catch((err) => {
-        if(err?.response?.status == 401){
-        Cookies.remove("jwt")
-        localStorage.clear()
-        window.location.assign("/")
-        return
-      }
+        if (err?.response?.status == 401) {
+          Cookies.remove("jwt");
+          localStorage.clear();
+          window.location.assign("/");
+          return;
+        }
         Toast({
           status: "error",
           description:
@@ -188,7 +188,7 @@ const MyParents = ({ parentUsers, myParentId }) => {
                 size={"xs"}
                 colorScheme="yellow"
                 onClick={() => {
-                  showVideo(item);
+                  showVideo(item, key);
                 }}
               >
                 Donate
@@ -238,8 +238,9 @@ const NestedChildren = ({ data, donors, level, currentLevel = 1 }) => {
   if (parseInt(currentLevel) == parseInt(level)) {
     return (
       <>
-        {data.map((item) => (
+        {data.map((item, key) => (
           <ChildMemberCard
+            key={key}
             name={item?.name}
             id={item?.id}
             phone_number={item?.phone_number}
@@ -773,11 +774,11 @@ const Page = () => {
         setPrimaryParentUsers(res.data);
       })
       .catch((err) => {
-        if(err?.response?.status == 401){
-          Cookies.remove("jwt")
-          localStorage.clear()
-          window.location.assign("/")
-          return
+        if (err?.response?.status == 401) {
+          Cookies.remove("jwt");
+          localStorage.clear();
+          window.location.assign("/");
+          return;
         }
         Toast({
           status: "error",
@@ -793,11 +794,11 @@ const Page = () => {
         setSecondaryParentUsers(res.data);
       })
       .catch((err) => {
-        if(err?.response?.status == 401){
-          Cookies.remove("jwt")
-          localStorage.clear()
-          window.location.assign("/")
-          return
+        if (err?.response?.status == 401) {
+          Cookies.remove("jwt");
+          localStorage.clear();
+          window.location.assign("/");
+          return;
         }
         Toast({
           status: "error",
@@ -813,11 +814,11 @@ const Page = () => {
         setCollections(res.data);
       })
       .catch((err) => {
-        if(err?.response?.status == 401){
-          Cookies.remove("jwt")
-          localStorage.clear()
-          window.location.assign("/")
-          return
+        if (err?.response?.status == 401) {
+          Cookies.remove("jwt");
+          localStorage.clear();
+          window.location.assign("/");
+          return;
         }
         Toast({
           status: "error",

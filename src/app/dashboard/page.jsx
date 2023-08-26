@@ -50,10 +50,10 @@ const DashboardHome = () => {
         localStorage.setItem("primaryActive", res.data[0]?.primary_activated);
         localStorage.setItem("secondaryActive", res.data[0]?.secondary_activated);
         localStorage.setItem("myPlan", res.data[0]?.subscription?.plan?.id);
-        if(res.data.parent_id){
+        if(res.data[0].parent_id){
           localStorage.setItem("primaryParentId", res.data[0]?.parent_id);
         }
-        if(res.data.secondary_parent_id){
+        if(res.data[0].secondary_parent_id){
           localStorage.setItem("secondaryParentId", res.data[0]?.secondary_parent_id);
         }
       })
@@ -88,8 +88,6 @@ const DashboardHome = () => {
   //       });
   //     });
   // }, []);
-
-  function getOverview() {}
 
   return (
     <>

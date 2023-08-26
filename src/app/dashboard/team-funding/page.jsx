@@ -158,7 +158,7 @@ const index = () => {
   }, []);
 
   function getMyPlan() {
-    BackendAxios.post(`/auth-user`)
+    BackendAxios.get(`/auth-user`)
       .then((res) => {
         const plan = plans.find(
           (plan) => plan.id == res.data[0]?.subscription?.plan?.id

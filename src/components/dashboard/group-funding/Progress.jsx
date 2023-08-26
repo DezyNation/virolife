@@ -137,7 +137,7 @@ const Progress = () => {
 
   async function fetchMySeniorDonations() {
     await BackendAxios.get(
-      `/api/senior-donations/${localStorage.getItem("userId")}`
+      `/api/senior-donations/${localStorage.getItem("userId")}/${activeStep}`
     )
       .then((res) => {
         let sum = 0;
@@ -170,7 +170,7 @@ const Progress = () => {
 
   async function fetchMyJuniorDonations() {
     await BackendAxios.get(
-      `/api/junior-donations/${localStorage.getItem("userId")}`
+      `/api/junior-donations/${localStorage.getItem("userId")}/${activeStep}`
     )
       .then((res) => {
         let sum = 0;
