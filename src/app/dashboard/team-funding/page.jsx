@@ -210,7 +210,6 @@ const index = () => {
                 <Thead>
                   <Tr>
                     <Th>#</Th>
-                    <Th>User ID</Th>
                     <Th>User Name</Th>
                     <Th>Parent ID</Th>
                     <Th>Plan Purchased</Th>

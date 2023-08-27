@@ -44,8 +44,7 @@ const RewardData = ({
       {sortedData?.map((data, key) => (
         <Tr>
           <Td>{key + 1}</Td>
-          <Td>{data?.user_id}</Td>
-          <Td>{data?.user_name}</Td>
+          <Td>{data?.user_name} ({data?.user_id})</Td>
           <Td>{data?.parent_id}</Td>
           <Td>{data?.name}</Td>
           <Td>{data?.points}</Td>

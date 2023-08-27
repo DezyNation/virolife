@@ -58,6 +58,12 @@ const DashboardHome = () => {
         }
       })
       .catch((err) => {
+        if(err?.response?.status == 401){
+          Cookies.remove("jwt")
+          localStorage.clear()
+          window.location.assign("/")
+          return
+        }
         Toast({
           status: "error",
           description:

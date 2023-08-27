@@ -3,6 +3,7 @@ import Footer from "@/components/global/Footer";
 import Navbar from "@/components/global/Navbar";
 import { ChakraProvider } from "@chakra-ui/react";
 import "../app/styles/globals.css";
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 
 // export const metadata = {
 //   title: 'Create Next App',
@@ -21,6 +22,11 @@ export default function RootLayout({ children, session }) {
         ></script>
       </head>
       <body>
+      <ProgressBar
+        height="4px"
+        color="#dd6b20"
+        options={{ showSpinner: false }}
+      />
         <ChakraProvider>
           {children}
         </ChakraProvider>

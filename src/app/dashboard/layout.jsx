@@ -23,6 +23,7 @@ import {
 } from "react-icons/bs";
 import { MdGroups } from "react-icons/md";
 import { FaHandshake } from "react-icons/fa";
+import { GiChestnutLeaf } from "react-icons/gi";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { isExpired } from "react-jwt";
@@ -100,8 +101,14 @@ const Layout = ({ children }) => {
               </Link>
               <Link href={"/dashboard/team-funding"}>
                 <HStack gap={4}>
-                  <FaHandshake size={20} />
+                  <GiChestnutLeaf size={20} />
                   <Text>Viro Team Funding</Text>
+                </HStack>
+              </Link>
+              <Link href={"/dashboard/all-team"}>
+                <HStack gap={4}>
+                  <FaHandshake size={20} />
+                  <Text>All Team Processing</Text>
                 </HStack>
               </Link>
               <br />

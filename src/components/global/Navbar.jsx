@@ -49,6 +49,8 @@ import { useJwt, decodeToken, isExpired } from "react-jwt";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
+import { GiChestnutLeaf } from "react-icons/gi";
+import { FaHandshake } from "react-icons/fa";
 
 const Navbar = () => {
   const Toast = useToast({ position: "top-right" });
@@ -291,10 +293,10 @@ const Navbar = () => {
                 Redeem Points
               </Box>
             )}
-            <Link href={'/contact'}>
-            <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
-              Contact
-            </Box>
+            <Link href={"/contact"}>
+              <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
+                Contact
+              </Box>
             </Link>
           </HStack>
         </Flex>
@@ -354,53 +356,20 @@ const Navbar = () => {
                   <Link href={"/dashboard/campaigns"}>
                     <Text>My Campaigns</Text>
                   </Link>
-                  <Link href={"/dashboard/groups"}>
-                    <Text>Groups</Text>
-                  </Link>
                   <Link href={"/dashboard/collection"}>
                     <Text>Collection</Text>
                   </Link>
+                  <Link href={"/dashboard/groups"}>
+                    <Text>Groups</Text>
+                  </Link>
+                  <Link href={"/dashboard/team-funding"}>
+                    <Text>Veero Team Funding</Text>
+                  </Link>
+                  <Link href={"/dashboard/all-team"}>
+                    <Text>All Team Funding</Text>
+                  </Link>
                 </VStack>
               ) : null}
-              <Accordion w={"full"} allowToggle>
-                <AccordionItem border={"none"}>
-                  <AccordionButton px={0} justifyContent={"space-between"}>
-                    <Text className="serif">Membership</Text>
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel>
-                    <VStack gap={2}>
-                      <Link href={"/campaigns"} style={{ width: "100%" }}>
-                        <Text
-                          className="serif"
-                          p={2}
-                          _hover={{ bg: "blanchedalmond" }}
-                        >
-                          Self Funding
-                        </Text>
-                      </Link>
-                      <Link href={"/campaigns"} style={{ width: "100%" }}>
-                        <Text
-                          className="serif"
-                          p={2}
-                          _hover={{ bg: "blanchedalmond" }}
-                        >
-                          Group Funding
-                        </Text>
-                      </Link>
-                      <Link href={"/campaigns"} style={{ width: "100%" }}>
-                        <Text
-                          className="serif"
-                          p={2}
-                          _hover={{ bg: "blanchedalmond" }}
-                        >
-                          Viro Team Funding
-                        </Text>
-                      </Link>
-                    </VStack>
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
               <Link href={"/blogs"}>
                 <Text>Blog</Text>
               </Link>
@@ -425,8 +394,8 @@ const Navbar = () => {
                   Join Group
                 </Text>
               </HStack>
-              <Link href={'/contact'}>
-              <Text>Contact Us</Text>
+              <Link href={"/contact"}>
+                <Text>Contact Us</Text>
               </Link>
             </VStack>
           </DrawerBody>
@@ -620,7 +589,7 @@ const Navbar = () => {
                   >
                     <Box>
                       <FormLabel fontSize={"xl"}>Senior ID</FormLabel>
-                      <Text fontSize={'xs'}>(optional)</Text>
+                      <Text fontSize={"xs"}>(optional)</Text>
                     </Box>
 
                     <Box>
