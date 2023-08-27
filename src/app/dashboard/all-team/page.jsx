@@ -30,7 +30,7 @@ const page = () => {
   },[])
 
   function fetchVirolifeDonations() {
-    BackendAxios.get(`/api/donation/donate-virolife`)
+    BackendAxios.get(`/api/donation/donate-virolife?purpose=all-team`)
       .then((res) => setDonations(res.data))
       .catch((err) => {
         if(err?.response?.status == 401){
