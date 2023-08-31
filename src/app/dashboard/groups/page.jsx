@@ -35,7 +35,7 @@ import VerticalSpacer from "@/components/global/VerticalSpacer";
 import Progress from "@/components/dashboard/group-funding/Progress";
 import Cookies from "js-cookie";
 
-const MyParents = ({ parentUsers, myParentId }) => {
+const MyParents = ({ parentUsers, myParentId, groupType }) => {
   const Toast = useToast({ position: "top-right" });
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
@@ -107,7 +107,7 @@ const MyParents = ({ parentUsers, myParentId }) => {
       {
         donatable_id: receiver?.id,
         amount: 200,
-        remarks: `Donation to senior user ${receiver.id}`,
+        remarks: `Donation to ${groupType} group senior  VCF${receiver.id}`,
       }
     )
       .then((res) => {
