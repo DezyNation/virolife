@@ -22,7 +22,7 @@ import {
   BsPower,
 } from "react-icons/bs";
 import { MdGroups } from "react-icons/md";
-import { FaHandshake } from "react-icons/fa";
+import { FaHandshake, FaUsers } from "react-icons/fa";
 import { GiChestnutLeaf } from "react-icons/gi";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
@@ -34,12 +34,11 @@ import Navbar from "@/components/global/Navbar";
 const Layout = ({ children }) => {
   const Toast = useToast({ position: "top-right" });
   const Router = useRouter();
-  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
-  const [userName, setUserName] = useState("");
+  const [myRole, setMyRole] = useState("");
 
-  useEffect(()=>{
-    isExpired(Cookies.get("jwt"))
-  },[])
+  useEffect(() => {
+    isExpired(Cookies.get("jwt"));
+  }, []);
 
   async function handleLogout() {
     await BackendAxios.post("/logout")
@@ -52,14 +51,17 @@ const Layout = ({ children }) => {
         // removeCookie("jwt")
         Cookies.remove("jwt");
         localStorage.clear();
-      })
-      Router.replace("/");
+      });
+    Router.replace("/");
   }
+
+  useEffect(() => {
+    setMyRole(localStorage.getItem("myRole"));
+  }, []);
 
   return (
     <>
-
-<Navbar />
+      <Navbar />
       <Stack direction={"row"} justifyContent={"space-between"}>
         <Show above="md">
           <Box p={4} bg={"blanchedalmond"} w={"xs"}>
@@ -112,6 +114,14 @@ const Layout = ({ children }) => {
                 </HStack>
               </Link>
               <br />
+              {myRole == "agent" || myRole == "distributor" ? (
+                <Link href={"/dashboard/users"}>
+                  <HStack gap={4}>
+                    <FaUsers size={20} />
+                    <Text>Manage Users</Text>
+                  </HStack>
+                </Link>
+              ) : null}
               <Link href={"/dashboard"}>
                 <HStack gap={4}>
                   <BsMegaphoneFill size={20} />

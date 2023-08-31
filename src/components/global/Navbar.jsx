@@ -59,6 +59,8 @@ const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [myRole, setMyRole] = useState("")
   const [isPasswordVisible, setisPasswordVisible] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
@@ -208,9 +210,12 @@ const Navbar = () => {
 
   useEffect(() => {
     if (!isExpired(cookies.jwt)) {
-      BackendAxios.post("/auth-user")
+      BackendAxios.get("/auth-user")
         .then((res) => {
-          setUserName(res.data?.name);
+          setUserName(res.data[0]?.name);
+          setUserData(res.data[0]);
+          localStorage.setItem("myRole", res.data?.roles?.length ? res.data?.roles[0] : "")
+          setMyRole(res.data?.roles?.length ? res.data?.roles[0] : "")
         })
         .catch((err) => {
           console.log(err);
@@ -368,6 +373,14 @@ const Navbar = () => {
                   <Link href={"/dashboard/all-team"}>
                     <Text>All Team Funding</Text>
                   </Link>
+                  <br />
+                  <br />
+                  {myRole == "agent" ||
+                  myRole == "distributor" ? (
+                    <Link href={"/dashboard/users"}>
+                      <Text>Manage Users</Text>
+                    </Link>
+                  ) : null}
                 </VStack>
               ) : null}
               <Link href={"/blogs"}>

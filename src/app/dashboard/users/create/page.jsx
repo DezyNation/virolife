@@ -8,6 +8,7 @@ import {
   FormLabel,
   HStack,
   Input,
+  Select,
   Stack,
   Text,
   VStack,
@@ -15,14 +16,11 @@ import {
 } from "@chakra-ui/react";
 import { BsArrowRight } from "react-icons/bs";
 import { useFormik } from "formik";
-import { useCookies } from "react-cookie";
-import { isExpired } from "react-jwt";
 import BackendAxios, { FormAxios } from "@/utils/axios";
 
 const Info = () => {
   const Toast = useToast({ position: "top-right" });
   const [gender, setGender] = useState("");
-  const [authUser, setAuthUser] = useState({});
   const [addressObj, setAddressObj] = useState({
     line: "",
     landmark: "",
@@ -30,31 +28,13 @@ const Info = () => {
     state: "",
     pincode: "",
   });
-  const [cookies] = useCookies(["jwt"]);
-  const [disabledInputs, setDisabledInputs] = useState({
-    line: true,
-    landmark: true,
-    city: true,
-    state: true,
-    pincode: true,
-    firstName: false,
-    middleName: false,
-    lastName: false,
-    gender: false,
-    dob: false,
-    phone: false,
-    email: false,
-    attachment1: false,
-    attachment2: false,
-    accountNumber: false,
-    bankName: false,
-    micr: false,
-    ifsc: false,
-    upi: false,
-  });
+  const [agents, setAgents] = useState([]);
+  const [distributors, setDistributors] = useState([]);
 
   const Formik = useFormik({
     initialValues: {
+      role: "user",
+      password: "",
       firstName: "",
       middleName: "",
       lastName: "",
@@ -70,11 +50,14 @@ const Info = () => {
       ifsc: "",
       upi: "",
       address: "",
+      agent: "",
+      distributor: "",
     },
     onSubmit: (values) => {
-      FormAxios.post(`/update-user`, {
+      FormAxios.post(`/register`, {
         ...values,
         address: JSON.stringify(addressObj),
+        password_confirmation: Formik.values.password,
         name:
           values.firstName +
           (values.middleName && values.lastName
@@ -84,7 +67,7 @@ const Info = () => {
         .then((res) => {
           Toast({
             status: "success",
-            description: "Data updated successfully!",
+            description: "User created successfully!",
           });
         })
         .catch((err) => {
@@ -100,68 +83,34 @@ const Info = () => {
   });
 
   useEffect(() => {
-    if (!isExpired(cookies.jwt)) {
-      fetchInfo();
-      return;
-    }
-    if (isExpired(cookies.jwt)) {
-      window.location.replace("/");
-    }
-  }, [cookies]);
+    fetchAgents();
+    fetchDistributors();
+  }, []);
 
-  function fetchInfo() {
-    BackendAxios.get("/auth-user")
+  function fetchAgents() {
+    BackendAxios.get(`/api/admin/users-list/agent`)
       .then((res) => {
-        setAuthUser(res.data);
-        const address = JSON.parse(res.data.address);
-        Formik.setFieldValue("firstName", res.data?.name?.split(" ")[0]);
-        if (res.data?.name?.split(" ")?.length >= 3)
-          Formik.setFieldValue("middleName", res.data?.name?.split(" ")[1]);
-        if (res.data?.name?.split(" ")?.length >= 3)
-          Formik.setFieldValue("lastName", res.data?.name?.split(" ")[2]);
-        if (res.data?.name?.split(" ")?.length >= 2)
-          Formik.setFieldValue("lastName", res.data?.name?.split(" ")[1]);
-        Formik.setFieldValue("dob", res.data?.dob);
-        Formik.setFieldValue("gender", res.data?.gender);
-        Formik.setFieldValue("phone", res.data?.phone_number);
-        Formik.setFieldValue("email", res.data?.email);
-        Formik.setFieldValue("upi", res.data?.upi_id);
-        Formik.setFieldValue("ifsc", res.data?.ifsc);
-        Formik.setFieldValue("bankName", res.data?.bank_name);
-        Formik.setFieldValue("accountNumber", res.data?.account_number);
-        Formik.setFieldValue("micr", res.data?.micr);
-        setAddressObj({
-          line: address?.line,
-          city: address?.city,
-          state: address?.state,
-          pincode: address?.pincode,
-          landmark: address?.landmark,
-        });
-        setDisabledInputs({
-          ...disabledInputs,
-          firstName: Boolean(res.data?.name),
-          middleName: Boolean(res.data?.name),
-          lastName: Boolean(res.data?.name),
-          dob: Boolean(res.data?.dob),
-          gender: Boolean(res.data?.gender),
-          phone: Boolean(res.data?.phone_number),
-          email: Boolean(res.data?.email),
-          upi: Boolean(res.data?.upi_id),
-          ifsc: Boolean(res.data?.ifsc),
-          bankName: Boolean(res.data?.bank_name),
-          accountNumber: Boolean(res.data?.account_number),
-          micr: Boolean(res.data?.micr),
-          line: Boolean(res.data?.address),
-          landmark: Boolean(res.data?.address),
-          city: Boolean(res.data?.address),
-          state: Boolean(res.data?.address),
-          attachment1: Boolean(res.data?.attachment1),
-          attachment2: Boolean(res.data?.attachment2),
-        });
+        setAgents(res.data);
       })
       .catch((err) => {
         Toast({
           status: "error",
+          title: "Error while fetching agents",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
+  function fetchDistributors() {
+    BackendAxios.get(`/api/admin/users-list/distributor`)
+      .then((res) => {
+        setDistributors(res.data);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          title: "Error while fetching agents",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
@@ -172,6 +121,64 @@ const Info = () => {
     <>
       <form action="#" onSubmit={Formik.handleSubmit}>
         <Box p={8}>
+          <Stack
+            direction={["column", "row"]}
+            alignItems={"center"}
+            justifyContent={"flex-start"}
+            gap={8}
+          >
+            <FormControl w={["full", "xs"]} mb={8}>
+              <FormLabel
+                fontWeight={"bold"}
+                textTransform={"uppercase"}
+                fontSize={"lg"}
+              >
+                User Role
+              </FormLabel>
+              <Select name="role" onChange={Formik.handleChange}>
+                <option value="user">Member</option>
+                <option value="agent">Agent</option>
+                <option value="distributor">Distributor</option>
+                <option value="admin">Admin Employee</option>
+              </Select>
+            </FormControl>
+            {Formik.values.role == "user" ? (
+              <FormControl w={["full", "xs"]} mb={8}>
+                <FormLabel
+                  fontWeight={"bold"}
+                  textTransform={"uppercase"}
+                  fontSize={"lg"}
+                >
+                  Agent
+                </FormLabel>
+                <Select placeholder="Please Select" name="agent" onChange={Formik.handleChange}>
+                  {agents?.map((user, key) => (
+                    <option key={key} value={user?.id}>
+                      {user?.name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            ) : Formik.values.role == "agent" ? (
+              <FormControl w={["full", "xs"]} mb={8}>
+                <FormLabel
+                  fontWeight={"bold"}
+                  textTransform={"uppercase"}
+                  fontSize={"lg"}
+                >
+                  Distributor
+                </FormLabel>
+                <Select placeholder="Please Select" name="distributor" onChange={Formik.handleChange}>
+                  {distributors?.map((user, key) => (
+                    <option key={key} value={user?.id}>
+                      {user?.name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            ) : null}
+          </Stack>
+          <br />
           <Stack
             w={"full"}
             pb={16}
@@ -189,7 +196,6 @@ const Info = () => {
                   FIRST NAME
                 </FormLabel>
                 <Input
-                  isDisabled={disabledInputs.firstName}
                   name="firstName"
                   value={Formik.values.firstName}
                   onChange={Formik.handleChange}
@@ -208,7 +214,6 @@ const Info = () => {
                   MIDDLE NAME
                 </FormLabel>
                 <Input
-                  isDisabled={disabledInputs.middleName}
                   name="middleName"
                   value={Formik.values.middleName}
                   onChange={Formik.handleChange}
@@ -227,7 +232,6 @@ const Info = () => {
                   LAST NAME
                 </FormLabel>
                 <Input
-                  isDisabled={disabledInputs.lastName}
                   name="lastName"
                   value={Formik.values.lastName}
                   onChange={Formik.handleChange}
@@ -254,7 +258,6 @@ const Info = () => {
               </FormLabel>
               <HStack gap={4} w={["full", "xs"]}>
                 <Button
-                  isDisabled={disabledInputs.gender}
                   rounded={"full"}
                   colorScheme="yellow"
                   onClick={() => setGender("male")}
@@ -263,7 +266,6 @@ const Info = () => {
                   M
                 </Button>
                 <Button
-                  isDisabled={disabledInputs.gender}
                   rounded={"full"}
                   colorScheme="yellow"
                   onClick={() => setGender("female")}
@@ -272,7 +274,6 @@ const Info = () => {
                   F
                 </Button>
                 <Button
-                  isDisabled={disabledInputs.gender}
                   rounded={"full"}
                   colorScheme="yellow"
                   onClick={() => setGender("others")}
@@ -292,7 +293,6 @@ const Info = () => {
                 date of birth
               </FormLabel>
               <Input
-                isDisabled={disabledInputs.dob}
                 bg={"blanchedalmond"}
                 w={["full", "xs"]}
                 type="date"
@@ -308,9 +308,9 @@ const Info = () => {
             gap={8}
             pb={16}
             direction={["column", "row"]}
-            justifyContent={"space-between"}
+            justifyContent={"flex-start"}
           >
-            <FormControl>
+            <FormControl w={["full", "xs"]}>
               <FormLabel
                 fontWeight={"bold"}
                 textTransform={"uppercase"}
@@ -318,19 +318,15 @@ const Info = () => {
               >
                 CONTACT NO
               </FormLabel>
-              <HStack>
-                <Input
-                  isDisabled={disabledInputs.phone}
-                  bg={"blanchedalmond"}
-                  w={["full", "xs"]}
-                  name="phone"
-                  value={Formik.values.phone}
-                  onChange={Formik.handleChange}
-                />
-                <Text cursor={"pointer"}>Verify</Text>
-              </HStack>
+              <Input
+                bg={"blanchedalmond"}
+                w={["full", "xs"]}
+                name="phone"
+                value={Formik.values.phone}
+                onChange={Formik.handleChange}
+              />
             </FormControl>
-            <FormControl>
+            <FormControl w={["full", "xs"]}>
               <FormLabel
                 fontWeight={"bold"}
                 textTransform={"uppercase"}
@@ -338,16 +334,28 @@ const Info = () => {
               >
                 EMAIL ID
               </FormLabel>
-              <HStack>
-                <Input
-                  bg={"blanchedalmond"}
-                  w={["full", "xs"]}
-                  name="email"
-                  value={Formik.values.email}
-                  disabled
-                />
-                <Text cursor={"pointer"}>Verify</Text>
-              </HStack>
+              <Input
+                bg={"blanchedalmond"}
+                w={["full", "xs"]}
+                name="email"
+                type="email"
+                value={Formik.values.email}
+              />
+            </FormControl>
+            <FormControl w={["full", "xs"]}>
+              <FormLabel
+                fontWeight={"bold"}
+                textTransform={"uppercase"}
+                fontSize={"lg"}
+              >
+                PASSWORD
+              </FormLabel>
+              <Input
+                bg={"blanchedalmond"}
+                w={["full", "xs"]}
+                name="password"
+                value={Formik.values.password}
+              />
             </FormControl>
           </Stack>
 
@@ -359,7 +367,7 @@ const Info = () => {
             pb={16}
             gap={8}
             direction={["column", "row"]}
-            justifyContent={"space-between"}
+            justifyContent={"flex-start"}
           >
             <FormControl>
               <Box>
@@ -371,7 +379,6 @@ const Info = () => {
                   ACCOUNT NUMBER
                 </FormLabel>
                 <Input
-                  isDisabled={disabledInputs.accountNumber}
                   name="accountNumber"
                   value={Formik.values.accountNumber}
                   onChange={Formik.handleChange}
@@ -390,7 +397,6 @@ const Info = () => {
                   BANK NAME
                 </FormLabel>
                 <Input
-                  isDisabled={disabledInputs.bankName}
                   name="bankName"
                   value={Formik.values.bankName}
                   onChange={Formik.handleChange}
@@ -409,28 +415,8 @@ const Info = () => {
                   IFSC
                 </FormLabel>
                 <Input
-                  isDisabled={disabledInputs.ifsc}
                   name="ifsc"
                   value={Formik.values.ifsc}
-                  onChange={Formik.handleChange}
-                  bg={"blanchedalmond"}
-                  w={["full", "xs"]}
-                />
-              </Box>
-            </FormControl>
-            <FormControl>
-              <Box>
-                <FormLabel
-                  fontWeight={"bold"}
-                  textTransform={"uppercase"}
-                  fontSize={"lg"}
-                >
-                  UPI ID
-                </FormLabel>
-                <Input
-                  isDisabled={disabledInputs.upi}
-                  name="upi"
-                  value={Formik.values.upi}
                   onChange={Formik.handleChange}
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
@@ -443,26 +429,39 @@ const Info = () => {
             pb={16}
             gap={8}
             direction={["column", "row"]}
-            justifyContent={"space-between"}
+            justifyContent={"flex-start"}
           >
-            <FormControl>
-              <Box>
-                <FormLabel
-                  fontWeight={"bold"}
-                  textTransform={"uppercase"}
-                  fontSize={"lg"}
-                >
-                  MICR (optional)
-                </FormLabel>
-                <Input
-                  isDisabled={disabledInputs.micr}
-                  name="micr"
-                  value={Formik.values.micr}
-                  onChange={Formik.handleChange}
-                  bg={"blanchedalmond"}
-                  w={["full", "xs"]}
-                />
-              </Box>
+            <FormControl w={["full", "xs"]}>
+              <FormLabel
+                fontWeight={"bold"}
+                textTransform={"uppercase"}
+                fontSize={"lg"}
+              >
+                UPI ID
+              </FormLabel>
+              <Input
+                name="upi"
+                value={Formik.values.upi}
+                onChange={Formik.handleChange}
+                bg={"blanchedalmond"}
+                w={["full", "xs"]}
+              />
+            </FormControl>
+            <FormControl w={["full", "xs"]}>
+              <FormLabel
+                fontWeight={"bold"}
+                textTransform={"uppercase"}
+                fontSize={"lg"}
+              >
+                MICR (optional)
+              </FormLabel>
+              <Input
+                name="micr"
+                value={Formik.values.micr}
+                onChange={Formik.handleChange}
+                bg={"blanchedalmond"}
+                w={["full", "xs"]}
+              />
             </FormControl>
           </Stack>
 
@@ -479,7 +478,6 @@ const Info = () => {
                 Street
               </FormLabel>
               <Input
-                isDisabled={disabledInputs.line}
                 name="street"
                 value={addressObj.line}
                 onChange={(e) =>
@@ -494,7 +492,7 @@ const Info = () => {
             w={"full"}
             gap={8}
             direction={["column", "row"]}
-            justifyContent={"space-between"}
+            justifyContent={"flex-start"}
           >
             <FormControl>
               <Box>
@@ -506,7 +504,6 @@ const Info = () => {
                   Landmark
                 </FormLabel>
                 <Input
-                  isDisabled={disabledInputs.landmark}
                   name="landmark"
                   value={addressObj.landmark}
                   onChange={(e) =>
@@ -527,7 +524,6 @@ const Info = () => {
                   City
                 </FormLabel>
                 <Input
-                  isDisabled={disabledInputs.city}
                   name="city"
                   value={addressObj.city}
                   onChange={(e) =>
@@ -548,7 +544,6 @@ const Info = () => {
                   State
                 </FormLabel>
                 <Input
-                  isDisabled={disabledInputs.state}
                   name="state"
                   value={addressObj.state}
                   onChange={(e) =>
@@ -559,26 +554,31 @@ const Info = () => {
                 />
               </Box>
             </FormControl>
+          </Stack>
+          <Stack
+            direction={["column", "row"]}
+            alignItems={"center"}
+            justifyContent={"flex-start"}
+            pt={8}
+            gap={8}
+          >
             <FormControl>
-              <Box>
-                <FormLabel
-                  fontWeight={"bold"}
-                  textTransform={"uppercase"}
-                  fontSize={"lg"}
-                >
-                  Pin Code
-                </FormLabel>
-                <Input
-                  isDisabled={disabledInputs.pincode}
-                  name="pincode"
-                  value={addressObj.pincode}
-                  onChange={(e) =>
-                    setAddressObj({ ...addressObj, pincode: e.target.value })
-                  }
-                  bg={"blanchedalmond"}
-                  w={["full", "xs"]}
-                />
-              </Box>
+              <FormLabel
+                fontWeight={"bold"}
+                textTransform={"uppercase"}
+                fontSize={"lg"}
+              >
+                Pin Code
+              </FormLabel>
+              <Input
+                name="pincode"
+                value={addressObj.pincode}
+                onChange={(e) =>
+                  setAddressObj({ ...addressObj, pincode: e.target.value })
+                }
+                bg={"blanchedalmond"}
+                w={["full", "xs"]}
+              />
             </FormControl>
           </Stack>
 
@@ -588,7 +588,7 @@ const Info = () => {
             w={"full"}
             pb={16}
             direction={["column", "row"]}
-            justifyContent={"space-between"}
+            justifyContent={"flex-start"}
           >
             <FormControl>
               <FormLabel
@@ -600,7 +600,6 @@ const Info = () => {
               </FormLabel>
               <HStack>
                 <Input
-                  isDisabled={disabledInputs.attachment1}
                   type="file"
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
@@ -613,7 +612,6 @@ const Info = () => {
                   }
                 />
                 <Input
-                  isDisabled={disabledInputs.attachment2}
                   type="file"
                   bg={"blanchedalmond"}
                   w={["full", "xs"]}
@@ -629,21 +627,13 @@ const Info = () => {
             </FormControl>
           </Stack>
 
-          <HStack>
-            <Checkbox required />
-            <Text>
-              I have read and accept the Terms & Conditions and Privacy Policy
-              of Virolife Foundation With All My Attention
-            </Text>
-          </HStack>
-
           <HStack justifyContent={"flex-end"}>
             <Button
               rightIcon={<BsArrowRight />}
               colorScheme="yellow"
               type="submit"
             >
-              Proceed
+              Create
             </Button>
           </HStack>
         </Box>

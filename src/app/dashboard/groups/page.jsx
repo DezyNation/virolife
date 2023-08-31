@@ -43,6 +43,7 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
     id: "",
     name: "",
   });
+
   const [videoStatus, setVideoStatus] = useState(false);
   const [videoData, setVideoData] = useState({
     title: "Watch this video to proceed.",
