@@ -862,6 +862,7 @@ const Page = () => {
             <MyParents
               parentUsers={primaryParentUsers}
               myParentId={primaryJoined}
+              groupType={"primary"}
             />
           </Box>
           <Box>
@@ -870,6 +871,7 @@ const Page = () => {
             <MyParents
               parentUsers={secondaryParentUsers}
               myParentId={secondaryJoined}
+              groupType={"secondary"}
             />
           </Box>
         </Stack>
