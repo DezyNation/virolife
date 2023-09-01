@@ -36,6 +36,11 @@ const Layout = ({ children }) => {
   const Toast = useToast({ position: "top-right" });
   const Router = useRouter();
   const [myRole, setMyRole] = useState("");
+  const [points, setPoints] = useState({
+    adPoints: 0,
+    healthPoints: 0,
+    viroPoints: 0,
+  });
 
   useEffect(() => {
     isExpired(Cookies.get("jwt"));
@@ -58,6 +63,12 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));
+    setPoints({
+      ...points,
+      adPoints: Cookies.get("adPoints"),
+      healthPoints: Cookies.get("healthPoints"),
+      viroPoints: Cookies.get("viroPoints"),
+    });
   }, []);
 
   return (
@@ -137,7 +148,7 @@ const Layout = ({ children }) => {
           </Box>
         </Show>
         <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
-          <HStack gap={8} pb={4} w={"full"} justifyContent={'flex-end'}>
+          <HStack gap={8} pb={4} w={"full"} justifyContent={"flex-end"}>
             <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
               <IconButton
                 bgColor={"pink.400"}
@@ -148,7 +159,7 @@ const Layout = ({ children }) => {
               <Box p={2}>
                 <Text fontSize={"8"}>Ad Points</Text>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
-                  0
+                  {points.adPoints}
                 </Text>
               </Box>
             </HStack>
@@ -162,7 +173,7 @@ const Layout = ({ children }) => {
               <Box p={2}>
                 <Text fontSize={"8"}>Health Points</Text>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
-                  0
+                  {points.healthPoints}
                 </Text>
               </Box>
             </HStack>
@@ -176,7 +187,7 @@ const Layout = ({ children }) => {
               <Box p={2}>
                 <Text fontSize={"8"}>Viro Points</Text>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
-                  0
+                  {points.viroPoints}
                 </Text>
               </Box>
             </HStack>

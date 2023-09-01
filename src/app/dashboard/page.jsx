@@ -36,41 +36,54 @@ const DashboardHome = () => {
   const [campaigns, setCampaigns] = useState({});
 
   const [campaignDate, setCampaignDate] = useState(new Date());
-  
-  useEffect(()=>{
-    setSessionExpired(isExpired(Cookies.get("jwt")));
-  },[Cookies.get()])
 
   useEffect(() => {
-    BackendAxios.get("/auth-user")
-      .then((res) => {
-        setAuthUser(res.data[0]);
-        localStorage.setItem("userName", res.data[0]?.name);
-        localStorage.setItem("userId", res.data[0]?.id);
-        localStorage.setItem("primaryActive", res.data[0]?.primary_activated);
-        localStorage.setItem("secondaryActive", res.data[0]?.secondary_activated);
-        localStorage.setItem("myPlan", res.data[0]?.subscription?.plan?.id);
-        if(res.data[0].parent_id){
-          localStorage.setItem("primaryParentId", res.data[0]?.parent_id);
-        }
-        if(res.data[0].secondary_parent_id){
-          localStorage.setItem("secondaryParentId", res.data[0]?.secondary_parent_id);
-        }
-      })
-      .catch((err) => {
-        if(err?.response?.status == 401){
-          Cookies.remove("jwt")
-          localStorage.clear()
-          window.location.assign("/")
-          return
-        }
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
+    setSessionExpired(isExpired(Cookies.get("jwt")));
+  }, [Cookies.get()]);
+
+  useEffect(() => {
+    fetchInfo()
   }, []);
+
+  function fetchInfo(){
+    BackendAxios.get("/auth-user")
+    .then((res) => {
+      setAuthUser(res.data[0]);
+      localStorage.setItem("userName", res.data[0]?.name);
+      localStorage.setItem("userId", res.data[0]?.id);
+      localStorage.setItem("primaryActive", res.data[0]?.primary_activated);
+      localStorage.setItem(
+        "secondaryActive",
+        res.data[0]?.secondary_activated
+      );
+      localStorage.setItem("myPlan", res.data[0]?.subscription?.plan?.id);
+      Cookies.set("adPoints", res.data[0]?.ad_points);
+      Cookies.set("healthPoints", res.data[0]?.health_points);
+      Cookies.set("viroPoints", res.data[0]?.viro_points);
+      if (res.data[0].parent_id) {
+        localStorage.setItem("primaryParentId", res.data[0]?.parent_id);
+      }
+      if (res.data[0].secondary_parent_id) {
+        localStorage.setItem(
+          "secondaryParentId",
+          res.data[0]?.secondary_parent_id
+        );
+      }
+    })
+    .catch((err) => {
+      if (err?.response?.status == 401) {
+        Cookies.remove("jwt");
+        localStorage.clear();
+        window.location.assign("/");
+        return;
+      }
+      Toast({
+        status: "error",
+        description:
+          err?.response?.data?.message || err?.response?.data || err?.message,
+      });
+    });
+  }
 
   if (sessionExpired) {
     return (
@@ -103,7 +116,8 @@ const DashboardHome = () => {
         py={4}
         textTransform={"capitalize"}
       >
-        Welcome, {authUser?.name} - ({process.env.NEXT_PUBLIC_CODE}{authUser?.id})
+        Welcome, {authUser?.name} - ({process.env.NEXT_PUBLIC_CODE}
+        {authUser?.id})
       </Text>
       <Stack
         w={"full"}
