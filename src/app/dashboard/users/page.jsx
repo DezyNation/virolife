@@ -32,7 +32,6 @@ import Link from "next/link";
 import { BsDownload, BsEye, BsPlus } from "react-icons/bs";
 import BackendAxios from "@/utils/axios";
 import QRCode from "react-qr-code";
-import TreeModal from "@/components/dashboard/users/TreeModal";
 
 const Users = () => {
   const Toast = useToast({ position: "top-right" });
@@ -470,11 +469,11 @@ const Users = () => {
       </Modal>
 
       {/* Tree Modal */}
-      <TreeModal
+      {/* <TreeModal
         status={showTreeModal}
         onClose={() => setShowTreeModal(false)}
         groupMembers={groupMembers}
-      />
+      /> */}
     </>
   );
 };
