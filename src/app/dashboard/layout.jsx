@@ -8,9 +8,10 @@ import {
   VStack,
   HStack,
   useToast,
+  IconButton,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { AiFillDashboard, AiFillYoutube } from "react-icons/ai";
+import { AiFillDashboard, AiFillHeart, AiFillYoutube } from "react-icons/ai";
 import {
   BsCashCoin,
   BsCurrencyRupee,
@@ -21,7 +22,7 @@ import {
   BsPersonFill,
   BsPower,
 } from "react-icons/bs";
-import { MdGroups } from "react-icons/md";
+import { MdGroups, MdSlowMotionVideo } from "react-icons/md";
 import { FaHandshake, FaUsers } from "react-icons/fa";
 import { GiChestnutLeaf } from "react-icons/gi";
 import { useRouter } from "next/navigation";
@@ -136,6 +137,23 @@ const Layout = ({ children }) => {
           </Box>
         </Show>
         <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
+          <HStack gap={8} pb={4} w={'full'}>
+            <HStack rounded={'full'} gap={4} bgColor={'gray.50'}>
+                <IconButton bgColor={'pink.400'} color={'#FFF'} icon={<MdSlowMotionVideo/>} rounded={'full'} size={'sm'} />
+                <Text fontSize={'8'}>Ad Points</Text>
+                <Text fontSize={'md'} fontWeight={'semibold'}>0</Text>
+            </HStack>
+            <HStack rounded={'full'} gap={4} bgColor={'gray.50'}>
+                <IconButton bgColor={'red.400'} color={'#FFF'} icon={<AiFillHeart/>} rounded={'full'} size={'sm'} />
+                <Text fontSize={'8'}>Health Points</Text>
+                <Text fontSize={'md'} fontWeight={'semibold'}>0</Text>
+            </HStack>
+            <HStack rounded={'full'} gap={4} bgColor={'gray.50'}>
+                <IconButton bgColor={'yellow.500'} color={'#FFF'} icon={<GiChestnutLeaf />} rounded={'full'} size={'sm'} />
+                <Text fontSize={'8'}>Viro Points</Text>
+                <Text fontSize={'md'} fontWeight={'semibold'}>0</Text>
+            </HStack>
+          </HStack>
           {children}
         </Box>
       </Stack>
