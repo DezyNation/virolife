@@ -142,11 +142,10 @@ const Layout = ({ children }) => {
               <IconButton
                 bgColor={"pink.400"}
                 color={"#FFF"}
-                icon={<MdSlowMotionVideo />}
+                icon={<MdSlowMotionVideo size={20} />}
                 rounded={"full"}
-                size={"sm"}
               />
-              <Box>
+              <Box p={2}>
                 <Text fontSize={"8"}>Ad Points</Text>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
                   0
@@ -157,11 +156,10 @@ const Layout = ({ children }) => {
               <IconButton
                 bgColor={"red.400"}
                 color={"#FFF"}
-                icon={<AiFillHeart />}
+                icon={<AiFillHeart size={20} />}
                 rounded={"full"}
-                size={"sm"}
               />
-              <Box>
+              <Box p={2}>
                 <Text fontSize={"8"}>Health Points</Text>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
                   0
@@ -172,11 +170,10 @@ const Layout = ({ children }) => {
               <IconButton
                 bgColor={"yellow.500"}
                 color={"#FFF"}
-                icon={<GiChestnutLeaf />}
+                icon={<GiChestnutLeaf size={20} />}
                 rounded={"full"}
-                size={"sm"}
               />
-              <Box>
+              <Box p={2}>
                 <Text fontSize={"8"}>Viro Points</Text>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
                   0
