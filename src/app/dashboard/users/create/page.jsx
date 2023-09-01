@@ -31,9 +31,15 @@ const Info = () => {
   const [agents, setAgents] = useState([]);
   const [distributors, setDistributors] = useState([]);
 
+  const [myRole, setMyRole] = useState("");
+
+  useEffect(() => {
+    setMyRole(localStorage.getItem("myRole"));
+  }, []);
+
   const Formik = useFormik({
     initialValues: {
-      role: "user",
+      role: "",
       password: "",
       firstName: "",
       middleName: "",
@@ -135,11 +141,12 @@ const Info = () => {
               >
                 User Role
               </FormLabel>
-              <Select name="role" onChange={Formik.handleChange}>
-                <option value="user">Member</option>
-                <option value="agent">Agent</option>
-                <option value="distributor">Distributor</option>
-                <option value="admin">Admin Employee</option>
+              <Select name="role" placeholder="Please Select" onChange={Formik.handleChange}>
+                {myRole == "agent" ? (
+                  <option value="user">Member</option>
+                ) : myRole == "distributor" ? (
+                  <option value="agent">Agent</option>
+                ) : null}
               </Select>
             </FormControl>
             {Formik.values.role == "user" ? (
@@ -151,7 +158,11 @@ const Info = () => {
                 >
                   Agent
                 </FormLabel>
-                <Select placeholder="Please Select" name="agent" onChange={Formik.handleChange}>
+                <Select
+                  placeholder="Please Select"
+                  name="agent"
+                  onChange={Formik.handleChange}
+                >
                   {agents?.map((user, key) => (
                     <option key={key} value={user?.id}>
                       {user?.name}
@@ -168,7 +179,11 @@ const Info = () => {
                 >
                   Distributor
                 </FormLabel>
-                <Select placeholder="Please Select" name="distributor" onChange={Formik.handleChange}>
+                <Select
+                  placeholder="Please Select"
+                  name="distributor"
+                  onChange={Formik.handleChange}
+                >
                   {distributors?.map((user, key) => (
                     <option key={key} value={user?.id}>
                       {user?.name}
