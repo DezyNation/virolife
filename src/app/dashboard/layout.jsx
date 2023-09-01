@@ -137,7 +137,7 @@ const Layout = ({ children }) => {
           </Box>
         </Show>
         <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
-          <HStack gap={8} pb={4} w={"full"}>
+          <HStack gap={8} pb={4} w={"full"} justifyContent={'flex-end'}>
             <HStack rounded={"full"} gap={4} bgColor={"gray.50"}>
               <IconButton
                 bgColor={"pink.400"}
