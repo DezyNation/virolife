@@ -138,7 +138,7 @@ const Layout = ({ children }) => {
         </Show>
         <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
           <HStack gap={8} pb={4} w={"full"} justifyContent={'flex-end'}>
-            <HStack rounded={"full"} gap={4} bgColor={"gray.50"}>
+            <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
               <IconButton
                 bgColor={"pink.400"}
                 color={"#FFF"}
@@ -152,7 +152,7 @@ const Layout = ({ children }) => {
                 </Text>
               </Box>
             </HStack>
-            <HStack rounded={"full"} gap={4} bgColor={"gray.50"}>
+            <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
               <IconButton
                 bgColor={"red.400"}
                 color={"#FFF"}
@@ -166,7 +166,7 @@ const Layout = ({ children }) => {
                 </Text>
               </Box>
             </HStack>
-            <HStack rounded={"full"} gap={4} bgColor={"gray.50"}>
+            <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
               <IconButton
                 bgColor={"yellow.500"}
                 color={"#FFF"}
