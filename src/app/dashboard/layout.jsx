@@ -137,21 +137,51 @@ const Layout = ({ children }) => {
           </Box>
         </Show>
         <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
-          <HStack gap={8} pb={4} w={'full'}>
-            <HStack rounded={'full'} gap={4} bgColor={'gray.50'}>
-                <IconButton bgColor={'pink.400'} color={'#FFF'} icon={<MdSlowMotionVideo/>} rounded={'full'} size={'sm'} />
-                <Text fontSize={'8'}>Ad Points</Text>
-                <Text fontSize={'md'} fontWeight={'semibold'}>0</Text>
+          <HStack gap={8} pb={4} w={"full"}>
+            <HStack rounded={"full"} gap={4} bgColor={"gray.50"}>
+              <IconButton
+                bgColor={"pink.400"}
+                color={"#FFF"}
+                icon={<MdSlowMotionVideo />}
+                rounded={"full"}
+                size={"sm"}
+              />
+              <Box>
+                <Text fontSize={"8"}>Ad Points</Text>
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  0
+                </Text>
+              </Box>
             </HStack>
-            <HStack rounded={'full'} gap={4} bgColor={'gray.50'}>
-                <IconButton bgColor={'red.400'} color={'#FFF'} icon={<AiFillHeart/>} rounded={'full'} size={'sm'} />
-                <Text fontSize={'8'}>Health Points</Text>
-                <Text fontSize={'md'} fontWeight={'semibold'}>0</Text>
+            <HStack rounded={"full"} gap={4} bgColor={"gray.50"}>
+              <IconButton
+                bgColor={"red.400"}
+                color={"#FFF"}
+                icon={<AiFillHeart />}
+                rounded={"full"}
+                size={"sm"}
+              />
+              <Box>
+                <Text fontSize={"8"}>Health Points</Text>
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  0
+                </Text>
+              </Box>
             </HStack>
-            <HStack rounded={'full'} gap={4} bgColor={'gray.50'}>
-                <IconButton bgColor={'yellow.500'} color={'#FFF'} icon={<GiChestnutLeaf />} rounded={'full'} size={'sm'} />
-                <Text fontSize={'8'}>Viro Points</Text>
-                <Text fontSize={'md'} fontWeight={'semibold'}>0</Text>
+            <HStack rounded={"full"} gap={4} bgColor={"gray.50"}>
+              <IconButton
+                bgColor={"yellow.500"}
+                color={"#FFF"}
+                icon={<GiChestnutLeaf />}
+                rounded={"full"}
+                size={"sm"}
+              />
+              <Box>
+                <Text fontSize={"8"}>Viro Points</Text>
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  0
+                </Text>
+              </Box>
             </HStack>
           </HStack>
           {children}
