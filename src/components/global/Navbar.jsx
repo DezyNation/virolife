@@ -214,8 +214,8 @@ const Navbar = () => {
         .then((res) => {
           setUserName(res.data[0]?.name);
           setUserData(res.data[0]);
-          localStorage.setItem("myRole", res.data[0]?.roles?.length ? res.data?.roles[0]?.name : "")
-          setMyRole(res.data?.roles?.length ? res.data[0]?.roles[0]?.name : "")
+          localStorage.setItem("myRole", res.data[0]?.roles?.length ? res.data[0]?.roles[0]?.name : "")
+          setMyRole(res.data[0]?.roles?.length ? res.data[0]?.roles[0]?.name : "")
         })
         .catch((err) => {
           console.log(err);
