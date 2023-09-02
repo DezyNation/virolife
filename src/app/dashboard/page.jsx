@@ -29,60 +29,62 @@ const DashboardHome = () => {
   const [selectedImg, setSelectedImg] = useState(
     "https://t3.ftcdn.net/jpg/04/19/34/24/360_F_419342418_pBHSf17ZBQn77E7z3OWcXrWfCuxZkc3Q.jpg"
   );
+  const Toast = useToast({ position: "top-right" });
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies] = useCookies(["jwt"]);
-  const Toast = useToast({ position: "top-right" });
-  const [authUser, setAuthUser] = useState({});
   const [campaigns, setCampaigns] = useState({});
-
   const [campaignDate, setCampaignDate] = useState(new Date());
+  const [authUser, setAuthUser] = useState({});
+
+  const [myRole, setMyRole] = useState("");
 
   useEffect(() => {
     setSessionExpired(isExpired(Cookies.get("jwt")));
   }, [Cookies.get()]);
 
   useEffect(() => {
-    fetchInfo()
+    fetchInfo();
+    setMyRole(localStorage.getItem("myRole"));
   }, []);
 
-  function fetchInfo(){
+  function fetchInfo() {
     BackendAxios.get("/auth-user")
-    .then((res) => {
-      setAuthUser(res.data[0]);
-      localStorage.setItem("userName", res.data[0]?.name);
-      localStorage.setItem("userId", res.data[0]?.id);
-      localStorage.setItem("primaryActive", res.data[0]?.primary_activated);
-      localStorage.setItem(
-        "secondaryActive",
-        res.data[0]?.secondary_activated
-      );
-      localStorage.setItem("myPlan", res.data[0]?.subscription?.plan?.id);
-      Cookies.set("adPoints", res.data[0]?.ad_points);
-      Cookies.set("healthPoints", res.data[0]?.health_points);
-      Cookies.set("viroPoints", res.data[0]?.virolife_points);
-      if (res.data[0].parent_id) {
-        localStorage.setItem("primaryParentId", res.data[0]?.parent_id);
-      }
-      if (res.data[0].secondary_parent_id) {
+      .then((res) => {
+        setAuthUser(res.data[0]);
+        localStorage.setItem("userName", res.data[0]?.name);
+        localStorage.setItem("userId", res.data[0]?.id);
+        localStorage.setItem("primaryActive", res.data[0]?.primary_activated);
         localStorage.setItem(
-          "secondaryParentId",
-          res.data[0]?.secondary_parent_id
+          "secondaryActive",
+          res.data[0]?.secondary_activated
         );
-      }
-    })
-    .catch((err) => {
-      if (err?.response?.status == 401) {
-        Cookies.remove("jwt");
-        localStorage.clear();
-        window.location.assign("/");
-        return;
-      }
-      Toast({
-        status: "error",
-        description:
-          err?.response?.data?.message || err?.response?.data || err?.message,
+        localStorage.setItem("myPlan", res.data[0]?.subscription?.plan?.id);
+        Cookies.set("adPoints", res.data[0]?.ad_points);
+        Cookies.set("healthPoints", res.data[0]?.health_points);
+        Cookies.set("viroPoints", res.data[0]?.virolife_points);
+        if (res.data[0].parent_id) {
+          localStorage.setItem("primaryParentId", res.data[0]?.parent_id);
+        }
+        if (res.data[0].secondary_parent_id) {
+          localStorage.setItem(
+            "secondaryParentId",
+            res.data[0]?.secondary_parent_id
+          );
+        }
+      })
+      .catch((err) => {
+        if (err?.response?.status == 401) {
+          Cookies.remove("jwt");
+          localStorage.clear();
+          window.location.assign("/");
+          return;
+        }
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
       });
-    });
   }
 
   if (sessionExpired) {
@@ -119,23 +121,44 @@ const DashboardHome = () => {
         Welcome, {authUser?.name} - ({process.env.NEXT_PUBLIC_CODE}
         {authUser?.id})
       </Text>
-      <Stack
-        w={"full"}
-        direction={["column", "row"]}
-        gap={[8, 16]}
-        justifyContent={"space-between"}
-      >
-        <StatsCard icon={<MdGroups size={28} />} title={"my team"} />
-        <StatsCard
-          icon={<BsMegaphoneFill size={28} />}
-          title={"active campaigns"}
-        />
-        <StatsCard
-          icon={<BsCurrencyRupee size={28} />}
-          title={"self earning"}
-        />
-        <StatsCard icon={<BsCashCoin size={28} />} title={"amount settled"} />
-      </Stack>
+      {myRole == "user" ? (
+        <Stack
+          w={"full"}
+          direction={["column", "row"]}
+          gap={[8, 16]}
+          justifyContent={"space-between"}
+        >
+          <StatsCard icon={<MdGroups size={28} />} title={"my team"} />
+          <StatsCard
+            icon={<BsMegaphoneFill size={28} />}
+            title={"active campaigns"}
+          />
+          <StatsCard
+            icon={<BsCurrencyRupee size={28} />}
+            title={"self earning"}
+          />
+          <StatsCard icon={<BsCashCoin size={28} />} title={"amount settled"} />
+        </Stack>
+      ) : (
+        <Stack
+          w={"full"}
+          direction={["column", "row"]}
+          gap={[8, 16]}
+          justifyContent={"space-between"}
+        >
+          {/* <StatsCard icon={<MdGroups size={28} />} title={"my team"} /> */}
+          <StatsCard
+            icon={<BsMegaphoneFill size={28} />}
+            title={"users created"}
+          />
+          <StatsCard
+            icon={<BsCurrencyRupee size={28} />}
+            title={"pending commision"}
+          />
+          <StatsCard icon={<BsCashCoin size={28} />} title={"commission settled"} />
+        </Stack>
+      )}
+
       {/* <Box pt={16}>
         <Stack
           direction={["column", "row"]}
