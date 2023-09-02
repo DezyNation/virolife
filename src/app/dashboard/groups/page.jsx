@@ -1020,7 +1020,7 @@ const Page = () => {
               >
                 Pay with Gift PIN
               </Text>
-            ) : (
+            ) : paymentMethod == "giftCard" && (!primaryJoined || !secondaryJoined) ? (
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("gateway")}
@@ -1028,7 +1028,7 @@ const Page = () => {
               >
                 Pay with Razorpay
               </Text>
-            )}
+            ) : null}
             {primaryIdRequested && (
               <Button
                 w={["auto", "auto"]}
