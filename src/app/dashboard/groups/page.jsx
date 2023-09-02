@@ -710,7 +710,8 @@ const Page = () => {
       paymentMethod == "gateway"
         ? `/api/join-group/${joinGroupId}`
         : `/api/gift/redeem/secondary`, {
-          code: giftCard
+          code: giftCard,
+          amount: 250
         }
     )
       .then((res) => {
@@ -740,7 +741,7 @@ const Page = () => {
     BackendAxios.get(
       paymentMethod == "gateway"
         ? `/api/join-group/${joinGroupId}`
-        : `/api/gift/redeem/primary/${joinGroupId}?code=${giftCard}`
+        : `/api/gift/redeem/primary/${joinGroupId}?code=${giftCard}&amount=250`
     )
       .then((res) => {
         Toast({
@@ -1000,12 +1001,12 @@ const Page = () => {
                 <Text textAlign={"center"}>Enter Gift PIN</Text>
                 <HStack w={"full"} justifyContent={"center"} gap={4}>
                   <PinInput otp onComplete={(value) => setGiftCard(value)}>
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
                   </PinInput>
                 </HStack>
               </Box>

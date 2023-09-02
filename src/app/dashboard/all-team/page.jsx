@@ -94,6 +94,7 @@ const page = () => {
     BackendAxios.post(`/api/gift/redeem/viroteam`, {
       purpose: "all-team",
       code: giftCard,
+      amount: 210
     })
       .then((res) => {
         Toast({
@@ -180,12 +181,12 @@ const page = () => {
                 <Text textAlign={"center"}>Enter Gift PIN</Text>
                 <HStack w={"full"} justifyContent={"center"} gap={4}>
                   <PinInput otp onComplete={(value) => setGiftCard(value)}>
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
-                    <PinInputField color={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
+                    <PinInputField bgColor={"gray.100"} />
                   </PinInput>
                 </HStack>
               </Box>
