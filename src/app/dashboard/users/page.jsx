@@ -58,7 +58,7 @@ const Users = () => {
   }
 
   function fetchUsers() {
-    BackendAxios.get("/api/admin/users-list/user")
+    BackendAxios.get(myRole == "distributor" ? "/api/user/my-agents" : "api/user/my-users")
       .then((res) => {
         setUsers(res.data);
       })
