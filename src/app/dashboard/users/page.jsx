@@ -38,7 +38,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [query, setQuery] = useState("");
 
-  const [myRole, setMyRole] = useState("member");
+  const [myRole, setMyRole] = useState("");
 
   const { isOpen, onToggle } = useDisclosure();
   const [userInfo, setUserInfo] = useState({});
@@ -61,6 +61,12 @@ const Users = () => {
     setQrVisible({ status: true, upi: upi });
   }
 
+  useEffect(() => {
+    if(myRole){
+      fetchUsers();
+    }
+  }, [myRole]);
+
   function fetchUsers() {
     BackendAxios.get(myRole == "distributor" ? "/api/user/my-agents" : "api/user/my-users")
       .then((res) => {
@@ -74,9 +80,6 @@ const Users = () => {
         });
       });
   }
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   function getUserInfo(id) {
     onToggle();
