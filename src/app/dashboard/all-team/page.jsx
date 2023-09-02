@@ -196,6 +196,7 @@ const page = () => {
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("giftCard")}
+                cursor={'pointer'} fontWeight={'semibold'}
               >
                 Pay with Gift PIN
               </Text>
@@ -203,6 +204,7 @@ const page = () => {
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("gateway")}
+                cursor={'pointer'} fontWeight={'semibold'}
               >
                 Pay with Razorpay
               </Text>

@@ -1012,10 +1012,11 @@ const Page = () => {
             ) : null}
           </ModalBody>
           <ModalFooter gap={8} justifyContent={"flex-end"}>
-            {paymentMethod == "gateway" ? (
+            {paymentMethod == "gateway" && (!primaryJoined || !secondaryJoined) ? (
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("giftCard")}
+                cursor={'pointer'} fontWeight={'semibold'}
               >
                 Pay with Gift PIN
               </Text>
@@ -1023,6 +1024,7 @@ const Page = () => {
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("gateway")}
+                cursor={'pointer'} fontWeight={'semibold'}
               >
                 Pay with Razorpay
               </Text>
