@@ -709,7 +709,9 @@ const Page = () => {
     BackendAxios.post(
       paymentMethod == "gateway"
         ? `/api/join-group/${joinGroupId}`
-        : `/api/gift/redeem/secondary`
+        : `/api/gift/redeem/secondary`, {
+          code: giftCard
+        }
     )
       .then((res) => {
         Toast({
@@ -738,7 +740,7 @@ const Page = () => {
     BackendAxios.get(
       paymentMethod == "gateway"
         ? `/api/join-group/${joinGroupId}`
-        : `/api/gift/redeem/primary/${joinGroupId}`
+        : `/api/gift/redeem/primary/${joinGroupId}?code=${giftCard}`
     )
       .then((res) => {
         Toast({
