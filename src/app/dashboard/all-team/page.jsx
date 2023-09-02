@@ -166,7 +166,7 @@ const page = () => {
             {stars}
           </Text>
           <br />
-          <Button colorScheme={"yellow"} w={'full'}>Donate Now!</Button>
+          <Button colorScheme={"yellow"} w={'full'} onClick={onToggle}>Donate Now!</Button>
         </Box>
       </Stack>
 
