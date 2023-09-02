@@ -31,7 +31,7 @@ const Info = () => {
   const [agents, setAgents] = useState([]);
   const [distributors, setDistributors] = useState([]);
 
-  const [myRole, setMyRole] = useState("");
+  const [myRole, setMyRole] = useState("distributor");
 
   useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));

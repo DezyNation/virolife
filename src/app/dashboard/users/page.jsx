@@ -47,6 +47,10 @@ const Users = () => {
   const [groupMembers, setGroupMembers] = useState([]);
   const [showTreeModal, setShowTreeModal] = useState(false);
 
+  useEffect(()=>{
+    setMyRole(localStorage.getItem("myRole"));
+  },[])
+
   function showQr(upi) {
     if (!upi) {
       Toast({
@@ -72,7 +76,6 @@ const Users = () => {
   }
   useEffect(() => {
     fetchUsers();
-    setMyRole(localStorage.getItem("myRole"));
   }, []);
 
   function getUserInfo(id) {
