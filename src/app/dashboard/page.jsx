@@ -146,11 +146,7 @@ const DashboardHome = () => {
           gap={[8, 16]}
           justifyContent={"space-between"}
         >
-          {/* <StatsCard icon={<MdGroups size={28} />} title={"my team"} /> */}
-          <StatsCard
-            icon={<BsMegaphoneFill size={28} />}
-            title={"users created"}
-          />
+          <StatsCard icon={<MdGroups size={28} />} title={"users created"} />
           <StatsCard
             icon={<BsCurrencyRupee size={28} />}
             title={"pending commision"}
