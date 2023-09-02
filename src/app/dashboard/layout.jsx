@@ -141,7 +141,7 @@ const Layout = ({ children }) => {
                   <Text>Broadcast</Text>
                 </HStack>
               </Link> */}
-              <HStack gap={4} onClick={handleLogout} cursor={"pointer"}>
+              <HStack marginTop={16} gap={4} onClick={handleLogout} cursor={"pointer"}>
                 <BsPower size={20} />
                 <Text>Log Out</Text>
               </HStack>
@@ -149,6 +149,7 @@ const Layout = ({ children }) => {
           </Box>
         </Show>
         <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
+          {myRole == "user" ?
           <HStack gap={8} pb={4} w={"full"} justifyContent={"flex-end"}>
             <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
               <IconButton
@@ -192,7 +193,8 @@ const Layout = ({ children }) => {
                 </Text>
               </Box>
             </HStack>
-          </HStack>
+          </HStack> : null
+}
           {children}
         </Box>
       </Stack>

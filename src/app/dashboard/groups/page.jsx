@@ -24,6 +24,8 @@ import {
   AvatarBadge,
   Select,
   Spacer,
+  PinInput,
+  PinInputField,
 } from "@chakra-ui/react";
 import { LuStars } from "react-icons/lu";
 import BackendAxios from "@/utils/axios";
@@ -659,6 +661,9 @@ const Page = () => {
 
   const [collections, setCollections] = useState([]);
 
+  const [paymentMethod, setPaymentMethod] = useState("gateway");
+  const [giftCard, setGiftCard] = useState("");
+
   useEffect(() => {
     fetchPrimaryParents();
     fetchSecondaryParents();
@@ -701,7 +706,11 @@ const Page = () => {
   }
 
   function joinSecondaryGroup() {
-    BackendAxios.post(`/api/join-group/${joinGroupId}`)
+    BackendAxios.post(
+      paymentMethod == "gateway"
+        ? `/api/join-group/${joinGroupId}`
+        : `/api/gift/redeem/secondary`
+    )
       .then((res) => {
         Toast({
           status: "success",
@@ -726,7 +735,11 @@ const Page = () => {
   }
 
   function joinPrimaryGroup() {
-    BackendAxios.get(`/api/join-group/${joinGroupId}`)
+    BackendAxios.get(
+      paymentMethod == "gateway"
+        ? `/api/join-group/${joinGroupId}`
+        : `/api/gift/redeem/primary/${joinGroupId}`
+    )
       .then((res) => {
         Toast({
           status: "success",
@@ -980,8 +993,38 @@ const Page = () => {
                 </Text>
               </HStack>
             ) : null}
+            {paymentMethod == "giftCard" ? (
+              <Box pt={16}>
+                <Text textAlign={"center"}>Enter Gift PIN</Text>
+                <HStack w={"full"} justifyContent={"center"} gap={4}>
+                  <PinInput otp onComplete={(value) => setGiftCard(value)}>
+                    <PinInputField color={"gray.100"} />
+                    <PinInputField color={"gray.100"} />
+                    <PinInputField color={"gray.100"} />
+                    <PinInputField color={"gray.100"} />
+                    <PinInputField color={"gray.100"} />
+                    <PinInputField color={"gray.100"} />
+                  </PinInput>
+                </HStack>
+              </Box>
+            ) : null}
           </ModalBody>
-          <ModalFooter justifyContent={"flex-end"}>
+          <ModalFooter gap={8} justifyContent={"flex-end"}>
+            {paymentMethod == "gateway" ? (
+              <Text
+                color={"blue.600"}
+                onClick={() => setPaymentMethod("giftCard")}
+              >
+                Pay with Gift PIN
+              </Text>
+            ) : (
+              <Text
+                color={"blue.600"}
+                onClick={() => setPaymentMethod("gateway")}
+              >
+                Pay with Razorpay
+              </Text>
+            )}
             {primaryIdRequested && (
               <Button
                 w={["auto", "auto"]}
