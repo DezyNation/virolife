@@ -94,52 +94,53 @@ const Layout = ({ children }) => {
                   <Text>Dashboard</Text>
                 </HStack>
               </Link>
-              <Link href={"/dashboard/campaigns"}>
-                <HStack gap={4}>
-                  <BsMegaphoneFill size={20} />
-                  <Text>My Campaigns</Text>
-                </HStack>
-              </Link>
-              <br />
-              <Link href={"/dashboard/collection"}>
-                <HStack gap={4}>
-                  <BsCurrencyRupee size={20} />
-                  <Text>Collection</Text>
-                </HStack>
-              </Link>
-              <Link href={"/dashboard/groups"}>
-                <HStack gap={4}>
-                  <MdGroups size={20} />
-                  <Text>Groups</Text>
-                </HStack>
-              </Link>
-              <Link href={"/dashboard/team-funding"}>
-                <HStack gap={4}>
-                  <GiChestnutLeaf size={20} />
-                  <Text>Viro Team Funding</Text>
-                </HStack>
-              </Link>
-              <Link href={"/dashboard/all-team"}>
-                <HStack gap={4}>
-                  <FaHandshake size={20} />
-                  <Text>All Team Processing</Text>
-                </HStack>
-              </Link>
-              <br />
-              {myRole == "agent" || myRole == "distributor" ? (
+              {myRole == "user" ? (
+                <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
+                  <Link href={"/dashboard/campaigns"}>
+                    <HStack gap={4}>
+                      <BsMegaphoneFill size={20} />
+                      <Text>My Campaigns</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/collection"}>
+                    <HStack gap={4}>
+                      <BsCurrencyRupee size={20} />
+                      <Text>Collection</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/groups"}>
+                    <HStack gap={4}>
+                      <MdGroups size={20} />
+                      <Text>Groups</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/team-funding"}>
+                    <HStack gap={4}>
+                      <GiChestnutLeaf size={20} />
+                      <Text>Viro Team Funding</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/all-team"}>
+                    <HStack gap={4}>
+                      <FaHandshake size={20} />
+                      <Text>All Team Processing</Text>
+                    </HStack>
+                  </Link>
+                </VStack>
+              ) : (
                 <Link href={"/dashboard/users"}>
                   <HStack gap={4}>
                     <FaUsers size={20} />
                     <Text>Manage Users</Text>
                   </HStack>
                 </Link>
-              ) : null}
-              <Link href={"/dashboard"}>
+              )}
+              {/* <Link href={"/dashboard"}>
                 <HStack gap={4}>
                   <BsMegaphoneFill size={20} />
                   <Text>Broadcast</Text>
                 </HStack>
-              </Link>
+              </Link> */}
               <HStack gap={4} onClick={handleLogout} cursor={"pointer"}>
                 <BsPower size={20} />
                 <Text>Log Out</Text>

@@ -60,7 +60,7 @@ const Navbar = () => {
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
   const [userData, setUserData] = useState(null);
-  const [myRole, setMyRole] = useState("")
+  const [myRole, setMyRole] = useState("");
   const [isPasswordVisible, setisPasswordVisible] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
@@ -214,8 +214,13 @@ const Navbar = () => {
         .then((res) => {
           setUserName(res.data[0]?.name);
           setUserData(res.data[0]);
-          localStorage.setItem("myRole", res.data[0]?.roles?.length ? res.data[0]?.roles[0]?.name : "")
-          setMyRole(res.data[0]?.roles?.length ? res.data[0]?.roles[0]?.name : "")
+          localStorage.setItem(
+            "myRole",
+            res.data[0]?.roles?.length ? res.data[0]?.roles[0]?.name : ""
+          );
+          setMyRole(
+            res.data[0]?.roles?.length ? res.data[0]?.roles[0]?.name : ""
+          );
         })
         .catch((err) => {
           console.log(err);
@@ -358,29 +363,29 @@ const Navbar = () => {
                   <Link href={"/dashboard"}>
                     <Text>Dashboard</Text>
                   </Link>
-                  <Link href={"/dashboard/campaigns"}>
-                    <Text>My Campaigns</Text>
-                  </Link>
-                  <Link href={"/dashboard/collection"}>
-                    <Text>Collection</Text>
-                  </Link>
-                  <Link href={"/dashboard/groups"}>
-                    <Text>Groups</Text>
-                  </Link>
-                  <Link href={"/dashboard/team-funding"}>
-                    <Text>Veero Team Funding</Text>
-                  </Link>
-                  <Link href={"/dashboard/all-team"}>
-                    <Text>All Team Funding</Text>
-                  </Link>
-                  <br />
-                  <br />
-                  {myRole == "agent" ||
-                  myRole == "distributor" ? (
+                  {myRole == "user" ? (
+                    <VStack gap={4} alignItems={"flex-start"} w={"full"}>
+                      <Link href={"/dashboard/campaigns"}>
+                        <Text>My Campaigns</Text>
+                      </Link>
+                      <Link href={"/dashboard/collection"}>
+                        <Text>Collection</Text>
+                      </Link>
+                      <Link href={"/dashboard/groups"}>
+                        <Text>Groups</Text>
+                      </Link>
+                      <Link href={"/dashboard/team-funding"}>
+                        <Text>Veero Team Funding</Text>
+                      </Link>
+                      <Link href={"/dashboard/all-team"}>
+                        <Text>All Team Funding</Text>
+                      </Link>
+                    </VStack>
+                  ) : (
                     <Link href={"/dashboard/users"}>
                       <Text>Manage Users</Text>
                     </Link>
-                  ) : null}
+                  )}
                 </VStack>
               ) : null}
               <Link href={"/blogs"}>
