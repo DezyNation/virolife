@@ -59,7 +59,7 @@ const DashboardHome = () => {
       localStorage.setItem("myPlan", res.data[0]?.subscription?.plan?.id);
       Cookies.set("adPoints", res.data[0]?.ad_points);
       Cookies.set("healthPoints", res.data[0]?.health_points);
-      Cookies.set("viroPoints", res.data[0]?.viro_points);
+      Cookies.set("viroPoints", res.data[0]?.virolife_points);
       if (res.data[0].parent_id) {
         localStorage.setItem("primaryParentId", res.data[0]?.parent_id);
       }
