@@ -456,28 +456,35 @@ const Navbar = () => {
                 <FormControl>
                   <Stack direction={["column", "row"]} spacing={8}>
                     <FormLabel fontSize={"xl"}>Password</FormLabel>
-                    <InputGroup>
-                      <Input
-                        w={["full", "xs"]}
-                        placeholder="Password"
-                        type={isPasswordVisible ? "text" : "password"}
-                        boxShadow={"xl"}
-                        border={".5px solid #FAFAFA"}
-                        rounded={0}
-                        name="password"
-                        onChange={Formik.handleChange}
-                      />
-                      <InputRightElement
-                        children={
-                          isPasswordVisible ? (
-                            <AiOutlineEyeInvisible />
-                          ) : (
-                            <AiOutlineEye />
-                          )
-                        }
-                        onClick={() => setisPasswordVisible(!isPasswordVisible)}
-                      />
-                    </InputGroup>
+                    <Box>
+                      <InputGroup>
+                        <Input
+                          w={["full", "xs"]}
+                          placeholder="Password"
+                          type={isPasswordVisible ? "text" : "password"}
+                          boxShadow={"xl"}
+                          border={".5px solid #FAFAFA"}
+                          rounded={0}
+                          name="password"
+                          onChange={Formik.handleChange}
+                        />
+                        <InputRightElement
+                          children={
+                            isPasswordVisible ? (
+                              <AiOutlineEyeInvisible />
+                            ) : (
+                              <AiOutlineEye />
+                            )
+                          }
+                          onClick={() =>
+                            setisPasswordVisible(!isPasswordVisible)
+                          }
+                        />
+                      </InputGroup>
+                      <Link href={'/forgot-password'}>
+                        <Text fontWeight={'semibold'} color={'blue'} w={'full'} textAlign={'right'}>Forgot Password?</Text>
+                      </Link>
+                    </Box>
                   </Stack>
                 </FormControl>
                 <Box
