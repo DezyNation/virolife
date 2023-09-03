@@ -481,8 +481,8 @@ const Navbar = () => {
                           }
                         />
                       </InputGroup>
-                      <Link href={'/forgot-password'}>
-                        <Text fontWeight={'semibold'} color={'blue'} w={'full'} textAlign={'right'}>Forgot Password?</Text>
+                      <Link href={'/forgot-password'} style={{marginTop: '8px'}}>
+                        <Text fontWeight={'semibold'} fontSize={'xs'} color={'blue'} w={'full'} textAlign={'right'}>Forgot Password?</Text>
                       </Link>
                     </Box>
                   </Stack>
