@@ -28,12 +28,14 @@ const page = () => {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    Formik.setFieldValue("token", token);
+    if(token){
+      Formik.setFieldValue("token", token);
+    }
   }, [token]);
 
   const Formik = useFormik({
     initialValues: {
-      token: "",
+      token: token,
       password: "",
       password_confirmation: "",
     },
