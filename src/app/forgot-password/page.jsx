@@ -31,7 +31,7 @@ const page = () => {
     if(token){
       Formik.setFieldValue("token", token);
     }
-  }, [token]);
+  }, [searchParams]);
 
   const Formik = useFormik({
     initialValues: {
