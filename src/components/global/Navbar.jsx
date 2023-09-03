@@ -457,7 +457,7 @@ const Navbar = () => {
                   <Stack direction={["column", "row"]} spacing={8}>
                     <FormLabel fontSize={"xl"}>Password</FormLabel>
                     <Box>
-                      <InputGroup>
+                      <InputGroup pb={2} >
                         <Input
                           w={["full", "xs"]}
                           placeholder="Password"
@@ -481,7 +481,7 @@ const Navbar = () => {
                           }
                         />
                       </InputGroup>
-                      <Link href={'/forgot-password'} style={{marginTop: '8px'}}>
+                      <Link href={'/forgot-password'}>
                         <Text fontWeight={'semibold'} fontSize={'xs'} color={'blue'} w={'full'} textAlign={'right'}>Forgot Password?</Text>
                       </Link>
                     </Box>
