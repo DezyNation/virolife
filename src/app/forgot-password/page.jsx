@@ -106,7 +106,7 @@ const page = () => {
             <Text color={"#FFF"}>Home</Text>
           </HStack>
         </Link>
-        <Container alignItems={"center"} justifyContent={"center"} pt={[16, 0]}>
+        <Container w={'xs'} alignItems={"center"} justifyContent={"center"} pt={[16, 0]}>
           <Image
             boxSize={"36"}
             src="/logo.png"
