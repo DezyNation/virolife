@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Stack,
   Box,
@@ -71,141 +71,150 @@ const Layout = ({ children }) => {
     });
   }, []);
 
-  const DesktopSidebar = useMemo(() => {
-    return (
-      <Show above="md">
-        <Box p={4} bg={"blanchedalmond"} w={"xs"}>
-          <Text className="serif" fontSize={"xl"} fontWeight={"semibold"}>
-            Virolife
-          </Text>
-
-          <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
-            <Link href={"/auth/info"}>
-              <HStack gap={4}>
-                <BsPersonFill size={20} />
-                <Text>Profile</Text>
-              </HStack>
-            </Link>
-            <Link href={"/dashboard"}>
-              <HStack gap={4}>
-                <AiFillDashboard size={20} />
-                <Text>Dashboard</Text>
-              </HStack>
-            </Link>
-            {myRole == "user" ? (
-              <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
-                <Link href={"/dashboard/campaigns"}>
-                  <HStack gap={4}>
-                    <BsMegaphoneFill size={20} />
-                    <Text>My Campaigns</Text>
-                  </HStack>
-                </Link>
-                <Link href={"/dashboard/collection"}>
-                  <HStack gap={4}>
-                    <BsCurrencyRupee size={20} />
-                    <Text>Collection</Text>
-                  </HStack>
-                </Link>
-                <Link href={"/dashboard/groups"}>
-                  <HStack gap={4}>
-                    <MdGroups size={20} />
-                    <Text>Groups</Text>
-                  </HStack>
-                </Link>
-                <Link href={"/dashboard/team-funding"}>
-                  <HStack gap={4}>
-                    <GiChestnutLeaf size={20} />
-                    <Text>Viro Team Funding</Text>
-                  </HStack>
-                </Link>
-                <Link href={"/dashboard/all-team"}>
-                  <HStack gap={4}>
-                    <FaHandshake size={20} />
-                    <Text>All Team Processing</Text>
-                  </HStack>
-                </Link>
-              </VStack>
-            ) : (
-              <Link href={"/dashboard/users"}>
-                <HStack gap={4}>
-                  <FaUsers size={20} />
-                  <Text>Manage Users</Text>
-                </HStack>
-              </Link>
-            )}
-            {/* <Link href={"/dashboard"}>
-                <HStack gap={4}>
-                  <BsMegaphoneFill size={20} />
-                  <Text>Broadcast</Text>
-                </HStack>
-              </Link> */}
-            <HStack
-              marginTop={16}
-              gap={4}
-              onClick={handleLogout}
-              cursor={"pointer"}
-            >
-              <BsPower size={20} />
-              <Text>Log Out</Text>
-            </HStack>
-          </VStack>
-        </Box>
-      </Show>
-    );
-  }, [myRole]);
+  useEffect(()=>{
+    BackendAxios.get("/auth-user")
+      .then((res) => {
+        setMyRole(
+          res.data[0]?.roles?.length ? res.data[0]?.roles[0]?.name : ""
+        );
+      })
+      .catch((err) => {
+        if (err?.response?.status == 401) {
+          handleLogout()
+          return;
+        }
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  },[])
 
   return (
     <>
       <Navbar />
       <Stack direction={"row"} justifyContent={"space-between"}>
-        <DesktopSidebar />
+        <Show above="md">
+          <Box p={4} bg={"blanchedalmond"} w={"xs"}>
+            <Text className="serif" fontSize={"xl"} fontWeight={"semibold"}>
+              Virolife
+            </Text>
+
+            <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
+              <Link href={"/auth/info"}>
+                <HStack gap={4}>
+                  <BsPersonFill size={20} />
+                  <Text>Profile</Text>
+                </HStack>
+              </Link>
+              <Link href={"/dashboard"}>
+                <HStack gap={4}>
+                  <AiFillDashboard size={20} />
+                  <Text>Dashboard</Text>
+                </HStack>
+              </Link>
+              {myRole == "user" ? (
+                <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
+                  <Link href={"/dashboard/campaigns"}>
+                    <HStack gap={4}>
+                      <BsMegaphoneFill size={20} />
+                      <Text>My Campaigns</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/collection"}>
+                    <HStack gap={4}>
+                      <BsCurrencyRupee size={20} />
+                      <Text>Collection</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/groups"}>
+                    <HStack gap={4}>
+                      <MdGroups size={20} />
+                      <Text>Groups</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/team-funding"}>
+                    <HStack gap={4}>
+                      <GiChestnutLeaf size={20} />
+                      <Text>Viro Team Funding</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/all-team"}>
+                    <HStack gap={4}>
+                      <FaHandshake size={20} />
+                      <Text>All Team Processing</Text>
+                    </HStack>
+                  </Link>
+                </VStack>
+              ) : (
+                <Link href={"/dashboard/users"}>
+                  <HStack gap={4}>
+                    <FaUsers size={20} />
+                    <Text>Manage Users</Text>
+                  </HStack>
+                </Link>
+              )}
+              {/* <Link href={"/dashboard"}>
+                <HStack gap={4}>
+                  <BsMegaphoneFill size={20} />
+                  <Text>Broadcast</Text>
+                </HStack>
+              </Link> */}
+              <HStack marginTop={16} gap={4} onClick={handleLogout} cursor={"pointer"}>
+                <BsPower size={20} />
+                <Text>Log Out</Text>
+              </HStack>
+            </VStack>
+          </Box>
+        </Show>
         <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
-          {myRole == "user" ? (
-            <HStack gap={8} pb={4} w={"full"} justifyContent={"flex-end"}>
-              <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
-                <IconButton
-                  bgColor={"pink.400"}
-                  color={"#FFF"}
-                  icon={<MdSlowMotionVideo size={20} />}
-                  rounded={"full"}
-                />
-                <Box p={2}>
-                  <Text fontSize={"8"}>Ad Points</Text>
-                  <Text fontSize={"md"} fontWeight={"semibold"}>
-                    {points.adPoints}
-                  </Text>
-                </Box>
-              </HStack>
-              <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
-                <IconButton
-                  bgColor={"red.400"}
-                  color={"#FFF"}
-                  icon={<AiFillHeart size={20} />}
-                  rounded={"full"}
-                />
-                <Box p={2}>
-                  <Text fontSize={"8"}>Health Points</Text>
-                  <Text fontSize={"md"} fontWeight={"semibold"}>
-                    {points.healthPoints}
-                  </Text>
-                </Box>
-              </HStack>
-              <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
-                <IconButton
-                  bgColor={"yellow.500"}
-                  color={"#FFF"}
-                  icon={<GiChestnutLeaf size={20} />}
-                  rounded={"full"}
-                />
-                <Box p={2}>
-                  <Text fontSize={"8"}>Viro Points</Text>
-                  <Text fontSize={"md"} fontWeight={"semibold"}>
-                    {points.viroPoints}
-                  </Text>
-                </Box>
-              </HStack>
+          {myRole == "user" ?
+          <HStack gap={8} pb={4} w={"full"} justifyContent={"flex-end"}>
+            <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
+              <IconButton
+                bgColor={"pink.400"}
+                color={"#FFF"}
+                icon={<MdSlowMotionVideo size={20} />}
+                rounded={"full"}
+              />
+              <Box p={2}>
+                <Text fontSize={"8"}>Ad Points</Text>
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  {points.adPoints}
+                </Text>
+              </Box>
             </HStack>
-          ) : null}
+            <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
+              <IconButton
+                bgColor={"red.400"}
+                color={"#FFF"}
+                icon={<AiFillHeart size={20} />}
+                rounded={"full"}
+              />
+              <Box p={2}>
+                <Text fontSize={"8"}>Health Points</Text>
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  {points.healthPoints}
+                </Text>
+              </Box>
+            </HStack>
+            <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
+              <IconButton
+                bgColor={"yellow.500"}
+                color={"#FFF"}
+                icon={<GiChestnutLeaf size={20} />}
+                rounded={"full"}
+              />
+              <Box p={2}>
+                <Text fontSize={"8"}>Viro Points</Text>
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  {points.viroPoints}
+                </Text>
+              </Box>
+            </HStack>
+          </HStack> : null
+}
           {children}
         </Box>
       </Stack>
