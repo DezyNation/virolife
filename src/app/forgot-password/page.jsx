@@ -130,7 +130,7 @@ const page = () => {
             />
           </FormControl>
           <br />
-          {Formik.values.code ? (
+          {Formik.values.token ? (
             <>
               <FormControl w={["xs", "sm"]}>
                 <FormLabel>New Password</FormLabel>
