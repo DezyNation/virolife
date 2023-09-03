@@ -24,7 +24,7 @@ const page = () => {
     position: "top-right",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const token = searchParams.get("token");
+  const token = searchParams.get("reset-token");
   const [email, setEmail] = useState("");
 
   useEffect(() => {
@@ -111,6 +111,7 @@ const page = () => {
             objectFit={"contain"}
             mx={"auto"}
           />
+          <br />
           <Text fontWeight={"semibold"} fontSize={"xl"} textAlign={"center"}>
             Reset Password
           </Text>
