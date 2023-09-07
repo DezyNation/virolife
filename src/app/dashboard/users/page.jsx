@@ -39,6 +39,8 @@ const Users = () => {
   const [query, setQuery] = useState("");
 
   const [myRole, setMyRole] = useState("");
+  const [myId, setMyId] = useState("");
+  const [myName, setMyName] = useState("");
 
   const { isOpen, onToggle } = useDisclosure();
   const [userInfo, setUserInfo] = useState({});
@@ -47,9 +49,11 @@ const Users = () => {
   const [groupMembers, setGroupMembers] = useState([]);
   const [showTreeModal, setShowTreeModal] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));
-  },[])
+    setMyId(localStorage.getItem("userId"));
+    setMyName(localStorage.getItem("userName"));
+  }, []);
 
   function showQr(upi) {
     if (!upi) {
@@ -62,7 +66,7 @@ const Users = () => {
   }
 
   useEffect(() => {
-    if(myRole){
+    if (myRole) {
       fetchUsers();
     }
   }, [myRole]);
@@ -70,7 +74,7 @@ const Users = () => {
   function fetchUsers() {
     BackendAxios.get("api/user/my-users")
       .then((res) => {
-        setUsers(res.data);
+        setUsers(res.data[myId]);
       })
       .catch((err) => {
         Toast({
@@ -242,11 +246,12 @@ const Users = () => {
                 <Th>#</Th>
                 <Th>ID</Th>
                 <Th className="sticky-left">User Name</Th>
-                <Th>Current Round</Th>
                 <Th>Contact</Th>
-                <Th>Donation Collected</Th>
+                <Th>Health Points</Th>
+                <Th>Ad Points</Th>
+                <Th>Viro Points</Th>
+                {/* <Th>Donation Collected</Th> */}
                 <Th>Date of Birth</Th>
-                <Th>Role</Th>
                 <Th>Registered On</Th>
                 <Th>Action</Th>
               </Tr>
@@ -263,11 +268,12 @@ const Users = () => {
                       <Td>
                         <Box>
                           <p>{user.email}</p>
-                          <p>+91 {user.phone}</p>
+                          <p>+91 {user.phone_number}</p>
                         </Box>
                       </Td>
-                      <Td>{user?.round}</Td>
-                      <Td>{user?.group_collection}</Td>
+                      <Td>{user?.health_points}</Td>
+                      <Td>{user?.ad_points}</Td>
+                      <Td>{user?.viro_points}</Td>
                       <Td>
                         {user?.dob ? new Date(user.dob).toDateString() : null}
                       </Td>
