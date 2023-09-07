@@ -263,7 +263,7 @@ const Users = () => {
                       <Td>{key + 1}</Td>
                       <Td>VCF{user.id}</Td>
                       <Td className="sticky-left">
-                        {user.name} ({user.gender})
+                        {user.child_name} ({user.gender})
                       </Td>
                       <Td>
                         <Box>
