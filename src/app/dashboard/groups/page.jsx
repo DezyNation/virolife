@@ -1028,7 +1028,7 @@ const Page = () => {
                 onClick={() => setPaymentMethod("gateway")}
                 cursor={'pointer'} fontWeight={'semibold'}
               >
-                Pay with Razorpay
+                Pay with PhonePe
               </Text>
             ) : null}
             {primaryIdRequested && (

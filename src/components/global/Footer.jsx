@@ -34,16 +34,13 @@ const Footer = () => {
           gap={2}
           flex={1}
         >
-          {/* <Text fontSize={"lg"} className="serif" fontWeight={"semibold"}>
-            Services
+          <Text fontSize={"lg"} className="serif" fontWeight={"semibold"}>
+            Donate Us Here:
           </Text>
-          <Text fontWeight={"normal"}>Medical Funding</Text>
-          <Text fontWeight={"normal"}>Education Funding</Text>
-          <Text fontWeight={"normal"}>New Startup Funding</Text>
-          <br />
-          <Text fontWeight={"normal"}>Sports Funding Process</Text>
-          <Text fontWeight={"normal"}>Group Funding Process</Text>
-          <Text fontWeight={"normal"}>Veero Funding Process</Text> */}
+          <Text fontWeight={"normal"}>Axis Bank</Text>
+          <Text fontWeight={"normal"}>Acc. No. 921010011035436</Text>
+          <Text fontWeight={"normal"}>IFSC UTIB0000575</Text>
+          <Text fontWeight={"normal"}>Branch: Bhayandar Ease</Text>
         </VStack>
 
         <VStack
