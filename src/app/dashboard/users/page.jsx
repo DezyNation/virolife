@@ -247,10 +247,9 @@ const Users = () => {
                 <Th>ID</Th>
                 <Th className="sticky-left">User Name</Th>
                 <Th>Contact</Th>
-                <Th>Health Points</Th>
+                {/* <Th>Health Points</Th>
                 <Th>Ad Points</Th>
-                <Th>Viro Points</Th>
-                {/* <Th>Donation Collected</Th> */}
+                <Th>Viro Points</Th> */}
                 <Th>Date of Birth</Th>
                 <Th>Registered On</Th>
                 <Th>Action</Th>
@@ -271,9 +270,9 @@ const Users = () => {
                           <p>+91 {user.phone_number}</p>
                         </Box>
                       </Td>
-                      <Td>{user?.health_points}</Td>
+                      {/* <Td>{user?.health_points}</Td>
                       <Td>{user?.ad_points}</Td>
-                      <Td>{user?.viro_points}</Td>
+                      <Td>{user?.viro_points}</Td> */}
                       <Td>
                         {user?.dob ? new Date(user.dob).toDateString() : null}
                       </Td>
