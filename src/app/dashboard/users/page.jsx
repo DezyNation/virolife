@@ -277,7 +277,6 @@ const Users = () => {
                       <Td>
                         {user?.dob ? new Date(user.dob).toDateString() : null}
                       </Td>
-                      <Td>{user?.role_name}</Td>
                       <Td>{new Date(user.created_at).toLocaleString()}</Td>
                       <Td>
                         <HStack gap={4} pb={2}>
