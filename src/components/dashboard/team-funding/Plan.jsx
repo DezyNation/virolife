@@ -37,6 +37,7 @@ const Plan = ({
   const Toast = useToast({ position: "top-right" });
   const [isLoading, setIsLoading] = useState(false);
   const [parentId, setParentId] = useState("");
+  const [referralId, setReferralId] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -49,6 +50,7 @@ const Plan = ({
     await BackendAxios.post(`/api/subscription`, {
       planId: id,
       parentId: parentId,
+      referralId: referralId
     })
       .then((res) => {
         Toast({
@@ -140,14 +142,25 @@ const Plan = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Enter Referral ID</ModalHeader>
+          <ModalHeader></ModalHeader>
           <ModalBody>
+            <Text>Enter Senior ID</Text>
             <InputGroup>
               <InputLeftAddon children={"VCF"} />
               <Input
                 value={parentId}
                 onChange={(e) => setParentId(e.target.value)}
                 placeholder="ID of the user you would like to join with."
+              />
+            </InputGroup>
+            <br /><br />
+            <Text>Enter Referral ID</Text>
+            <InputGroup>
+              <InputLeftAddon children={"VCF"} />
+              <Input
+                value={referralId}
+                onChange={(e) => setReferralId(e.target.value)}
+                placeholder="ID of the user who referred you."
               />
             </InputGroup>
           </ModalBody>

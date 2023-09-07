@@ -30,11 +30,14 @@ const Info = () => {
   });
   const [agents, setAgents] = useState([]);
   const [distributors, setDistributors] = useState([]);
-
+  const [myId, setMyId] = useState("");
+  const [myName, setMyName] = useState("");
   const [myRole, setMyRole] = useState("distributor");
 
   useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));
+    setMyName(localStorage.getItem("userName"));
+    setMyId(localStorage.getItem("userId"));
   }, []);
 
   const Formik = useFormik({
@@ -89,39 +92,13 @@ const Info = () => {
   });
 
   useEffect(() => {
-    fetchAgents();
-    fetchDistributors();
-  }, []);
-
-  function fetchAgents() {
-    BackendAxios.get(`/api/admin/users-list/agent`)
-      .then((res) => {
-        setAgents(res.data);
-      })
-      .catch((err) => {
-        Toast({
-          status: "error",
-          title: "Error while fetching agents",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
-
-  function fetchDistributors() {
-    BackendAxios.get(`/api/admin/users-list/distributor`)
-      .then((res) => {
-        setDistributors(res.data);
-      })
-      .catch((err) => {
-        Toast({
-          status: "error",
-          title: "Error while fetching agents",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
+    if (myRole == "distributor") {
+      Formik.setFieldValue("distributor", myId);
+    }
+    if (myRole == "agent") {
+      Formik.setFieldValue("agent", myId);
+    }
+  }, [myName, myId, myRole]);
 
   return (
     <>
@@ -141,7 +118,11 @@ const Info = () => {
               >
                 User Role
               </FormLabel>
-              <Select name="role" placeholder="Please Select" onChange={Formik.handleChange}>
+              <Select
+                name="role"
+                placeholder="Please Select"
+                onChange={Formik.handleChange}
+              >
                 {myRole == "agent" ? (
                   <option value="user">Member</option>
                 ) : myRole == "distributor" ? (
@@ -149,49 +130,6 @@ const Info = () => {
                 ) : null}
               </Select>
             </FormControl>
-            {Formik.values.role == "user" ? (
-              <FormControl w={["full", "xs"]} mb={8}>
-                <FormLabel
-                  fontWeight={"bold"}
-                  textTransform={"uppercase"}
-                  fontSize={"lg"}
-                >
-                  Agent
-                </FormLabel>
-                <Select
-                  placeholder="Please Select"
-                  name="agent"
-                  onChange={Formik.handleChange}
-                >
-                  {agents?.map((user, key) => (
-                    <option key={key} value={user?.id}>
-                      {user?.name}
-                    </option>
-                  ))}
-                </Select>
-              </FormControl>
-            ) : Formik.values.role == "agent" ? (
-              <FormControl w={["full", "xs"]} mb={8}>
-                <FormLabel
-                  fontWeight={"bold"}
-                  textTransform={"uppercase"}
-                  fontSize={"lg"}
-                >
-                  Distributor
-                </FormLabel>
-                <Select
-                  placeholder="Please Select"
-                  name="distributor"
-                  onChange={Formik.handleChange}
-                >
-                  {distributors?.map((user, key) => (
-                    <option key={key} value={user?.id}>
-                      {user?.name}
-                    </option>
-                  ))}
-                </Select>
-              </FormControl>
-            ) : null}
           </Stack>
           <br />
           <Stack
@@ -354,6 +292,7 @@ const Info = () => {
                 w={["full", "xs"]}
                 name="email"
                 type="email"
+                onChange={Formik.handleChange}
                 value={Formik.values.email}
               />
             </FormControl>
@@ -369,6 +308,7 @@ const Info = () => {
                 bg={"blanchedalmond"}
                 w={["full", "xs"]}
                 name="password"
+                onChange={Formik.handleChange}
                 value={Formik.values.password}
               />
             </FormControl>
