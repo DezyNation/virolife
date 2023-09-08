@@ -227,12 +227,6 @@ const Page = () => {
       </FormControl>
       <FormControl py={4}>
         <FormLabel>Your message</FormLabel>
-        {/* <Textarea
-          w={"full"}
-          name="full_description"
-          onChange={Formik.handleChange}
-          placeholder="Tell us about your campaign"
-        ></Textarea> */}
         <QuillNoSSRWrapper
           theme="snow"
           value={Formik.values.full_description}

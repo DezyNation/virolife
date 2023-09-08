@@ -31,6 +31,7 @@ import { isExpired } from "react-jwt";
 import BackendAxios from "@/utils/axios";
 import Cookies from "js-cookie";
 import Navbar from "@/components/global/Navbar";
+import Points from "@/components/dashboard/Points";
 
 const Layout = ({ children }) => {
   const Toast = useToast({ position: "top-right" });
@@ -63,12 +64,6 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));
-    setPoints({
-      ...points,
-      adPoints: Cookies.get("adPoints"),
-      healthPoints: Cookies.get("healthPoints"),
-      viroPoints: Cookies.get("viroPoints"),
-    });
   }, []);
 
   useEffect(()=>{
@@ -170,50 +165,7 @@ const Layout = ({ children }) => {
         </Show>
         <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
           {myRole == "user" ?
-          <HStack gap={8} pb={4} w={"full"} justifyContent={"flex-end"}>
-            <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
-              <IconButton
-                bgColor={"pink.400"}
-                color={"#FFF"}
-                icon={<MdSlowMotionVideo size={20} />}
-                rounded={"full"}
-              />
-              <Box p={2}>
-                <Text fontSize={"8"}>Ad Points</Text>
-                <Text fontSize={"md"} fontWeight={"semibold"}>
-                  {points.adPoints}
-                </Text>
-              </Box>
-            </HStack>
-            <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
-              <IconButton
-                bgColor={"red.400"}
-                color={"#FFF"}
-                icon={<AiFillHeart size={20} />}
-                rounded={"full"}
-              />
-              <Box p={2}>
-                <Text fontSize={"8"}>Health Points</Text>
-                <Text fontSize={"md"} fontWeight={"semibold"}>
-                  {points.healthPoints}
-                </Text>
-              </Box>
-            </HStack>
-            <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
-              <IconButton
-                bgColor={"yellow.500"}
-                color={"#FFF"}
-                icon={<GiChestnutLeaf size={20} />}
-                rounded={"full"}
-              />
-              <Box p={2}>
-                <Text fontSize={"8"}>Viro Points</Text>
-                <Text fontSize={"md"} fontWeight={"semibold"}>
-                  {points.viroPoints}
-                </Text>
-              </Box>
-            </HStack>
-          </HStack> : null
+          <Points /> : null
 }
           {children}
         </Box>

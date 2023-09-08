@@ -41,7 +41,7 @@ const Page = () => {
                     campaigns.map((campaign, key) => (
                         <CampaignCard
                             key={key}
-                            coverImage={campaign.file_path ? `https://virolife.in/${campaign.file_path}` : "https://idea.batumi.ge/files/default.jpg"}
+                            coverImage={campaign.file_path ? `https://virolife.in/${JSON.parse(campaign.file_path)[0]}` : "https://idea.batumi.ge/files/default.jpg"}
                             title={campaign.title}
                             userName={campaign.status}
                             description={campaign.description}

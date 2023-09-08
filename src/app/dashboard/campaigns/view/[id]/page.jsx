@@ -42,7 +42,10 @@ const CampaignInfo = ({ params }) => {
 
   useEffect(() => {
     console.log(campaign);
-    if (campaign?.file_path) {
+    if (
+      Array.isArray(campaign?.file_path) ||
+      typeof campaign?.file_path == "object"
+    ) {
       setSelectedImg(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/${
           JSON.parse(campaign?.file_path)[0]
@@ -121,8 +124,12 @@ const CampaignInfo = ({ params }) => {
             campaign?.beneficiary_details != "null" ? (
               <>
                 This campaign will benefit{" "}
-                {JSON.parse(campaign?.beneficiary_details)?.name}
-                {JSON.parse(campaign?.beneficiary_details)?.address ? ` of ${JSON.parse(campaign?.beneficiary_details)?.address}` : ""}
+                {typeof campaign?.beneficiary_details == "object" &&
+                  JSON.parse(campaign?.beneficiary_details)?.name}
+                {typeof campaign?.beneficiary_details == "object" &&
+                JSON.parse(campaign?.beneficiary_details)?.address
+                  ? ` of ${JSON.parse(campaign?.beneficiary_details)?.address}`
+                  : ""}
                 <br />
               </>
             ) : null}
@@ -131,7 +138,7 @@ const CampaignInfo = ({ params }) => {
           <br />
           <br />
           <Box pb={16} maxW={["full", "xl", "4xl"]}>
-            {parse(campaign?.full_description)}
+            {parse(campaign?.full_description || "")}
           </Box>
           {/* <Text pb={16} maxW={["full", "xl", "4xl"]}>
             {campaign?.full_description}
