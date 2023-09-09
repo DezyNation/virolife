@@ -179,7 +179,7 @@ const Points = () => {
             rounded={"full"}
           />
           <Box p={2}>
-            <Text fontSize={"8"}>Viro Points</Text>
+            <Text fontSize={"8"}>ATP</Text>
             <Text fontSize={"md"} fontWeight={"semibold"}>
               {points.viroPoints}
             </Text>
