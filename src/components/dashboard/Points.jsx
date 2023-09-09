@@ -271,6 +271,7 @@ const Points = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
+      
     </>
   );
 };

@@ -16,6 +16,7 @@ import {
   BsCashCoin,
   BsCurrencyRupee,
   BsFill1CircleFill,
+  BsGiftFill,
   BsHeartFill,
   BsMegaphoneFill,
   BsPerson,
@@ -32,16 +33,13 @@ import BackendAxios from "@/utils/axios";
 import Cookies from "js-cookie";
 import Navbar from "@/components/global/Navbar";
 import Points from "@/components/dashboard/Points";
+import Commission from "@/components/dashboard/Commission";
 
 const Layout = ({ children }) => {
   const Toast = useToast({ position: "top-right" });
   const Router = useRouter();
   const [myRole, setMyRole] = useState("");
-  const [points, setPoints] = useState({
-    adPoints: 0,
-    healthPoints: 0,
-    viroPoints: 0,
-  });
+  const [commission, setCommission] = useState("");
 
   useEffect(() => {
     isExpired(Cookies.get("jwt"));
@@ -66,16 +64,21 @@ const Layout = ({ children }) => {
     setMyRole(localStorage.getItem("myRole"));
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
+    fetchInfo();
+  }, []);
+
+  function fetchInfo() {
     BackendAxios.get("/auth-user")
       .then((res) => {
         setMyRole(
           res.data[0]?.roles?.length ? res.data[0]?.roles[0]?.name : ""
         );
+        setCommission(res.data[0]?.wallet);
       })
       .catch((err) => {
         if (err?.response?.status == 401) {
-          handleLogout()
+          handleLogout();
           return;
         }
         Toast({
@@ -84,7 +87,7 @@ const Layout = ({ children }) => {
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
-  },[])
+  }
 
   return (
     <>
@@ -141,6 +144,13 @@ const Layout = ({ children }) => {
                       <Text>All Team Processing</Text>
                     </HStack>
                   </Link>
+                  <br />
+                  <Link href={"/dashboard/gift-cards"}>
+                    <HStack gap={4}>
+                      <BsGiftFill size={20} />
+                      <Text>Gift Cards</Text>
+                    </HStack>
+                  </Link>
                 </VStack>
               ) : (
                 <Link href={"/dashboard/users"}>
@@ -156,7 +166,12 @@ const Layout = ({ children }) => {
                   <Text>Broadcast</Text>
                 </HStack>
               </Link> */}
-              <HStack marginTop={16} gap={4} onClick={handleLogout} cursor={"pointer"}>
+              <HStack
+                marginTop={16}
+                gap={4}
+                onClick={handleLogout}
+                cursor={"pointer"}
+              >
                 <BsPower size={20} />
                 <Text>Log Out</Text>
               </HStack>
@@ -164,9 +179,11 @@ const Layout = ({ children }) => {
           </Box>
         </Show>
         <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
-          {myRole == "user" ?
-          <Points /> : null
-}
+          {myRole == "user" ? (
+            <Points />
+          ) : (
+            <Commission onClick={fetchInfo} commission={commission} />
+          )}
           {children}
         </Box>
       </Stack>
