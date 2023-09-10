@@ -380,6 +380,20 @@ const Navbar = () => {
                       <Link href={"/dashboard/all-team"}>
                         <Text>All Team Funding</Text>
                       </Link>
+                      <br />
+
+                  <Link href={"/dashboard/points/transfers"}>
+                    <HStack gap={4}>
+                      
+                      <Text>Point Transfers</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/points/withdrawals"}>
+                    <HStack gap={4}>
+                      
+                      <Text>Point Withdrawals</Text>
+                    </HStack>
+                  </Link>
                     </VStack>
                   ) : (
                     <Link href={"/dashboard/users"}>

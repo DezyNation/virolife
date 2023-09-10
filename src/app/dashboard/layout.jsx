@@ -25,7 +25,7 @@ import {
 } from "react-icons/bs";
 import { MdGroups, MdSlowMotionVideo } from "react-icons/md";
 import { FaHandshake, FaUsers } from "react-icons/fa";
-import { GiChestnutLeaf } from "react-icons/gi";
+import { GiChestnutLeaf, GiReceiveMoney } from "react-icons/gi";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { isExpired } from "react-jwt";
@@ -34,6 +34,7 @@ import Cookies from "js-cookie";
 import Navbar from "@/components/global/Navbar";
 import Points from "@/components/dashboard/Points";
 import Commission from "@/components/dashboard/Commission";
+import {HiArrowsRightLeft} from 'react-icons/hi2'
 
 const Layout = ({ children }) => {
   const Toast = useToast({ position: "top-right" });
@@ -149,6 +150,18 @@ const Layout = ({ children }) => {
                     <HStack gap={4}>
                       <BsGiftFill size={20} />
                       <Text>Gift Cards</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/points/transfers"}>
+                    <HStack gap={4}>
+                      <HiArrowsRightLeft size={20} />
+                      <Text>Point Transfers</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/points/withdrawals"}>
+                    <HStack gap={4}>
+                      <GiReceiveMoney size={20} />
+                      <Text>Point Withdrawals</Text>
                     </HStack>
                   </Link>
                 </VStack>
