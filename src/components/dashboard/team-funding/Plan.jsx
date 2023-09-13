@@ -6,6 +6,7 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
+  InputRightAddon,
   Modal,
   ModalBody,
   ModalContent,
@@ -40,6 +41,35 @@ const Plan = ({
   const [referralId, setReferralId] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  function verifyUser(userId) {
+    if (!userId) {
+      Toast({
+        description: "Please enter User ID",
+      });
+      return;
+    }
+    BackendAxios.get(`/api/users/${userId}`)
+      .then((res) => {
+        if (res.data?.length) {
+          Toast({
+            title: res.data[0]?.name,
+            description: `Ph. ${res.data[0]?.phone_number || "NA"}`,
+          });
+        } else {
+          Toast({
+            description: "User not found!",
+          });
+        }
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
 
   async function handleClick() {
     if(!parentId) return
@@ -144,24 +174,26 @@ const Plan = ({
         <ModalContent>
           <ModalHeader></ModalHeader>
           <ModalBody>
-            <Text>Enter Senior ID</Text>
+            <Text>Enter Senior ID (required)</Text>
             <InputGroup>
               <InputLeftAddon children={"VCF"} />
               <Input
                 value={parentId}
                 onChange={(e) => setParentId(e.target.value)}
-                placeholder="ID of the user you would like to join with."
+                placeholder="Whom would you like to join?"
               />
+              <InputRightAddon cursor={'pointer'} children={"Verify"} onClick={()=>verifyUser(parentId)} />
             </InputGroup>
             <br /><br />
-            <Text>Enter Referral ID</Text>
+            <Text>Enter Referral ID (optional)</Text>
             <InputGroup>
               <InputLeftAddon children={"VCF"} />
               <Input
                 value={referralId}
                 onChange={(e) => setReferralId(e.target.value)}
-                placeholder="ID of the user who referred you."
+                placeholder="Who referred you?"
               />
+              <InputRightAddon cursor={'pointer'} children={"Verify"} onClick={()=>verifyUser(referralId)} />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
