@@ -74,7 +74,9 @@ const Users = () => {
   function fetchUsers() {
     BackendAxios.get("api/user/my-users")
       .then((res) => {
-        setUsers(res.data[myId]);
+        if(res.data?.length){
+          setUsers(res.data[myId]);
+        }
       })
       .catch((err) => {
         Toast({
