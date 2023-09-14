@@ -8,7 +8,7 @@ const Commission = ({onClick, commission}) => {
 
   return (
     <>
-      <HStack gap={6} alignItems={"center"}>
+      <HStack gap={6} alignItems={"center"} w={'full'} justifyContent={'flex-end'}>
         <IconButton
           icon={<FiRefreshCw size={20} />}
           rounded={"full"}

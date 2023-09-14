@@ -74,7 +74,7 @@ const Users = () => {
   function fetchUsers() {
     BackendAxios.get("api/user/my-users")
       .then((res) => {
-        if(res.data?.length){
+        if(typeof res.data == "object"){
           setUsers(res.data[myId]);
         }
       })
