@@ -78,8 +78,8 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
           <ModalHeader bgColor={'#FFF'} rounded={'full'} py={2}>{title || "Watch this video to proceed."}</ModalHeader>
           <ModalBody>
             <Box rounded={'16'} overflow={'hidden'}>
-            {/* <Plyr source={videoProps} options={{ ratio: "16:9" }} /> */}
-            <AdSenseVideoAd adSlot={getRandomAdSlotId()} />
+            <Plyr source={videoProps} options={{ ratio: "16:9" }} />
+            {/* <AdSenseVideoAd adSlot={getRandomAdSlotId()} /> */}
             </Box>
           </ModalBody>
           <ModalFooter justifyContent={"flex-end"}>
