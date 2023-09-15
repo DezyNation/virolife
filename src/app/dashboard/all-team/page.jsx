@@ -45,7 +45,7 @@ const page = () => {
   }, []);
 
   function fetchVirolifeDonations() {
-    BackendAxios.get(`/api/donation/donate-virolife?purpose=all-team`)
+    BackendAxios.get(`/api/user/donation/donate-virolife?purpose=all-team`)
       .then((res) => setDonations(res.data))
       .catch((err) => {
         if (err?.response?.status == 401) {
@@ -97,6 +97,8 @@ const page = () => {
       amount: 210
     })
       .then((res) => {
+        onToggle()
+        fetchVirolifeDonations()
         Toast({
           status: "success",
           description: "Donated successfully!",
