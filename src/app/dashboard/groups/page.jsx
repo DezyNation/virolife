@@ -709,11 +709,12 @@ const Page = () => {
     BackendAxios.post(
       paymentMethod == "gateway"
         ? `/api/join-group/${joinGroupId}`
-        : `/api/gift/redeem/secondary`, {
-          code: giftCard,
-          amount: 250,
-          purpose: "secondary"
-        }
+        : `/api/gift/redeem/secondary`,
+      {
+        code: giftCard,
+        amount: 250,
+        purpose: "secondary",
+      }
     )
       .then((res) => {
         Toast({
@@ -739,32 +740,34 @@ const Page = () => {
   }
 
   function joinPrimaryGroup() {
-    BackendAxios.get(
-      paymentMethod == "gateway"
-        ? `/api/join-group/${joinGroupId}`
-        : `/api/gift/redeem/primary/${joinGroupId}?code=${giftCard}&amount=250&purpose=primary`
-    )
-      .then((res) => {
-        Toast({
-          status: "success",
-          description: "Group Joined Successfully!",
-        });
-        onClose();
-        localStorage.setItem("primaryParentId", joinGroupId);
-        setVideoStatus(false);
-        setPrimaryJoined(true);
-        setPrimaryIdRequested(false);
-        fetchPrimaryParents();
-      })
-      .catch((err) => {
-        setVideoStatus(false);
-        onClose();
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
+    paymentMethod == "gateway"
+      ? BackendAxios.get(`/api/join-group/${joinGroupId}`)
+      : BackendAxios.post(
+          `/api/gift/redeem/primary/${joinGroupId}?code=${giftCard}&amount=250&purpose=primary`
+        )
+          .then((res) => {
+            Toast({
+              status: "success",
+              description: "Group Joined Successfully!",
+            });
+            onClose();
+            localStorage.setItem("primaryParentId", joinGroupId);
+            setVideoStatus(false);
+            setPrimaryJoined(true);
+            setPrimaryIdRequested(false);
+            fetchPrimaryParents();
+          })
+          .catch((err) => {
+            setVideoStatus(false);
+            onClose();
+            Toast({
+              status: "error",
+              description:
+                err?.response?.data?.message ||
+                err?.response?.data ||
+                err?.message,
+            });
+          });
   }
 
   function joinGroup() {
@@ -1014,19 +1017,23 @@ const Page = () => {
             ) : null}
           </ModalBody>
           <ModalFooter gap={8} justifyContent={"flex-end"}>
-            {paymentMethod == "gateway" && (!primaryJoined || !secondaryJoined) ? (
+            {paymentMethod == "gateway" &&
+            (!primaryJoined || !secondaryJoined) ? (
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("giftCard")}
-                cursor={'pointer'} fontWeight={'semibold'}
+                cursor={"pointer"}
+                fontWeight={"semibold"}
               >
                 Pay with Gift PIN
               </Text>
-            ) : paymentMethod == "giftCard" && (!primaryJoined || !secondaryJoined) ? (
+            ) : paymentMethod == "giftCard" &&
+              (!primaryJoined || !secondaryJoined) ? (
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("gateway")}
-                cursor={'pointer'} fontWeight={'semibold'}
+                cursor={"pointer"}
+                fontWeight={"semibold"}
               >
                 Pay with PhonePe
               </Text>
