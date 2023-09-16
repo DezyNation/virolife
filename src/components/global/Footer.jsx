@@ -37,10 +37,11 @@ const Footer = () => {
           <Text fontSize={"lg"} className="serif" fontWeight={"semibold"}>
             Donate Us Here:
           </Text>
-          <Text fontWeight={"normal"}>Axis Bank</Text>
+          <Text fontWeight={"normal"}>Virolife Foundation</Text>
+          <Text fontWeight={"normal"}>Bank: Axis Bank</Text>
           <Text fontWeight={"normal"}>Acc. No. 921010011035436</Text>
           <Text fontWeight={"normal"}>IFSC UTIB0000575</Text>
-          <Text fontWeight={"normal"}>Branch: Bhayandar Ease</Text>
+          <Text fontWeight={"normal"}>Branch: Bhayandar West</Text>
         </VStack>
 
         <VStack
