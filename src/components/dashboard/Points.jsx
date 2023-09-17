@@ -119,6 +119,18 @@ const Points = () => {
   async function refreshPoints() {
     setLoading(true);
     await fetchMyInfo();
+
+    BackendAxios.get(`/api/user/points/my-atp`).then(res =>{
+      setPoints({
+        ...points,
+        viroPoints: res.data,
+      });
+      setLoading(false);
+    }).catch(err => {
+      setLoading(false);
+      handleError(err, "Err while fetching ATP")
+    })
+
     BackendAxios.get(`/api/my-health-points`).then(res =>{
       setPoints({
         ...points,
@@ -131,6 +143,7 @@ const Points = () => {
       setLoading(false);
       handleError(err, "Err while fetching health points")
     })
+
   }
 
 
