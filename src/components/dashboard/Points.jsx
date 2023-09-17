@@ -125,23 +125,22 @@ const Points = () => {
         ...points,
         viroPoints: res.data,
       });
-      setLoading(false);
     }).catch(err => {
       setLoading(false);
       handleError(err, "Err while fetching ATP")
     })
-
+    
     await BackendAxios.get(`/api/my-health-points`).then(res =>{
       setPoints({
         ...points,
         adPoints: Cookies.get("adPoints"),
         healthPoints: res.data
       });
-      setLoading(false);
     }).catch(err => {
       setLoading(false);
       handleError(err, "Err while fetching health points")
     })
+    setLoading(false);
 
   }
 
