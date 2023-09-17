@@ -106,7 +106,7 @@ const Transactions = () => {
                 <Th>User Name</Th>
                 <Th>Ponits</Th>
                 <Th>Status</Th>
-                <Th>Campaign</Th>
+                <Th>Beneficiary</Th>
                 <Th>Requested At</Th>
                 <Th>Updated At</Th>
               </Tr>
