@@ -1092,13 +1092,13 @@ const Page = () => {
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-
+{videoStatus ?
       <VideoPlayer
         status={videoStatus}
         title={videoData.title}
         onVideoClose={videoData.onVideoClose}
-      />
-
+      /> : null
+}
       <VerticalSpacer />
     </>
   );
