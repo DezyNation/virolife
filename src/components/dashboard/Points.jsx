@@ -135,8 +135,7 @@ const Points = () => {
       setPoints({
         ...points,
         adPoints: Cookies.get("adPoints"),
-        healthPoints: res.data,
-        viroPoints: Cookies.get("viroPoints"),
+        healthPoints: res.data
       });
       setLoading(false);
     }).catch(err => {
