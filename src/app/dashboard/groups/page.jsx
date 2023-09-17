@@ -81,7 +81,7 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
       // });
       setUpi("9022853554@okbizaxis");
       setReceiver({
-        id: "146",
+        id: key == 0 ? myParentId : user?.id,
         name: "Virolife Foundation",
       });
       setQrModal(true);
