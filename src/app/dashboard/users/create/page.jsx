@@ -63,7 +63,7 @@ const Info = () => {
       distributor: "",
     },
     onSubmit: (values) => {
-      FormAxios.post(`/api/admin/user/register-user`, {
+      FormAxios.post(`/api/agent/user/register-user`, {
         ...values,
         address: JSON.stringify(addressObj),
         password_confirmation: Formik.values.password,
