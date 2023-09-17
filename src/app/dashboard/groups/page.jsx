@@ -81,7 +81,7 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
       // });
       setUpi("9022853554@okbizaxis");
       setReceiver({
-        id: key == 0 ? myParentId : user?.id,
+        id: "146",
         name: "Virolife Foundation",
       });
       setQrModal(true);
@@ -721,12 +721,9 @@ const Page = () => {
           status: "success",
           description: "Group Joined Successfully!",
         });
-        onClose();
-        localStorage.setItem("secondaryParentId", true);
-        setVideoStatus(false);
-        setSecondaryJoined(true);
-        setSecondaryIdRequested(false);
-        fetchSecondaryParents();
+        setTimeout(() => {
+          window.location.reload()
+        }, 400);
       })
       .catch((err) => {
         setVideoStatus(false);
@@ -750,12 +747,9 @@ const Page = () => {
               status: "success",
               description: "Group Joined Successfully!",
             });
-            onClose();
-            localStorage.setItem("primaryParentId", joinGroupId);
-            setVideoStatus(false);
-            setPrimaryJoined(true);
-            setPrimaryIdRequested(false);
-            fetchPrimaryParents();
+            setTimeout(() => {
+              window.location.reload()
+            }, 400);
           })
           .catch((err) => {
             setVideoStatus(false);
