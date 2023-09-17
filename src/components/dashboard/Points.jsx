@@ -120,7 +120,7 @@ const Points = () => {
     setLoading(true);
     await fetchMyInfo();
 
-    BackendAxios.get(`/api/user/points/my-atp`).then(res =>{
+    await BackendAxios.get(`/api/user/points/my-atp`).then(res =>{
       setPoints({
         ...points,
         viroPoints: res.data,
@@ -131,7 +131,7 @@ const Points = () => {
       handleError(err, "Err while fetching ATP")
     })
 
-    BackendAxios.get(`/api/my-health-points`).then(res =>{
+    await BackendAxios.get(`/api/my-health-points`).then(res =>{
       setPoints({
         ...points,
         adPoints: Cookies.get("adPoints"),
