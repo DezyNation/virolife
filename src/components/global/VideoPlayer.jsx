@@ -76,6 +76,7 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
         isOpen={status}
         closeOnOverlayClick={false}
         closeOnEsc={false}
+        onClose={onVideoClose}
         isCentered
         size={["full", "4xl"]}
       >

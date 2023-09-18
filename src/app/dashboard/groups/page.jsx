@@ -722,7 +722,7 @@ const Page = () => {
           description: "Group Joined Successfully!",
         });
         setTimeout(() => {
-          window.location.reload()
+          window.location.reload(true)
         }, 400);
       })
       .catch((err) => {
@@ -748,7 +748,7 @@ const Page = () => {
               description: "Group Joined Successfully!",
             });
             setTimeout(() => {
-              window.location.reload()
+              window.location.reload(true)
             }, 400);
           })
           .catch((err) => {
