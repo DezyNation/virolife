@@ -72,15 +72,18 @@ const Plan = ({
   }
 
   async function handleClick() {
-    if(!parentId) return
-    if(parentId == localStorage.getItem("userId")) {Toast({
-      description: "You can not join yourself!"
-    })}
+    if (!parentId) return;
+    if (parentId == localStorage.getItem("userId") || referralId == localStorage.getItem("userId")) {
+      Toast({
+        description: "You can not join yourself!",
+      });
+      return;
+    }
     setIsLoading(true);
     await BackendAxios.post(`/api/subscription`, {
       planId: id,
       parentId: parentId,
-      referralId: referralId
+      referralId: referralId,
     })
       .then((res) => {
         Toast({
@@ -98,7 +101,7 @@ const Plan = ({
         setIsLoading(false);
       })
       .finally(() => {
-        onClose()
+        onClose();
         onClick();
       });
   }
@@ -182,9 +185,14 @@ const Plan = ({
                 onChange={(e) => setParentId(e.target.value)}
                 placeholder="Whom would you like to join?"
               />
-              <InputRightAddon cursor={'pointer'} children={"Verify"} onClick={()=>verifyUser(parentId)} />
+              <InputRightAddon
+                cursor={"pointer"}
+                children={"Verify"}
+                onClick={() => verifyUser(parentId)}
+              />
             </InputGroup>
-            <br /><br />
+            <br />
+            <br />
             <Text>Enter Referral ID (optional)</Text>
             <InputGroup>
               <InputLeftAddon children={"VCF"} />
@@ -193,11 +201,17 @@ const Plan = ({
                 onChange={(e) => setReferralId(e.target.value)}
                 placeholder="Who referred you?"
               />
-              <InputRightAddon cursor={'pointer'} children={"Verify"} onClick={()=>verifyUser(referralId)} />
+              <InputRightAddon
+                cursor={"pointer"}
+                children={"Verify"}
+                onClick={() => verifyUser(referralId)}
+              />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="twitter" onClick={handleClick}>Join</Button>
+            <Button colorScheme="twitter" onClick={handleClick}>
+              Join
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
