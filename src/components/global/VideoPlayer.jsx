@@ -64,6 +64,15 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
     getRandomVideo();
   }, []);
 
+  useEffect(()=>{
+    if(status){
+      setIsDisabled(true)
+      setTimeout(() => {
+        setIsDisabled(false)
+      }, 5000);
+    }
+  },[])
+
   const getRandomAdSlotId = () => {
     const adSlots = ["5151821226", "5151821226", "5151821226"];
     const randomIndex = Math.floor(Math.random() * adSlots.length);
@@ -114,6 +123,7 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
               onClick={onVideoClose}
               colorScheme="yellow"
               rounded={"full"}
+              isDisabled={isDisabled}
             >
               Close
             </Button>
