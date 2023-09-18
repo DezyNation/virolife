@@ -121,13 +121,9 @@ const Points = () => {
     await fetchMyInfo();
 
     await BackendAxios.get(`/api/user/points/my-atp`).then(async res =>{
-      setPoints({
-        ...points,
-        viroPoints: res.data,
-      });
       await BackendAxios.get(`/api/my-health-points`).then(result =>{
         setPoints({
-          ...points,
+          viroPoints: res.data,
           adPoints: Cookies.get("adPoints"),
           healthPoints: result.data
         });
