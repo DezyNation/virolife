@@ -250,7 +250,7 @@ const Plan = ({
             </Text>
 
             {paymentMethod === "gift" && (
-              <HStack py={4} gap={4}>
+              <HStack py={4} gap={4} w={'full'} justifyContent={'center'}>
                 <PinInput otp onComplete={(value)=>setGiftCard(value)}>
                   <PinInputField bgColor={"aqua"} />
                   <PinInputField bgColor={"aqua"} />
@@ -264,14 +264,14 @@ const Plan = ({
 
             {paymentMethod == "gateway" ? (
               <Text
-                textAlign={"center"}
+                textAlign={"center"} cursor={'pointer'}
                 onClick={() => setPaymentMethod("gift")}
               >
                 Click here if you have a Gift Card
               </Text>
             ) : (
               <Text
-                textAlign={"center"}
+                textAlign={"center"} cursor={'pointer'}
                 onClick={() => setPaymentMethod("gateway")}
               >
                 Click here if you want to pay online
