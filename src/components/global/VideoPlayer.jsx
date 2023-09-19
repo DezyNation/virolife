@@ -71,7 +71,10 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
         setIsDisabled(false)
       }, 5000);
     }
-  },[])
+    if(!status){
+      setIsDisabled(false)
+    }
+  },[status])
 
   const getRandomAdSlotId = () => {
     const adSlots = ["5151821226", "5151821226", "5151821226"];
