@@ -3,6 +3,7 @@ import BackendAxios from "@/utils/axios";
 import {
   Box,
   Button,
+  HStack,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -13,6 +14,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  PinInput,
+  PinInputField,
   Table,
   Tbody,
   Td,
@@ -22,7 +25,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Plan = ({
   id,
@@ -40,7 +43,16 @@ const Plan = ({
   const [parentId, setParentId] = useState("");
   const [referralId, setReferralId] = useState("");
 
+  const [paymentMethod, setPaymentMethod] = useState("gateway");
+  const [giftCard, setGiftCard] = useState("");
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(()=>{
+    if(paymentMethod == "gateway"){
+      setGiftCard("")
+    }
+  },[paymentMethod])
 
   function verifyUser(userId) {
     if (!userId) {
@@ -73,7 +85,22 @@ const Plan = ({
 
   async function handleClick() {
     if (!parentId) return;
-    if (parentId == localStorage.getItem("userId") || referralId == localStorage.getItem("userId")) {
+    if (paymentMethod == "gateway") {
+      Toast({
+        description: "Payment gateway is under development",
+      });
+      return;
+    }
+    if (paymentMethod == "gift" && !giftCard) {
+      Toast({
+        description: "Enter gift card number to proceed with payment.",
+      });
+      return
+    }
+    if (
+      parentId == localStorage.getItem("userId") ||
+      referralId == localStorage.getItem("userId")
+    ) {
       Toast({
         description: "You can not join yourself!",
       });
@@ -84,6 +111,8 @@ const Plan = ({
       planId: id,
       parentId: parentId,
       referralId: referralId,
+      paymentMethod: paymentMethod,
+      giftCard: giftCard
     })
       .then((res) => {
         Toast({
@@ -207,6 +236,47 @@ const Plan = ({
                 onClick={() => verifyUser(referralId)}
               />
             </InputGroup>
+            <br />
+            <br />
+
+            <Text
+              textAlign={"center"}
+              fontWeight={"semibold"}
+              color={"twitter.500"}
+            >
+              {paymentMethod == "gateway"
+                ? "You'll be paying through PhonePe Payment Gateway"
+                : "Enter Gift Card No."}
+            </Text>
+
+            {paymentMethod === "gift" && (
+              <HStack py={4} gap={4}>
+                <PinInput otp onComplete={(value)=>setGiftCard(value)}>
+                  <PinInputField bgColor={"aqua"} />
+                  <PinInputField bgColor={"aqua"} />
+                  <PinInputField bgColor={"aqua"} />
+                  <PinInputField bgColor={"aqua"} />
+                  <PinInputField bgColor={"aqua"} />
+                  <PinInputField bgColor={"aqua"} />
+                </PinInput>
+              </HStack>
+            )}
+
+            {paymentMethod == "gateway" ? (
+              <Text
+                textAlign={"center"}
+                onClick={() => setPaymentMethod("gift")}
+              >
+                Click here if you have a Gift Card
+              </Text>
+            ) : (
+              <Text
+                textAlign={"center"}
+                onClick={() => setPaymentMethod("gateway")}
+              >
+                Click here if you want to pay online
+              </Text>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="twitter" onClick={handleClick}>
