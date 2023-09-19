@@ -64,17 +64,17 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
     getRandomVideo();
   }, []);
 
-  useEffect(()=>{
-    if(status){
-      setIsDisabled(true)
+  useEffect(() => {
+    if (status) {
+      setIsDisabled(true);
       setTimeout(() => {
-        setIsDisabled(false)
-      }, 5000);
+        setIsDisabled(false);
+      }, 30000);
     }
-    if(!status){
-      setIsDisabled(false)
+    if (!status) {
+      setIsDisabled(false);
     }
-  },[status])
+  }, [status]);
 
   const getRandomAdSlotId = () => {
     const adSlots = ["5151821226", "5151821226", "5151821226"];
@@ -122,14 +122,16 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
             </Box>
           </ModalBody>
           <ModalFooter justifyContent={"flex-end"}>
-            <Button
-              onClick={onVideoClose}
-              colorScheme="yellow"
-              rounded={"full"}
-              isDisabled={isDisabled}
-            >
-              Close
-            </Button>
+            {isDisabled ? null : (
+              <Button
+                onClick={onVideoClose}
+                colorScheme="yellow"
+                rounded={"full"}
+                isDisabled={isDisabled}
+              >
+                Close
+              </Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>
