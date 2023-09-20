@@ -82,6 +82,7 @@ const Points = () => {
       beneficiaryId: beneficiaryId,
     })
       .then(async (res) => {
+        onToggle()
         await refreshPoints();
         Toast({
           status: "success",
@@ -99,7 +100,12 @@ const Points = () => {
       campaignId: Formik.values.campaignId,
     })
       .then(async (res) => {
+        onToggle()
         await refreshPoints();
+        Toast({
+          status: "success",
+          description:"Request sent to admin successfully"
+        })
       })
       .catch((err) => {
         handleError(err, "Failed to request point transfer.");
