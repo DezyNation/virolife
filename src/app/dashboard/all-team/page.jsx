@@ -33,6 +33,7 @@ const page = () => {
   const Toast = useToast({ position: "top-right" });
   const [donations, setDonations] = useState([]);
   const [stars, setStars] = useState(0);
+  const [joinedOn, setJoinedOn] = useState("")
 
   const { isOpen, onToggle } = useDisclosure();
 
@@ -67,6 +68,7 @@ const page = () => {
     BackendAxios.get("/auth-user")
       .then((res) => {
         setStars(res?.data[0]?.stars);
+        setJoinedOn(res?.data[0]?.created_at);
       })
       .catch((err) => {
         if (err?.response?.status == 401) {
@@ -114,6 +116,15 @@ const page = () => {
       });
   }
 
+  function getMonthsBetweenDates(startDate, endDate) {
+    var startYear = startDate.getFullYear();
+    var startMonth = startDate.getMonth();
+    var endYear = endDate.getFullYear();
+    var endMonth = endDate.getMonth();
+
+    return (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
+  }
+
   return (
     <>
       <Text fontSize={"lg"}>All Team Processing</Text>
@@ -131,6 +142,7 @@ const page = () => {
                 <Th>#</Th>
                 <Th width={"64"}>Trnxn ID</Th>
                 <Th>Amount</Th>
+                <Th>Stars</Th>
                 <Th width={"48"}>Timestamp</Th>
               </Tr>
             </Thead>
@@ -140,6 +152,7 @@ const page = () => {
                   <Td>{key + 1}</Td>
                   <Td width={"64"}>{item?.transaction_id}</Td>
                   <Td>{item?.amount}</Td>
+                  <Td>20</Td>
                   <Td width={"48"}>{item?.updated_at}</Td>
                 </Tr>
               ))}
@@ -166,7 +179,7 @@ const page = () => {
             height={200}
           />
           <Text fontWeight={"bold"} fontSize={"2xl"} textAlign={"center"}>
-            {stars}
+            {parseInt(stars)/getMonthsBetweenDates(new Date(joinedOn), new Date())}
           </Text>
           <br />
           <Button colorScheme={"yellow"} w={'full'} onClick={onToggle}>Donate Now!</Button>
