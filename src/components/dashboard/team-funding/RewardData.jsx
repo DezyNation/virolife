@@ -16,10 +16,10 @@ const RewardData = ({
   const [data, setData] = useState([]);
   const [sortedData, setSortedData] = useState([]);
 
-  useEffect(() => {
-    const sortedArray = data.sort((a, b) => a.parent_id - b.parent_id);
-    setSortedData(sortedArray);
-  }, [data]);
+  // useEffect(() => {
+  //   const sortedArray = data.sort((a, b) => a.parent_id - b.parent_id);
+  //   setSortedData(sortedArray);
+  // }, [data]);
 
   useEffect(() => {
     // fetchMyGroup()
