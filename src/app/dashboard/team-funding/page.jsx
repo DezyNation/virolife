@@ -214,6 +214,7 @@ const index = () => {
                     <Th>Parent ID</Th>
                     <Th>Plan Purchased</Th>
                     <Th>Points Received</Th>
+                    <Th>Reward Type</Th>
                     <Th>Timestamp</Th>
                   </Tr>
                 </Thead>

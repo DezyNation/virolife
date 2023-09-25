@@ -48,6 +48,7 @@ const RewardData = ({
           <Td>{data?.parent_id}</Td>
           <Td>{data?.name}</Td>
           <Td>{data?.points}</Td>
+          <Td>{data?.purpose}</Td>
           <Td>{data?.created_at}</Td>
         </Tr>
       ))}
