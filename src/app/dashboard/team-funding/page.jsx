@@ -205,7 +205,7 @@ const index = () => {
           <Box>
             {/* <Text>Members who bought subscription</Text> */}
             <br />
-            <TableContainer height={"md"}>
+            <TableContainer height={"md"} overflow={'scroll'}>
               <Table size={"sm"}>
                 <Thead>
                   <Tr>
