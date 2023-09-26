@@ -139,7 +139,7 @@ const index = () => {
   ];
   const [myPlan, setMyPlan] = useState({});
   const [seniorPlan, setSeniorPlan] = useState({});
-  const [data, setData] = useState(second);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     getMyPlan();
