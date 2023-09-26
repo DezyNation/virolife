@@ -206,7 +206,7 @@ const index = () => {
             {/* <Text>Members who bought subscription</Text> */}
             <br />
             <TableContainer height={"md"} overflow={'scroll'}>
-              <Table size={"sm"}>
+              <Table size={"sm"} overflow={'scroll'}>
                 <Thead>
                   <Tr>
                     <Th>#</Th>
