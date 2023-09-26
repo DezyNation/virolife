@@ -22,7 +22,6 @@ const RewardData = ({
   // }, [data]);
 
   useEffect(() => {
-    // fetchMyGroup()
     getRewardData(localStorage.getItem("userId"));
   }, []);
 

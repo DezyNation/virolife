@@ -138,10 +138,29 @@ const index = () => {
   ];
   const [myPlan, setMyPlan] = useState({});
   const [seniorPlan, setSeniorPlan] = useState({});
+  const [data, setData] = useState(second);
 
   useEffect(() => {
     getMyPlan();
   }, []);
+
+  useEffect(() => {
+    getRewardData(localStorage.getItem("userId"));
+  }, []);
+
+  const getRewardData = (id) => {
+    BackendAxios.get(`/api/my-group-points/${id}`)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  };
 
   useEffect(() => {
     BackendAxios.get(`/api/senior-plan`)
@@ -196,7 +215,8 @@ const index = () => {
 
       {/* Plans */}
       <HStack
-        gap={6} py={4}
+        gap={6}
+        py={4}
         alignItems={"center"}
         justifyContent={"space-between"}
         flexWrap={"wrap"}
@@ -205,7 +225,7 @@ const index = () => {
           <Box>
             {/* <Text>Members who bought subscription</Text> */}
             <br />
-            <TableContainer>
+            <TableContainer height={'lg'} overflow={'scroll'}>
               <Table size={"sm"}>
                 <Thead>
                   <Tr>
@@ -219,7 +239,19 @@ const index = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <RewardData />
+                  {data?.map((data, key) => (
+                    <Tr>
+                      <Td>{key + 1}</Td>
+                      <Td>
+                        {data?.user_name} ({data?.user_id})
+                      </Td>
+                      <Td>{data?.parent_id}</Td>
+                      <Td>{data?.name}</Td>
+                      <Td>{data?.points}</Td>
+                      <Td>{data?.purpose}</Td>
+                      <Td>{data?.created_at}</Td>
+                    </Tr>
+                  ))}
                 </Tbody>
               </Table>
             </TableContainer>
@@ -248,7 +280,13 @@ const index = () => {
               color={plan?.color}
               description={plan?.description}
               subscribedByMe={false}
-              subscribedBySenior={seniorPlan ? parseInt(seniorPlan) == parseInt(plan?.id) ? false : true : false}
+              subscribedBySenior={
+                seniorPlan
+                  ? parseInt(seniorPlan) == parseInt(plan?.id)
+                    ? false
+                    : true
+                  : false
+              }
             />
           ))
         )}
