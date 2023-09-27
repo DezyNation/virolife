@@ -1,14 +1,54 @@
 "use client";
-import { Box, HStack, IconButton, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  HStack,
+  IconButton,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { BsCurrencyRupee } from "react-icons/bs";
 import { FiRefreshCw } from "react-icons/fi";
 
-const Commission = ({onClick, commission}) => {
+const Commission = ({ onClick, commission }) => {
+  const { isOpen, onToggle } = useDisclosure();
+  const Toast = useToast()
+
+  const Formik = useFormik({
+    initialValues: {
+      amount: "",
+      remarks: "",
+    },
+    onSubmit: values => {
+      Toast({
+        status: 'success',
+        title: "Request Sent",
+        description: "We have sent a payout request to the admin!"
+      })
+      onToggle()
+    }
+  });
 
   return (
     <>
-      <HStack gap={6} alignItems={"center"} w={'full'} justifyContent={'flex-end'}>
+      <HStack
+        gap={6}
+        alignItems={"center"}
+        w={"full"}
+        justifyContent={"flex-end"}
+      >
         <IconButton
           icon={<FiRefreshCw size={20} />}
           rounded={"full"}
@@ -20,6 +60,7 @@ const Commission = ({onClick, commission}) => {
             color={"#FFF"}
             icon={<BsCurrencyRupee size={20} />}
             rounded={"full"}
+            onClick={onToggle}
           />
           <Box p={2}>
             <Text fontSize={"8"}>Commission</Text>
@@ -29,6 +70,34 @@ const Commission = ({onClick, commission}) => {
           </Box>
         </HStack>
       </HStack>
+
+      {/* Handle payout request for commission */}
+      <Modal isOpen={isOpen} onClose={onToggle} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Request Payout</ModalHeader>
+          <ModalBody>
+            <FormControl>
+              <FormLabel>Enter Amount</FormLabel>
+              <Input name="amount" onChange={Formik.handleChange} />
+            </FormControl>
+            <br />
+            <br />
+            <FormControl>
+              <FormLabel>Remarks (optional)</FormLabel>
+              <Input name="remarks" onChange={Formik.handleChange} />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <HStack justifyContent={"flex-end"} gap={8}>
+              <Button onClick={onToggle}>Cancel</Button>
+              <Button colorScheme="yellow" onClick={Formik.handleSubmit}>
+                Submit
+              </Button>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

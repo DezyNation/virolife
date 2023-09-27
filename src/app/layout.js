@@ -27,7 +27,7 @@ export default function RootLayout({ children, session }) {
         color="#dd6b20"
         options={{ showSpinner: false }}
       />
-        <ChakraProvider>
+        <ChakraProvider toastOptions={{defaultOptions: {position: 'top-right'}}}>
           {children}
         </ChakraProvider>
       </body>
