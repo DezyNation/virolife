@@ -1,4 +1,6 @@
 "use client";
+import BackendAxios from "@/utils/axios";
+import useApiHandler from "@/utils/hooks/useApiHandler";
 import {
   Box,
   Button,
@@ -24,6 +26,7 @@ import { FiRefreshCw } from "react-icons/fi";
 
 const Commission = ({ onClick, commission }) => {
   const { isOpen, onToggle } = useDisclosure();
+  const {handleError} = useApiHandler()
   const Toast = useToast()
 
   const Formik = useFormik({
@@ -32,12 +35,16 @@ const Commission = ({ onClick, commission }) => {
       remarks: "",
     },
     onSubmit: values => {
-      Toast({
-        status: 'success',
-        title: "Request Sent",
-        description: "We have sent a payout request to the admin!"
+      BackendAxios.post(`/api/user/commission-request`, values).then(res => {
+        Toast({
+          status: 'success',
+          title: "Request Sent",
+          description: "We have sent a payout request to the admin!"
+        })
+        onToggle()
+      }).catch(err => {
+        handleError(err, "Error while sending request")
       })
-      onToggle()
     }
   });
 

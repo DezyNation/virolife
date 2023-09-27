@@ -22,6 +22,7 @@ import {
   BsPerson,
   BsPersonFill,
   BsPower,
+  BsWalletFill,
 } from "react-icons/bs";
 import { MdGroups, MdSlowMotionVideo } from "react-icons/md";
 import { FaHandshake, FaUsers } from "react-icons/fa";
@@ -34,7 +35,7 @@ import Cookies from "js-cookie";
 import Navbar from "@/components/global/Navbar";
 import Points from "@/components/dashboard/Points";
 import Commission from "@/components/dashboard/Commission";
-import {HiArrowsRightLeft} from 'react-icons/hi2'
+import { HiArrowsRightLeft } from "react-icons/hi2";
 
 const Layout = ({ children }) => {
   const Toast = useToast({ position: "top-right" });
@@ -166,12 +167,20 @@ const Layout = ({ children }) => {
                   </Link>
                 </VStack>
               ) : (
-                <Link href={"/dashboard/users"}>
-                  <HStack gap={4}>
-                    <FaUsers size={20} />
-                    <Text>Manage Users</Text>
-                  </HStack>
-                </Link>
+                <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
+                  <Link href={"/dashboard/users"}>
+                    <HStack gap={4}>
+                      <FaUsers size={20} />
+                      <Text>Manage Users</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/payouts"}>
+                    <HStack gap={4}>
+                      <BsWalletFill size={20} />
+                      <Text>Payouts</Text>
+                    </HStack>
+                  </Link>
+                </VStack>
               )}
               {/* <Link href={"/dashboard"}>
                 <HStack gap={4}>
