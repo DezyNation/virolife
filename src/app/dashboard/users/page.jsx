@@ -74,8 +74,8 @@ const Users = () => {
   function fetchUsers() {
     BackendAxios.get("api/user/my-users")
       .then((res) => {
-        if(Array.isArray(res.data)) return
-        if(typeof res.data == "object"){
+        if (Array.isArray(res.data)) return;
+        if (typeof res.data == "object") {
           setUsers(res.data[myId]);
         }
       })
@@ -223,7 +223,7 @@ const Users = () => {
     <>
       <HStack justifyContent={["space-between"]} py={8}>
         <Text className="serif" fontSize={"2xl"} textTransform={"capitalize"}>
-          Users
+          {myRole == "distributor" ? "Agents" : "Users"}
         </Text>
         <HStack alignItems={"flex-end"}>
           <Input
@@ -250,10 +250,13 @@ const Users = () => {
                 <Th>ID</Th>
                 <Th className="sticky-left">User Name</Th>
                 <Th>Contact</Th>
-                {/* <Th>Health Points</Th>
-                <Th>Ad Points</Th>
-                <Th>Viro Points</Th> */}
-                <Th>Date of Birth</Th>
+                {
+                  myRole == "distributor" ? (
+                    <Th>Commission</Th>
+                  ) : (
+                    <Th>Health Points</Th>
+                  ) // available health points
+                }
                 <Th>Registered On</Th>
                 <Th>Action</Th>
               </Tr>
@@ -273,12 +276,9 @@ const Users = () => {
                           <p>+91 {user.phone_number}</p>
                         </Box>
                       </Td>
-                      {/* <Td>{user?.health_points}</Td>
-                      <Td>{user?.ad_points}</Td>
-                      <Td>{user?.viro_points}</Td> */}
-                      <Td>
-                        {user?.dob ? new Date(user.dob).toDateString() : null}
-                      </Td>
+                      {
+                        myRole == "distributor" ? <Td></Td> : <Td></Td> // available health points
+                      }
                       <Td>{new Date(user.created_at).toLocaleString()}</Td>
                       <Td>
                         <HStack gap={4} pb={2}>
@@ -290,14 +290,11 @@ const Users = () => {
                           >
                             View
                           </Button>
-                          <Link
-                            href={`/dashboard/users/edit/${user?.id}`}
-                            target="_blank"
-                          >
+                          {myRole == "distributor" ? (
                             <Button size={"xs"} colorScheme="twitter">
-                              Edit
+                              View Agents
                             </Button>
-                          </Link>
+                          ) : null}
                         </HStack>
                         {/* <HStack pt={2}>
                       <Button
