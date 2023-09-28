@@ -40,19 +40,16 @@ const Users = () => {
 
   const [myRole, setMyRole] = useState("");
   const [myId, setMyId] = useState("");
-  const [myName, setMyName] = useState("");
+
+  const [pointsInfo, setPointsInfo] = useState(null);
 
   const { isOpen, onToggle } = useDisclosure();
   const [userInfo, setUserInfo] = useState({});
   const [qrVisible, setQrVisible] = useState({ status: false, upi: "" });
 
-  const [groupMembers, setGroupMembers] = useState([]);
-  const [showTreeModal, setShowTreeModal] = useState(false);
-
   useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));
     setMyId(localStorage.getItem("userId"));
-    setMyName(localStorage.getItem("userName"));
   }, []);
 
   function showQr(upi) {
@@ -88,31 +85,27 @@ const Users = () => {
       });
   }
 
+  function fetchPointsInfo(id){
+    BackendAxios.get(`/api/agent/my-user-points/${id}`).then(res => {
+      setPointsInfo(res.data)
+    }).catch(err => {
+      Toast({
+        status: "error",
+        description:
+          err?.response?.data?.message || err?.response?.data || err?.message,
+      });
+    })
+  }
+
   function getUserInfo(id) {
-    onToggle();
     BackendAxios.get(`/api/users/${id}`)
       .then((res) => {
         setUserInfo(res.data[0]);
+        fetchPointsInfo(id)
+        onToggle();
       })
       .catch((err) => {
         onToggle();
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
-
-  function updateUser(id, obj) {
-    BackendAxios.post(`/api/admin/update-user/${id}`, { ...obj })
-      .then((res) => {
-        Toast({
-          status: "success",
-          description: "User updated successfully!",
-        });
-      })
-      .catch((err) => {
         Toast({
           status: "error",
           description:
@@ -128,89 +121,6 @@ const Users = () => {
       })
       .catch((err) => {
         console.log(err);
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
-
-  function updateUserRole(id, role) {
-    BackendAxios.post(`/api/admin/change-role/${id}`, { role: role })
-      .then((res) => {
-        onToggle();
-        Toast({
-          status: "success",
-          description: `The user role was updated successfully!`,
-        });
-        fetchUsers();
-      })
-      .catch((err) => {
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
-
-  function viewSecondaryTree(id, name) {
-    function buildHierarchy(items, parentId) {
-      const nestedArray = [];
-      for (const item of items) {
-        if (parseInt(item.secondary_parent_id) == parseInt(parentId)) {
-          const children = buildHierarchy(items, item.id);
-          if (children.length > 0) {
-            item.children = children;
-          }
-          nestedArray.push(item);
-        }
-      }
-      return nestedArray;
-    }
-
-    BackendAxios.get(`/api/admin/my-group/secondary/${id}`)
-      .then((res) => {
-        const hierarchyArray = buildHierarchy(res.data, id);
-        setGroupMembers([
-          { name: name, children: hierarchyArray, id: id, donation: 0 },
-        ]);
-        setShowTreeModal(true);
-      })
-      .catch((err) => {
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
-
-  function viewPrimaryTree(id, name) {
-    function buildHierarchy(items, parentId) {
-      const nestedArray = [];
-      for (const item of items) {
-        if (parseInt(item.parent_id) == parseInt(parentId)) {
-          const children = buildHierarchy(items, item.id);
-          if (children.length > 0) {
-            item.children = children;
-          }
-          nestedArray.push(item);
-        }
-      }
-      return nestedArray;
-    }
-
-    BackendAxios.get(`/api/admin/my-group/${id}`)
-      .then((res) => {
-        const hierarchyArray = buildHierarchy(res.data, id);
-        setGroupMembers([
-          { name: name, children: hierarchyArray, id: id, donation: 0 },
-        ]);
-        setShowTreeModal(true);
-      })
-      .catch((err) => {
         Toast({
           status: "error",
           description:
@@ -292,7 +202,7 @@ const Users = () => {
                           </Button>
                           {myRole == "distributor" ? (
                             <Button size={"xs"} colorScheme="twitter">
-                              View Agents
+                              View Users
                             </Button>
                           ) : null}
                         </HStack>
@@ -477,13 +387,6 @@ const Users = () => {
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-
-      {/* Tree Modal */}
-      {/* <TreeModal
-        status={showTreeModal}
-        onClose={() => setShowTreeModal(false)}
-        groupMembers={groupMembers}
-      /> */}
     </>
   );
 };
