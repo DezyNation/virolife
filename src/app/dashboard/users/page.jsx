@@ -39,7 +39,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [query, setQuery] = useState("");
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const [myRole, setMyRole] = useState("");
   const [myId, setMyId] = useState("");
@@ -75,43 +75,46 @@ const Users = () => {
   }, [myRole]);
 
   function fetchUsers(id) {
-    setLoading(true)
-    if (id){ setSelectedParentAgent(id);}
+    setLoading(true);
+    if (id) {
+      setSelectedParentAgent(id);
+    }
     BackendAxios.get(
       `api/user/my-users${selectedParentAgent ? `/${selectedParentAgent}` : ""}`
-      )
+    )
       .then((res) => {
+        setLoading(false);
         if (Array.isArray(res.data)) return;
         if (typeof res.data == "object") {
           if (selectedParentAgent) {
-            setJuniorsModalStatus(()=>true)
+            setJuniorsModalStatus(() => true);
             setSubJuniorUsers(res.data[id]);
             return;
           }
           setUsers(res.data[myId]);
         }
-        setLoading(false)
       })
       .catch((err) => {
-        setLoading(false)
+        setLoading(false);
         Toast({
           status: "error",
           description:
-          err?.response?.data?.message || err?.response?.data || err?.message,
+            err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
-    }
-    
-    function fetchPointsInfo(id) {
-      setLoading(true)
-      setUserInfo(id);
-      BackendAxios.get(`/api/agent/my-user-points?userId=${id}`)
+    setLoading(false);
+  }
+
+  function fetchPointsInfo(id) {
+    setLoading(true);
+    setUserInfo(id);
+    BackendAxios.get(`/api/agent/my-user-points?userId=${id}`)
       .then((res) => {
         setPointsInfo(res.data[id]);
-        setLoading(false)
+        setLoading(false);
       })
       .catch((err) => {
-        setLoading(false)
+        setLoading(false);
         Toast({
           status: "error",
           description:
@@ -121,33 +124,33 @@ const Users = () => {
   }
 
   function getUserInfo(id) {
-    setLoading(true)
+    setLoading(true);
     BackendAxios.get(`/api/users/${id}`)
-    .then((res) => {
-        setLoading(false)
+      .then((res) => {
+        setLoading(false);
         setUserInfo(res.data[0]);
         fetchPointsInfo(id);
         onToggle();
       })
       .catch((err) => {
-        setLoading(false)
+        setLoading(false);
         Toast({
           status: "error",
           description:
-          err?.response?.data?.message || err?.response?.data || err?.message,
+            err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
-    }
-    
-    function searchUser() {
-    setLoading(true)
+  }
+
+  function searchUser() {
+    setLoading(true);
     BackendAxios.get(`/api/admin/find-user?search=${query}`)
-    .then((res) => {
-      setUsers(res.data);
-      setLoading(false)
-    })
-    .catch((err) => {
-        setLoading(false)
+      .then((res) => {
+        setUsers(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
         Toast({
           status: "error",
           description:
@@ -158,9 +161,7 @@ const Users = () => {
 
   return (
     <>
-    {
-      loading ? <FullPageLoader /> : null
-    }
+      {loading ? <FullPageLoader /> : null}
       <HStack justifyContent={["space-between"]} py={8}>
         <Text className="serif" fontSize={"2xl"} textTransform={"capitalize"}>
           {myRole == "distributor" ? "Agents" : "Users"}
@@ -221,7 +222,11 @@ const Users = () => {
                             View
                           </Button>
                           {myRole == "distributor" ? (
-                            <Button size={"xs"} colorScheme="twitter" onClick={()=>fetchUsers(user?.id)}>
+                            <Button
+                              size={"xs"}
+                              colorScheme="twitter"
+                              onClick={() => fetchUsers(user?.id)}
+                            >
                               View Users
                             </Button>
                           ) : null}
@@ -402,7 +407,8 @@ const Users = () => {
       <Modal
         isOpen={juniorsModalStatus}
         onClose={() => setJuniorsModalStatus(false)}
-        isCentered size={'3xl'}
+        isCentered
+        size={"3xl"}
       >
         <ModalOverlay />
         <ModalContent>
