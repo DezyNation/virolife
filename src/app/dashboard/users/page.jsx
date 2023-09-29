@@ -32,11 +32,14 @@ import Link from "next/link";
 import { BsDownload, BsEye, BsPlus } from "react-icons/bs";
 import BackendAxios from "@/utils/axios";
 import QRCode from "react-qr-code";
+import FullPageLoader from "@/components/global/FullPageLoader";
 
 const Users = () => {
   const Toast = useToast({ position: "top-right" });
   const [users, setUsers] = useState([]);
   const [query, setQuery] = useState("");
+
+  const [loading, setLoading] = useState(false)
 
   const [myRole, setMyRole] = useState("");
   const [myId, setMyId] = useState("");
@@ -72,10 +75,11 @@ const Users = () => {
   }, [myRole]);
 
   function fetchUsers(id) {
+    setLoading(true)
     if (id) setSelectedParentAgent(id);
     BackendAxios.get(
       `api/user/my-users${selectedParentAgent ? `/${selectedParentAgent}` : ""}`
-    )
+      )
       .then((res) => {
         if (Array.isArray(res.data)) return;
         if (typeof res.data == "object") {
@@ -86,23 +90,28 @@ const Users = () => {
           }
           setUsers(res.data[myId]);
         }
+        setLoading(false)
       })
       .catch((err) => {
+        setLoading(false)
         Toast({
           status: "error",
           description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
+          err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
-  }
-
-  function fetchPointsInfo(id) {
-    setUserInfo(id);
-    BackendAxios.get(`/api/agent/my-user-points?userId=${id}`)
+    }
+    
+    function fetchPointsInfo(id) {
+      setLoading(true)
+      setUserInfo(id);
+      BackendAxios.get(`/api/agent/my-user-points?userId=${id}`)
       .then((res) => {
         setPointsInfo(res.data[id]);
+        setLoading(false)
       })
       .catch((err) => {
+        setLoading(false)
         Toast({
           status: "error",
           description:
@@ -112,29 +121,33 @@ const Users = () => {
   }
 
   function getUserInfo(id) {
+    setLoading(true)
     BackendAxios.get(`/api/users/${id}`)
-      .then((res) => {
+    .then((res) => {
+        setLoading(false)
         setUserInfo(res.data[0]);
         fetchPointsInfo(id);
         onToggle();
       })
       .catch((err) => {
-        onToggle();
+        setLoading(false)
         Toast({
           status: "error",
           description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
+          err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
-  }
-
-  function searchUser() {
+    }
+    
+    function searchUser() {
+    setLoading(true)
     BackendAxios.get(`/api/admin/find-user?search=${query}`)
-      .then((res) => {
-        setUsers(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
+    .then((res) => {
+      setUsers(res.data);
+      setLoading(false)
+    })
+    .catch((err) => {
+        setLoading(false)
         Toast({
           status: "error",
           description:
@@ -145,6 +158,9 @@ const Users = () => {
 
   return (
     <>
+    {
+      loading ? <FullPageLoader /> : null
+    }
       <HStack justifyContent={["space-between"]} py={8}>
         <Text className="serif" fontSize={"2xl"} textTransform={"capitalize"}>
           {myRole == "distributor" ? "Agents" : "Users"}
@@ -394,7 +410,6 @@ const Users = () => {
           <ModalBody>
             <TableContainer rounded={"8"} w={"full"}>
               <Table variant={"striped"} colorScheme="gray" size={"sm"}>
-                <TableCaption>Users on Virolife</TableCaption>
                 <Thead bgColor={"yellow.400"}>
                   <Tr>
                     <Th>#</Th>
@@ -406,7 +421,7 @@ const Users = () => {
                 </Thead>
                 <Tbody>
                   {myRole == "agent" || myRole == "distributor"
-                    ? users.map((user, key) => (
+                    ? subJuniorUsers.map((user, key) => (
                         <Tr fontSize={"xs"} key={key}>
                           <Td>{key + 1}</Td>
                           <Td>VCF{user.id}</Td>
