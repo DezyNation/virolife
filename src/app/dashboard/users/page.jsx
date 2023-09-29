@@ -105,6 +105,31 @@ const Users = () => {
     setLoading(false);
   }
 
+  function fetchJuniorUsers(id) {
+    setLoading(true);
+    setSelectedParentAgent(id);
+    BackendAxios.get(
+      `api/user/my-users${selectedParentAgent ? `/${selectedParentAgent}` : ""}`
+    )
+      .then((res) => {
+        setLoading(false);
+        if (Array.isArray(res.data)) return;
+        if (typeof res.data == "object") {
+          setJuniorsModalStatus(() => true);
+          setSubJuniorUsers(res.data[id]);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+    setLoading(false);
+  }
+
   function fetchPointsInfo(id) {
     setLoading(true);
     setUserInfo(id);
@@ -225,7 +250,7 @@ const Users = () => {
                             <Button
                               size={"xs"}
                               colorScheme="twitter"
-                              onClick={() => fetchUsers(user?.id)}
+                              onClick={() => fetchJuniorUsers(user?.id)}
                             >
                               View Users
                             </Button>
