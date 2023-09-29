@@ -76,7 +76,7 @@ const Users = () => {
 
   function fetchUsers(id) {
     setLoading(true)
-    if (id) setSelectedParentAgent(id);
+    if (id){ setSelectedParentAgent(id);}
     BackendAxios.get(
       `api/user/my-users${selectedParentAgent ? `/${selectedParentAgent}` : ""}`
       )
@@ -84,8 +84,8 @@ const Users = () => {
         if (Array.isArray(res.data)) return;
         if (typeof res.data == "object") {
           if (selectedParentAgent) {
+            setJuniorsModalStatus(()=>true)
             setSubJuniorUsers(res.data[id]);
-            setJuniorsModalStatus(true)
             return;
           }
           setUsers(res.data[myId]);
