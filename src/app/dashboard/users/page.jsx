@@ -386,7 +386,7 @@ const Users = () => {
       <Modal
         isOpen={juniorsModalStatus}
         onClose={() => setJuniorsModalStatus(false)}
-        isCentered
+        isCentered size={'3xl'}
       >
         <ModalOverlay />
         <ModalContent>
