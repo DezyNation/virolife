@@ -79,9 +79,7 @@ const Users = () => {
     if (id) {
       setSelectedParentAgent(id);
     }
-    BackendAxios.get(
-      `api/user/my-users${id ? `/${id}` : ""}`
-    )
+    BackendAxios.get(`api/user/my-users${id ? `/${id}` : ""}`)
       .then((res) => {
         setLoading(false);
         if (Array.isArray(res.data)) return;
@@ -370,10 +368,14 @@ const Users = () => {
             </Stack>
             <br />
             <br />
-            <Text fontWeight={"semibold"}>Health Points</Text>
-            <Text>Referral Points: ${pointsInfo?.referrals}</Text>
-            <Text>Direct Points: ${pointsInfo?.parent}</Text>
-            <Text>Level Points: ${pointsInfo?.chain}</Text>
+            {myRole == "agent" ? (
+              <Box>
+                <Text fontWeight={"semibold"}>Health Points</Text>
+                <Text>Referral Points: {pointsInfo?.referrals}</Text>
+                <Text>Direct Points: {pointsInfo?.parent}</Text>
+                <Text>Level Points: {pointsInfo?.chain}</Text>
+              </Box>
+            ) : null}
           </ModalBody>
         </ModalContent>
       </Modal>
