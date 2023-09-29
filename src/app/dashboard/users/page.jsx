@@ -41,8 +41,10 @@ const Users = () => {
   const [myRole, setMyRole] = useState("");
   const [myId, setMyId] = useState("");
 
-  const [selectedUser, setSelectedUser] = useState("");
+  const [juniorsModalStatus, setJuniorsModalStatus] = useState(false);
+  const [selectedParentAgent, setSelectedParentAgent] = useState("");
   const [pointsInfo, setPointsInfo] = useState(null);
+  const [subJuniorUsers, setSubJuniorUsers] = useState([]);
 
   const { isOpen, onToggle } = useDisclosure();
   const [userInfo, setUserInfo] = useState({});
@@ -69,11 +71,19 @@ const Users = () => {
     }
   }, [myRole]);
 
-  function fetchUsers() {
-    BackendAxios.get("api/user/my-users")
+  function fetchUsers(id) {
+    if (id) setSelectedParentAgent(id);
+    BackendAxios.get(
+      `api/user/my-users${selectedParentAgent ? `/${selectedParentAgent}` : ""}`
+    )
       .then((res) => {
         if (Array.isArray(res.data)) return;
         if (typeof res.data == "object") {
+          if (selectedParentAgent) {
+            setSubJuniorUsers(res.data[id]);
+            setJuniorsModalStatus(true)
+            return;
+          }
           setUsers(res.data[myId]);
         }
       })
@@ -164,13 +174,6 @@ const Users = () => {
                 <Th>ID</Th>
                 <Th className="sticky-left">User Name</Th>
                 <Th>Contact</Th>
-                {
-                  myRole == "distributor" ? (
-                    <Th>Commission</Th>
-                  ) : (
-                    <Th>Health Points</Th>
-                  ) // available health points
-                }
                 <Th>Registered On</Th>
                 <Th>Action</Th>
               </Tr>
@@ -190,9 +193,6 @@ const Users = () => {
                           <p>+91 {user.phone_number}</p>
                         </Box>
                       </Td>
-                      {
-                        myRole == "distributor" ? <Td></Td> : <Td></Td> // available health points
-                      }
                       <Td>{new Date(user.created_at).toLocaleString()}</Td>
                       <Td>
                         <HStack gap={4} pb={2}>
@@ -205,27 +205,11 @@ const Users = () => {
                             View
                           </Button>
                           {myRole == "distributor" ? (
-                            <Button size={"xs"} colorScheme="twitter">
+                            <Button size={"xs"} colorScheme="twitter" onClick={()=>fetchUsers(user?.id)}>
                               View Users
                             </Button>
                           ) : null}
                         </HStack>
-                        {/* <HStack pt={2}>
-                      <Button
-                        size={"xs"}
-                        colorScheme={"yellow"}
-                        onClick={() => viewPrimaryTree(user?.id, user?.name)}
-                      >
-                        Prim. Tree
-                      </Button>
-                      <Button
-                        size={"xs"}
-                        colorScheme={"orange"}
-                        onClick={() => viewSecondaryTree(user?.id, user?.name)}
-                      >
-                        Sec. Tree
-                      </Button>
-                    </HStack> */}
                       </Td>
                     </Tr>
                   ))
@@ -395,6 +379,54 @@ const Users = () => {
             />
           </ModalBody>
           <ModalFooter></ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Junior Users */}
+      <Modal
+        isOpen={juniorsModalStatus}
+        onClose={() => setJuniorsModalStatus(false)}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Junior Users of {selectedParentAgent}</ModalHeader>
+          <ModalBody>
+            <TableContainer rounded={"8"} w={"full"}>
+              <Table variant={"striped"} colorScheme="gray" size={"sm"}>
+                <TableCaption>Users on Virolife</TableCaption>
+                <Thead bgColor={"yellow.400"}>
+                  <Tr>
+                    <Th>#</Th>
+                    <Th>ID</Th>
+                    <Th>User Name</Th>
+                    <Th>Contact</Th>
+                    <Th>Registered On</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {myRole == "agent" || myRole == "distributor"
+                    ? users.map((user, key) => (
+                        <Tr fontSize={"xs"} key={key}>
+                          <Td>{key + 1}</Td>
+                          <Td>VCF{user.id}</Td>
+                          <Td>
+                            {user.child_name} ({user.gender})
+                          </Td>
+                          <Td>
+                            <Box>
+                              <p>{user.email}</p>
+                              <p>+91 {user.phone_number}</p>
+                            </Box>
+                          </Td>
+                          <Td>{new Date(user.created_at).toLocaleString()}</Td>
+                        </Tr>
+                      ))
+                    : null}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>
