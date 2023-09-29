@@ -80,43 +80,18 @@ const Users = () => {
       setSelectedParentAgent(id);
     }
     BackendAxios.get(
-      `api/user/my-users${selectedParentAgent ? `/${selectedParentAgent}` : ""}`
+      `api/user/my-users${id ? `/${id}` : ""}`
     )
       .then((res) => {
         setLoading(false);
         if (Array.isArray(res.data)) return;
         if (typeof res.data == "object") {
-          if (selectedParentAgent) {
+          if (id) {
             setJuniorsModalStatus(() => true);
             setSubJuniorUsers(res.data[id]);
             return;
           }
           setUsers(res.data[myId]);
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-    setLoading(false);
-  }
-
-  function fetchJuniorUsers(id) {
-    setLoading(true);
-    setSelectedParentAgent(id);
-    BackendAxios.get(
-      `api/user/my-users${selectedParentAgent ? `/${selectedParentAgent}` : ""}`
-    )
-      .then((res) => {
-        setLoading(false);
-        if (Array.isArray(res.data)) return;
-        if (typeof res.data == "object") {
-          setJuniorsModalStatus(() => true);
-          setSubJuniorUsers(res.data[id]);
         }
       })
       .catch((err) => {
@@ -250,7 +225,7 @@ const Users = () => {
                             <Button
                               size={"xs"}
                               colorScheme="twitter"
-                              onClick={() => fetchJuniorUsers(user?.id)}
+                              onClick={() => fetchUsers(user?.id)}
                             >
                               View Users
                             </Button>
