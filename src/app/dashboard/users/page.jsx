@@ -86,7 +86,7 @@ const Users = () => {
   }
 
   function fetchPointsInfo(id){
-    BackendAxios.get(`/api/agent/my-user-points/${id}`).then(res => {
+    BackendAxios.get(`/api/agent/my-user-points?userId=${id}`).then(res => {
       setPointsInfo(res.data)
     }).catch(err => {
       Toast({
