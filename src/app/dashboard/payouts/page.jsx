@@ -1,3 +1,4 @@
+'use client'
 import BackendAxios from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
 import {
