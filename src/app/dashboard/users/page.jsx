@@ -41,6 +41,7 @@ const Users = () => {
   const [myRole, setMyRole] = useState("");
   const [myId, setMyId] = useState("");
 
+  const [selectedUser, setSelectedUser] = useState("");
   const [pointsInfo, setPointsInfo] = useState(null);
 
   const { isOpen, onToggle } = useDisclosure();
@@ -85,23 +86,26 @@ const Users = () => {
       });
   }
 
-  function fetchPointsInfo(id){
-    BackendAxios.get(`/api/agent/my-user-points?userId=${id}`).then(res => {
-      setPointsInfo(res.data)
-    }).catch(err => {
-      Toast({
-        status: "error",
-        description:
-          err?.response?.data?.message || err?.response?.data || err?.message,
+  function fetchPointsInfo(id) {
+    setUserInfo(id);
+    BackendAxios.get(`/api/agent/my-user-points?userId=${id}`)
+      .then((res) => {
+        setPointsInfo(res.data[id]);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
       });
-    })
   }
 
   function getUserInfo(id) {
     BackendAxios.get(`/api/users/${id}`)
       .then((res) => {
         setUserInfo(res.data[0]);
-        fetchPointsInfo(id)
+        fetchPointsInfo(id);
         onToggle();
       })
       .catch((err) => {
@@ -359,6 +363,12 @@ const Users = () => {
                 </Button>
               </Box>
             </Stack>
+            <br />
+            <br />
+            <Text fontWeight={"semibold"}>Health Points</Text>
+            <Text>Referral Points: ${pointsInfo?.referrals}</Text>
+            <Text>Direct Points: ${pointsInfo?.parent}</Text>
+            <Text>Level Points: ${pointsInfo?.chain}</Text>
           </ModalBody>
         </ModalContent>
       </Modal>
