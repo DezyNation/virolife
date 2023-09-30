@@ -121,7 +121,7 @@ const page = () => {
                 <Td>{item?.user?.name} (VCF{item?.user_id})</Td>
                 <Td>{item?.remarks}</Td>
                 <Td>₹ {item?.amount || 200}</Td>
-                <Td>{new Date(item?.created_at).toLocaleDateString()}</Td>
+                <Td>{new Date(item?.created_at).toLocaleString()}</Td>
                 <Td>
                   {!item?.approved && !item?.deleted_at && !item?.donated_to_admin ? (
                     <HStack>
