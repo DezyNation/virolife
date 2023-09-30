@@ -288,6 +288,18 @@ const Navbar = () => {
               Join Group
             </Text>
           </HStack>
+          <HStack>
+            <Image src="/telegram.png" boxSize={"8"} objectFit={"contain"} />
+            <Text
+              cursor={"pointer"}
+              fontSize={"xl"}
+              className="serif"
+              fontWeight={"bold"}
+              color={"#666"}
+            >
+              Join Group
+            </Text>
+          </HStack>
           <Spacer />
           <HStack spacing={8} fontWeight={"medium"}>
             <Box>
@@ -413,6 +425,22 @@ const Navbar = () => {
               <HStack w={"full"}>
                 <Image
                   src="/whatsapp.png"
+                  boxSize={"8"}
+                  objectFit={"contain"}
+                />
+                <Text
+                  cursor={"pointer"}
+                  fontSize={["lg", "xl"]}
+                  className="serif"
+                  fontWeight={"bold"}
+                  color={"#666"}
+                >
+                  Join Group
+                </Text>
+              </HStack>
+              <HStack w={"full"}>
+                <Image
+                  src="/telegram.png"
                   boxSize={"8"}
                   objectFit={"contain"}
                 />
