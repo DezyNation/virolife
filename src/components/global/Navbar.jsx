@@ -288,6 +288,7 @@ const Navbar = () => {
               Join Group
             </Text>
           </HStack>
+          <Spacer w={24} />
           <HStack>
             <Image src="/telegram.png" boxSize={"8"} objectFit={"contain"} />
             <Text
