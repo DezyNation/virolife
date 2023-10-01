@@ -179,7 +179,7 @@ const page = () => {
             height={200}
           />
           <Text fontWeight={"bold"} fontSize={"2xl"} textAlign={"center"}>
-            {parseInt(stars)/getMonthsBetweenDates(new Date(joinedOn), new Date())}
+            {(parseInt(stars)/getMonthsBetweenDates(new Date(joinedOn), new Date()))?.toFixed(2)}
           </Text>
           <br />
           <Button colorScheme={"yellow"} w={'full'} onClick={onToggle}>Donate Now!</Button>
