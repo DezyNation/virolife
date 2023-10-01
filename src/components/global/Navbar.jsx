@@ -77,6 +77,27 @@ const Navbar = () => {
   const [isSeniorInputDisabled, setIsSeniorInputDisabled] = useState(false);
 
   const [code, setCode] = useState(params.get("ref_id"));
+  const [websiteData, setWebsiteData] = useState(null);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  function getData() {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/content`)
+      .then((res) => {
+        const parsedData = JSON.parse(res.data[0]);
+        setWebsiteData(parsedData);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
 
   const Formik = useFormik({
     initialValues: {
@@ -276,31 +297,49 @@ const Navbar = () => {
             ) : null}
           </HStack>
           <Spacer />
-          <HStack>
-            <Image src="/whatsapp.png" boxSize={"8"} objectFit={"contain"} />
-            <Text
-              cursor={"pointer"}
-              fontSize={"xl"}
-              className="serif"
-              fontWeight={"bold"}
-              color={"#666"}
-            >
-              Join Group
-            </Text>
-          </HStack>
-          <Spacer w={24} />
-          <HStack>
-            <Image src="/telegram.png" boxSize={"8"} objectFit={"contain"} />
-            <Text
-              cursor={"pointer"}
-              fontSize={"xl"}
-              className="serif"
-              fontWeight={"bold"}
-              color={"#666"}
-            >
-              Join Group
-            </Text>
-          </HStack>
+          {websiteData?.whatsappStatus ? (
+            <Link href={websiteData?.whatsappLink}>
+              <HStack>
+                <Image
+                  src="/whatsapp.png"
+                  boxSize={"8"}
+                  objectFit={"contain"}
+                />
+                <Text
+                  cursor={"pointer"}
+                  fontSize={"xl"}
+                  className="serif"
+                  fontWeight={"bold"}
+                  color={"#666"}
+                >
+                  Join Group
+                </Text>
+              </HStack>
+            </Link>
+          ) : null}
+          {websiteData?.telegramStatus && websiteData?.whatsappStatus ? (
+            <Spacer w={24} />
+          ) : null}
+          {websiteData?.telegramStatus ? (
+            <Link href={websiteData?.telegramLink}>
+              <HStack>
+                <Image
+                  src="/telegram.png"
+                  boxSize={"8"}
+                  objectFit={"contain"}
+                />
+                <Text
+                  cursor={"pointer"}
+                  fontSize={"xl"}
+                  className="serif"
+                  fontWeight={"bold"}
+                  color={"#666"}
+                >
+                  Join Group
+                </Text>
+              </HStack>
+            </Link>
+          ) : null}
           <Spacer />
           <HStack spacing={8} fontWeight={"medium"}>
             <Box>
@@ -395,18 +434,16 @@ const Navbar = () => {
                       </Link>
                       <br />
 
-                  <Link href={"/dashboard/points/transfers"}>
-                    <HStack gap={4}>
-                      
-                      <Text>Point Transfers</Text>
-                    </HStack>
-                  </Link>
-                  <Link href={"/dashboard/points/withdrawals"}>
-                    <HStack gap={4}>
-                      
-                      <Text>Point Withdrawals</Text>
-                    </HStack>
-                  </Link>
+                      <Link href={"/dashboard/points/transfers"}>
+                        <HStack gap={4}>
+                          <Text>Point Transfers</Text>
+                        </HStack>
+                      </Link>
+                      <Link href={"/dashboard/points/withdrawals"}>
+                        <HStack gap={4}>
+                          <Text>Point Withdrawals</Text>
+                        </HStack>
+                      </Link>
                     </VStack>
                   ) : (
                     <Link href={"/dashboard/users"}>
@@ -500,7 +537,7 @@ const Navbar = () => {
                   <Stack direction={["column", "row"]} spacing={8}>
                     <FormLabel fontSize={"xl"}>Password</FormLabel>
                     <Box>
-                      <InputGroup pb={2} >
+                      <InputGroup pb={2}>
                         <Input
                           w={["full", "xs"]}
                           placeholder="Password"
@@ -524,8 +561,16 @@ const Navbar = () => {
                           }
                         />
                       </InputGroup>
-                      <Link href={'/forgot-password'}>
-                        <Text fontWeight={'semibold'} fontSize={'xs'} color={'blue'} w={'full'} textAlign={'right'}>Forgot Password?</Text>
+                      <Link href={"/forgot-password"}>
+                        <Text
+                          fontWeight={"semibold"}
+                          fontSize={"xs"}
+                          color={"blue"}
+                          w={"full"}
+                          textAlign={"right"}
+                        >
+                          Forgot Password?
+                        </Text>
                       </Link>
                     </Box>
                   </Stack>
