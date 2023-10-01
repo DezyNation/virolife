@@ -174,6 +174,12 @@ const Layout = ({ children }) => {
                       <Text>Manage Users</Text>
                     </HStack>
                   </Link>
+                  <Link href={"/dashboard/gift-cards"}>
+                    <HStack gap={4}>
+                      <BsGiftFill size={20} />
+                      <Text>Gift Cards</Text>
+                    </HStack>
+                  </Link>
                   <Link href={"/dashboard/payouts"}>
                     <HStack gap={4}>
                       <BsWalletFill size={20} />
