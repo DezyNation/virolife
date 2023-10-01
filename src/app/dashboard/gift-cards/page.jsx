@@ -39,8 +39,15 @@ const page = () => {
 
   useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));
-    fetchGiftCards();
   }, []);
+
+  useEffect(() => {
+    if (myRole == "distributor" || myRole == "agent") {
+      fetchGiftCards("my-assigned-gifts");
+    } else {
+      fetchGiftCards("my-gifts");
+    }
+  }, [myRole]);
 
   const Formik = useFormik({
     initialValues: {
@@ -90,8 +97,8 @@ const page = () => {
     }
   }, [selectedGiftCard]);
 
-  function fetchGiftCards() {
-    BackendAxios.get(`/api/${myRole == "distributor" || myRole == "agent" ? "my-assigned-gifts" : "my-gifts"}`)
+  function fetchGiftCards(keyword) {
+    BackendAxios.get(`/api/${keyword}`)
       .then((res) => {
         setGiftCards(res.data);
       })
