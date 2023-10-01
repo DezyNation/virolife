@@ -70,7 +70,7 @@ const page = () => {
             status: "success",
             title: "Gift card created successfully!",
           });
-          fetchGiftCards();
+          fetchGiftCards("my-assigned-gifts");
           Formik.handleReset();
           onClose();
         })
@@ -154,6 +154,7 @@ const page = () => {
               <Th>Card No.</Th>
               <Th>Purpose</Th>
               <Th>Status</Th>
+              <Th>Agent</Th>
               <Th>Linked User</Th>
               <Th>Created At</Th>
               <Th>Expires At</Th>
@@ -167,9 +168,9 @@ const page = () => {
               <Tr key={key}>
                 <Td>{key + 1}</Td>
                 <Td>{item?.code}</Td>
-                {/* <Td>{item?.amount}</Td> */}
                 <Td>{item?.purpose}</Td>
                 <Td>{item?.redeemed ? "USED" : "PENDING"}</Td>
+                <Td>{item?.agent_id}</Td>
                 <Td>{item?.user_id}</Td>
                 <Td>
                   {item?.created_at
