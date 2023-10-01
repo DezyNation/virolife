@@ -87,7 +87,7 @@ const Navbar = () => {
     axios
       .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/content`)
       .then((res) => {
-        const parsedData = JSON.parse(res.data[0]);
+        const parsedData = JSON.parse(res.data[0]?.content);
         setWebsiteData(parsedData);
       })
       .catch((err) => {
