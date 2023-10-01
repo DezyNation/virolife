@@ -91,7 +91,7 @@ const page = () => {
   }, [selectedGiftCard]);
 
   function fetchGiftCards() {
-    BackendAxios.get(`/api/my-gifts`)
+    BackendAxios.get(`/api/${myRole == "distributor" || myRole == "agent" ? "my-assigned-gifts" : "my-gifts"}`)
       .then((res) => {
         setGiftCards(res.data);
       })
