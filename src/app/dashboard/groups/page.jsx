@@ -37,8 +37,10 @@ import VerticalSpacer from "@/components/global/VerticalSpacer";
 import Progress from "@/components/dashboard/group-funding/Progress";
 import Cookies from "js-cookie";
 
-const MyParents = ({ parentUsers, myParentId, groupType }) => {
+const MyParents = ({ parents, myParentId, groupType }) => {
   const Toast = useToast({ position: "top-right" });
+
+  const [parentUsers, setParentUsers] = useState(parents);
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
   const [receiver, setReceiver] = useState({
@@ -165,6 +167,16 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
       });
   }
 
+  useEffect(() => {
+    if (Array.isArray(parentUsers)) {
+      let newData = [...parentUsers];
+      if (newData.length > 0) {
+        newData[0].id = myParentId;
+        setParentUsers(newData);
+      }
+    }
+  }, [parentUsers]);
+
   return (
     <>
       <Box>
@@ -194,28 +206,17 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {key == 0 &&
-              (!beneficiaries?.includes(myParentId) ? (
-                <Button
-                  size={"xs"}
-                  colorScheme="yellow"
-                  onClick={() => {
-                    showVideo(item, key);
-                  }}
-                >
-                  Donate
-                </Button>
-              ) : beneficiaries?.includes(item?.id) ? null : (
-                <Button
-                  size={"xs"}
-                  colorScheme="yellow"
-                  onClick={() => {
-                    showVideo(item, key);
-                  }}
-                >
-                  Donate
-                </Button>
-              ))}
+            {!beneficiaries?.includes(item?.id) ? (
+              <Button
+                size={"xs"}
+                colorScheme="yellow"
+                onClick={() => {
+                  showVideo(item, key);
+                }}
+              >
+                Donate
+              </Button>
+            ) : null}
           </HStack>
         ))}
       </Box>
@@ -894,7 +895,7 @@ const Page = () => {
             <Text fontSize={"xl"}>My Seniors (Primary ID)</Text>
             <br />
             <MyParents
-              parentUsers={primaryParentUsers}
+              parents={primaryParentUsers}
               myParentId={primaryJoined}
               groupType={"primary"}
             />
@@ -903,7 +904,7 @@ const Page = () => {
             <Text fontSize={"xl"}>My Seniors (Secondary ID)</Text>
             <br />
             <MyParents
-              parentUsers={secondaryParentUsers}
+              parents={secondaryParentUsers}
               myParentId={secondaryJoined}
               groupType={"secondary"}
             />
