@@ -113,7 +113,7 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
         donatable_id: receiver?.id,
         amount: 200,
         remarks: `Donation to ${groupType} group senior  VCF${receiver.id}`,
-        type: groupType
+        group: groupType
       }
     )
       .then((res) => {
