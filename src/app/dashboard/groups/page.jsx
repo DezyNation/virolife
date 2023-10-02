@@ -194,8 +194,8 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {key == 0 ? (
-              !beneficiaries?.includes(myParentId) ? (
+            {key == 0 &&
+              (!beneficiaries?.includes(myParentId) ? (
                 <Button
                   size={"xs"}
                   colorScheme="yellow"
@@ -205,7 +205,7 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
                 >
                   Donate
                 </Button>
-              ) : !beneficiaries?.includes(item?.id) ? (
+              ) : beneficiaries?.includes(item?.id) ? null : (
                 <Button
                   size={"xs"}
                   colorScheme="yellow"
@@ -215,8 +215,7 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
                 >
                   Donate
                 </Button>
-              ) : null
-            ) : null}
+              ))}
           </HStack>
         ))}
       </Box>
