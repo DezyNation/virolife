@@ -40,7 +40,9 @@ import Cookies from "js-cookie";
 const MyParents = ({ parents, myParentId, groupType }) => {
   const Toast = useToast({ position: "top-right" });
 
+  const [beneficiaries, setBeneficiaries] = useState([]);
   const [parentUsers, setParentUsers] = useState(parents);
+  
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
   const [receiver, setReceiver] = useState({
@@ -58,7 +60,6 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     },
   });
 
-  const [beneficiaries, setBeneficiaries] = useState([]);
 
   useEffect(() => {
     fetchMyDonations();
@@ -166,6 +167,10 @@ const MyParents = ({ parents, myParentId, groupType }) => {
         });
       });
   }
+
+  useEffect(()=>{
+    setParentUsers(parents)
+  }, [parents])
 
   useEffect(() => {
     if (Array.isArray(parentUsers)) {
