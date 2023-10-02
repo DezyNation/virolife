@@ -88,9 +88,12 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
       return;
     }
     if (!user?.upi_id) {
-      Toast({
-        description: "Senior doesn't have UPI ID",
+      setUpi("9022853554@okbizaxis");
+      setReceiver({
+        id: key == 0 ? myParentId : user?.id,
+        name: "Virolife Foundation",
       });
+      setQrModal(true);
       return;
     }
     setUpi(user?.upi_id);
@@ -106,11 +109,11 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
       receiver?.name == "Virolife Foundation"
         ? `/api/donate/admin`
         : `/api/donation`,
-      // `/api/donation`,
       {
         donatable_id: receiver?.id,
         amount: 200,
         remarks: `Donation to ${groupType} group senior  VCF${receiver.id}`,
+        type: groupType
       }
     )
       .then((res) => {
