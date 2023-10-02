@@ -74,11 +74,16 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
   }
 
   function showUpiModal(user, key) {
-    if (!user?.primary_activated) {
-      // Toast({
-      //   title: "Senior's Primary ID is on hold.",
-      //   description: "This user is yet to donate to his seniors.",
-      // });
+    if (groupType == "primary" && !user?.primary_activated) {
+      setUpi("9022853554@okbizaxis");
+      setReceiver({
+        id: key == 0 ? myParentId : user?.id,
+        name: "Virolife Foundation",
+      });
+      setQrModal(true);
+      return;
+    }
+    if (groupType == "secondary" && !user?.secondary_activated) {
       setUpi("9022853554@okbizaxis");
       setReceiver({
         id: key == 0 ? myParentId : user?.id,
@@ -189,7 +194,7 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {!beneficiaries?.includes(item?.id) ? (
+            {!beneficiaries?.includes(key == 0 ? myParentId : item?.id) ? (
               <Button
                 size={"xs"}
                 colorScheme="yellow"
