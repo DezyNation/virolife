@@ -42,7 +42,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [parentUsers, setParentUsers] = useState(parents);
-  
+
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
   const [receiver, setReceiver] = useState({
@@ -59,7 +59,6 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       return null;
     },
   });
-
 
   useEffect(() => {
     fetchMyDonations();
@@ -168,18 +167,17 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       });
   }
 
-  useEffect(()=>{
-    setParentUsers(parents)
-  }, [parents])
+  useEffect(() => {
+    setParentUsers(parents);
+  }, [parents]);
 
   useEffect(() => {
-    if (Array.isArray(parentUsers)) {
+    if (parentUsers?.length) {
       let newData = [...parentUsers];
-      if (newData.length > 0) {
-        newData[0].id = myParentId;
-        setParentUsers(newData);
-      }
+      newData[0].id = myParentId;
+      setParentUsers(newData);
     }
+    console.log(parentUsers)
   }, [parentUsers]);
 
   return (
