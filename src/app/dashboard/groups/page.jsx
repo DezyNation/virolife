@@ -118,7 +118,7 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
         donatable_id: receiver?.id,
         amount: 200,
         remarks: `Donation to ${groupType} group senior  VCF${receiver.id}`,
-        group: groupType
+        group: groupType,
       }
     )
       .then((res) => {
@@ -194,16 +194,28 @@ const MyParents = ({ parentUsers, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {!beneficiaries?.includes(key == 0 ? myParentId : item?.id) ? (
-              <Button
-                size={"xs"}
-                colorScheme="yellow"
-                onClick={() => {
-                  showVideo(item, key);
-                }}
-              >
-                Donate
-              </Button>
+            {key == 0 ? (
+              !beneficiaries?.includes(myParentId) ? (
+                <Button
+                  size={"xs"}
+                  colorScheme="yellow"
+                  onClick={() => {
+                    showVideo(item, key);
+                  }}
+                >
+                  Donate
+                </Button>
+              ) : !beneficiaries?.includes(item?.id) ? (
+                <Button
+                  size={"xs"}
+                  colorScheme="yellow"
+                  onClick={() => {
+                    showVideo(item, key);
+                  }}
+                >
+                  Donate
+                </Button>
+              ) : null
             ) : null}
           </HStack>
         ))}
@@ -730,7 +742,7 @@ const Page = () => {
           description: "Group Joined Successfully!",
         });
         setTimeout(() => {
-          window.location.reload(true)
+          window.location.reload(true);
         }, 400);
       })
       .catch((err) => {
@@ -756,7 +768,7 @@ const Page = () => {
               description: "Group Joined Successfully!",
             });
             setTimeout(() => {
-              window.location.reload(true)
+              window.location.reload(true);
             }, 400);
           })
           .catch((err) => {
@@ -1094,7 +1106,7 @@ const Page = () => {
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-      
+
       <VideoPlayer
         status={videoStatus}
         title={videoData.title}
