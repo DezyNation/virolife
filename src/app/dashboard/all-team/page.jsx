@@ -167,7 +167,7 @@ const page = () => {
           borderColor={"#DADADA"}
         >
           <Text fontWeight={"medium"} textAlign={"center"}>
-            Stars Earned
+            Star Performance
           </Text>
           <Lottie
             options={{
