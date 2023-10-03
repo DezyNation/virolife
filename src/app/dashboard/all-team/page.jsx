@@ -34,6 +34,7 @@ const page = () => {
   const [donations, setDonations] = useState([]);
   const [stars, setStars] = useState(0);
   const [joinedOn, setJoinedOn] = useState("")
+  const [performance, setPerformance] = useState(0)
 
   const { isOpen, onToggle } = useDisclosure();
 
@@ -69,6 +70,7 @@ const page = () => {
       .then((res) => {
         setStars(res?.data[0]?.stars);
         setJoinedOn(res?.data[0]?.created_at);
+        setPerformance(Number(res?.data[0]?.performance));
       })
       .catch((err) => {
         if (err?.response?.status == 401) {
@@ -179,7 +181,7 @@ const page = () => {
             height={200}
           />
           <Text fontWeight={"bold"} fontSize={"2xl"} textAlign={"center"}>
-            {(parseInt(stars)/getMonthsBetweenDates(new Date(joinedOn), new Date()))?.toFixed(2)}
+            {performance?.toFixed(2)}
           </Text>
           <br />
           <Button colorScheme={"yellow"} w={'full'} onClick={onToggle}>Donate Now!</Button>
