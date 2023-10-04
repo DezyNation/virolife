@@ -122,7 +122,7 @@ const Layout = ({ children }) => {
                       <Text>My Campaigns</Text>
                     </HStack>
                   </Link>
-                  {/* <Link href={"/dashboard/collection"}>
+                  <Link href={"/dashboard/collection"}>
                     <HStack gap={4}>
                       <BsCurrencyRupee size={20} />
                       <Text>Collection</Text>
@@ -145,7 +145,7 @@ const Layout = ({ children }) => {
                       <FaHandshake size={20} />
                       <Text>All Team Processing</Text>
                     </HStack>
-                  </Link> */}
+                  </Link>
                   <br />
                   <Link href={"/dashboard/gift-cards"}>
                     <HStack gap={4}>
@@ -153,7 +153,7 @@ const Layout = ({ children }) => {
                       <Text>Gift Cards</Text>
                     </HStack>
                   </Link>
-                  {/* <Link href={"/dashboard/points/transfers"}>
+                  <Link href={"/dashboard/points/transfers"}>
                     <HStack gap={4}>
                       <HiArrowsRightLeft size={20} />
                       <Text>Point Transfers</Text>
@@ -164,7 +164,7 @@ const Layout = ({ children }) => {
                       <GiReceiveMoney size={20} />
                       <Text>Point Withdrawals</Text>
                     </HStack>
-                  </Link> */}
+                  </Link>
                 </VStack>
               ) : (
                 <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>

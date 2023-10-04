@@ -420,7 +420,7 @@ const Navbar = () => {
                       <Link href={"/dashboard/campaigns"}>
                         <Text>My Campaigns</Text>
                       </Link>
-                      {/* <Link href={"/dashboard/collection"}>
+                      <Link href={"/dashboard/collection"}>
                         <Text>Collection</Text>
                       </Link>
                       <Link href={"/dashboard/groups"}>
@@ -431,10 +431,10 @@ const Navbar = () => {
                       </Link>
                       <Link href={"/dashboard/all-team"}>
                         <Text>All Team Funding</Text>
-                      </Link> */}
+                      </Link>
                       <br />
 
-                      {/* <Link href={"/dashboard/points/transfers"}>
+                      <Link href={"/dashboard/points/transfers"}>
                         <HStack gap={4}>
                           <Text>Point Transfers</Text>
                         </HStack>
@@ -443,7 +443,7 @@ const Navbar = () => {
                         <HStack gap={4}>
                           <Text>Point Withdrawals</Text>
                         </HStack>
-                      </Link> */}
+                      </Link>
                     </VStack>
                   ) : (
                     <Link href={"/dashboard/users"}>
