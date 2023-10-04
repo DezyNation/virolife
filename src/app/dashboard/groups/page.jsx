@@ -956,7 +956,7 @@ const Page = () => {
               <Button
                 onClick={() => setPrimaryIdRequested(true)}
                 colorScheme="yellow"
-                isDisabled={primaryJoined}
+                isDisabled={Boolean(primaryJoined)}
               >
                 Activate Primary ID
               </Button>
@@ -966,7 +966,7 @@ const Page = () => {
                   setSecondaryIdRequested(true);
                 }}
                 colorScheme="twitter"
-                isDisabled={secondaryJoined}
+                isDisabled={Boolean(secondaryJoined)}
               >
                 Activate Secondary ID
               </Button>
