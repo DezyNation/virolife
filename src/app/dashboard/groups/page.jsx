@@ -729,6 +729,18 @@ const Page = () => {
   }
 
   function joinSecondaryGroup() {
+    if(paymentMethod == "gateway"){
+      Toast({
+        description: "Payment gateway under development"
+      })
+      return
+    }
+    if(paymentMethod == "giftCard" && !giftCard){
+      Toast({
+        description: "Please enter Gift Card Code"
+      })
+      return
+    }
     BackendAxios.post(
       paymentMethod == "gateway"
         ? `/api/join-group/${joinGroupId}`
@@ -760,6 +772,18 @@ const Page = () => {
   }
 
   function joinPrimaryGroup() {
+    if(paymentMethod == "gateway"){
+      Toast({
+        description: "Payment gateway under development"
+      })
+      return
+    }
+    if(paymentMethod == "giftCard" && !giftCard){
+      Toast({
+        description: "Please enter Gift Card Code"
+      })
+      return
+    }
     paymentMethod == "gateway"
       ? BackendAxios.get(`/api/join-group/${joinGroupId}`)
       : BackendAxios.post(
