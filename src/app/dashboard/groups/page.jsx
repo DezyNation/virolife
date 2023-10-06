@@ -131,7 +131,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
         });
         setQrModal(false);
         setTimeout(() => {
-          window.location.reload(true)
+          window.location.reload(true);
         }, 300);
       })
       .catch((err) => {
@@ -153,7 +153,11 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   function fetchMyDonations() {
     BackendAxios.get(`/api/my-donations`)
       .then((res) => {
-        setBeneficiaries(res.data?.filter(item => item?.group == groupType)?.map((item) => item?.donatable_id));
+        setBeneficiaries(
+          res.data
+            ?.filter((item) => item?.group == groupType)
+            ?.map((item) => item?.donatable_id)
+        );
       })
       .catch((err) => {
         if (err?.response?.status == 401) {
@@ -180,7 +184,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       newData[0].id = parseInt(myParentId);
       setParentUsers(newData);
     }
-    console.log(parentUsers)
+    console.log(parentUsers);
   }, [parentUsers]);
 
   return (
@@ -253,12 +257,13 @@ const MyParents = ({ parents, myParentId, groupType }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
+{videoStatus ?
       <VideoPlayer
         status={videoStatus}
         title={videoData.title}
         onVideoClose={videoData.onVideoClose}
-      />
+      /> : null
+      }
     </>
   );
 };
@@ -732,17 +737,17 @@ const Page = () => {
   }
 
   function joinSecondaryGroup() {
-    if(paymentMethod == "gateway"){
+    if (paymentMethod == "gateway") {
       Toast({
-        description: "Payment gateway under development"
-      })
-      return
+        description: "Payment gateway under development",
+      });
+      return;
     }
-    if(paymentMethod == "giftCard" && !giftCard){
+    if (paymentMethod == "giftCard" && !giftCard) {
       Toast({
-        description: "Please enter Gift Card Code"
-      })
-      return
+        description: "Please enter Gift Card Code",
+      });
+      return;
     }
     BackendAxios.post(
       paymentMethod == "gateway"
@@ -775,17 +780,17 @@ const Page = () => {
   }
 
   function joinPrimaryGroup() {
-    if(paymentMethod == "gateway"){
+    if (paymentMethod == "gateway") {
       Toast({
-        description: "Payment gateway under development"
-      })
-      return
+        description: "Payment gateway under development",
+      });
+      return;
     }
-    if(paymentMethod == "giftCard" && !giftCard){
+    if (paymentMethod == "giftCard" && !giftCard) {
       Toast({
-        description: "Please enter Gift Card Code"
-      })
-      return
+        description: "Please enter Gift Card Code",
+      });
+      return;
     }
     paymentMethod == "gateway"
       ? BackendAxios.get(`/api/join-group/${joinGroupId}`)
@@ -1136,12 +1141,13 @@ const Page = () => {
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-
-      <VideoPlayer
-        status={videoStatus}
-        title={videoData.title}
-        onVideoClose={videoData.onVideoClose}
-      />
+      {videoStatus ? (
+        <VideoPlayer
+          status={videoStatus}
+          title={videoData.title}
+          onVideoClose={videoData.onVideoClose}
+        />
+      ) : null}
       <VerticalSpacer />
     </>
   );
