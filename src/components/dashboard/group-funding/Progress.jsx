@@ -71,12 +71,18 @@ const Progress = () => {
   }
 
   useEffect(() => {
-    const data = steps?.find((step) => step?.round == activeStep + 1)
+    const data = steps?.find((step) => step?.round == activeStep + 1);
     setNextRoundInfo(data);
-    localStorage.setItem("primarySeniorAmount", data?.primary_senior_amount)
-    localStorage.setItem("secondarySeniorAmount", data?.secondary_senior_amount)
-    localStorage.setItem("primaryJuniorAmount", data?.primary_junior_amount)
-    localStorage.setItem("secondaryJuniorAmount", data?.secondary_junior_amount)
+    localStorage.setItem("primarySeniorAmount", data?.primary_senior_amount);
+    localStorage.setItem(
+      "secondarySeniorAmount",
+      data?.secondary_senior_amount
+    );
+    localStorage.setItem("primaryJuniorAmount", data?.primary_junior_amount);
+    localStorage.setItem(
+      "secondaryJuniorAmount",
+      data?.secondary_junior_amount
+    );
   }, [activeStep, steps]);
 
   useEffect(() => {
@@ -110,25 +116,27 @@ const Progress = () => {
       });
   }
 
-  async function fetchUserInfo(){
-    await BackendAxios.get(`/api/total_donation`).then(res => {
-      if (
-        Number(res.data?.total_collection) >=
-        Number(nextRoundInfo?.target_amount)
-      ) {
-        setMyProgress({
-          ...myProgress,
-          collection: true,
+  async function fetchCollectionInfo() {
+    await BackendAxios.get(`/api/total-donation`)
+      .then((res) => {
+        if (
+          Number(res.data?.primary) + Number(res.data?.secondary) >=
+          Number(nextRoundInfo?.target_amount)
+        ) {
+          setMyProgress({
+            ...myProgress,
+            collection: true,
+          });
+        }
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          title: "Error while fetching total collection",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
         });
-      }
-    }).catch(err => {
-      Toast({
-        status: "error",
-        title: "Error while fetching total collection",
-        description:
-          err?.response?.data?.message || err?.response?.data || err?.message,
       });
-    })
   }
 
   async function fetchMyProgress() {
@@ -136,16 +144,10 @@ const Progress = () => {
     await BackendAxios.get(`/auth-user`)
       .then((res) => {
         const userInfo = res.data[0];
-        if (
-          Number(userInfo?.group_collection) >=
-          Number(nextRoundInfo?.target_amount)
-        ) {
-          setMyProgress({
-            ...myProgress,
-            round: userInfo?.round,
-            collection: true,
-          });
-        }
+        setMyProgress({
+          ...myProgress,
+          round: userInfo?.round,
+        });
       })
       .catch((err) => {
         Toast({
@@ -155,6 +157,7 @@ const Progress = () => {
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
+    await fetchCollectionInfo();
     await fetchMySeniorDonations();
     await fetchMyJuniorDonations();
     await fetchCampaignDonations();
