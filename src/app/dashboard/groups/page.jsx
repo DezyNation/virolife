@@ -45,7 +45,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
-  const [amount, setAmount] = useState(200)
+  const [amount, setAmount] = useState(200);
   const [receiver, setReceiver] = useState({
     id: "",
     name: "",
@@ -62,7 +62,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   });
 
   useEffect(() => {
-    setAmount(localStorage.getItem(`${groupType}SeniorAmount`))
+    setAmount(localStorage.getItem(`${groupType}SeniorAmount`));
     fetchMyDonations();
   }, []);
 
@@ -231,9 +231,14 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       <Modal size={"xs"} isOpen={qrModal} onClose={() => setQrModal(false)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Donate ₹{amount} to {receiver.name}</ModalHeader>
+          <ModalHeader>
+            Donate ₹{amount} to {receiver.name}
+          </ModalHeader>
           <ModalBody alignItems={"center"} justifyContent={"center"}>
-            <QRCode size={256} value={`upi://pay?cu=INR&pa=${upi}&am=${amount}`} />
+            <QRCode
+              size={256}
+              value={`upi://pay?cu=INR&pa=${upi}&am=${amount}`}
+            />
             <br />
             <Text textAlign={"center"}>Pay with any UPI app</Text>
             <Image
@@ -254,13 +259,13 @@ const MyParents = ({ parents, myParentId, groupType }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-{videoStatus ?
-      <VideoPlayer
-        status={videoStatus}
-        title={videoData.title}
-        onVideoClose={videoData.onVideoClose}
-      /> : null
-      }
+      {videoStatus ? (
+        <VideoPlayer
+          status={videoStatus}
+          title={videoData.title}
+          onVideoClose={videoData.onVideoClose}
+        />
+      ) : null}
     </>
   );
 };
