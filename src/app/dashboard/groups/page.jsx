@@ -130,6 +130,9 @@ const MyParents = ({ parents, myParentId, groupType }) => {
           description: "Notification sent to senior",
         });
         setQrModal(false);
+        setTimeout(() => {
+          window.location.reload(true)
+        }, 300);
       })
       .catch((err) => {
         if (err?.response?.status == 401) {
