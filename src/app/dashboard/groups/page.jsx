@@ -184,7 +184,6 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       newData[0].id = parseInt(myParentId);
       setParentUsers(newData);
     }
-    console.log(parentUsers);
   }, [parentUsers]);
 
   return (
@@ -566,10 +565,6 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
         });
       });
   }
-
-  useEffect(() => {
-    console.log(groupMembers);
-  }, [groupMembers]);
 
   return (
     <>
