@@ -175,10 +175,6 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   }
 
   useEffect(() => {
-    setParentUsers(parents);
-  }, [parents]);
-
-  useEffect(() => {
     if (parentUsers?.length) {
       let newData = [...parentUsers];
       newData[0].id = parseInt(myParentId);
