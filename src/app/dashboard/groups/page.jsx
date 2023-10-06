@@ -45,6 +45,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   const [qrModal, setQrModal] = useState(false);
   const [upi, setUpi] = useState("");
+  const [amount, setAmount] = useState(200)
   const [receiver, setReceiver] = useState({
     id: "",
     name: "",
@@ -61,6 +62,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   });
 
   useEffect(() => {
+    setAmount(localStorage.getItem(`${groupType}SeniorAmount`))
     fetchMyDonations();
   }, []);
 
@@ -118,7 +120,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
         : `/api/donation`,
       {
         donatable_id: receiver?.id,
-        amount: 200,
+        amount: amount,
         remarks: `Donation to ${groupType} group senior  VCF${receiver.id}`,
         group: groupType,
       }
@@ -229,9 +231,9 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       <Modal size={"xs"} isOpen={qrModal} onClose={() => setQrModal(false)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Donate ₹200 to {receiver.name}</ModalHeader>
+          <ModalHeader>Donate ₹{amount} to {receiver.name}</ModalHeader>
           <ModalBody alignItems={"center"} justifyContent={"center"}>
-            <QRCode size={256} value={`upi://pay?cu=INR&pa=${upi}`} />
+            <QRCode size={256} value={`upi://pay?cu=INR&pa=${upi}&am=${amount}`} />
             <br />
             <Text textAlign={"center"}>Pay with any UPI app</Text>
             <Image
