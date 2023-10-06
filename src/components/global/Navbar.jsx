@@ -26,31 +26,22 @@ import {
   DrawerHeader,
   DrawerCloseButton,
   DrawerBody,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionIcon,
-  AccordionPanel,
   useToast,
   InputGroup,
   InputRightElement,
   DrawerFooter,
-  InputRightAddon,
   InputLeftElement,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { BiMenuAltLeft } from "react-icons/bi";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useFormik } from "formik";
 import BackendAxios, { DefaultAxios, FormAxios } from "@/utils/axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Cookies from "js-cookie";
-import { useJwt, decodeToken, isExpired } from "react-jwt";
+import { isExpired } from "react-jwt";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import { GiChestnutLeaf } from "react-icons/gi";
-import { FaHandshake } from "react-icons/fa";
 
 const Navbar = () => {
   const Toast = useToast({ position: "top-right" });
@@ -608,7 +599,6 @@ const Navbar = () => {
                   src="/gmail.png"
                   w={20}
                   cursor={"pointer"}
-                  onClick={() => signIn("google")}
                 />
               </VStack>
             </Stack>
@@ -776,7 +766,6 @@ const Navbar = () => {
                   src="/gmail.png"
                   w={20}
                   cursor={"pointer"}
-                  onClick={() => signIn("google")}
                 />
               </VStack>
             </Stack>

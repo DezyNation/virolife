@@ -58,8 +58,9 @@ const Layout = ({ children }) => {
         // removeCookie("jwt")
         Cookies.remove("jwt");
         localStorage.clear();
+      }).finally(()=>{
+        Router.replace("/");
       });
-    Router.replace("/");
   }
 
   useEffect(() => {
