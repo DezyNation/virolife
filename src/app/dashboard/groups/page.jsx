@@ -209,7 +209,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {!beneficiaries?.includes(item?.id) ? (
+            {!beneficiaries?.filter(item => item?.group == groupType)?.includes(item?.id) ? (
               <Button
                 size={"xs"}
                 colorScheme="yellow"
