@@ -112,9 +112,9 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
                 >
                   <iframe
                     src={link}
-                    height={"100%"}
-                    width={"100%"}
-                    style={{ width: "100%", height: "100%", border: "none" }}
+                    height={"inherit"}
+                    width={"inherit"}
+                    style={{ width: "inherit", height: "inherit", border: "none" }}
                   ></iframe>
                 </Box>
               )}
