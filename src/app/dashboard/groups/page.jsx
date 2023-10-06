@@ -280,7 +280,7 @@ const NestedChildren = ({ data, donors, level, currentLevel = 1 }) => {
             name={item?.name}
             id={item?.id}
             phone_number={item?.phone_number}
-            donation_received={donors?.includes(item?.id) ? true : false}
+            donation_received={donors?.includes(item?.id)}
           />
         ))}
       </>

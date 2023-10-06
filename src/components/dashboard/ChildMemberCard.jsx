@@ -17,11 +17,11 @@ const ChildMemberCard = ({ name, id, phone_number, donation_received }) => {
               {id} &nbsp; | &nbsp; Phone: {phone_number?.slice(0,9)}
             </Text>
           </Box>
-            {donation_received ? (
+            {donation_received ? null : (
               <Button size={"xs"} variant={"ghost"} colorScheme="yellow">
                 Donated
               </Button>
-            ) : null}
+            )}
         </HStack>
       </HStack>
     </>
