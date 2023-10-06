@@ -90,7 +90,7 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
         closeOnEsc={false}
         onClose={onVideoClose}
         isCentered
-        size={["full", "4xl"]}
+        size={["full", "6xl"]}
       >
         <ModalOverlay />
         <ModalContent bgColor={"transparent"} boxShadow={"none"}>
@@ -105,16 +105,16 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
                 </Text>
               ) : (
                 <Box
-                  w={["full", "70vw", "80vw"]}
+                  w={["full", "90vw", "90vw"]}
                   height={["480px", "560px"]}
                   rounded={16}
                   overflow={"hidden"}
                 >
                   <iframe
                     src={link}
-                    height={"inherit"}
-                    width={"inherit"}
-                    style={{ width: "inherit", height: "inherit", border: "none" }}
+                    height={"100%"}
+                    width={"90%"}
+                    style={{ border: "none" }}
                   ></iframe>
                 </Box>
               )}
