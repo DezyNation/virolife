@@ -27,8 +27,11 @@ import Cookies from "js-cookie";
 import useAuth from "@/utils/hooks/useAuth";
 
 const DashboardHome = () => {
+  const Toast = useToast();
   const { fetchMyInfo, authUser, myRole } = useAuth();
   const [sessionExpired, setSessionExpired] = useState(false);
+
+  const [collections, setCollections] = useState(null);
 
   useEffect(() => {
     setSessionExpired(isExpired(Cookies.get("jwt")));
@@ -38,6 +41,24 @@ const DashboardHome = () => {
     fetchMyInfo();
   }, []);
 
+  useEffect(() => {
+    fetchCollections();
+  }, []);
+
+  function fetchCollections() {
+    BackendAxios.get(`/api/total-donation`)
+      .then((res) => {
+        setCollections(res.data);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          title: "Error while fetching total collection",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
 
   if (sessionExpired) {
     return (
@@ -72,9 +93,14 @@ const DashboardHome = () => {
           />
           <StatsCard
             icon={<BsCurrencyRupee size={28} />}
-            title={"self earning"}
+            title={"primary collection"}
+            quantity={collections?.primary}
           />
-          <StatsCard icon={<BsCashCoin size={28} />} title={"amount settled"} />
+          <StatsCard
+            icon={<BsCurrencyRupee size={28} />}
+            title={"secondary collection"}
+            quantity={collections?.secondary}
+          />
         </Stack>
       ) : (
         <Stack
