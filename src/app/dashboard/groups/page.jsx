@@ -150,7 +150,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   function fetchMyDonations() {
     BackendAxios.get(`/api/my-donations`)
       .then((res) => {
-        setBeneficiaries(res.data?.map((item) => item?.donatable_id));
+        setBeneficiaries(res.data?.filter(item => item?.group == groupType)?.map((item) => item?.donatable_id));
       })
       .catch((err) => {
         if (err?.response?.status == 401) {
@@ -209,7 +209,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {!beneficiaries?.filter(item => item?.group == groupType)?.includes(item?.id) ? (
+            {!beneficiaries?.includes(item?.id) ? (
               <Button
                 size={"xs"}
                 colorScheme="yellow"
