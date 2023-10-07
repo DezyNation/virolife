@@ -73,12 +73,12 @@ const Progress = () => {
   useEffect(() => {
     const data = steps?.find((step) => step?.round == activeStep + 1);
     setNextRoundInfo(data);
-    localStorage.setItem("primarySeniorAmount", Number(data?.primary_senior_amount);)
+    localStorage.setItem("primarySeniorAmount", Number(data?.primary_senior_amount))
     localStorage.setItem(
       "secondarySeniorAmount",
       Number(data?.secondary_senior_amount)
     );
-    localStorage.setItem("primaryJuniorAmount", Number(data?.primary_junior_amount);)
+    localStorage.setItem("primaryJuniorAmount", Number(data?.primary_junior_amount))
     localStorage.setItem(
       "secondaryJuniorAmount",
       Number(data?.secondary_junior_amount)
