@@ -183,7 +183,7 @@ const Progress = () => {
       .then((res) => {
         let sum = 0;
         const amounts = res.data?.map((item) => parseInt(item?.amount));
-        amounts?.forEach((amt) => (sum += amt));
+        amounts?.forEach((amt) => (sum += Number(amt)));
 
         if (
           res.data?.length >=
@@ -216,7 +216,7 @@ const Progress = () => {
       .then((res) => {
         let sum = 0;
         const amounts = res.data?.map((item) => parseInt(item?.amount));
-        amounts?.forEach((amt) => (sum += amt));
+        amounts?.forEach((amt) => (sum += Number(amt)));
 
         if (
           res.data?.length >=
@@ -247,7 +247,7 @@ const Progress = () => {
       .then((res) => {
         let sum = 0;
         const amounts = res.data?.map((item) => parseInt(item?.amount));
-        amounts?.forEach((amt) => (sum += amt));
+        amounts?.forEach((amt) => (sum += Number(amt)));
 
         if (
           res.data?.length >= nextRoundInfo?.campaign_count &&
