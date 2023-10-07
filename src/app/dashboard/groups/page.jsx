@@ -62,7 +62,12 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   });
 
   useEffect(() => {
-    setAmount(localStorage.getItem(`${groupType}SeniorAmount`));
+    if(groupType == "primary"){
+      setAmount(localStorage.getItem(`primarySeniorAmount`));
+    }
+    if(groupType == "secondary"){
+      setAmount(localStorage.getItem(`secondarySeniorAmount`));
+    }
     fetchMyDonations();
   }, []);
 
