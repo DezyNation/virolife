@@ -62,20 +62,21 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   });
 
   useEffect(() => {
-    if(groupType == "primary"){
-      let amt = parseInt(localStorage.getItem(`primarySeniorAmount`))
+    let amt = 0;
+    if (groupType == "primary") {
+      amt = localStorage.getItem(`primarySeniorAmount`);
       setAmount(amt);
     }
-    if(groupType == "secondary"){
-      let amt = parseInt(localStorage.getItem(`secondarySeniorAmount`))
+    if (groupType == "secondary") {
+      amt = localStorage.getItem(`secondarySeniorAmount`);
       setAmount(amt);
     }
     fetchMyDonations();
   }, []);
 
-  useEffect(()=>{
-    console.log(amount)
-  },[amount])
+  useEffect(() => {
+    console.log(groupType + " " + amount);
+  }, [amount]);
 
   function showVideo(user, key) {
     setVideoStatus(true);
