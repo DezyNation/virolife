@@ -76,7 +76,7 @@ const Progress = () => {
   }, [activeStep, steps]);
 
   useEffect(() => {
-    if (nextRoundInfo) {
+    if (nextRoundInfo?.id) {
       const data = nextRoundInfo;
       localStorage.setItem(
         "primarySeniorAmount",
