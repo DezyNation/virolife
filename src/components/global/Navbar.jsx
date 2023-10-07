@@ -425,6 +425,11 @@ const Navbar = () => {
                       </Link>
                       <br />
 
+                      <Link href={"/dashboard/gift-cards"}>
+                        <HStack gap={4}>
+                          <Text>Gift Cards</Text>
+                        </HStack>
+                      </Link>
                       <Link href={"/dashboard/points/transfers"}>
                         <HStack gap={4}>
                           <Text>Point Transfers</Text>
