@@ -230,7 +230,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {!beneficiaries?.includes(item?.id) ? (
+            {!beneficiaries?.includes(item?.id) && amount > 0 ? (
               <Button
                 size={"xs"}
                 colorScheme="yellow"
