@@ -40,6 +40,8 @@ import Cookies from "js-cookie";
 const MyParents = ({ parents, myParentId, groupType }) => {
   const Toast = useToast({ position: "top-right" });
 
+  const [showDonateBtn, setShowDonateBtn] = useState(false)
+
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [parentUsers, setParentUsers] = useState(parents);
 
@@ -80,7 +82,11 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   }, []);
 
   useEffect(() => {
-    console.log(groupType + " " + amount);
+    if(parseInt(amount) > 0){
+      setShowDonateBtn(true)
+    } else {
+      setShowDonateBtn(false)
+    }
   }, [amount]);
 
   function showVideo(user, key) {
@@ -230,7 +236,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {!beneficiaries?.includes(item?.id) && amount > 0 ? (
+            {!beneficiaries?.includes(item?.id) && showDonateBtn ? (
               <Button
                 size={"xs"}
                 colorScheme="yellow"
