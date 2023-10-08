@@ -1058,6 +1058,7 @@ const Page = () => {
                     onChange={(e) => setJoinGroupId(e.target.value)}
                     variant={"flushed"}
                     placeholder="Enter Senior ID To Join"
+                    value={joinGroupId}
                     isDisabled={onHold}
                   />
                   <InputRightAddon
