@@ -82,7 +82,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   }, []);
 
   useEffect(() => {
-    const onHold = localStorage.getItem("onHold");
+    const onHold = parseInt(localStorage.getItem("onHold")) === 1;
     if (parseInt(amount) > 0 && !onHold) {
       setShowDonateBtn(true);
     } else {
@@ -719,7 +719,7 @@ const Page = () => {
   const [giftCard, setGiftCard] = useState("");
 
   useEffect(() => {
-    const idHold = localStorage.getItem("onHold");
+    const idHold = parseInt(localStorage.getItem("onHold")) === 1;
     setOnHold(idHold);
     if (idHold) {
       setJoinGroupId(localStorage.getItem("primaryParentId"));
