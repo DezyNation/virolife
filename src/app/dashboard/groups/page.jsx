@@ -720,9 +720,11 @@ const Page = () => {
 
   useEffect(() => {
     const idHold = parseInt(localStorage.getItem("onHold")) === 1;
+    const primSenId = localStorage.getItem("primaryParentId")
     setOnHold(idHold);
     if (idHold) {
-      setJoinGroupId(localStorage.getItem("primaryParentId"));
+      setJoinGroupId(primSenId);
+      getUserInfo(primSenId)
       setPrimaryIdRequested(true);
       onOpen();
     }
