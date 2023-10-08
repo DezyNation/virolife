@@ -749,7 +749,7 @@ const Page = () => {
   }, []);
 
   function getUserInfo(id) {
-    BackendAxios.get(`/api/users/${joinGroupId}`)
+    BackendAxios.get(`/api/users/${id || joinGroupId}`)
       .then((res) => {
         if (res.data?.length) {
           setUserInfo(res.data[0]);
