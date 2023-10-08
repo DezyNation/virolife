@@ -724,7 +724,7 @@ const Page = () => {
     if (idHold) {
       setJoinGroupId(localStorage.getItem("primaryParentId"));
       setPrimaryIdRequested(true);
-      isOpen();
+      onOpen();
     }
     fetchPrimaryParents();
     fetchSecondaryParents();
