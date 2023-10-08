@@ -40,7 +40,7 @@ import Cookies from "js-cookie";
 const MyParents = ({ parents, myParentId, groupType }) => {
   const Toast = useToast({ position: "top-right" });
 
-  const [showDonateBtn, setShowDonateBtn] = useState(false)
+  const [showDonateBtn, setShowDonateBtn] = useState(false);
 
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [parentUsers, setParentUsers] = useState(parents);
@@ -72,20 +72,21 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     if (groupType == "primary") {
       amt = localStorage.getItem(`primarySeniorAmount`);
       setAmount(amt);
-      return
+      return;
     }
     if (groupType == "secondary") {
       amt = localStorage.getItem(`secondarySeniorAmount`);
       setAmount(amt);
-      return
+      return;
     }
   }, []);
 
   useEffect(() => {
-    if(parseInt(amount) > 0){
-      setShowDonateBtn(true)
+    const onHold = localStorage.getItem("onHold");
+    if (parseInt(amount) > 0 && !onHold) {
+      setShowDonateBtn(true);
     } else {
-      setShowDonateBtn(false)
+      setShowDonateBtn(false);
     }
   }, [amount]);
 
@@ -683,6 +684,7 @@ const Page = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [joinGroupId, setJoinGroupId] = useState("");
   const [invitationModal, setInvitationModal] = useState(false);
+  const [onHold, setOnHold] = useState(false);
 
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -717,6 +719,13 @@ const Page = () => {
   const [giftCard, setGiftCard] = useState("");
 
   useEffect(() => {
+    const idHold = localStorage.getItem("onHold");
+    setOnHold(idHold);
+    if (idHold) {
+      setJoinGroupId(localStorage.getItem("primaryParentId"));
+      setPrimaryIdRequested(true);
+      isOpen();
+    }
     fetchPrimaryParents();
     fetchSecondaryParents();
     fetchMyCollections();
@@ -1005,7 +1014,13 @@ const Page = () => {
         <ModalContent>
           <ModalHeader textAlign={"center"}>Join Group</ModalHeader>
           <ModalBody alignItems={"center"} justifyContent={"center"}>
-            <HStack>
+            {onHold ? (
+              <Text>
+                Your ID is on hold. Please pay joining fees to continue sending
+                and receiving donations.
+              </Text>
+            ) : null}
+            <HStack py={4}>
               <Button
                 onClick={() => setPrimaryIdRequested(true)}
                 colorScheme="yellow"
@@ -1013,16 +1028,18 @@ const Page = () => {
               >
                 Activate Primary ID
               </Button>
-              <Button
-                onClick={() => {
-                  setJoinGroupId("secondary");
-                  setSecondaryIdRequested(true);
-                }}
-                colorScheme="twitter"
-                isDisabled={Boolean(secondaryJoined)}
-              >
-                Activate Secondary ID
-              </Button>
+              {onHold ? null : (
+                <Button
+                  onClick={() => {
+                    setJoinGroupId("secondary");
+                    setSecondaryIdRequested(true);
+                  }}
+                  colorScheme="twitter"
+                  isDisabled={Boolean(secondaryJoined)}
+                >
+                  Activate Secondary ID
+                </Button>
+              )}
             </HStack>
             <br />
             {primaryIdRequested ? (
@@ -1039,6 +1056,7 @@ const Page = () => {
                     onChange={(e) => setJoinGroupId(e.target.value)}
                     variant={"flushed"}
                     placeholder="Enter Senior ID To Join"
+                    isDisabled={onHold}
                   />
                   <InputRightAddon
                     bgColor={"#FFF"}
@@ -1169,6 +1187,7 @@ const Page = () => {
           onVideoClose={videoData.onVideoClose}
         />
       ) : null}
+
       <VerticalSpacer />
     </>
   );

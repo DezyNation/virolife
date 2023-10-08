@@ -15,6 +15,7 @@ const useAuth = () => {
         setAuthUser(res.data[0]);
         localStorage.setItem("userName", res.data[0]?.name);
         localStorage.setItem("userId", res.data[0]?.id);
+        localStorage.setItem("onHold", res.data[0]?.on_hold);
         localStorage.setItem("primaryActive", res.data[0]?.primary_activated);
         localStorage.setItem(
           "secondaryActive",
