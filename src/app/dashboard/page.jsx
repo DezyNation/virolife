@@ -32,6 +32,10 @@ const DashboardHome = () => {
   const [sessionExpired, setSessionExpired] = useState(false);
 
   const [collections, setCollections] = useState(null);
+  const [team, setTeam] = useState({
+    primary: [],
+    secondary: [],
+  });
 
   useEffect(() => {
     setSessionExpired(isExpired(Cookies.get("jwt")));
@@ -45,6 +49,10 @@ const DashboardHome = () => {
     fetchCollections();
   }, []);
 
+  useEffect(() => {
+    fetchMyTeam();
+  }, []);
+
   function fetchCollections() {
     BackendAxios.get(`/api/total-donation`)
       .then((res) => {
@@ -54,6 +62,21 @@ const DashboardHome = () => {
         Toast({
           status: "error",
           title: "Error while fetching total collection",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
+  function fetchMyTeam(groupType) {
+    BackendAxios.get(`/api/user/direct-junior/${groupType}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          title: "Error while fetching your team members",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
