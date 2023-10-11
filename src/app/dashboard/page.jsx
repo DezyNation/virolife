@@ -50,8 +50,7 @@ const DashboardHome = () => {
   }, []);
 
   useEffect(() => {
-    fetchMyTeam("primary");
-    fetchMyTeam("secondary");
+    fetchMyTeam();
   }, []);
 
   function fetchCollections() {
@@ -70,20 +69,14 @@ const DashboardHome = () => {
   }
 
   function fetchMyTeam(groupType) {
-    BackendAxios.get(`/api/user/direct-junior/${groupType}`)
+    BackendAxios.get(`/api/user/direct-junior`)
       .then((res) => {
-        if(groupType == "primary"){
           setTeam((prev) => ({
             ...prev,
-            primary: res.data
+            primary: res.data?.primary,
+            secondary: res.data?.secondary
           }))
-        }
-        else{
-          setTeam((prev) => ({
-            ...prev,
-            secondary: res.data
-          }))
-        }
+        
       })
       .catch((err) => {
         Toast({
