@@ -33,8 +33,8 @@ const page = () => {
   const Toast = useToast({ position: "top-right" });
   const [donations, setDonations] = useState([]);
   const [stars, setStars] = useState(0);
-  const [joinedOn, setJoinedOn] = useState("")
-  const [performance, setPerformance] = useState(0)
+  const [joinedOn, setJoinedOn] = useState("");
+  const [performance, setPerformance] = useState(0);
 
   const { isOpen, onToggle } = useDisclosure();
 
@@ -45,6 +45,17 @@ const page = () => {
     fetchVirolifeDonations();
     fetchMyInfo();
   }, []);
+
+  function getMonthsBetweenDates(joiningDate) {
+    const startDate = new Date(joiningDate);
+    const endDate = new Date();
+    var startYear = startDate.getFullYear();
+    var startMonth = startDate.getMonth();
+    var endYear = endDate.getFullYear();
+    var endMonth = endDate.getMonth();
+
+    return (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
+  }
 
   function fetchVirolifeDonations() {
     BackendAxios.get(`/api/user/donation/donate-virolife?purpose=all-team`)
@@ -70,7 +81,9 @@ const page = () => {
       .then((res) => {
         setStars(res?.data[0]?.stars);
         setJoinedOn(res?.data[0]?.created_at);
-        setPerformance(Number(res?.data[0]?.performance));
+        setPerformance(res?.data[0]?.performance);
+        // const monthDiff = getMonthsBetweenDates(res?.data[0]?.created_at);
+        // setPerformance((Number(res?.data[0]?.stars) / monthDiff));
       })
       .catch((err) => {
         if (err?.response?.status == 401) {
@@ -98,11 +111,11 @@ const page = () => {
     BackendAxios.post(`/api/gift/redeem/viroteam`, {
       purpose: "all-team",
       code: giftCard,
-      amount: 210
+      amount: 210,
     })
       .then((res) => {
-        onToggle()
-        fetchVirolifeDonations()
+        onToggle();
+        fetchVirolifeDonations();
         Toast({
           status: "success",
           description: "Donated successfully!",
@@ -116,15 +129,6 @@ const page = () => {
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
-  }
-
-  function getMonthsBetweenDates(startDate, endDate) {
-    var startYear = startDate.getFullYear();
-    var startMonth = startDate.getMonth();
-    var endYear = endDate.getFullYear();
-    var endMonth = endDate.getMonth();
-
-    return (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
   }
 
   return (
@@ -184,7 +188,9 @@ const page = () => {
             {performance?.toFixed(2)}
           </Text>
           <br />
-          <Button colorScheme={"yellow"} w={'full'} onClick={onToggle}>Donate Now!</Button>
+          <Button colorScheme={"yellow"} w={"full"} onClick={onToggle}>
+            Donate Now!
+          </Button>
         </Box>
       </Stack>
 
@@ -214,7 +220,8 @@ const page = () => {
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("giftCard")}
-                cursor={'pointer'} fontWeight={'semibold'}
+                cursor={"pointer"}
+                fontWeight={"semibold"}
               >
                 Pay with Gift PIN
               </Text>
@@ -222,7 +229,8 @@ const page = () => {
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("gateway")}
-                cursor={'pointer'} fontWeight={'semibold'}
+                cursor={"pointer"}
+                fontWeight={"semibold"}
               >
                 Pay with PhonePe
               </Text>
