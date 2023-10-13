@@ -104,9 +104,10 @@ const ProductData = ({ campaign }) => {
           >
             {campaign?.name}
           </Text>
-          <Text pb={8}>
-            Price: ₹{campaign?.price}
+          <Text fontSize={"lg"} fontWeight={"medium"}>
+            ₹{campaign?.price}
           </Text>
+          <Text pb={8}>Price: ₹{campaign?.price}</Text>
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
               src={selectedImg}
@@ -175,6 +176,10 @@ const ProductData = ({ campaign }) => {
                 Buy This Product
               </Text>
               <br />
+              <Text fontSize={"lg"} fontWeight={"medium"}>
+                ₹{campaign?.price}
+              </Text>
+              <br />
               {/* <Progress value={80} colorScheme="yellow" />
               <HStack justifyContent={"space-between"}>
                 <Text fontSize={"xs"}>
@@ -185,7 +190,7 @@ const ProductData = ({ campaign }) => {
                 </Text>
               </HStack> */}
               <br />
-              
+
               <Button w={"full"} colorScheme="yellow">
                 Buy Now
               </Button>
@@ -242,7 +247,7 @@ const ProductData = ({ campaign }) => {
                 <Text fontSize={"xs"}>₹{campaign?.target_amount}</Text>
               </HStack>
               <br /> */}
-              
+
               <Button w={"full"} colorScheme="yellow">
                 Buy Now
               </Button>
