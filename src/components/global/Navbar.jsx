@@ -342,9 +342,16 @@ const Navbar = () => {
               </Box>
             </Link>
             {sessionExpired ? null : (
-              <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
-                Redeem Points
-              </Box>
+              <Link href={"/store"}>
+                <Box
+                  cursor={"pointer"}
+                  mr={4}
+                  fontSize={"lg"}
+                  className="serif"
+                >
+                  Redeem Points
+                </Box>
+              </Link>
             )}
             <Link href={"/contact"}>
               <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
@@ -451,11 +458,11 @@ const Navbar = () => {
               <Link href={"/blogs"}>
                 <Text>Blog</Text>
               </Link>
-              {/* {sessionExpired ? null : (
-                <Link href={"#"}>
+              {sessionExpired ? null : (
+                <Link href={"/store"}>
                   <Text>Redeem Points</Text>
                 </Link>
-              )} */}
+              )}
               <HStack w={"full"}>
                 <Image
                   src="/whatsapp.png"
@@ -600,11 +607,7 @@ const Navbar = () => {
               </VStack>
               <VStack w={["full", "xs"]} gap={8}>
                 <Text textAlign={"center"}>Or Login With</Text>
-                <Image
-                  src="/gmail.png"
-                  w={20}
-                  cursor={"pointer"}
-                />
+                <Image src="/gmail.png" w={20} cursor={"pointer"} />
               </VStack>
             </Stack>
           </ModalBody>
@@ -767,11 +770,7 @@ const Navbar = () => {
               </VStack>
               <VStack w={["full", "xs"]} gap={8}>
                 <Text textAlign={"center"}>Or Register With</Text>
-                <Image
-                  src="/gmail.png"
-                  w={20}
-                  cursor={"pointer"}
-                />
+                <Image src="/gmail.png" w={20} cursor={"pointer"} />
               </VStack>
             </Stack>
           </ModalBody>
