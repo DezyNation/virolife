@@ -22,13 +22,16 @@ export async function POST(req, res) {
 
   try {
     const response = await razorpay.orders.create(options);
-    await res.status(200).json({
-      id: response.id,
-      currency: response.currency,
-      amount: response.amount,
-    });
+    return new Response(
+      JSON.stringify({
+        id: response.id,
+        currency: response.currency,
+        amount: response.amount,
+      }),
+      { status: 200 }
+    );
   } catch (err) {
     console.log(err);
-    await res.status(400).json(err);
+    return new Response(err, { status: 500 });
   }
 }
