@@ -46,7 +46,7 @@ const Plan = ({
   const [parentId, setParentId] = useState("");
   const [referralId, setReferralId] = useState("");
 
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("gateway");
   const [giftCard, setGiftCard] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();

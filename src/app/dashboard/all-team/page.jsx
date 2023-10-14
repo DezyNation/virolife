@@ -41,7 +41,7 @@ const page = () => {
 
   const { isOpen, onToggle } = useDisclosure();
 
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("gateway");
   const [giftCard, setGiftCard] = useState("");
 
   useEffect(() => {
