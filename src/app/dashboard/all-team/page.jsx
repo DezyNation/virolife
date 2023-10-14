@@ -28,9 +28,12 @@ import Lottie from "react-lottie";
 import * as animationData from "../../../../public/star.json";
 import BackendAxios from "@/utils/axios";
 import Cookies from "js-cookie";
+import useRazorpay from "@/utils/hooks/useRazorpay";
 
 const page = () => {
   const Toast = useToast({ position: "top-right" });
+  const { payWithRazorpay } = useRazorpay();
+
   const [donations, setDonations] = useState([]);
   const [stars, setStars] = useState(0);
   const [joinedOn, setJoinedOn] = useState("");
@@ -38,13 +41,19 @@ const page = () => {
 
   const { isOpen, onToggle } = useDisclosure();
 
-  const [paymentMethod, setPaymentMethod] = useState("gateway");
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [giftCard, setGiftCard] = useState("");
 
   useEffect(() => {
     fetchVirolifeDonations();
     fetchMyInfo();
   }, []);
+
+  useEffect(() => {
+    if (paymentMethod == "gateway") {
+      setGiftCard("");
+    }
+  }, [paymentMethod]);
 
   function getMonthsBetweenDates(joiningDate) {
     const startDate = new Date(joiningDate);
@@ -101,17 +110,29 @@ const page = () => {
       });
   }
 
-  function donate() {
-    if (paymentMethod == "gateway") {
-      Toast({
-        description: "Payment gateway is not supported yet!",
-      });
-      return;
-    }
+  async function handlePayment() {
+    payWithRazorpay({
+      amount: 210,
+      onSuccess: (trnxnId) => {
+        donate(trnxnId);
+      },
+      onFail: () => {
+        Toast({
+          status: "error",
+          title: "Payment Failed",
+          description: "There was an error loading Razorpay checkout",
+        });
+      },
+    });
+  }
+
+  function donate(transactionId) {
     BackendAxios.post(`/api/gift/redeem/viroteam`, {
       purpose: "all-team",
       code: giftCard,
       amount: 210,
+      paymentMethod: paymentMethod,
+      transactionId: transactionId,
     })
       .then((res) => {
         onToggle();
@@ -235,7 +256,16 @@ const page = () => {
                 Pay with PhonePe
               </Text>
             )}
-            <Button colorScheme="yellow" onClick={donate}>
+            <Button
+              colorScheme="yellow"
+              onClick={() => {
+                if (paymentMethod == "gateway") {
+                  handlePayment();
+                } else {
+                  donate();
+                }
+              }}
+            >
               Donate
             </Button>
           </ModalFooter>

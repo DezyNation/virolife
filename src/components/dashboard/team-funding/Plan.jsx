@@ -1,5 +1,6 @@
 "use client";
 import BackendAxios from "@/utils/axios";
+import useRazorpay from "@/utils/hooks/useRazorpay";
 import {
   Box,
   Button,
@@ -39,20 +40,22 @@ const Plan = ({
   onClick,
 }) => {
   const Toast = useToast({ position: "top-right" });
+  const { payWithRazorpay } = useRazorpay();
+
   const [isLoading, setIsLoading] = useState(false);
   const [parentId, setParentId] = useState("");
   const [referralId, setReferralId] = useState("");
 
-  const [paymentMethod, setPaymentMethod] = useState("gateway");
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [giftCard, setGiftCard] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(()=>{
-    if(paymentMethod == "gateway"){
-      setGiftCard("")
+  useEffect(() => {
+    if (paymentMethod == "gateway") {
+      setGiftCard("");
     }
-  },[paymentMethod])
+  }, [paymentMethod]);
 
   function verifyUser(userId) {
     if (!userId) {
@@ -83,19 +86,30 @@ const Plan = ({
       });
   }
 
-  async function handleClick() {
+  async function handlePayment() {
+    await payWithRazorpay({
+      amount: price,
+      description: `Join ${title} at Virolife`,
+      onSuccess: (trnxnId) => {
+        handleClick(trnxnId);
+      },
+      onFail: () => {
+        Toast({
+          status: "error",
+          title: "Payment Failed",
+          description: "There was an error loading Razorpay checkout",
+        });
+      },
+    });
+  }
+
+  async function handleClick(transactionId) {
     if (!parentId) return;
-    if (paymentMethod == "gateway") {
-      Toast({
-        description: "Payment gateway is under development",
-      });
-      return;
-    }
     if (paymentMethod == "gift" && !giftCard) {
       Toast({
         description: "Enter gift card number to proceed with payment.",
       });
-      return
+      return;
     }
     if (
       parentId == localStorage.getItem("userId") ||
@@ -112,7 +126,8 @@ const Plan = ({
       parentId: parentId,
       referralId: referralId,
       paymentMethod: paymentMethod,
-      giftCard: giftCard
+      giftCard: giftCard,
+      transactionId: transactionId,
     })
       .then((res) => {
         Toast({
@@ -245,13 +260,13 @@ const Plan = ({
               color={"twitter.500"}
             >
               {paymentMethod == "gateway"
-                ? "You'll be paying through PhonePe Payment Gateway"
+                ? "You'll be paying through Razorpay Payment Gateway"
                 : "Enter Gift Card No."}
             </Text>
 
             {paymentMethod === "gift" && (
-              <HStack py={4} gap={4} w={'full'} justifyContent={'center'}>
-                <PinInput otp onComplete={(value)=>setGiftCard(value)}>
+              <HStack py={4} gap={4} w={"full"} justifyContent={"center"}>
+                <PinInput otp onComplete={(value) => setGiftCard(value)}>
                   <PinInputField bgColor={"aqua"} />
                   <PinInputField bgColor={"aqua"} />
                   <PinInputField bgColor={"aqua"} />
@@ -264,14 +279,16 @@ const Plan = ({
 
             {paymentMethod == "gateway" ? (
               <Text
-                textAlign={"center"} cursor={'pointer'}
+                textAlign={"center"}
+                cursor={"pointer"}
                 onClick={() => setPaymentMethod("gift")}
               >
                 Click here if you have a Gift Card
               </Text>
             ) : (
               <Text
-                textAlign={"center"} cursor={'pointer'}
+                textAlign={"center"}
+                cursor={"pointer"}
                 onClick={() => setPaymentMethod("gateway")}
               >
                 Click here if you want to pay online
@@ -279,7 +296,16 @@ const Plan = ({
             )}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="twitter" onClick={handleClick}>
+            <Button
+              colorScheme="twitter"
+              onClick={() => {
+                if (paymentMethod == "gateway") {
+                  handlePayment();
+                } else {
+                  handleClick();
+                }
+              }}
+            >
               Join
             </Button>
           </ModalFooter>

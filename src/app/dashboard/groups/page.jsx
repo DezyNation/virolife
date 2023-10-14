@@ -36,6 +36,7 @@ import ChildMemberCard from "@/components/dashboard/ChildMemberCard";
 import VerticalSpacer from "@/components/global/VerticalSpacer";
 import Progress from "@/components/dashboard/group-funding/Progress";
 import Cookies from "js-cookie";
+import useRazorpay from "@/utils/hooks/useRazorpay";
 
 const MyParents = ({ parents, myParentId, groupType }) => {
   const Toast = useToast({ position: "top-right" });
@@ -681,6 +682,8 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
 
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
+  const { payWithRazorpay } = useRazorpay();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [joinGroupId, setJoinGroupId] = useState("");
   const [invitationModal, setInvitationModal] = useState(false);
@@ -720,11 +723,11 @@ const Page = () => {
 
   useEffect(() => {
     const idHold = parseInt(localStorage.getItem("onHold")) === 1;
-    const primSenId = localStorage.getItem("primaryParentId")
+    const primSenId = localStorage.getItem("primaryParentId");
     setOnHold(idHold);
     if (idHold) {
       setJoinGroupId(primSenId);
-      getUserInfo(primSenId)
+      getUserInfo(primSenId);
       setPrimaryIdRequested(true);
       onOpen();
     }
@@ -768,17 +771,66 @@ const Page = () => {
       });
   }
 
-  function joinSecondaryGroup() {
+  async function handlePayment(params) {
+    if (params?.groupType == "primary") {
+      await payWithRazorpay({
+        amount: 250,
+        description: "Join Primary Group",
+        user: {
+          name: localStorage.getItem("userName"),
+          email: localStorage.getItem("email"),
+        },
+        onSuccess: (trnxnId) => joinPrimaryGroup(trnxnId),
+        onFail: () => {
+          setVideoStatus(false);
+          Toast({
+            status: "error",
+            title: "Payment Failed",
+            description: "There was an error loading Razorpay checkout",
+          });
+        },
+      });
+    } else if (params?.groupType == "secondary") {
+      await payWithRazorpay({
+        amount: 500,
+        description: "Join Secondary Group",
+        user: {
+          name: localStorage.getItem("userName"),
+          email: localStorage.getItem("email"),
+        },
+        onSuccess: (trnxnId) => joinSecondaryGroup(trnxnId),
+        onFail: () => {
+          setVideoStatus(false);
+          Toast({
+            status: "error",
+            title: "Payment Failed",
+            description: "There was an error loading Razorpay checkout",
+          });
+        },
+      });
+    } else {
+      setVideoStatus(false);
+      Toast({
+        status: "warning",
+        title: "Intent not found",
+        description: "You must state which group you want to join",
+      });
+    }
+  }
+
+  function joinSecondaryGroup(params) {
     if (paymentMethod == "gateway") {
       Toast({
         description: "Payment gateway under development",
       });
+      setVideoStatus(false);
       return;
     }
     if (paymentMethod == "giftCard" && !giftCard) {
       Toast({
         description: "Please enter Gift Card Code",
       });
+      setVideoStatus(false);
       return;
     }
     BackendAxios.post(
@@ -789,6 +841,7 @@ const Page = () => {
         code: giftCard,
         amount: 250,
         purpose: "secondary",
+        transactionId: params?.transactionId,
       }
     )
       .then((res) => {
@@ -811,21 +864,25 @@ const Page = () => {
       });
   }
 
-  function joinPrimaryGroup() {
+  function joinPrimaryGroup(params) {
     if (paymentMethod == "gateway") {
       Toast({
         description: "Payment gateway under development",
       });
+      setVideoStatus(false);
       return;
     }
     if (paymentMethod == "giftCard" && !giftCard) {
       Toast({
         description: "Please enter Gift Card Code",
       });
+      setVideoStatus(false);
       return;
     }
     paymentMethod == "gateway"
-      ? BackendAxios.get(`/api/join-group/${joinGroupId}`)
+      ? BackendAxios.get(
+          `/api/join-group/${joinGroupId}?transactionId=${params?.transactionId}`
+        )
       : BackendAxios.post(
           `/api/gift/redeem/primary/${joinGroupId}?code=${giftCard}&amount=250&purpose=primary`
         )
@@ -1122,11 +1179,20 @@ const Page = () => {
               (!primaryJoined || !secondaryJoined) ? (
               <Text
                 color={"blue.600"}
-                onClick={() => setPaymentMethod("gateway")}
+                onClick={() => {
+                  setPaymentMethod("gateway");
+                  handlePayment({
+                    groupType: primaryIdRequested
+                      ? "primary"
+                      : secondaryIdRequested
+                      ? "secondary"
+                      : "",
+                  });
+                }}
                 cursor={"pointer"}
                 fontWeight={"semibold"}
               >
-                Pay with PhonePe
+                Pay with Razorpay
               </Text>
             ) : null}
             {primaryIdRequested && (
