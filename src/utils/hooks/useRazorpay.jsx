@@ -27,7 +27,6 @@ const useRazorpay = () => {
     onSuccess,
     onFail,
   }) => {
-    e.preventDefault();
     const res = await initializeRazorpay();
 
     if (!res) {
