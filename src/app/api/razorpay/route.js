@@ -1,7 +1,7 @@
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
 
-export default async function handler(req, res) {
+export default async (req, res) => {
   if (req.method === "POST") {
     // Initialize razorpay object
     const razorpay = new Razorpay({

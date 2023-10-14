@@ -234,7 +234,7 @@ const page = () => {
                   </PinInput>
                 </HStack>
               </Box>
-            ) : null}
+            ) : "You will be paying with Razorpay Payment Gateway"}
           </ModalBody>
           <ModalFooter justifyContent={"flex-end"} gap={8}>
             {paymentMethod == "gateway" ? (
