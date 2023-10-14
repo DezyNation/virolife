@@ -341,7 +341,7 @@ const Navbar = () => {
                 Blog
               </Box>
             </Link>
-            {sessionExpired ? null : (
+            {sessionExpired ? null : myRole == "user" ? (
               <Link href={"/store"}>
                 <Box
                   cursor={"pointer"}
@@ -352,7 +352,7 @@ const Navbar = () => {
                   Redeem Points
                 </Box>
               </Link>
-            )}
+            ) : null}
             <Link href={"/contact"}>
               <Box cursor={"pointer"} mr={4} fontSize={"lg"} className="serif">
                 Contact
@@ -431,6 +431,9 @@ const Navbar = () => {
                         <Text>All Team Funding</Text>
                       </Link>
                       <br />
+                      <Link href={"/store"}>
+                        <Text>Redeem Points</Text>
+                      </Link>
 
                       <Link href={"/dashboard/gift-cards"}>
                         <HStack gap={4}>
@@ -458,11 +461,6 @@ const Navbar = () => {
               <Link href={"/blogs"}>
                 <Text>Blog</Text>
               </Link>
-              {sessionExpired ? null : (
-                <Link href={"/store"}>
-                  <Text>Redeem Points</Text>
-                </Link>
-              )}
               <HStack w={"full"}>
                 <Image
                   src="/whatsapp.png"
