@@ -819,13 +819,6 @@ const Page = () => {
   }
 
   function joinSecondaryGroup(params) {
-    if (paymentMethod == "gateway") {
-      Toast({
-        description: "Payment gateway under development",
-      });
-      setVideoStatus(false);
-      return;
-    }
     if (paymentMethod == "giftCard" && !giftCard) {
       Toast({
         description: "Please enter Gift Card Code",
@@ -865,13 +858,6 @@ const Page = () => {
   }
 
   function joinPrimaryGroup(params) {
-    if (paymentMethod == "gateway") {
-      Toast({
-        description: "Payment gateway under development",
-      });
-      setVideoStatus(false);
-      return;
-    }
     if (paymentMethod == "giftCard" && !giftCard) {
       Toast({
         description: "Please enter Gift Card Code",
