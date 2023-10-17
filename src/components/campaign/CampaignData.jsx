@@ -47,14 +47,22 @@ import {
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import parse from "html-react-parser";
+import useRazorpay from "@/utils/hooks/useRazorpay";
+import BackendAxios from "@/utils/axios";
+import useApiHandler from "@/utils/hooks/useApiHandler";
+import FullPageLoader from "../global/FullPageLoader";
 
 const CampaignData = ({ campaign }) => {
   const Toast = useToast({ position: "top-right" });
+  const { payWithRazorpay } = useRazorpay();
+  const { handleError } = useApiHandler();
   const { value, setValue, onCopy, hasCopied } = useClipboard(
     `
       ${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${campaign?.id}
       `
   );
+
+  const [loading, setLoading] = useState(false);
   const [selectedImg, setSelectedImg] = useState(
     "https://idea.batumi.ge/files/default.jpg"
   );
@@ -70,6 +78,38 @@ const CampaignData = ({ campaign }) => {
       fees: 5,
       name: "",
       phone: "",
+    },
+    onSubmit: (values) => {
+      payWithRazorpay({
+        amount: amount,
+        onSuccess: (trnxnId) => {
+          setLoading(true);
+          BackendAxios.post(`/api/donate-campaign`, {
+            campaignId: campaign?.id,
+            amount: amount,
+            transactionId: trnxnId,
+          })
+            .then((res) => {
+              setLoading(false);
+              Toast({
+                status: "success",
+                title: "Thank you for your donation!",
+                description: "A receipt has been sent to your email",
+              });
+            })
+            .catch((err) => {
+              setLoading(false);
+              handleError(err, "Error while adding your donation");
+            });
+        },
+        onFail: () => {
+          Toast({
+            status: "warning",
+            title: "Transaction Failed.",
+            description: "There was an error processing your payment Razorpay!",
+          });
+        },
+      });
     },
   });
 
@@ -88,8 +128,16 @@ const CampaignData = ({ campaign }) => {
     }
   }, []);
 
+  useEffect(() => {
+    setAmount(
+      (Number(fees) / 100) * Number(Formik.values.amount || 0) +
+        Number(Formik.values.amount)
+    );
+  }, [Formik.values.amount, fees]);
+
   return (
     <>
+      {loading ? <FullPageLoader /> : null}
       <Stack
         p={[4, 16, 24]}
         direction={["column", "row"]}
@@ -170,7 +218,9 @@ const CampaignData = ({ campaign }) => {
               <>
                 This campaign will benefit{" "}
                 {JSON.parse(campaign?.beneficiary_details)?.name}
-                {JSON.parse(campaign?.beneficiary_details)?.address ? ` of ${JSON.parse(campaign?.beneficiary_details)?.address}` : ""}
+                {JSON.parse(campaign?.beneficiary_details)?.address
+                  ? ` of ${JSON.parse(campaign?.beneficiary_details)?.address}`
+                  : ""}
                 <br />
               </>
             ) : null}
@@ -389,15 +439,16 @@ const CampaignData = ({ campaign }) => {
               <br />
               <Text py={4}>
                 Platform Fees : ₹
-                {((Number(fees) / 100) * Number(amount || 0)).toLocaleString(
-                  "en-IN"
-                )}
+                {(
+                  (Number(fees) / 100) *
+                  Number(Formik.values.amount || 0)
+                ).toLocaleString("en-IN")}
               </Text>
               <Text py={4} pt={0}>
                 Total Payable Amt &nbsp; : ₹
                 {(
-                  (Number(fees) / 100) * Number(amount || 0) +
-                  Number(amount)
+                  (Number(fees) / 100) * Number(Formik.values.amount || 0) +
+                  Number(Formik.values.amount)
                 ).toLocaleString("en-IN")}
               </Text>
               <Button w={"full"} colorScheme="yellow">

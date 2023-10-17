@@ -47,9 +47,12 @@ import {
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import parse from "html-react-parser";
+import BackendAxios from "@/utils/axios";
+import useApiHandler from "@/utils/hooks/useApiHandler";
 
 const ProductData = ({ campaign }) => {
   const Toast = useToast({ position: "top-right" });
+  const { handleError } = useApiHandler();
   const { value, setValue, onCopy, hasCopied } = useClipboard(
     `
       ${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${campaign?.id}
@@ -70,6 +73,19 @@ const ProductData = ({ campaign }) => {
       fees: 5,
       name: "",
       phone: "",
+    },
+    onSubmit: (values) => {
+      BackendAxios.post(`/api/orders`)
+        .then((res) => {
+          Toast({
+            status: "success",
+            title: "Purchase succesful!",
+            description: "Thank you for your purchase",
+          });
+        })
+        .catch((err) => {
+          handleError(err, "Error while placing order");
+        });
     },
   });
 
@@ -191,7 +207,7 @@ const ProductData = ({ campaign }) => {
               </HStack> */}
               <br />
 
-              <Button w={"full"} colorScheme="yellow">
+              <Button w={"full"} colorScheme="yellow" onClick={Formik.handleSubmit}>
                 Buy Now
               </Button>
             </Box>
@@ -248,7 +264,7 @@ const ProductData = ({ campaign }) => {
               </HStack>
               <br /> */}
 
-              <Button w={"full"} colorScheme="yellow">
+              <Button w={"full"} colorScheme="yellow" onClick={Formik.handleSubmit}>
                 Buy Now
               </Button>
             </Box>
