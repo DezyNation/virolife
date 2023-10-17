@@ -1,7 +1,7 @@
 "use client";
 import { Avatar, Box, Button, HStack, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useToast } from "@chakra-ui/react";
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import VideoPlayer from "../global/VideoPlayer";
 import QRCode from "react-qr-code";
 
