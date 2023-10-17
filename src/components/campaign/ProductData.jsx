@@ -75,7 +75,9 @@ const ProductData = ({ campaign }) => {
       phone: "",
     },
     onSubmit: (values) => {
-      BackendAxios.post(`/api/orders`)
+      BackendAxios.post(`/api/orders`, {
+        intent: "test"
+      })
         .then((res) => {
           Toast({
             status: "success",
