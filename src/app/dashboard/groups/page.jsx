@@ -295,7 +295,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   );
 };
 
-const NestedChildren = ({ data, donors, level, currentLevel = 1 }) => {
+const NestedChildren = ({ data, donors, level, currentLevel = 1, groupType }) => {
   if (parseInt(currentLevel) == parseInt(level)) {
     return (
       <>
@@ -306,6 +306,8 @@ const NestedChildren = ({ data, donors, level, currentLevel = 1 }) => {
             id={item?.id}
             phone_number={item?.phone_number}
             donation_received={donors?.includes(item?.id)}
+            groupType={groupType}
+            upi_id={item?.upi_id}
           />
         ))}
       </>
@@ -441,6 +443,7 @@ const MyChildren = ({ childMembers, donors }) => {
           level={selectedLevel}
           data={groupMembers[0]?.children || []}
           donors={donors}
+          groupType={"primary"}
         />
         {myGroup?.filter((user) => user?.parent_id == parseInt(myId))
           ?.length ? (
@@ -617,6 +620,7 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
           data={groupMembers[0]?.children || []}
           level={selectedLevel}
           donors={donors}
+          groupType={"secondary"}
         />
         {myGroup?.filter((user) => user?.secondary_parent_id == parseInt(myId))
           ?.length ? (
