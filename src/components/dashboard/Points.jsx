@@ -32,7 +32,11 @@ import BackendAxios from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
 
 const Points = () => {
-  const [points, setPoints] = useState({});
+  const [points, setPoints] = useState({
+    atpPoints: 0,
+    healthPoints: 0,
+    adPoints: 0
+  });
   const [loading, setLoading] = useState(false);
   const [intent, setIntent] = useState("");
   const [beneficiaryId, setBeneficiaryId] = useState("");
@@ -129,7 +133,7 @@ const Points = () => {
     await BackendAxios.get(`/api/user/points/my-atp`).then(async res =>{
       await BackendAxios.get(`/api/my-health-points`).then(result =>{
         setPoints({
-          viroPoints: res.data,
+          atpPoints: res.data,
           adPoints: Cookies.get("adPoints"),
           healthPoints: result.data
         });
@@ -141,6 +145,12 @@ const Points = () => {
     setLoading(false);
 
   }
+
+  useEffect(()=>{
+    localStorage.setItem("atpPoints", points.atpPoints)
+    localStorage.setItem("healthPoints", points.healthPoints)
+    localStorage.setItem("adPoints", points.adPoints)
+  },[points.atpPoints, points.healthPoints, points.adPoints])
 
 
   return (
@@ -190,7 +200,7 @@ const Points = () => {
           <Box p={2}>
             <Text fontSize={"8"}>ATP</Text>
             <Text fontSize={"md"} fontWeight={"semibold"}>
-              {points.viroPoints}
+              {points.atpPoints}
             </Text>
           </Box>
         </HStack>

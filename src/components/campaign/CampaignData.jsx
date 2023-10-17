@@ -129,10 +129,10 @@ const CampaignData = ({ campaign }) => {
   }, []);
 
   useEffect(() => {
-    setAmount(
+    const calcAmount =
       (Number(fees) / 100) * Number(Formik.values.amount || 0) +
-        Number(Formik.values.amount)
-    );
+      Number(Formik.values.amount);
+    setAmount(calcAmount);
   }, [Formik.values.amount, fees]);
 
   return (
@@ -316,15 +316,15 @@ const CampaignData = ({ campaign }) => {
               <br />
               <Text py={4}>
                 Platform Fees : ₹
-                {((Number(fees) / 100) * Number(amount || 0)).toLocaleString(
+                {((Number(fees) / 100) * Number(Formik.values.amount || 0)).toLocaleString(
                   "en-IN"
                 )}
               </Text>
               <Text py={4} pt={0}>
                 Total Payable Amt &nbsp; : ₹
                 {(
-                  (Number(fees) / 100) * Number(amount || 0) +
-                  Number(amount)
+                  (Number(fees) / 100) * Number(Formik.values.amount || 0) +
+                  Number(Formik.values.amount)
                 ).toLocaleString("en-IN")}
               </Text>
               <Button w={"full"} colorScheme="yellow">

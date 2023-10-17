@@ -49,47 +49,85 @@ import React, { useEffect, useState } from "react";
 import parse from "html-react-parser";
 import BackendAxios from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
+import Points from "../dashboard/Points";
+import FullPageLoader from "../global/FullPageLoader";
+import useRazorpay from "@/utils/hooks/useRazorpay";
 
 const ProductData = ({ campaign }) => {
   const Toast = useToast({ position: "top-right" });
   const { handleError } = useApiHandler();
+  const { payWithRazorpay } = useRazorpay();
+
   const { value, setValue, onCopy, hasCopied } = useClipboard(
     `
-      ${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${campaign?.id}
+      ${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${campaign?.id}
       `
   );
+
+  const [intent, setIntent] = useState("full");
+  const [loading, setLoading] = useState(false);
   const [selectedImg, setSelectedImg] = useState(
     "https://idea.batumi.ge/files/default.jpg"
   );
   const [images, setImages] = useState([]);
-  const [amount, setAmount] = useState(1000);
-  const [fees, setFees] = useState(5);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [donationCardStatus, setDonationCardStatus] = useState(true);
 
-  const Formik = useFormik({
-    initialValues: {
-      amount: 1000,
-      fees: 5,
-      name: "",
-      phone: "",
-    },
-    onSubmit: (values) => {
-      BackendAxios.post(`/api/orders`, {
-        intent: "test"
-      })
-        .then((res) => {
-          Toast({
-            status: "success",
-            title: "Purchase succesful!",
-            description: "Thank you for your purchase",
-          });
-        })
-        .catch((err) => {
-          handleError(err, "Error while placing order");
+  function placeOrder(trnxnId) {
+    if (!intent) {
+      Toast({
+        description: "Please select your payment type",
+      });
+      return;
+    }
+    setLoading(true);
+    BackendAxios.post(`/api/orders`, {
+      intent: intent,
+      productId: campaign?.id,
+      paymentId: trnxnId,
+    })
+      .then((res) => {
+        setLoading(false);
+        Toast({
+          status: "success",
+          title: "Purchase succesful!",
+          description: "Thank you for your purchase",
         });
-    },
-  });
+      })
+      .catch((err) => {
+        setLoading(false);
+        handleError(err, "Error while placing order");
+      });
+  }
+
+  function handlePurchase() {
+    if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
+      payWithRazorpay({
+        amount: Number(campaign?.minimum_payable_amount),
+        onSuccess: (trnxnId) => {
+          placeOrder(trnxnId);
+        },
+        onFail: () => {
+          handleError(err, "Your payment could not be completed!");
+        },
+      });
+    }
+    if (campaign?.minimum_payable_amount == 0 && intent == "partial") {
+      placeOrder();
+    }
+    if (intent == "full") {
+      payWithRazorpay({
+        amount: Number(campaign?.price),
+        onSuccess: (trnxnId) => {
+          placeOrder(trnxnId);
+        },
+        onFail: () => {
+          handleError(err, "Your payment could not be completed!");
+        },
+      });
+    }
+  }
 
   useEffect(() => {
     console.log(campaign);
@@ -108,6 +146,10 @@ const ProductData = ({ campaign }) => {
 
   return (
     <>
+      {loading ? <FullPageLoader /> : null}
+      <HStack py={4} justifyContent={"flex-end"} w={"full"}>
+        <Points />
+      </HStack>
       <Stack
         p={[4, 16, 24]}
         direction={["column", "row"]}
@@ -191,25 +233,62 @@ const ProductData = ({ campaign }) => {
           >
             <Box p={4} boxShadow={"lg"} rounded={8} position={"sticky"} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>
-                Buy This Product
+                Buying Options
               </Text>
-              <br />
-              <Text fontSize={"lg"} fontWeight={"medium"}>
-                ₹{campaign?.price}
-              </Text>
-              <br />
-              {/* <Progress value={80} colorScheme="yellow" />
-              <HStack justifyContent={"space-between"}>
-                <Text fontSize={"xs"}>
-                  ₹ {Number(0).toLocaleString("en-IN")}
-                </Text>
-                <Text fontSize={"xs"}>
-                  ₹{Number(campaign?.target_amount)?.toLocaleString("en-IN")}
-                </Text>
-              </HStack> */}
               <br />
 
-              <Button w={"full"} colorScheme="yellow" onClick={Formik.handleSubmit}>
+              <Box
+                p={4}
+                my={4}
+                rounded={12}
+                border={"1px"}
+                borderColor={intent == "full" ? "yellow.500" : "gray.50"}
+                onClick={() => setIntent("full")}
+                cursor={"pointer"}
+              >
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  Pay Full Price: ₹{campaign?.price}
+                </Text>
+              </Box>
+
+              <Box
+                p={4}
+                my={4}
+                rounded={12}
+                border={"1px"}
+                borderColor={intent == "partial" ? "yellow.500" : "gray.50"}
+                onClick={() => setIntent("partial")}
+                cursor={"pointer"}
+              >
+                <Text fontSize={"lg"} fontWeight={"medium"}>
+                  {campaign?.minimum_payable_amount
+                    ? `Pay Only: ₹${campaign?.minimum_payable_amount}`
+                    : ""}
+                </Text>
+                <Text fontSize={"lg"} fontWeight={"medium"}>
+                  {campaign?.ad_point
+                    ? `Pay with Ad Points: ₹${campaign?.ad_point}`
+                    : ""}
+                </Text>
+                <Text fontSize={"lg"} fontWeight={"medium"}>
+                  {campaign?.health_point
+                    ? `Pay with Health Points: ₹${campaign?.health_point}`
+                    : ""}
+                </Text>
+                <Text fontSize={"lg"} fontWeight={"medium"}>
+                  {campaign?.atp_point
+                    ? `Pay with ATP Points: ₹${campaign?.atp_point}`
+                    : ""}
+                </Text>
+              </Box>
+              <br />
+              <br />
+
+              <Button
+                w={"full"}
+                colorScheme="yellow"
+                onClick={() => handlePurchase()}
+              >
                 Buy Now
               </Button>
             </Box>
@@ -256,17 +335,62 @@ const ProductData = ({ campaign }) => {
             />
             <Box p={4} boxShadow={"lg"} bg={"#FFF"} rounded={8} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>
-                Buy Now
+                Buying Options
               </Text>
               <br />
-              {/* <Progress value={80} colorScheme="yellow" />
-              <HStack justifyContent={"space-between"}>
-                <Text fontSize={"xs"}>₹0</Text>
-                <Text fontSize={"xs"}>₹{campaign?.target_amount}</Text>
-              </HStack>
-              <br /> */}
 
-              <Button w={"full"} colorScheme="yellow" onClick={Formik.handleSubmit}>
+              <Box
+                p={4}
+                my={4}
+                rounded={12}
+                border={"1px"}
+                borderColor={intent == "full" ? "yellow.500" : "gray.50"}
+                onClick={() => setIntent("full")}
+                cursor={"pointer"}
+              >
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  Pay Full Price: ₹{campaign?.price}
+                </Text>
+              </Box>
+
+              <Box
+                p={4}
+                my={4}
+                rounded={12}
+                border={"1px"}
+                borderColor={intent == "partial" ? "yellow.500" : "gray.50"}
+                onClick={() => setIntent("partial")}
+                cursor={"pointer"}
+              >
+                <Text fontSize={"lg"} fontWeight={"medium"}>
+                  {campaign?.minimum_payable_amount
+                    ? `Pay Only: ₹${campaign?.minimum_payable_amount}`
+                    : ""}
+                </Text>
+                <Text fontSize={"lg"} fontWeight={"medium"}>
+                  {campaign?.ad_point
+                    ? `Pay with Ad Points: ₹${campaign?.ad_point}`
+                    : ""}
+                </Text>
+                <Text fontSize={"lg"} fontWeight={"medium"}>
+                  {campaign?.health_point
+                    ? `Pay with Health Points: ₹${campaign?.health_point}`
+                    : ""}
+                </Text>
+                <Text fontSize={"lg"} fontWeight={"medium"}>
+                  {campaign?.atp_point
+                    ? `Pay with ATP Points: ₹${campaign?.atp_point}`
+                    : ""}
+                </Text>
+              </Box>
+              <br />
+              <br />
+
+              <Button
+                w={"full"}
+                colorScheme="yellow"
+                onClick={() => handlePurchase()}
+              >
                 Buy Now
               </Button>
             </Box>
@@ -277,7 +401,7 @@ const ProductData = ({ campaign }) => {
       <Modal isCentered={true} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Share this campaign</ModalHeader>
+          <ModalHeader>Share this product</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <VStack
@@ -309,14 +433,14 @@ const ProductData = ({ campaign }) => {
               justifyContent={"center"}
             >
               <WhatsappShareButton
-                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${campaign?.id}`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${campaign?.id}`}
                 title={`*${campaign?.title}*\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
               >
                 <WhatsappIcon size={36} round={true} />
               </WhatsappShareButton>
 
               <FacebookShareButton
-                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${campaign?.id}`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${campaign?.id}`}
                 quote={`${campaign?.title}\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
                 title={`${campaign?.title}\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
               >
@@ -324,7 +448,7 @@ const ProductData = ({ campaign }) => {
               </FacebookShareButton>
 
               <LinkedinShareButton
-                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/campaigns/${campaign?.id}`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${campaign?.id}`}
                 summary={`${campaign?.title}\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
                 title={`${campaign?.title}\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
               >
@@ -334,6 +458,7 @@ const ProductData = ({ campaign }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
+      
     </>
   );
 };
