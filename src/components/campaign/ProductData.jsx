@@ -102,27 +102,33 @@ const ProductData = ({ campaign }) => {
   }
 
   function handlePurchase() {
+    setLoading(true)
     if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
       payWithRazorpay({
         amount: Number(campaign?.minimum_payable_amount),
         onSuccess: (trnxnId) => {
+          setLoading(false)
           placeOrder(trnxnId);
         },
         onFail: () => {
+          setLoading(false)
           handleError(err, "Your payment could not be completed!");
         },
       });
     }
     if (campaign?.minimum_payable_amount == 0 && intent == "partial") {
+      setLoading(false)
       placeOrder();
     }
     if (intent == "full") {
       payWithRazorpay({
         amount: Number(campaign?.price),
         onSuccess: (trnxnId) => {
+          setLoading(false)
           placeOrder(trnxnId);
         },
         onFail: () => {
+          setLoading(false)
           handleError(err, "Your payment could not be completed!");
         },
       });
@@ -243,6 +249,7 @@ const ProductData = ({ campaign }) => {
                 rounded={12}
                 border={"1px"}
                 borderColor={intent == "full" ? "yellow.500" : "gray.50"}
+                bgColor={intent == "full" ? "yellow.50" : "#fff"}
                 onClick={() => setIntent("full")}
                 cursor={"pointer"}
               >
@@ -257,26 +264,27 @@ const ProductData = ({ campaign }) => {
                 rounded={12}
                 border={"1px"}
                 borderColor={intent == "partial" ? "yellow.500" : "gray.50"}
+                bgColor={intent == "partial" ? "yellow.50" : "#fff"}
                 onClick={() => setIntent("partial")}
                 cursor={"pointer"}
               >
-                <Text fontSize={"lg"} fontWeight={"medium"}>
-                  {campaign?.minimum_payable_amount
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.minimum_payable_amount)
                     ? `Pay Only: ₹${campaign?.minimum_payable_amount}`
                     : ""}
                 </Text>
-                <Text fontSize={"lg"} fontWeight={"medium"}>
-                  {campaign?.ad_point
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.ad_point)
                     ? `Pay with Ad Points: ₹${campaign?.ad_point}`
                     : ""}
                 </Text>
-                <Text fontSize={"lg"} fontWeight={"medium"}>
-                  {campaign?.health_point
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.health_point)
                     ? `Pay with Health Points: ₹${campaign?.health_point}`
                     : ""}
                 </Text>
-                <Text fontSize={"lg"} fontWeight={"medium"}>
-                  {campaign?.atp_point
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.atp_point)
                     ? `Pay with ATP Points: ₹${campaign?.atp_point}`
                     : ""}
                 </Text>
@@ -345,6 +353,7 @@ const ProductData = ({ campaign }) => {
                 rounded={12}
                 border={"1px"}
                 borderColor={intent == "full" ? "yellow.500" : "gray.50"}
+                bgColor={intent == "full" ? "yellow.50" : "#fff"}
                 onClick={() => setIntent("full")}
                 cursor={"pointer"}
               >
@@ -353,32 +362,34 @@ const ProductData = ({ campaign }) => {
                 </Text>
               </Box>
 
+              
               <Box
                 p={4}
                 my={4}
                 rounded={12}
                 border={"1px"}
                 borderColor={intent == "partial" ? "yellow.500" : "gray.50"}
+                bgColor={intent == "partial" ? "yellow.50" : "#fff"}
                 onClick={() => setIntent("partial")}
                 cursor={"pointer"}
               >
-                <Text fontSize={"lg"} fontWeight={"medium"}>
-                  {campaign?.minimum_payable_amount
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.minimum_payable_amount)
                     ? `Pay Only: ₹${campaign?.minimum_payable_amount}`
                     : ""}
                 </Text>
-                <Text fontSize={"lg"} fontWeight={"medium"}>
-                  {campaign?.ad_point
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.ad_point)
                     ? `Pay with Ad Points: ₹${campaign?.ad_point}`
                     : ""}
                 </Text>
-                <Text fontSize={"lg"} fontWeight={"medium"}>
-                  {campaign?.health_point
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.health_point)
                     ? `Pay with Health Points: ₹${campaign?.health_point}`
                     : ""}
                 </Text>
-                <Text fontSize={"lg"} fontWeight={"medium"}>
-                  {campaign?.atp_point
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.atp_point)
                     ? `Pay with ATP Points: ₹${campaign?.atp_point}`
                     : ""}
                 </Text>
@@ -458,7 +469,7 @@ const ProductData = ({ campaign }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      
+
     </>
   );
 };
