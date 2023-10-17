@@ -295,7 +295,13 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   );
 };
 
-const NestedChildren = ({ data, donors, level, currentLevel = 1, groupType }) => {
+const NestedChildren = ({
+  data,
+  donors,
+  level,
+  currentLevel = 1,
+  groupType,
+}) => {
   if (parseInt(currentLevel) == parseInt(level)) {
     return (
       <>
@@ -710,6 +716,8 @@ const Page = () => {
   const [primaryIdRequested, setPrimaryIdRequested] = useState(false);
   const [secondaryIdRequested, setSecondaryIdRequested] = useState(false);
 
+  const [beneficiaries, setBeneficiaries] = useState([]);
+
   const [videoStatus, setVideoStatus] = useState(false);
   const [videoData, setVideoData] = useState({
     title: "Watch this video to proceed.",
@@ -737,7 +745,8 @@ const Page = () => {
     }
     fetchPrimaryParents();
     fetchSecondaryParents();
-    fetchMyCollections();
+    fetchMyDonations();
+    // fetchMyCollections();
   }, []);
 
   useEffect(() => {
@@ -977,6 +986,26 @@ const Page = () => {
       });
   }
 
+  function fetchMyDonations() {
+    BackendAxios.get(`/api/my-donations`)
+      .then((res) => {
+        setBeneficiaries(res.data);
+      })
+      .catch((err) => {
+        if (err?.response?.status == 401) {
+          Cookies.remove("jwt");
+          localStorage.clear();
+          window.location.assign("/");
+          return;
+        }
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
   return (
     <>
       <HStack justifyContent={"space-between"}>
@@ -1035,11 +1064,17 @@ const Page = () => {
           gap={8}
         >
           <Box>
-            <MyChildren donors={collections?.map((item) => item?.user_id)} />
+            <MyChildren
+              donors={beneficiaries
+                ?.filter((item) => item?.group == "primary")
+                .map((item) => item?.donatable_id)}
+            />
           </Box>
           <Box>
             <MySecondaryChildren
-              donors={collections?.map((item) => item?.user_id)}
+              donors={beneficiaries
+                ?.filter((item) => item?.group == "secondary")
+                .map((item) => item?.donatable_id)}
             />
           </Box>
         </Stack>

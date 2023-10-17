@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import VideoPlayer from "../global/VideoPlayer";
 import QRCode from "react-qr-code";
+import BackendAxios from "@/utils/axios";
 
 const ChildMemberCard = ({
   name,
