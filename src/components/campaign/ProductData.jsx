@@ -155,9 +155,7 @@ const ProductData = ({ campaign }) => {
   }, []);
 
   function verifyGiftCard() {
-    BackendAxios.post(`api/gift-card-detail`, {
-      code: giftCard,
-    })
+    BackendAxios.get(`api/gift-card-detail?code=${giftCard}`)
       .then((res) => {
         console.log(res.data);
         Toast({
