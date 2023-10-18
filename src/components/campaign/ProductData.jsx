@@ -312,6 +312,21 @@ const ProductData = ({ campaign }) => {
                 </Text>
               </Box>
               <br />
+              {intent == "full" ? (
+                <Box p={4} my={4}>
+                  <Text fontSize={"xs"}>Discount Card</Text>
+                  <InputGroup>
+                    <Input
+                      name="discountCard"
+                      onChange={(e) => setGiftCard(e.target.value)}
+                    />
+                    <InputRightAddon
+                      children={"Verify"}
+                      onClick={() => verifyGiftCard()}
+                    />
+                  </InputGroup>
+                </Box>
+              ) : null}
               <br />
 
               <Button
