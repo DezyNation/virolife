@@ -9,6 +9,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightAddon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -70,6 +71,8 @@ const ProductData = ({ campaign }) => {
     "https://idea.batumi.ge/files/default.jpg"
   );
   const [images, setImages] = useState([]);
+  const [giftCard, setGiftCard] = useState("");
+  const [giftCardAmount, setGiftCardAmount] = useState(0);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [donationCardStatus, setDonationCardStatus] = useState(true);
@@ -102,33 +105,35 @@ const ProductData = ({ campaign }) => {
   }
 
   function handlePurchase() {
-    setLoading(true)
+    setLoading(true);
     if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
       payWithRazorpay({
         amount: Number(campaign?.minimum_payable_amount),
         onSuccess: (trnxnId) => {
-          setLoading(false)
+          setLoading(false);
           placeOrder(trnxnId);
         },
         onFail: () => {
-          setLoading(false)
+          setLoading(false);
           handleError(err, "Your payment could not be completed!");
         },
       });
     }
     if (campaign?.minimum_payable_amount == 0 && intent == "partial") {
-      setLoading(false)
+      setLoading(false);
       placeOrder();
     }
     if (intent == "full") {
       payWithRazorpay({
-        amount: Number(campaign?.price),
+        amount: parseInt(giftCardAmount)
+          ? Number(campaign?.price) - Number(giftCardAmount)
+          : Number(campaign?.price),
         onSuccess: (trnxnId) => {
-          setLoading(false)
+          setLoading(false);
           placeOrder(trnxnId);
         },
         onFail: () => {
-          setLoading(false)
+          setLoading(false);
           handleError(err, "Your payment could not be completed!");
         },
       });
@@ -136,7 +141,6 @@ const ProductData = ({ campaign }) => {
   }
 
   useEffect(() => {
-    console.log(campaign);
     if (campaign?.images) {
       setSelectedImg(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/${
@@ -149,6 +153,24 @@ const ProductData = ({ campaign }) => {
       setImages(campaignImages);
     }
   }, []);
+
+  function verifyGiftCard() {
+    BackendAxios.post(`api/gift-card-detail`, {
+      code: giftCard,
+    })
+      .then((res) => {
+        console.log(res.data);
+        Toast({
+          status: "success",
+          description: "Discount code applied successfully!",
+        });
+      })
+      .catch((err) => {
+        handleError(err, "Error while getting gift card details");
+        setGiftCard("");
+        setGiftCardAmount(0);
+      });
+  }
 
   return (
     <>
@@ -362,7 +384,6 @@ const ProductData = ({ campaign }) => {
                 </Text>
               </Box>
 
-              
               <Box
                 p={4}
                 my={4}
@@ -395,6 +416,21 @@ const ProductData = ({ campaign }) => {
                 </Text>
               </Box>
               <br />
+              {intent == "full" ? (
+                <Box p={4} my={4}>
+                  <Text fontSize={"xs"}>Discount Card</Text>
+                  <InputGroup>
+                    <Input
+                      name="discountCard"
+                      onChange={(e) => setGiftCard(e.target.value)}
+                    />
+                    <InputRightAddon
+                      children={"Verify"}
+                      onClick={() => verifyGiftCard()}
+                    />
+                  </InputGroup>
+                </Box>
+              ) : null}
               <br />
 
               <Button
@@ -469,7 +505,6 @@ const ProductData = ({ campaign }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-
     </>
   );
 };
