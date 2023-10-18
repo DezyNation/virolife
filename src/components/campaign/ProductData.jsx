@@ -156,7 +156,6 @@ const ProductData = ({ campaign }) => {
   }, []);
 
   function verifyGiftCard() {
-    const now = newDate();
     BackendAxios.get(`api/gift-card-detail?code=${giftCard}`)
       .then((res) => {
         if (
@@ -340,6 +339,7 @@ const ProductData = ({ campaign }) => {
                     <InputRightAddon
                       children={"Verify"}
                       onClick={() => verifyGiftCard()}
+                      cursor={'pointer'}
                     />
                   </InputGroup>
                 </Box>
@@ -459,6 +459,7 @@ const ProductData = ({ campaign }) => {
                     <InputRightAddon
                       children={"Verify"}
                       onClick={() => verifyGiftCard()}
+                      cursor={'pointer'}
                     />
                   </InputGroup>
                 </Box>
