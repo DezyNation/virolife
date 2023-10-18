@@ -87,6 +87,7 @@ const CampaignData = ({ campaign }) => {
           BackendAxios.post(`/api/donate-campaign`, {
             campaignId: campaign?.id,
             amount: amount,
+            tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
             transactionId: trnxnId,
           })
             .then((res) => {
@@ -106,7 +107,8 @@ const CampaignData = ({ campaign }) => {
           Toast({
             status: "warning",
             title: "Transaction Failed.",
-            description: "There was an error processing your payment Razorpay!",
+            description:
+              "There was an error processing your payment with Razorpay!",
           });
         },
       });
@@ -316,9 +318,10 @@ const CampaignData = ({ campaign }) => {
               <br />
               <Text py={4}>
                 Platform Fees : ₹
-                {((Number(fees) / 100) * Number(Formik.values.amount || 0)).toLocaleString(
-                  "en-IN"
-                )}
+                {(
+                  (Number(fees) / 100) *
+                  Number(Formik.values.amount || 0)
+                ).toLocaleString("en-IN")}
               </Text>
               <Text py={4} pt={0}>
                 Total Payable Amt &nbsp; : ₹
@@ -327,7 +330,11 @@ const CampaignData = ({ campaign }) => {
                   Number(Formik.values.amount)
                 ).toLocaleString("en-IN")}
               </Text>
-              <Button w={"full"} colorScheme="yellow">
+              <Button
+                w={"full"}
+                colorScheme="yellow"
+                onClick={Formik.handleSubmit}
+              >
                 Donate Now
               </Button>
             </Box>
@@ -451,7 +458,11 @@ const CampaignData = ({ campaign }) => {
                   Number(Formik.values.amount)
                 ).toLocaleString("en-IN")}
               </Text>
-              <Button w={"full"} colorScheme="yellow">
+              <Button
+                w={"full"}
+                colorScheme="yellow"
+                onClick={Formik.handleSubmit}
+              >
                 Donate Now
               </Button>
             </Box>
