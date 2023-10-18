@@ -89,6 +89,7 @@ const ProductData = ({ campaign }) => {
       intent: intent,
       productId: campaign?.id,
       paymentId: trnxnId,
+      giftCard: giftCard,
     })
       .then((res) => {
         setLoading(false);
@@ -155,13 +156,31 @@ const ProductData = ({ campaign }) => {
   }, []);
 
   function verifyGiftCard() {
+    const now = newDate();
     BackendAxios.get(`api/gift-card-detail?code=${giftCard}`)
       .then((res) => {
-        console.log(res.data);
-        Toast({
-          status: "success",
-          description: "Discount code applied successfully!",
-        });
+        if (
+          !res.data?.user_id ||
+          res.data?.user_id == localStorage.getItem("userId")
+        ) {
+          if (
+            !res.data?.redeemed &&
+            res.data?.purpose == "ecommerce" &&
+            Number(res.data?.amount) <= Number(campaign?.price)
+          ) {
+            Toast({
+              status: "success",
+              description: "Discount code applied successfully!",
+            });
+            setGiftCardAmount(res.data?.amount);
+          }
+        } else {
+          Toast({
+            status: "warning",
+            description: "Invalid discount card!",
+          });
+          setGiftCard("");
+        }
       })
       .catch((err) => {
         handleError(err, "Error while getting gift card details");
