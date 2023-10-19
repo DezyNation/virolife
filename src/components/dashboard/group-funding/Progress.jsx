@@ -102,6 +102,8 @@ const Progress = () => {
   }, []);
 
   useEffect(() => {
+    console.log("My Progress")
+    console.log(myProgress)
     if (
       myProgress.campaign_donation &&
       myProgress.collection &&
