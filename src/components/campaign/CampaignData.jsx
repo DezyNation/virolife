@@ -82,6 +82,7 @@ const CampaignData = ({ campaign }) => {
     onSubmit: (values) => {
       payWithRazorpay({
         amount: amount,
+        description: campaign?.title,
         onSuccess: (trnxnId) => {
           setLoading(true);
           BackendAxios.post(`/api/donate-campaign`, {

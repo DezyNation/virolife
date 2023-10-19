@@ -109,6 +109,7 @@ const ProductData = ({ campaign }) => {
     setLoading(true);
     if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
       payWithRazorpay({
+        description: campaign?.name,
         amount: Number(campaign?.minimum_payable_amount),
         onSuccess: (trnxnId) => {
           setLoading(false);
@@ -126,6 +127,7 @@ const ProductData = ({ campaign }) => {
     }
     if (intent == "full") {
       payWithRazorpay({
+        description: campaign?.name,
         amount: parseInt(giftCardAmount)
           ? Number(campaign?.price) - Number(giftCardAmount)
           : Number(campaign?.price),
