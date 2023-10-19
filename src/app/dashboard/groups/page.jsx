@@ -918,10 +918,18 @@ const Page = () => {
     setVideoData({
       onVideoClose: () => {
         if (joinGroupId == "secondary") {
-          joinSecondaryGroup();
-          return;
+          if (paymentMethod == "gateway") {
+            handlePayment({ groupType: "secondary" });
+          } else {
+            joinSecondaryGroup();
+          }
+        } else {
+          if (paymentMethod == "gateway") {
+            handlePayment({ groupType: "primary" });
+          } else {
+            joinPrimaryGroup();
+          }
         }
-        joinPrimaryGroup();
       },
     });
   }
@@ -1206,13 +1214,6 @@ const Page = () => {
                 color={"blue.600"}
                 onClick={() => {
                   setPaymentMethod("gateway");
-                  handlePayment({
-                    groupType: primaryIdRequested
-                      ? "primary"
-                      : secondaryIdRequested
-                      ? "secondary"
-                      : "",
-                  });
                 }}
                 cursor={"pointer"}
                 fontWeight={"semibold"}
