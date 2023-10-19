@@ -98,8 +98,10 @@ const Progress = () => {
   }, [nextRoundInfo]);
 
   useEffect(() => {
-    fetchMyProgress();
-  }, [nextRoundInfo.id]);
+    if(nextRoundInfo.id){
+      fetchMyProgress();
+    }
+  }, [nextRoundInfo]);
 
   useEffect(() => {
     console.log("My Progress");
