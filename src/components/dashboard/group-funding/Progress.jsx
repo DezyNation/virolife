@@ -99,7 +99,7 @@ const Progress = () => {
 
   useEffect(() => {
     fetchMyProgress();
-  }, []);
+  }, [nextRoundInfo.id]);
 
   useEffect(() => {
     console.log("My Progress");
@@ -156,6 +156,7 @@ const Progress = () => {
   }
 
   async function fetchMyProgress() {
+    if(!nextRoundInfo?.id) return
     setIsLoading(true);
     await BackendAxios.get(`/auth-user`)
       .then((res) => {
