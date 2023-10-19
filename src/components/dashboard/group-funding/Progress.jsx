@@ -102,8 +102,10 @@ const Progress = () => {
   }, []);
 
   useEffect(() => {
-    console.log("My Progress")
-    console.log(myProgress)
+    console.log("My Progress");
+    console.log(myProgress);
+    console.log("Next Round");
+    console.log(nextRoundInfo);
     if (
       myProgress.campaign_donation &&
       myProgress.collection &&
@@ -134,13 +136,13 @@ const Progress = () => {
     await BackendAxios.get(`/api/total-donation`)
       .then((res) => {
         if (
-          Number(res.data?.primary) + Number(res.data?.secondary) >=
-          Number(nextRoundInfo?.target_amount)
+          parseInt(res.data?.primary) + parseInt(res.data?.secondary) >=
+          parseInt(nextRoundInfo?.target_amount)
         ) {
-          setMyProgress({
-            ...myProgress,
+          setMyProgress((prev) => ({
+            ...prev,
             collection: true,
-          });
+          }));
         }
       })
       .catch((err) => {
@@ -158,10 +160,10 @@ const Progress = () => {
     await BackendAxios.get(`/auth-user`)
       .then((res) => {
         const userInfo = res.data[0];
-        setMyProgress({
-          ...myProgress,
+        setMyProgress((prev) => ({
+          ...prev,
           round: userInfo?.round,
-        });
+        }));
       })
       .catch((err) => {
         Toast({
@@ -195,11 +197,11 @@ const Progress = () => {
             nextRoundInfo?.primary_senior_amount +
               nextRoundInfo?.secondary_senior_amount
         ) {
-          setMyProgress({
-            ...myProgress,
+          setMyProgress((prev) => ({
+            ...prev,
             primary_senior_donation: true,
             secondary_senior_donation: true,
-          });
+          }));
         }
       })
       .catch((err) => {
@@ -218,7 +220,7 @@ const Progress = () => {
       .then((res) => {
         let sum = 0;
         const amounts = res.data?.map((item) => parseInt(item?.amount));
-        amounts?.forEach((amt) => (sum += Number(amt)));
+        amounts?.forEach((amt) => (sum += parseInt(amt)));
 
         if (
           res.data?.length >=
@@ -228,11 +230,11 @@ const Progress = () => {
             nextRoundInfo?.primary_junior_amount +
               nextRoundInfo?.secondary_junior_amount
         ) {
-          setMyProgress({
-            ...myProgress,
+          setMyProgress((prev) => ({
+            ...prev,
             primary_junior_donation: true,
             secondary_junior_donation: true,
-          });
+          }));
         }
       })
       .catch((err) => {
@@ -255,10 +257,10 @@ const Progress = () => {
           res.data?.length >= nextRoundInfo?.campaign_count &&
           sum >= nextRoundInfo?.campaign_amount
         ) {
-          setMyProgress({
-            ...myProgress,
+          setMyProgress((prev) => ({
+            ...prev,
             campaign_donation: true,
-          });
+          }));
         }
       })
       .catch((err) => {
