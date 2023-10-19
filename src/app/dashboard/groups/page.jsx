@@ -789,10 +789,6 @@ const Page = () => {
       await payWithRazorpay({
         amount: 250,
         description: "Join Primary Group",
-        user: {
-          name: localStorage.getItem("userName"),
-          email: localStorage.getItem("email"),
-        },
         onSuccess: (trnxnId) => joinPrimaryGroup(trnxnId),
         onFail: () => {
           setVideoStatus(false);
@@ -807,10 +803,6 @@ const Page = () => {
       await payWithRazorpay({
         amount: 500,
         description: "Join Secondary Group",
-        user: {
-          name: localStorage.getItem("userName"),
-          email: localStorage.getItem("email"),
-        },
         onSuccess: (trnxnId) => joinSecondaryGroup(trnxnId),
         onFail: () => {
           setVideoStatus(false);
@@ -1232,7 +1224,7 @@ const Page = () => {
             )}
             {secondaryIdRequested && (
               <Button size={"sm"} colorScheme="twitter" onClick={joinGroup}>
-                Join with ₹250
+                Join with ₹500
               </Button>
             )}
           </ModalFooter>
