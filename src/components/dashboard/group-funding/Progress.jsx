@@ -98,7 +98,7 @@ const Progress = () => {
   }, [nextRoundInfo]);
 
   useEffect(() => {
-    if(nextRoundInfo.id){
+    if(nextRoundInfo?.id){
       fetchMyProgress();
     }
   }, [nextRoundInfo]);
