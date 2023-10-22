@@ -111,30 +111,30 @@ const Info = () => {
   function fetchInfo() {
     BackendAxios.get("/auth-user")
       .then((res) => {
-        setAuthUser(res.data);
+        setAuthUser(res.data[0]);
         const emptyAddress = JSON.stringify({
           line: "",
           landmark: "",
           city: "",
           state: "",
         });
-        const address = JSON.parse(res.data?.address || emptyAddress);
-        Formik.setFieldValue("firstName", res.data?.name?.split(" ")[0]);
-        if (res.data?.name?.split(" ")?.length >= 3)
-          Formik.setFieldValue("middleName", res.data?.name?.split(" ")[1]);
-        if (res.data?.name?.split(" ")?.length >= 3)
-          Formik.setFieldValue("lastName", res.data?.name?.split(" ")[2]);
-        if (res.data?.name?.split(" ")?.length >= 2)
-          Formik.setFieldValue("lastName", res.data?.name?.split(" ")[1]);
-        Formik.setFieldValue("dob", res.data?.dob);
-        Formik.setFieldValue("gender", res.data?.gender);
-        Formik.setFieldValue("phone", res.data?.phone_number);
-        Formik.setFieldValue("email", res.data?.email);
-        Formik.setFieldValue("upi", res.data?.upi_id);
-        Formik.setFieldValue("ifsc", res.data?.ifsc);
-        Formik.setFieldValue("bankName", res.data?.bank_name);
-        Formik.setFieldValue("accountNumber", res.data?.account_number);
-        Formik.setFieldValue("micr", res.data?.micr);
+        const address = JSON.parse(res.data[0]?.address || emptyAddress);
+        Formik.setFieldValue("firstName", res.data[0]?.name?.split(" ")[0]);
+        if (res.data[0]?.name?.split(" ")?.length >= 3)
+          Formik.setFieldValue("middleName", res.data[0]?.name?.split(" ")[1]);
+        if (res.data[0]?.name?.split(" ")?.length >= 3)
+          Formik.setFieldValue("lastName", res.data[0]?.name?.split(" ")[2]);
+        if (res.data[0]?.name?.split(" ")?.length >= 2)
+          Formik.setFieldValue("lastName", res.data[0]?.name?.split(" ")[1]);
+        Formik.setFieldValue("dob", res.data[0]?.dob);
+        Formik.setFieldValue("gender", res.data[0]?.gender);
+        Formik.setFieldValue("phone", res.data[0]?.phone_number);
+        Formik.setFieldValue("email", res.data[0]?.email);
+        Formik.setFieldValue("upi", res.data[0]?.upi_id);
+        Formik.setFieldValue("ifsc", res.data[0]?.ifsc);
+        Formik.setFieldValue("bankName", res.data[0]?.bank_name);
+        Formik.setFieldValue("accountNumber", res.data[0]?.account_number);
+        Formik.setFieldValue("micr", res.data[0]?.micr);
         setAddressObj({
           line: address?.line,
           city: address?.city,
@@ -144,25 +144,25 @@ const Info = () => {
         });
         setDisabledInputs({
           ...disabledInputs,
-          firstName: Boolean(res.data?.name),
-          middleName: Boolean(res.data?.name),
-          lastName: Boolean(res.data?.name),
-          dob: Boolean(res.data?.dob),
-          gender: Boolean(res.data?.gender),
-          phone: Boolean(res.data?.phone_number),
-          email: Boolean(res.data?.email),
-          upi: Boolean(res.data?.upi_id),
-          ifsc: Boolean(res.data?.ifsc),
-          bankName: Boolean(res.data?.bank_name),
-          accountNumber: Boolean(res.data?.account_number),
-          micr: Boolean(res.data?.micr),
+          firstName: Boolean(res.data[0]?.name),
+          middleName: Boolean(res.data[0]?.name),
+          lastName: Boolean(res.data[0]?.name),
+          dob: Boolean(res.data[0]?.dob),
+          gender: Boolean(res.data[0]?.gender),
+          phone: Boolean(res.data[0]?.phone_number),
+          email: Boolean(res.data[0]?.email),
+          upi: Boolean(res.data[0]?.upi_id),
+          ifsc: Boolean(res.data[0]?.ifsc),
+          bankName: Boolean(res.data[0]?.bank_name),
+          accountNumber: Boolean(res.data[0]?.account_number),
+          micr: Boolean(res.data[0]?.micr),
           line: Boolean(address?.line),
           landmark: Boolean(address?.landmark),
           city: Boolean(address?.city),
           state: Boolean(address?.state),
           pincode: Boolean(address?.pincode),
-          attachment1: Boolean(res.data?.attachment1),
-          attachment2: Boolean(res.data?.attachment2),
+          attachment1: Boolean(res.data[0]?.attachment1),
+          attachment2: Boolean(res.data[0]?.attachment2),
         });
       })
       .catch((err) => {
