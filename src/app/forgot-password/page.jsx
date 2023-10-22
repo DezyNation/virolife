@@ -158,7 +158,7 @@ const page = () => {
           ) : null}
           <br />
           <br />
-          {Formik.values.code ? (
+          {Formik.values.token ? (
             <Button
               w={"full"}
               bgColor={"#333"}
