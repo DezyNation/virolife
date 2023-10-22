@@ -30,7 +30,7 @@ const Info = () => {
     state: "",
     pincode: "",
   });
-  
+
   const [disabledInputs, setDisabledInputs] = useState({
     line: true,
     landmark: true,
@@ -75,6 +75,7 @@ const Info = () => {
       FormAxios.post(`/update-user`, {
         ...values,
         address: JSON.stringify(addressObj),
+        gender: gender,
         name:
           values.firstName +
           (values.middleName && values.lastName
