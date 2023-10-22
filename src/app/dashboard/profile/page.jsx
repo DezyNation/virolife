@@ -495,6 +495,7 @@ const Info = () => {
             </Box>
           </FormControl>
           <Stack
+            pb={16}
             gap={8}
             direction={["column", "row"]}
             justifyContent={"space-between"}
