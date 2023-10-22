@@ -159,6 +159,7 @@ const Info = () => {
           landmark: Boolean(address?.landmark),
           city: Boolean(address?.city),
           state: Boolean(address?.state),
+          pincode: Boolean(address?.pincode),
           attachment1: Boolean(res.data?.attachment1),
           attachment2: Boolean(res.data?.attachment2),
         });
