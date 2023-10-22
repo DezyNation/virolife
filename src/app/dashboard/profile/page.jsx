@@ -17,6 +17,7 @@ import { BsArrowRight } from "react-icons/bs";
 import { useFormik } from "formik";
 import { isExpired } from "react-jwt";
 import BackendAxios, { FormAxios } from "@/utils/axios";
+import Cookies from "js-cookie";
 
 const Info = () => {
   const Toast = useToast({ position: "top-right" });
