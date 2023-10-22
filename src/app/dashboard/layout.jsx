@@ -14,6 +14,7 @@ import Link from "next/link";
 import { AiFillDashboard, AiFillHeart, AiFillYoutube } from "react-icons/ai";
 import {
   BsCashCoin,
+  BsClipboardDataFill,
   BsCurrencyRupee,
   BsFill1CircleFill,
   BsGiftFill,
@@ -25,7 +26,7 @@ import {
   BsWalletFill,
 } from "react-icons/bs";
 import { MdGroups, MdSlowMotionVideo } from "react-icons/md";
-import { FaHandshake, FaUsers } from "react-icons/fa";
+import { FaHandshake, FaShoppingCart, FaUsers } from "react-icons/fa";
 import { GiChestnutLeaf, GiReceiveMoney } from "react-icons/gi";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
@@ -36,6 +37,7 @@ import Navbar from "@/components/global/Navbar";
 import Points from "@/components/dashboard/Points";
 import Commission from "@/components/dashboard/Commission";
 import { HiArrowsRightLeft } from "react-icons/hi2";
+import { BiDonateHeart } from "react-icons/bi";
 
 const Layout = ({ children }) => {
   const Toast = useToast({ position: "top-right" });
@@ -164,6 +166,25 @@ const Layout = ({ children }) => {
                     <HStack gap={4}>
                       <GiReceiveMoney size={20} />
                       <Text>Point Withdrawals</Text>
+                    </HStack>
+                  </Link>
+                  <br />
+                  <Link href={"/dashboard/campaign-donations"}>
+                    <HStack gap={4}>
+                      <BiDonateHeart size={20} />
+                      <Text>Campaign Donations</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/orders"}>
+                    <HStack gap={4}>
+                      <FaShoppingCart size={20} />
+                      <Text>Ecom Orders</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/transactions"}>
+                    <HStack gap={4}>
+                      <BsClipboardDataFill size={20} />
+                      <Text>Transactions</Text>
                     </HStack>
                   </Link>
                 </VStack>

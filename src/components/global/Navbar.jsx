@@ -437,7 +437,7 @@ const Navbar = () => {
                       <Link href={"/store"}>
                         <Text>Redeem Points</Text>
                       </Link>
-
+                      <br />
                       <Link href={"/dashboard/gift-cards"}>
                         <HStack gap={4}>
                           <Text>Gift Cards</Text>
@@ -451,6 +451,22 @@ const Navbar = () => {
                       <Link href={"/dashboard/points/withdrawals"}>
                         <HStack gap={4}>
                           <Text>Point Withdrawals</Text>
+                        </HStack>
+                      </Link>
+                      <br />
+                      <Link href={"/dashboard/campaign-donations"}>
+                        <HStack gap={4}>
+                          <Text>Campaign Donations</Text>
+                        </HStack>
+                      </Link>
+                      <Link href={"/dashboard/orders"}>
+                        <HStack gap={4}>
+                          <Text>Ecom Orders</Text>
+                        </HStack>
+                      </Link>
+                      <Link href={"/dashboard/transactions"}>
+                        <HStack gap={4}>
+                          <Text>Transactions</Text>
                         </HStack>
                       </Link>
                     </VStack>

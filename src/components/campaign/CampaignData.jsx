@@ -80,9 +80,17 @@ const CampaignData = ({ campaign }) => {
       phone: "",
     },
     onSubmit: (values) => {
+      if (!values.name || !values.phone) {
+        Toast({ description: "Name and phone no. are required" });
+        return;
+      }
       payWithRazorpay({
         amount: amount,
         description: campaign?.title,
+        user: {
+          name: values.name,
+          phone: values.phone,
+        },
         onSuccess: (trnxnId) => {
           setLoading(true);
           BackendAxios.post(`/api/donate-campaign`, {
