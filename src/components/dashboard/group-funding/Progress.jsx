@@ -38,6 +38,10 @@ const Progress = () => {
   const Toast = useToast({ position: "top-right" });
   const [steps, setSteps] = useState([]);
   const [nextRoundInfo, setNextRoundInfo] = useState({});
+
+  const [clickedRoundInfo, setClickedRoundInfo] = useState({});
+  const [showRoundInfoModal, setShowRoundInfoModal] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [myProgress, setMyProgress] = useState({
     round: "0",
@@ -75,6 +79,12 @@ const Progress = () => {
     setNextRoundInfo(data);
   }, [activeStep, steps]);
 
+  function clickStep(roundNumber) {
+    const data = steps?.find((step) => step?.round == roundNumber - 1);
+    setClickedRoundInfo(data);
+    setShowRoundInfoModal(true);
+  }
+
   useEffect(() => {
     if (nextRoundInfo?.id) {
       const data = nextRoundInfo;
@@ -98,7 +108,7 @@ const Progress = () => {
   }, [nextRoundInfo]);
 
   useEffect(() => {
-    if(nextRoundInfo?.id){
+    if (nextRoundInfo?.id) {
       fetchMyProgress();
     }
   }, [nextRoundInfo]);
@@ -158,7 +168,7 @@ const Progress = () => {
   }
 
   async function fetchMyProgress() {
-    if(!nextRoundInfo?.id) return
+    if (!nextRoundInfo?.id) return;
     setIsLoading(true);
     await BackendAxios.get(`/auth-user`)
       .then((res) => {
@@ -289,7 +299,7 @@ const Progress = () => {
       </HStack>
       <Stepper index={activeStep}>
         {steps.map((step, index) => (
-          <Step key={index}>
+          <Step key={index} onClick={() => clickStep(key + 1)}>
             <StepIndicator>
               <StepStatus
                 complete={<StepIcon />}
@@ -515,6 +525,169 @@ const Progress = () => {
                   <Text fontSize={"sm"}>{nextRoundInfo?.message}</Text>
                 </Box>
                 <Box flex={1}></Box>
+              </HStack>
+            ) : null}
+          </ModalBody>
+          <ModalFooter justifyContent={"flex-end"} gap={4}>
+            <Button onClick={onClose}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={showRoundInfoModal}
+        onClose={() => setShowRoundInfoModal(false)}
+        size={"3xl"}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            Round {clickedRoundInfo?.id + 1} Information
+          </ModalHeader>
+          <ModalBody py={2} px={6}>
+            <HStack
+              alignItems={"flex-start"}
+              justifyContent={"flex-start"}
+              gap={4}
+              py={2}
+            >
+              <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                Target Amount :
+              </Text>
+              <Text fontSize={"sm"} flex={3}>
+                ₹{parseInt(clickedRoundInfo?.target_amount)?.toFixed(0)}
+              </Text>
+            </HStack>
+            <HStack
+              alignItems={"flex-start"}
+              justifyContent={"flex-start"}
+              gap={4}
+              py={2}
+            >
+              <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                Virolife's Share :
+              </Text>
+              <Text fontSize={"sm"} flex={3}>
+                Donate ₹
+                {parseInt(clickedRoundInfo?.virolife_donation)?.toFixed(0)} to
+                Virolife Foundation
+              </Text>
+            </HStack>
+            <HStack
+              alignItems={"flex-start"}
+              justifyContent={"flex-start"}
+              gap={4}
+              py={2}
+            >
+              <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                Campaign Donations :
+              </Text>
+              <Text fontSize={"sm"} flex={3}>
+                Donate ₹
+                {clickedRoundInfo?.campaign_amount
+                  ? parseInt(clickedRoundInfo?.campaign_amount)?.toFixed(0)
+                  : "0"}{" "}
+                in {clickedRoundInfo?.campaign_count}{" "}
+                {clickedRoundInfo?.campaign_type}{" "}
+                {parseInt(clickedRoundInfo?.campaign_count) > 1
+                  ? "campaigns"
+                  : "campaign"}
+              </Text>
+            </HStack>
+
+            {clickedRoundInfo?.primary_senior_count ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Primary Group Senior Donations :
+                </Text>
+                <Text fontSize={"sm"} flex={3}>
+                  ₹
+                  {parseInt(clickedRoundInfo?.primary_senior_amount)?.toFixed(
+                    0
+                  )}{" "}
+                  to {clickedRoundInfo?.primary_senior_count} seniors each
+                </Text>
+              </HStack>
+            ) : null}
+
+            {clickedRoundInfo?.primary_junior_count ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Primary Group Junior Donations :
+                </Text>
+                <Text fontSize={"sm"} flex={3}>
+                  ₹
+                  {parseInt(clickedRoundInfo?.primary_junior_amount)?.toFixed(
+                    0
+                  )}{" "}
+                  to {clickedRoundInfo?.primary_junior_count} juniors each
+                </Text>
+              </HStack>
+            ) : null}
+
+            {clickedRoundInfo?.secondary_senior_count ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Secondary Group Senior Donations :
+                </Text>
+                <Text fontSize={"sm"} flex={3}>
+                  ₹
+                  {parseInt(clickedRoundInfo?.secondary_senior_amount)?.toFixed(
+                    0
+                  )}{" "}
+                  to {clickedRoundInfo?.secondary_senior_count} seniors each
+                </Text>
+              </HStack>
+            ) : null}
+
+            {clickedRoundInfo?.secondary_junior_count ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Secondary Group Junior Donations :
+                </Text>
+                <Text fontSize={"sm"} flex={3}>
+                  ₹
+                  {parseInt(clickedRoundInfo?.secondary_junior_amount)?.toFixed(
+                    0
+                  )}{" "}
+                  to {clickedRoundInfo?.secondary_junior_count} juniors each
+                </Text>
+              </HStack>
+            ) : null}
+
+            {clickedRoundInfo?.message ? (
+              <HStack
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                gap={4}
+                py={2}
+              >
+                <Text fontSize={"sm"} flex={2} fontWeight={"bold"}>
+                  Instructions :
+                </Text>
+                <Box flex={3}>
+                  <Text fontSize={"sm"}>{clickedRoundInfo?.message}</Text>
+                </Box>
               </HStack>
             ) : null}
           </ModalBody>
