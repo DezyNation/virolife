@@ -113,7 +113,7 @@ const Info = () => {
     BackendAxios.get("/auth-user")
       .then((res) => {
         setAuthUser(res.data);
-        const address = JSON.parse(res.data.address);
+        const address = JSON.parse(res.data?.address || "");
         Formik.setFieldValue("firstName", res.data?.name?.split(" ")[0]);
         if (res.data?.name?.split(" ")?.length >= 3)
           Formik.setFieldValue("middleName", res.data?.name?.split(" ")[1]);
@@ -151,10 +151,10 @@ const Info = () => {
           bankName: Boolean(res.data?.bank_name),
           accountNumber: Boolean(res.data?.account_number),
           micr: Boolean(res.data?.micr),
-          line: Boolean(res.data?.address),
-          landmark: Boolean(res.data?.address),
-          city: Boolean(res.data?.address),
-          state: Boolean(res.data?.address),
+          line: Boolean(address?.line),
+          landmark: Boolean(address?.landmark),
+          city: Boolean(address?.city),
+          state: Boolean(address?.state),
           attachment1: Boolean(res.data?.attachment1),
           attachment2: Boolean(res.data?.attachment2),
         });
