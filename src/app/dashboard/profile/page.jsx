@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { BsArrowRight } from "react-icons/bs";
 import { useFormik } from "formik";
-import { useCookies } from "react-cookie";
 import { isExpired } from "react-jwt";
 import BackendAxios, { FormAxios } from "@/utils/axios";
 
@@ -30,7 +29,7 @@ const Info = () => {
     state: "",
     pincode: "",
   });
-  const [cookies] = useCookies(["jwt"]);
+  
   const [disabledInputs, setDisabledInputs] = useState({
     line: true,
     landmark: true,
@@ -100,14 +99,13 @@ const Info = () => {
   });
 
   useEffect(() => {
-    if (!isExpired(cookies.jwt)) {
+    if (!isExpired(Cookies.get("jwt"))) {
       fetchInfo();
-      return;
     }
-    if (isExpired(cookies.jwt)) {
+    if (isExpired(Cookies.get("jwt"))) {
       window.location.replace("/");
     }
-  }, [cookies]);
+  }, []);
 
   function fetchInfo() {
     BackendAxios.get("/auth-user")
@@ -352,7 +350,6 @@ const Info = () => {
                   value={Formik.values.email}
                   disabled
                 />
-                <Text cursor={"pointer"}>Verify</Text>
               </HStack>
             </FormControl>
           </Stack>
