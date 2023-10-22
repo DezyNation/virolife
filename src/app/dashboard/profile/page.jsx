@@ -129,6 +129,7 @@ const Info = () => {
           Formik.setFieldValue("lastName", res.data[0]?.name?.split(" ")[1]);
         Formik.setFieldValue("dob", res.data[0]?.dob);
         Formik.setFieldValue("gender", res.data[0]?.gender);
+        setGender(res.data[0]?.gender)
         Formik.setFieldValue("phone", res.data[0]?.phone_number);
         Formik.setFieldValue("email", res.data[0]?.email);
         Formik.setFieldValue("upi", res.data[0]?.upi_id);
