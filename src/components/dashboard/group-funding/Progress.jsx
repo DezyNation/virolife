@@ -80,7 +80,7 @@ const Progress = () => {
   }, [activeStep, steps]);
 
   function clickStep(roundNumber) {
-    const data = steps?.find((step) => step?.round == roundNumber - 1);
+    const data = steps?.find((step) => step?.round == roundNumber );
     setClickedRoundInfo(data);
     setShowRoundInfoModal(true);
   }
@@ -299,7 +299,7 @@ const Progress = () => {
       </HStack>
       <Stepper index={activeStep}>
         {steps.map((step, index) => (
-          <Step key={index} onClick={() => clickStep(key + 1)}>
+          <Step key={index} onClick={() => clickStep(index)}>
             <StepIndicator>
               <StepStatus
                 complete={<StepIcon />}
