@@ -32,7 +32,7 @@ const page = () => {
 
   return (
     <>
-      <Text fontSize={"2xl"}>Campaign Donations</Text>
+      <Text fontSize={"2xl"}>Gateway Transactions</Text>
       <br />
       <TableContainer>
         <Table>
