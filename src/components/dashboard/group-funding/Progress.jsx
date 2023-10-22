@@ -300,7 +300,7 @@ const Progress = () => {
       <Stepper index={activeStep}>
         {steps.map((step, index) => (
           <Step key={index} onClick={() => clickStep(index)}>
-            <StepIndicator>
+            <StepIndicator cursor={'pointer'}>
               <StepStatus
                 complete={<StepIcon />}
                 incomplete={<StepNumber />}
