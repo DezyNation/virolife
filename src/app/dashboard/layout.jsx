@@ -103,7 +103,7 @@ const Layout = ({ children }) => {
             </Text>
 
             <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
-              <Link href={"/auth/info"}>
+              <Link href={"/dashboard/profile"}>
                 <HStack gap={4}>
                   <BsPersonFill size={20} />
                   <Text>Profile</Text>

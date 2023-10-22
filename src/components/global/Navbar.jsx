@@ -410,6 +410,9 @@ const Navbar = () => {
               ) : null}
               {!sessionExpired ? (
                 <VStack gap={4} alignItems={"flex-start"} w={"full"}>
+                  <Link href={"/dashboard/profile"}>
+                    <Text>Profile</Text>
+                  </Link>
                   <Link href={"/dashboard"}>
                     <Text>Dashboard</Text>
                   </Link>
