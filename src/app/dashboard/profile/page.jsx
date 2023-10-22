@@ -177,7 +177,7 @@ const Info = () => {
   return (
     <>
       <form action="#" onSubmit={Formik.handleSubmit}>
-        <Box p={8}>
+        <Box p={4} w={"full"}>
           <Stack
             w={"full"}
             pb={16}
@@ -361,7 +361,6 @@ const Info = () => {
             BANKING DETAILS
           </Text>
           <Stack
-            w={"full"}
             pb={16}
             gap={8}
             direction={["column", "row"]}
@@ -424,6 +423,13 @@ const Info = () => {
                 />
               </Box>
             </FormControl>
+          </Stack>
+          <Stack
+            pb={16}
+            gap={8}
+            direction={["column", "row"]}
+            justifyContent={"space-between"}
+          >
             <FormControl>
               <Box>
                 <FormLabel
@@ -443,14 +449,6 @@ const Info = () => {
                 />
               </Box>
             </FormControl>
-          </Stack>
-          <Stack
-            w={"full"}
-            pb={16}
-            gap={8}
-            direction={["column", "row"]}
-            justifyContent={"space-between"}
-          >
             <FormControl>
               <Box>
                 <FormLabel
@@ -497,7 +495,6 @@ const Info = () => {
             </Box>
           </FormControl>
           <Stack
-            w={"full"}
             gap={8}
             direction={["column", "row"]}
             justifyContent={"space-between"}
@@ -565,6 +562,12 @@ const Info = () => {
                 />
               </Box>
             </FormControl>
+          </Stack>
+          <Stack
+            gap={8}
+            direction={["column", "row"]}
+            justifyContent={"space-between"}
+          >
             <FormControl>
               <Box>
                 <FormLabel
