@@ -106,7 +106,7 @@ const ProductData = ({ campaign }) => {
   }
 
   function handlePurchase() {
-    setLoading(true);
+    // setLoading(true);
     if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
       payWithRazorpay({
         description: campaign?.name,
@@ -353,7 +353,7 @@ const ProductData = ({ campaign }) => {
                 colorScheme="yellow"
                 onClick={() => handlePurchase()}
               >
-                Buy Now
+                Buy Now {parseInt(giftCardAmount) ? `₹${giftCardAmount}` : ""}
               </Button>
             </Box>
           </Box>
