@@ -353,7 +353,7 @@ const ProductData = ({ campaign }) => {
                 colorScheme="yellow"
                 onClick={() => handlePurchase()}
               >
-                Buy Now {parseInt(giftCardAmount) ? `₹${giftCardAmount}` : ""}
+                Buy Now {parseInt(giftCardAmount) ? `₹${Number(campaign?.price) - Number(giftCardAmount)}` : ""}
               </Button>
             </Box>
           </Box>
