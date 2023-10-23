@@ -190,6 +190,13 @@ const ProductData = ({ campaign }) => {
       });
   }
 
+  useEffect(() => {
+    if (intent != "full") {
+      setGiftCard("");
+      setGiftCardAmount(0);
+    }
+  }, [intent]);
+
   return (
     <>
       {loading ? <FullPageLoader /> : null}
@@ -341,7 +348,7 @@ const ProductData = ({ campaign }) => {
                     <InputRightAddon
                       children={"Verify"}
                       onClick={() => verifyGiftCard()}
-                      cursor={'pointer'}
+                      cursor={"pointer"}
                     />
                   </InputGroup>
                 </Box>
@@ -353,7 +360,10 @@ const ProductData = ({ campaign }) => {
                 colorScheme="yellow"
                 onClick={() => handlePurchase()}
               >
-                Buy Now {parseInt(giftCardAmount) ? `₹${Number(campaign?.price) - Number(giftCardAmount)}` : ""}
+                Buy Now{" "}
+                {parseInt(giftCardAmount)
+                  ? `₹${Number(campaign?.price) - Number(giftCardAmount)}`
+                  : ""}
               </Button>
             </Box>
           </Box>
@@ -461,7 +471,7 @@ const ProductData = ({ campaign }) => {
                     <InputRightAddon
                       children={"Verify"}
                       onClick={() => verifyGiftCard()}
-                      cursor={'pointer'}
+                      cursor={"pointer"}
                     />
                   </InputGroup>
                 </Box>
