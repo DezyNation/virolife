@@ -174,6 +174,12 @@ const ProductData = ({ campaign }) => {
               description: "Discount code applied successfully!",
             });
             setGiftCardAmount(res.data?.amount);
+          } 
+          else {
+            Toast({
+              status: "warning",
+              description: "Invalid discount card!",
+            });
           }
         } else {
           Toast({
