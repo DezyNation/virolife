@@ -168,14 +168,16 @@ const ProductData = ({ campaign }) => {
             !res.data?.redeemed &&
             res.data?.purpose == "ecommerce" &&
             Number(res.data?.amount) <= Number(campaign?.price)
-          ) {
+          ){
             Toast({
               status: "success",
               description: "Discount code applied successfully!",
             });
             setGiftCardAmount(res.data?.amount);
           } 
-          else {
+          if(res.data?.redeemed ||
+            res.data?.purpose != "ecommerce" ||
+            Number(res.data?.amount) >= Number(campaign?.price)) {
             Toast({
               status: "warning",
               description: "Invalid discount card!",
