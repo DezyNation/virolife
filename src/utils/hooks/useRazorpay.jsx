@@ -66,11 +66,11 @@ const useRazorpay = () => {
           onFail();
         }
       },
-      // prefill: {
-      //   name: user?.name || localStorage?.getItem("userName"),
-      //   email: user?.email || localStorage?.getItem("email"),
-      //   phone: user?.phone || ""
-      // },
+      prefill: {
+        name: user?.name || localStorage?.getItem("userName"),
+        email: user?.email || localStorage?.getItem("email"),
+        phone: user?.phone || null
+      },
     };
 
     const paymentObject = new window.Razorpay(options);
