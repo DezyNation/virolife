@@ -80,7 +80,7 @@ const Progress = () => {
   }, [activeStep, steps]);
 
   function clickStep(roundNumber) {
-    const data = steps?.find((step) => step?.round == roundNumber );
+    const data = steps?.find((step) => parseInt(step?.round) + 1 == parseInt(roundNumber) );
     setClickedRoundInfo(data);
     setShowRoundInfoModal(true);
   }
