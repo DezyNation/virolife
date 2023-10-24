@@ -542,7 +542,7 @@ const Progress = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            Round {clickedRoundInfo?.id + 1} Information
+            Round {clickedRoundInfo?.id} Information
           </ModalHeader>
           <ModalBody py={2} px={6}>
             <HStack
