@@ -69,7 +69,6 @@ const useRazorpay = () => {
       prefill: {
         name: user?.name || localStorage?.getItem("userName"),
         email: user?.email || localStorage?.getItem("email"),
-        phone: user?.phone || null
       },
     };
 
