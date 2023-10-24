@@ -111,6 +111,7 @@ const page = () => {
   }
 
   async function handlePayment() {
+    onToggle();
     payWithRazorpay({
       amount: 210,
       onSuccess: (trnxnId) => {
@@ -135,7 +136,6 @@ const page = () => {
       transactionId: transactionId,
     })
       .then((res) => {
-        onToggle();
         fetchVirolifeDonations();
         Toast({
           status: "success",

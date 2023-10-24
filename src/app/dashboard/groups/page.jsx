@@ -789,6 +789,7 @@ const Page = () => {
 
   async function handlePayment(params) {
     if (params?.groupType == "primary") {
+      setVideoStatus(false);
       await payWithRazorpay({
         amount: 250,
         description: "Join Primary Group",
@@ -797,7 +798,6 @@ const Page = () => {
         },
         onSuccess: (trnxnId) => joinPrimaryGroup(trnxnId),
         onFail: () => {
-          setVideoStatus(false);
           Toast({
             status: "error",
             title: "Payment Failed",
@@ -806,6 +806,7 @@ const Page = () => {
         },
       });
     } else if (params?.groupType == "secondary") {
+      setVideoStatus(false);
       await payWithRazorpay({
         amount: 500,
         description: "Join Secondary Group",
@@ -814,7 +815,6 @@ const Page = () => {
         },
         onSuccess: (trnxnId) => joinSecondaryGroup(trnxnId),
         onFail: () => {
-          setVideoStatus(false);
           Toast({
             status: "error",
             title: "Payment Failed",
