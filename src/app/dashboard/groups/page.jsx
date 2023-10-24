@@ -1038,7 +1038,7 @@ const Page = () => {
             <Text fontSize={"xl"}>My Seniors (Primary ID)</Text>
             <br />
             <MyParents
-              parents={primaryParentUsers}
+              parents={primaryParentUsers?.slice(0, 10)}
               myParentId={primaryJoined}
               groupType={"primary"}
             />
@@ -1047,7 +1047,7 @@ const Page = () => {
             <Text fontSize={"xl"}>My Seniors (Secondary ID)</Text>
             <br />
             <MyParents
-              parents={secondaryParentUsers}
+              parents={secondaryParentUsers?.slice(0, 10)}
               myParentId={secondaryJoined}
               groupType={"secondary"}
             />

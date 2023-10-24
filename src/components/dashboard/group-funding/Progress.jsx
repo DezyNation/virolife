@@ -692,7 +692,7 @@ const Progress = () => {
             ) : null}
           </ModalBody>
           <ModalFooter justifyContent={"flex-end"} gap={4}>
-            <Button onClick={onClose}>Close</Button>
+            <Button onClick={()=>setShowRoundInfoModal(false)}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
