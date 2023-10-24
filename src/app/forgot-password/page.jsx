@@ -150,7 +150,7 @@ const page = () => {
                   focusBorderColor="black"
                   placeholder="Password Confirmation"
                   variant={"flushed"}
-                  name={"passwordConfirmation"}
+                  name={"password_confirmation"}
                   onChange={Formik.handleChange}
                 />
               </FormControl>
