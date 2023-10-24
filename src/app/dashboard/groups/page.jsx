@@ -84,6 +84,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   useEffect(() => {
     const onHold = parseInt(localStorage.getItem("onHold")) === 1;
+    console.log("On Hold ", onHold)
     if (parseInt(amount) > 0 && !onHold) {
       setShowDonateBtn(true);
     } else {
@@ -238,7 +239,9 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {!beneficiaries?.includes(item?.id) && showDonateBtn ? (
+            {beneficiaries?.includes(item?.id) ? (
+              <Text color="whatsapp.500">Donated</Text>
+            ) : showDonateBtn ? (
               <Button
                 size={"xs"}
                 colorScheme="yellow"
