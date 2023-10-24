@@ -792,6 +792,9 @@ const Page = () => {
       await payWithRazorpay({
         amount: 250,
         description: "Join Primary Group",
+        user: {
+          phone: "",
+        },
         onSuccess: (trnxnId) => joinPrimaryGroup(trnxnId),
         onFail: () => {
           setVideoStatus(false);
@@ -806,6 +809,9 @@ const Page = () => {
       await payWithRazorpay({
         amount: 500,
         description: "Join Secondary Group",
+        user: {
+          phone: "",
+        },
         onSuccess: (trnxnId) => joinSecondaryGroup(trnxnId),
         onFail: () => {
           setVideoStatus(false);
