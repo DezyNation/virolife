@@ -64,6 +64,9 @@ const ProductData = ({ campaign }) => {
       ${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${campaign?.id}
       `
   );
+  const shippingFees = Number(campaign?.delivery_charges)
+    ? Number(campaign?.delivery_charges)
+    : 0;
 
   const [intent, setIntent] = useState("full");
   const [loading, setLoading] = useState(false);
@@ -110,7 +113,7 @@ const ProductData = ({ campaign }) => {
     if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
       payWithRazorpay({
         description: campaign?.name,
-        amount: Number(campaign?.minimum_payable_amount),
+        amount: Number(campaign?.minimum_payable_amount) + shippingFees,
         onSuccess: (trnxnId) => {
           setLoading(false);
           placeOrder(trnxnId);
@@ -129,8 +132,8 @@ const ProductData = ({ campaign }) => {
       payWithRazorpay({
         description: campaign?.name,
         amount: parseInt(giftCardAmount)
-          ? Number(campaign?.price) - Number(giftCardAmount)
-          : Number(campaign?.price),
+          ? Number(campaign?.price) - Number(giftCardAmount) + shippingFees
+          : Number(campaign?.price) + shippingFees,
         onSuccess: (trnxnId) => {
           setLoading(false);
           placeOrder(trnxnId);
@@ -168,16 +171,18 @@ const ProductData = ({ campaign }) => {
             !res.data?.redeemed &&
             res.data?.purpose == "ecommerce" &&
             Number(res.data?.amount) <= Number(campaign?.price)
-          ){
+          ) {
             Toast({
               status: "success",
               description: "Discount code applied successfully!",
             });
             setGiftCardAmount(res.data?.amount);
-          } 
-          if(res.data?.redeemed ||
+          }
+          if (
+            res.data?.redeemed ||
             res.data?.purpose != "ecommerce" ||
-            Number(res.data?.amount) >= Number(campaign?.price)) {
+            Number(res.data?.amount) >= Number(campaign?.price)
+          ) {
             Toast({
               status: "warning",
               description: "Invalid discount card!",
@@ -294,7 +299,7 @@ const ProductData = ({ campaign }) => {
           >
             <Box p={4} boxShadow={"lg"} rounded={8} position={"sticky"} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>
-                Buying Options
+                Choose Buying Options
               </Text>
               <br />
 
@@ -311,6 +316,11 @@ const ProductData = ({ campaign }) => {
                 <Text fontSize={"md"} fontWeight={"medium"}>
                   Pay Full Price: ₹{campaign?.price}
                 </Text>
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.minimum_payable_amount)
+                    ? `Shipping Fees: ₹${shippingFees}`
+                    : ""}
+                </Text>
               </Box>
 
               <Box
@@ -326,6 +336,11 @@ const ProductData = ({ campaign }) => {
                 <Text fontSize={"md"} fontWeight={"medium"}>
                   {parseInt(campaign?.minimum_payable_amount)
                     ? `Pay Only: ₹${campaign?.minimum_payable_amount}`
+                    : ""}
+                </Text>
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.minimum_payable_amount)
+                    ? `Shipping Fees: ₹${shippingFees}`
                     : ""}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
@@ -359,6 +374,12 @@ const ProductData = ({ campaign }) => {
                       cursor={"pointer"}
                     />
                   </InputGroup>
+                  {parseInt(giftCardAmount) ? (
+                    <Text py={2} color={"whatsapp.500"} fontWeight={"semibold"}>
+                      {" "}
+                      `₹ ${giftCardAmount} discount applied`{" "}
+                    </Text>
+                  ) : null}
                 </Box>
               ) : null}
               <br />
@@ -417,7 +438,7 @@ const ProductData = ({ campaign }) => {
             />
             <Box p={4} boxShadow={"lg"} bg={"#FFF"} rounded={8} top={0}>
               <Text fontWeight={"semibold"} className="serif" fontSize={"xl"}>
-                Buying Options
+                Choose Buying Options
               </Text>
               <br />
 
@@ -434,8 +455,13 @@ const ProductData = ({ campaign }) => {
                 <Text fontSize={"md"} fontWeight={"medium"}>
                   Pay Full Price: ₹{campaign?.price}
                 </Text>
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.minimum_payable_amount)
+                    ? `Shipping Fees: ₹${shippingFees}`
+                    : ""}
+                </Text>
               </Box>
-
+              
               <Box
                 p={4}
                 my={4}
@@ -449,6 +475,11 @@ const ProductData = ({ campaign }) => {
                 <Text fontSize={"md"} fontWeight={"medium"}>
                   {parseInt(campaign?.minimum_payable_amount)
                     ? `Pay Only: ₹${campaign?.minimum_payable_amount}`
+                    : ""}
+                </Text>
+                <Text fontSize={"md"} fontWeight={"medium"}>
+                  {parseInt(campaign?.minimum_payable_amount)
+                    ? `Shipping Fees: ₹${shippingFees}`
                     : ""}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
@@ -482,6 +513,12 @@ const ProductData = ({ campaign }) => {
                       cursor={"pointer"}
                     />
                   </InputGroup>
+                  {parseInt(giftCardAmount) ? (
+                    <Text py={2} color={"whatsapp.500"} fontWeight={"semibold"}>
+                      {" "}
+                      `₹ ${giftCardAmount} discount applied`{" "}
+                    </Text>
+                  ) : null}
                 </Box>
               ) : null}
               <br />
@@ -491,7 +528,10 @@ const ProductData = ({ campaign }) => {
                 colorScheme="yellow"
                 onClick={() => handlePurchase()}
               >
-                Buy Now
+                Buy Now{" "}
+                {parseInt(giftCardAmount)
+                  ? `₹${Number(campaign?.price) - Number(giftCardAmount)}`
+                  : ""}
               </Button>
             </Box>
           </Box>

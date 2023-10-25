@@ -64,7 +64,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
               }
               category={campaign?.category?.name}
               title={campaign?.name}
-              userName={`₹ ${Number(
+              userName={campaign?.striked_price ? `₹ ${<s>{campaign?.striked_price}</s>} ${campaign?.price}` : `₹ ${Number(
                 campaign?.price
               )?.toLocaleString("en-IN")}`}
               description={campaign?.description}
