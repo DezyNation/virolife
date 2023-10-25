@@ -64,9 +64,18 @@ const AllCampaigns = ({ showNavbar = true }) => {
               }
               category={campaign?.category?.name}
               title={campaign?.name}
-              userName={campaign?.striked_price ? `₹ ${<s>{campaign?.striked_price}</s>} ${campaign?.price}` : `₹ ${Number(
-                campaign?.price
-              )?.toLocaleString("en-IN")}`}
+              userName={
+                campaign?.striked_price ? (
+                  <>
+                    <Text>
+                      ₹ <s>{campaign?.striked_price}</s>
+                      {campaign?.price}
+                    </Text>
+                  </>
+                ) : (
+                  `₹ ${Number(campaign?.price)?.toLocaleString("en-IN")}`
+                )
+              }
               description={campaign?.description}
               link={`/store/${campaign?.id}`}
             />
