@@ -96,6 +96,8 @@ const CampaignData = ({ campaign }) => {
           BackendAxios.post(`/api/donate-campaign`, {
             campaignId: campaign?.id,
             amount: amount,
+            name: values.name,
+            phoneNumber: values.phone,
             tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
             transactionId: trnxnId,
           })
