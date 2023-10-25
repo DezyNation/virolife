@@ -486,7 +486,7 @@ const ProductData = ({ campaign }) => {
                   Pay Full Price: ₹{campaign?.price}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.minimum_payable_amount)
+                  {parseInt(campaign?.delivery_charges)
                     ? `Shipping Fees: ₹${shippingFees}`
                     : ""}
                 </Text>
@@ -508,7 +508,7 @@ const ProductData = ({ campaign }) => {
                     : ""}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.minimum_payable_amount)
+                  {parseInt(campaign?.delivery_charges)
                     ? `Shipping Fees: ₹${shippingFees}`
                     : ""}
                 </Text>
