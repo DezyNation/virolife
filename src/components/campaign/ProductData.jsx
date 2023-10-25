@@ -111,22 +111,52 @@ const ProductData = ({ campaign }) => {
   function handlePurchase() {
     // setLoading(true);
     if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
-      payWithRazorpay({
-        description: campaign?.name,
-        amount: Number(campaign?.minimum_payable_amount) + shippingFees,
-        onSuccess: (trnxnId) => {
-          setLoading(false);
-          placeOrder(trnxnId);
-        },
-        onFail: () => {
-          setLoading(false);
-          handleError(err, "Your payment could not be completed!");
-        },
-      });
+      if (
+        Number(localStorage.getItem("atpPoints")) >=
+          Number(campaign?.atp_point) &&
+        Number(localStorage.getItem("adPoints")) >=
+          Number(campaign?.ad_point) &&
+        Number(localStorage.getItem("healthPoints")) >=
+          Number(campaign?.health_point)
+      ) {
+        payWithRazorpay({
+          description: campaign?.name,
+          amount: Number(campaign?.minimum_payable_amount) + shippingFees,
+          onSuccess: (trnxnId) => {
+            setLoading(false);
+            placeOrder(trnxnId);
+          },
+          onFail: () => {
+            setLoading(false);
+            handleError(err, "Your payment could not be completed!");
+          },
+        });
+      } else {
+        Toast({
+          status: "warning",
+          title: "You don't have enough points",
+          description: "Try refreshing your points",
+        });
+      }
     }
     if (campaign?.minimum_payable_amount == 0 && intent == "partial") {
       setLoading(false);
-      placeOrder();
+      if (
+        Number(localStorage.getItem("atpPoints")) >=
+          Number(campaign?.atp_point) &&
+        Number(localStorage.getItem("adPoints")) >=
+          Number(campaign?.ad_point) &&
+        Number(localStorage.getItem("healthPoints")) >=
+          Number(campaign?.health_point)
+      ) {
+        placeOrder();
+      } else {
+        Toast({
+          status: "warning",
+          title: "You don't have enough points",
+          description: "Try refreshing your points",
+        });
+      }
     }
     if (intent == "full") {
       payWithRazorpay({
@@ -317,7 +347,7 @@ const ProductData = ({ campaign }) => {
                   Pay Full Price: ₹{campaign?.price}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.minimum_payable_amount)
+                  {parseInt(campaign?.delivery_charges)
                     ? `Shipping Fees: ₹${shippingFees}`
                     : ""}
                 </Text>
@@ -339,7 +369,7 @@ const ProductData = ({ campaign }) => {
                     : ""}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.minimum_payable_amount)
+                  {parseInt(campaign?.delivery_charges)
                     ? `Shipping Fees: ₹${shippingFees}`
                     : ""}
                 </Text>
@@ -461,7 +491,7 @@ const ProductData = ({ campaign }) => {
                     : ""}
                 </Text>
               </Box>
-              
+
               <Box
                 p={4}
                 my={4}

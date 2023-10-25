@@ -68,7 +68,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
                 campaign?.striked_price ? (
                   <>
                     <Text>
-                      ₹ <s>{campaign?.striked_price}</s>
+                      ₹ <s>{Number(campaign?.striked_price)?.toFixed(2)}</s>{" "}
                       {campaign?.price}
                     </Text>
                   </>
