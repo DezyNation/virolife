@@ -268,7 +268,7 @@ const ProductData = ({ campaign }) => {
             <Image
               src={selectedImg}
               w={["100%", "lg", "3xl"]}
-              objectFit={"cover"}
+              objectFit={"contain"}
               h={["xs", "sm"]}
               rounded={16}
             />
@@ -287,7 +287,7 @@ const ProductData = ({ campaign }) => {
                   key={key}
                   src={img}
                   boxSize={["24"]}
-                  objectFit={"cover"}
+                  objectFit={"contain"}
                   rounded={16}
                   cursor={"pointer"}
                   onClick={() => setSelectedImg(img)}
@@ -390,7 +390,7 @@ const ProductData = ({ campaign }) => {
                 </Text>
               </Box>
               <br />
-              {intent == "full" ? (
+              {intent == "full" &&  campaign?.gift_card_status === 1 ? (
                 <Box p={4} my={4}>
                   <Text fontSize={"xs"}>Discount Card</Text>
                   <InputGroup>
@@ -529,7 +529,7 @@ const ProductData = ({ campaign }) => {
                 </Text>
               </Box>
               <br />
-              {intent == "full" ? (
+              {intent == "full" && campaign?.gift_card_status === 1 ? (
                 <Box p={4} my={4}>
                   <Text fontSize={"xs"}>Discount Card</Text>
                   <InputGroup>
