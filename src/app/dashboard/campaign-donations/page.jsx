@@ -51,9 +51,10 @@ const page = () => {
             {data?.map((data, key) => (
               <Tr key={key}>
                 <Td>{data?.transaction_id}</Td>
-                <Td>{data?.campaign_title}</Td>
+                <Td>{data?.title}</Td>
                 <Td>{data?.amount}</Td>
                 <Td>{data?.name}</Td>
+                <Td>{data?.phone_number}</Td>
                 <Td>{data?.created_at}</Td>
               </Tr>
             ))}
