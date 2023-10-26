@@ -9,6 +9,7 @@ import {
   Th,
   Thead,
   Tr,
+  Td
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 
