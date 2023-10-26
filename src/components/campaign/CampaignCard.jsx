@@ -16,7 +16,7 @@ const CampaignCard = (props) => {
             mb={4}
             transition={"all .3s ease"}
             _hover={{ boxShadow: "xl" }}
-            objectFit={"cover"}
+            objectFit={"contain"}
           />
           {props?.category ? (
             <Text

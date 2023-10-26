@@ -168,7 +168,10 @@ const page = () => {
               <Tr key={key}>
                 <Td>{key + 1}</Td>
                 <Td>{item?.code}</Td>
-                <Td>{item?.purpose}</Td>
+                <Td>
+                  {item?.purpose}{" "}
+                  {item?.purpose == "ecommerce" ? `(₹ ${item?.amount})` : ""}
+                </Td>
                 <Td>{item?.redeemed ? "USED" : "PENDING"}</Td>
                 <Td>{item?.agent_id}</Td>
                 <Td>{item?.user_id}</Td>

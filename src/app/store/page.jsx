@@ -69,7 +69,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
                   <>
                     <Text>
                       ₹ <s>{Number(campaign?.striked_price)?.toFixed(2)}</s>{" "}
-                      {campaign?.price}
+                      {campaign?.minimum_payable_amount || campaign?.price}
                     </Text>
                   </>
                 ) : (
