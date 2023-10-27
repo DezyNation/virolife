@@ -143,7 +143,7 @@ const ChildMemberCard = ({
   return (
     <>
       <HStack py={4} w={["full", "xs"]} justifyContent={"space-between"}>
-        <HStack alignItems={"flex-start"}>
+        <HStack w={'full'} alignItems={"flex-start"}>
           <Avatar name={name} />
           <Box w={"full"}>
             <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
