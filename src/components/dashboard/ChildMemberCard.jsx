@@ -36,16 +36,13 @@ const ChildMemberCard = ({
   });
 
   useEffect(() => {
-    let amt = 0;
     if (groupType == "primary") {
-      amt = localStorage.getItem(`primaryJuniorAmount`);
-      setAmount(amt);
-      return;
+      // amt = localStorage.getItem(`primaryJuniorAmount`);
+      setAmount(localStorage.getItem(`primaryJuniorAmount`));
     }
     if (groupType == "secondary") {
-      amt = localStorage.getItem(`secondaryJuniorAmount`);
-      setAmount(amt);
-      return;
+      // amt = localStorage.getItem(`secondaryJuniorAmount`);
+      setAmount(localStorage.getItem(`secondaryJuniorAmount`));
     }
   }, []);
 
