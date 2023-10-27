@@ -261,9 +261,9 @@ const ProductData = ({ campaign }) => {
             {campaign?.name}
           </Text>
           <Text fontSize={"lg"} fontWeight={"medium"}>
-            ₹{campaign?.price}
+            Min. Payable ₹{campaign?.minimum_payable_amount}
           </Text>
-          <Text pb={8}>Price: ₹{campaign?.price}</Text>
+          <Text pb={8}>Full Price: ₹{campaign?.price}</Text>
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
               src={selectedImg}
