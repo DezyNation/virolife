@@ -114,10 +114,6 @@ const Progress = () => {
   }, [nextRoundInfo]);
 
   useEffect(() => {
-    console.log("My Progress");
-    console.log(myProgress);
-    console.log("Next Round");
-    console.log(nextRoundInfo);
     if (
       myProgress.campaign_donation &&
       myProgress.collection &&

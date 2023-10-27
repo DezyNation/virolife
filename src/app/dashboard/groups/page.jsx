@@ -84,7 +84,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   useEffect(() => {
     const onHold = parseInt(localStorage.getItem("onHold")) === 1;
-    console.log("On Hold ", onHold)
+    console.log("On Hold ", onHold);
     if (parseInt(amount) > 0 && !onHold) {
       setShowDonateBtn(true);
     } else {
@@ -796,7 +796,7 @@ const Page = () => {
         user: {
           phone: "",
         },
-        onSuccess: (trnxnId) => joinPrimaryGroup(trnxnId),
+        onSuccess: (trnxnId) => joinPrimaryGroup({ transactionId: trnxnId }),
         onFail: () => {
           Toast({
             status: "error",
@@ -813,7 +813,7 @@ const Page = () => {
         user: {
           phone: "",
         },
-        onSuccess: (trnxnId) => joinSecondaryGroup(trnxnId),
+        onSuccess: (trnxnId) => joinSecondaryGroup({ transactionId: trnxnId }),
         onFail: () => {
           Toast({
             status: "error",
