@@ -50,7 +50,7 @@ const page = () => {
             {data?.map((data, key) => (
               <Tr key={key}>
                 <Td>{data?.id}</Td>
-                <Td>{data?.product_title}</Td>
+                <Td>{data?.product_name}</Td>
                 <Td>{data?.amount}</Td>
                 <Td>{data?.shipping_address}</Td>
                 <Td>{data?.created_at}</Td>
