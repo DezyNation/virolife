@@ -57,10 +57,10 @@ const page = () => {
                 <Td>{data?.product_name}</Td>
                 <Td>{data?.amount}</Td>
                 <Td>{data?.shipping_address || "Same as Profile Address"}</Td>
-                <Td>{order?.amount}</Td>
-                <Td>{order?.ad_points}</Td>
-                <Td>{order?.health_points}</Td>
-                <Td>{order?.atp_stars}</Td>
+                <Td>{data?.amount}</Td>
+                <Td>{data?.ad_points}</Td>
+                <Td>{data?.health_points}</Td>
+                <Td>{data?.atp_stars}</Td>
                 <Td>{data?.created_at}</Td>
               </Tr>
             ))}
