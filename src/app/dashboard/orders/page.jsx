@@ -43,6 +43,10 @@ const page = () => {
               <Th>Product</Th>
               <Th>Amount</Th>
               <Th>Shipping Address</Th>
+              <Th>Amount</Th>
+              <Th>Ad Points</Th>
+              <Th>Health Points</Th>
+              <Th>ATP Points</Th>
               <Th>Ordered On</Th>
             </Tr>
           </Thead>
@@ -53,6 +57,10 @@ const page = () => {
                 <Td>{data?.product_name}</Td>
                 <Td>{data?.amount}</Td>
                 <Td>{data?.shipping_address || "Same as Profile Address"}</Td>
+                <Td>{order?.amount}</Td>
+                <Td>{order?.ad_points}</Td>
+                <Td>{order?.health_points}</Td>
+                <Td>{order?.atp_stars}</Td>
                 <Td>{data?.created_at}</Td>
               </Tr>
             ))}
