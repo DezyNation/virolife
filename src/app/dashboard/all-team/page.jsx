@@ -254,7 +254,7 @@ const page = () => {
                 cursor={"pointer"}
                 fontWeight={"semibold"}
               >
-                Pay with PhonePe
+                Pay with Razorpay
               </Text>
             )}
             <Button
