@@ -112,6 +112,7 @@ const page = () => {
 
   async function handlePayment() {
     onToggle();
+    setGiftCard("")
     payWithRazorpay({
       amount: 210,
       onSuccess: (trnxnId) => {
