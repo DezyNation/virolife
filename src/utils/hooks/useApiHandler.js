@@ -6,7 +6,11 @@ import BackendAxios from "../axios";
 
 const useApiHandler = () => {
   const Toast = useToast();
-  const [points, setPoints] = useState(null);
+  const [points, setPoints] = useState({
+    atpPoints: 0,
+    healthPoints: 0,
+    adPoints: 0,
+  });
   const { fetchMyInfo } = useAuth();
 
   const handleError = (err, title) => {
@@ -25,6 +29,7 @@ const useApiHandler = () => {
       .then(async (res) => {
         await BackendAxios.get(`/api/my-health-points`).then((result) => {
           setPoints({
+            ...points,
             atpPoints: res.data,
             adPoints: Cookies.get("adPoints"),
             healthPoints: result.data,
