@@ -2,13 +2,11 @@
 import {
   Box,
   Button,
-  FormLabel,
   HStack,
   IconButton,
   Image,
   Input,
   InputGroup,
-  InputLeftElement,
   InputRightAddon,
   Modal,
   ModalBody,
@@ -16,13 +14,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Progress,
   Show,
-  Slider,
-  SliderFilledTrack,
-  SliderMark,
-  SliderThumb,
-  SliderTrack,
   Stack,
   Text,
   VStack,
@@ -34,8 +26,6 @@ import {
   BsChevronDoubleDown,
   BsChevronDoubleUp,
   BsClipboard,
-  BsHeartFill,
-  BsShareFill,
 } from "react-icons/bs";
 import {
   FacebookShareButton,
@@ -56,7 +46,7 @@ import useRazorpay from "@/utils/hooks/useRazorpay";
 
 const ProductData = ({ campaign }) => {
   const Toast = useToast({ position: "top-right" });
-  const { handleError } = useApiHandler();
+  const { handleError, refreshPoints } = useApiHandler();
   const { payWithRazorpay } = useRazorpay();
 
   const { value, setValue, onCopy, hasCopied } = useClipboard(
@@ -94,13 +84,14 @@ const ProductData = ({ campaign }) => {
       paymentId: trnxnId,
       giftCard: giftCard,
     })
-      .then((res) => {
+      .then(async (res) => {
         setLoading(false);
         Toast({
           status: "success",
           title: "Purchase succesful!",
           description: "Thank you for your purchase",
         });
+        await refreshPoints();
       })
       .catch((err) => {
         setLoading(false);
@@ -108,9 +99,10 @@ const ProductData = ({ campaign }) => {
       });
   }
 
-  function handlePurchase() {
+  async function handlePurchase() {
     // setLoading(true);
     if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
+      await refreshPoints();
       if (
         Number(localStorage.getItem("atpPoints")) >=
           Number(campaign?.atp_point) &&
@@ -390,7 +382,7 @@ const ProductData = ({ campaign }) => {
                 </Text>
               </Box>
               <br />
-              {intent == "full" &&  campaign?.gift_card_status === 1 ? (
+              {intent == "full" && campaign?.gift_card_status === 1 ? (
                 <Box p={4} my={4}>
                   <Text fontSize={"xs"}>Discount Card</Text>
                   <InputGroup>
