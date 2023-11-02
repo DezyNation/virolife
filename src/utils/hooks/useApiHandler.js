@@ -3,6 +3,7 @@ import { useToast } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import BackendAxios from "../axios";
+import useAuth from "./useAuth";
 
 const useApiHandler = () => {
   const Toast = useToast();
