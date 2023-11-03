@@ -40,7 +40,6 @@ const useApiHandler = () => {
       .catch((err) => {
         handleError(err, "Err while fetching ATP");
       });
-    setLoading(false);
   }
 
   useEffect(() => {
