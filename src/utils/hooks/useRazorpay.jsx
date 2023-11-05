@@ -26,85 +26,86 @@ const useRazorpay = () => {
     });
   };
 
-  // const submitrazorpayForm = async (order) => {
-  //   try {
-  //     const formdata = new FormData();
-  //     formdata.append("key_id", process.env.NEXT_PUBLIC_RAZORPAY_KEY)
-  //     formdata.append("order_id", order?.id)
-  //     formdata.append("amount", order?.amount)
-  //     formdata.append("name", "Virolife Foundation")
-  //     formdata.append("description", order?.description)
-  //     formdata.append("callback_url", process.env.NEXT_PUBLIC_BACKEND_URL + "/api/verify-order")
-  //     await axios.post(`https://api.razorpay.com/v1/checkout/embedded`, formdata);
-  //   } catch (err) {
-  //     console.log(err)
-  //     handleError({message: "Err while creating razorpay checkout form"})
-  //   }
-  // };
-
-  const payWithRazorpay = async ({
-    amount,
-    description,
-    user,
-    onSuccess,
-    onFail,
-  }) => {
-    const res = await initializeRazorpay();
-
-    if (!res) {
-      alert("Razorpay SDK Failed to load");
-      return;
+  const submitrazorpayForm = async (order) => {
+    try {
+      const formdata = new FormData();
+      formdata.append("key_id", process.env.NEXT_PUBLIC_RAZORPAY_KEY);
+      formdata.append("order_id", order?.order_id);
+      formdata.append("amount", order?.amount);
+      formdata.append("name", "Virolife Foundation");
+      formdata.append("description", order?.description);
+      formdata.append(
+        "callback_url",
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/api/verify-order"
+      );
+      await axios.post(
+        `https://api.razorpay.com/v1/checkout/embedded`,
+        formdata
+      );
+    } catch (err) {
+      console.log(err);
+      handleError({ message: "Err while creating razorpay checkout form" });
     }
+  };
 
-    // Make API call to the serverless API
-    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/razorpay`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: amount,
-        }),
-      }
-    ).then((t) => {
-      console.log(t);
-      return t.json();
-    });
+  const payWithRazorpay = async (params) => {
+    const { amount, description, user, onSuccess, onFail } = params;
+    // const res = await initializeRazorpay();
 
-    var options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
-      name: "Virolife Foundation",
-      currency: data.currency,
-      amount: data.amount,
-      order_id: data.id,
-      description: description || "Thankyou for using Virolife",
-      image: "https://avatars.githubusercontent.com/u/7713209?s=280&v=4",
-      handler: function (response) {
-        if (response.razorpay_payment_id) {
-          onSuccess(response.razorpay_payment_id);
-        } else {
-          onFail();
-        }
-      },
-      prefill: {
-        name: user?.name || localStorage?.getItem("userName"),
-        email: user?.email || localStorage?.getItem("email"),
-      },
-    };
+    // if (!res) {
+    //   alert("Razorpay SDK Failed to load");
+    //   return;
+    // }
 
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
+    // // Make API call to the serverless API
+    // const data = await fetch(
+    //   `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/razorpay`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       amount: amount,
+    //     }),
+    //   }
+    // ).then((t) => {
+    //   console.log(t);
+    //   return t.json();
+    // });
 
-    // await BackendAxios.post("/api/create-order")
-    //   .then(async (res) => {
-    //     await submitrazorpayForm({ ...res.data, description: description });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     handleError({ message: "Error while creating order" });
-    //   });
+    // var options = {
+    //   key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
+    //   name: "Virolife Foundation",
+    //   currency: data.currency,
+    //   amount: data.amount,
+    //   order_id: data.id,
+    //   description: description || "Thankyou for using Virolife",
+    //   image: "https://avatars.githubusercontent.com/u/7713209?s=280&v=4",
+    //   handler: function (response) {
+    //     if (response.razorpay_payment_id) {
+    //       onSuccess(response.razorpay_payment_id);
+    //     } else {
+    //       onFail();
+    //     }
+    //   },
+    //   prefill: {
+    //     name: user?.name || localStorage?.getItem("userName"),
+    //     email: user?.email || localStorage?.getItem("email"),
+    //   },
+    // };
+
+    // const paymentObject = new window.Razorpay(options);
+    // paymentObject.open();
+
+    await BackendAxios.post("/api/create-order", {...params})
+      .then(async (res) => {
+        await submitrazorpayForm({ ...res.data, description: description });
+      })
+      .catch((err) => {
+        console.log(err);
+        handleError({ message: "Error while creating order" });
+      });
   };
 
   return {

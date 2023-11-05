@@ -69,7 +69,7 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
       setIsDisabled(true);
       setTimeout(() => {
         setIsDisabled(false);
-      }, 30000);
+      }, 300);
     }
     if (!status) {
       setIsDisabled(false);

@@ -793,6 +793,8 @@ const Page = () => {
     if (params?.groupType == "primary") {
       setVideoStatus(false);
       await payWithRazorpay({
+        orderType: "primary_group",
+        id: joinGroupId,
         amount: 250,
         description: "Join Primary Group",
         user: {
@@ -810,6 +812,7 @@ const Page = () => {
     } else if (params?.groupType == "secondary") {
       setVideoStatus(false);
       await payWithRazorpay({
+        orderType: "secondary_group",
         amount: 500,
         description: "Join Secondary Group",
         user: {
