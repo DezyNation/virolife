@@ -169,23 +169,56 @@ const ProductData = ({ campaign }) => {
     //     },
     //   });
     // }
-
-    payWithRazorpay({
-      description: campaign?.name,
-      // amount: Number(campaign?.minimum_payable_amount) + shippingFees,
-      giftCard: giftCard,
-      orderType: "ecommerce",
-      intent: intent,
-      productId: campaign?.id,
-      onSuccess: (trnxnId) => {
-        setLoading(false);
-        placeOrder(trnxnId);
-      },
-      onFail: () => {
-        setLoading(false);
-        handleError(err, "Your payment could not be completed!");
-      },
-    });
+    if (intent == "partial") {
+      await refreshPoints();
+      if (
+        Number(localStorage.getItem("atpPoints")) >=
+          Number(campaign?.atp_point) &&
+        Number(localStorage.getItem("adPoints")) >=
+          Number(campaign?.ad_point) &&
+        Number(localStorage.getItem("healthPoints")) >=
+          Number(campaign?.health_point)
+      ) {
+        payWithRazorpay({
+          description: campaign?.name,
+          // amount: Number(campaign?.minimum_payable_amount) + shippingFees,
+          orderType: "ecommerce",
+          intent: intent,
+          productId: campaign?.id,
+          onSuccess: (trnxnId) => {
+            setLoading(false);
+            placeOrder(trnxnId);
+          },
+          onFail: () => {
+            setLoading(false);
+            handleError(err, "Your payment could not be completed!");
+          },
+        });
+      }
+      else {
+        Toast({
+          status: "error",
+          description: "You don't have sufficient points"
+        })
+      }
+    } else {
+      payWithRazorpay({
+        description: campaign?.name,
+        // amount: Number(campaign?.minimum_payable_amount) + shippingFees,
+        giftCard: giftCard,
+        orderType: "ecommerce",
+        intent: intent,
+        productId: campaign?.id,
+        onSuccess: (trnxnId) => {
+          setLoading(false);
+          placeOrder(trnxnId);
+        },
+        onFail: () => {
+          setLoading(false);
+          handleError(err, "Your payment could not be completed!");
+        },
+      });
+    }
   }
 
   useEffect(() => {
