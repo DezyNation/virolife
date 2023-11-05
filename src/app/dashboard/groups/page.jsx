@@ -735,7 +735,7 @@ const Page = () => {
 
   const [collections, setCollections] = useState([]);
 
-  const [paymentMethod, setPaymentMethod] = useState("gateway");
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [giftCard, setGiftCard] = useState("");
 
   useEffect(() => {
