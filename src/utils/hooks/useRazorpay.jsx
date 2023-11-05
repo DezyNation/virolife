@@ -1,13 +1,18 @@
 "use client";
+import { useState } from "react";
 import useApiHandler from "./useApiHandler";
+import BackendAxios from "../axios";
+import axios from "axios";
 
 const useRazorpay = () => {
   const { handleError } = useApiHandler();
 
+  const [order, setOrder] = useState(null);
+
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.src = "https://checkout.razorpay.com/v2/checkout.js";
 
       script.onload = () => {
         resolve(true);
@@ -20,6 +25,23 @@ const useRazorpay = () => {
       document.body.appendChild(script);
     });
   };
+
+  // const submitrazorpayForm = async (order) => {
+  //   try {
+  //     const formdata = new FormData();
+  //     formdata.append("key_id", process.env.NEXT_PUBLIC_RAZORPAY_KEY)
+  //     formdata.append("order_id", order?.id)
+  //     formdata.append("amount", order?.amount)
+  //     formdata.append("name", "Virolife Foundation")
+  //     formdata.append("description", order?.description)
+  //     formdata.append("callback_url", process.env.NEXT_PUBLIC_BACKEND_URL + "/api/verify-order")
+  //     await axios.post(`https://api.razorpay.com/v1/checkout/embedded`, formdata);
+  //   } catch (err) {
+  //     console.log(err)
+  //     handleError({message: "Err while creating razorpay checkout form"})
+  //   }
+  // };
+
   const payWithRazorpay = async ({
     amount,
     description,
@@ -52,7 +74,7 @@ const useRazorpay = () => {
     });
 
     var options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
       name: "Virolife Foundation",
       currency: data.currency,
       amount: data.amount,
@@ -74,6 +96,15 @@ const useRazorpay = () => {
 
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
+
+    // await BackendAxios.post("/api/create-order")
+    //   .then(async (res) => {
+    //     await submitrazorpayForm({ ...res.data, description: description });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     handleError({ message: "Error while creating order" });
+    //   });
   };
 
   return {
