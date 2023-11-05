@@ -3,11 +3,11 @@ import { useState } from "react";
 import useApiHandler from "./useApiHandler";
 import BackendAxios from "../axios";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const useRazorpay = () => {
   const { handleError } = useApiHandler();
-
-  const [order, setOrder] = useState(null);
+  const { push } = useRouter();
 
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
@@ -38,12 +38,17 @@ const useRazorpay = () => {
         "callback_url",
         process.env.NEXT_PUBLIC_BACKEND_URL + "/api/verify-order"
       );
+      formdata.append(
+        "callback_url",
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/api/verify-order"
+      );
       await axios.post(
         `https://api.razorpay.com/v1/checkout/embedded`,
-        formdata, {
+        formdata,
+        {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
     } catch (err) {
@@ -102,9 +107,10 @@ const useRazorpay = () => {
     // const paymentObject = new window.Razorpay(options);
     // paymentObject.open();
 
-    await BackendAxios.post("/api/create-order", {...params})
+    await BackendAxios.post("/api/create-order", { ...params })
       .then(async (res) => {
-        await submitrazorpayForm({ ...res.data, description: description });
+        // await submitrazorpayForm({ ...res.data, ...params });
+        push(`/payment?order_id=${res.data?.order_id}&amount=${res.data?.amount}&description=${description}`)
       })
       .catch((err) => {
         console.log(err);
