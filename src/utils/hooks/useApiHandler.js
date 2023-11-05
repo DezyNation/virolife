@@ -1,7 +1,7 @@
 "use client";
 import { useToast } from "@chakra-ui/react";
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BackendAxios from "../axios";
 import useAuth from "./useAuth";
 
@@ -40,7 +40,6 @@ const useApiHandler = () => {
       .catch((err) => {
         handleError(err, "Err while fetching ATP");
       });
-    setLoading(false);
   }
 
   useEffect(() => {
