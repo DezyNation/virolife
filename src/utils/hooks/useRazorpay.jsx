@@ -40,7 +40,11 @@ const useRazorpay = () => {
       );
       await axios.post(
         `https://api.razorpay.com/v1/checkout/embedded`,
-        formdata
+        formdata, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
       );
     } catch (err) {
       console.log(err);

@@ -1133,7 +1133,7 @@ const Page = () => {
                     setSecondaryIdRequested(true);
                   }}
                   colorScheme="twitter"
-                  isDisabled={Boolean(secondaryJoined)}
+                  isDisabled={Boolean(secondaryJoined) && Boolean(!primaryJoined)}
                 >
                   Activate Secondary ID
                 </Button>
