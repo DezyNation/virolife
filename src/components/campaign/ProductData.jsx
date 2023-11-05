@@ -173,6 +173,7 @@ const ProductData = ({ campaign }) => {
     payWithRazorpay({
       description: campaign?.name,
       // amount: Number(campaign?.minimum_payable_amount) + shippingFees,
+      giftCard: giftCard,
       orderType: "ecommerce",
       intent: intent,
       productId: campaign?.id,
