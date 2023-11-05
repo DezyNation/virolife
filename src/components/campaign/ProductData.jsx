@@ -101,71 +101,90 @@ const ProductData = ({ campaign }) => {
 
   async function handlePurchase() {
     // setLoading(true);
-    if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
-      await refreshPoints();
-      if (
-        Number(localStorage.getItem("atpPoints")) >=
-          Number(campaign?.atp_point) &&
-        Number(localStorage.getItem("adPoints")) >=
-          Number(campaign?.ad_point) &&
-        Number(localStorage.getItem("healthPoints")) >=
-          Number(campaign?.health_point)
-      ) {
-        payWithRazorpay({
-          description: campaign?.name,
-          amount: Number(campaign?.minimum_payable_amount) + shippingFees,
-          onSuccess: (trnxnId) => {
-            setLoading(false);
-            placeOrder(trnxnId);
-          },
-          onFail: () => {
-            setLoading(false);
-            handleError(err, "Your payment could not be completed!");
-          },
-        });
-      } else {
-        Toast({
-          status: "warning",
-          title: "You don't have enough points",
-          description: "Try refreshing your points",
-        });
-      }
-    }
-    if (campaign?.minimum_payable_amount == 0 && intent == "partial") {
-      setLoading(false);
-      if (
-        Number(localStorage.getItem("atpPoints")) >=
-          Number(campaign?.atp_point) &&
-        Number(localStorage.getItem("adPoints")) >=
-          Number(campaign?.ad_point) &&
-        Number(localStorage.getItem("healthPoints")) >=
-          Number(campaign?.health_point)
-      ) {
-        placeOrder();
-      } else {
-        Toast({
-          status: "warning",
-          title: "You don't have enough points",
-          description: "Try refreshing your points",
-        });
-      }
-    }
-    if (intent == "full") {
-      payWithRazorpay({
-        description: campaign?.name,
-        amount: parseInt(giftCardAmount)
-          ? Number(campaign?.price) - Number(giftCardAmount) + shippingFees
-          : Number(campaign?.price) + shippingFees,
-        onSuccess: (trnxnId) => {
-          setLoading(false);
-          placeOrder(trnxnId);
-        },
-        onFail: () => {
-          setLoading(false);
-          handleError(err, "Your payment could not be completed!");
-        },
-      });
-    }
+    // if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
+    //   await refreshPoints();
+    //   if (
+    //     Number(localStorage.getItem("atpPoints")) >=
+    //       Number(campaign?.atp_point) &&
+    //     Number(localStorage.getItem("adPoints")) >=
+    //       Number(campaign?.ad_point) &&
+    //     Number(localStorage.getItem("healthPoints")) >=
+    //       Number(campaign?.health_point)
+    //   ) {
+    //     payWithRazorpay({
+    //       description: campaign?.name,
+    //       amount: Number(campaign?.minimum_payable_amount) + shippingFees,
+    //       orderType: "ecommerce",
+    //       intent: intent,
+    //       productId: campaign?.id,
+    //       onSuccess: (trnxnId) => {
+    //         setLoading(false);
+    //         placeOrder(trnxnId);
+    //       },
+    //       onFail: () => {
+    //         setLoading(false);
+    //         handleError(err, "Your payment could not be completed!");
+    //       },
+    //     });
+    //   } else {
+    //     Toast({
+    //       status: "warning",
+    //       title: "You don't have enough points",
+    //       description: "Try refreshing your points",
+    //     });
+    //   }
+    // }
+    // if (campaign?.minimum_payable_amount == 0 && intent == "partial") {
+    //   setLoading(false);
+    //   if (
+    //     Number(localStorage.getItem("atpPoints")) >=
+    //       Number(campaign?.atp_point) &&
+    //     Number(localStorage.getItem("adPoints")) >=
+    //       Number(campaign?.ad_point) &&
+    //     Number(localStorage.getItem("healthPoints")) >=
+    //       Number(campaign?.health_point)
+    //   ) {
+    //     placeOrder();
+    //   } else {
+    //     Toast({
+    //       status: "warning",
+    //       title: "You don't have enough points",
+    //       description: "Try refreshing your points",
+    //     });
+    //   }
+    // }
+    // if (intent == "full") {
+    //   payWithRazorpay({
+    //     description: campaign?.name,
+    //     amount: parseInt(giftCardAmount)
+    //       ? Number(campaign?.price) - Number(giftCardAmount) + shippingFees
+    //       : Number(campaign?.price) + shippingFees,
+    //     onSuccess: (trnxnId) => {
+    //       setLoading(false);
+    //       placeOrder(trnxnId);
+    //     },
+    //     onFail: () => {
+    //       setLoading(false);
+    //       handleError(err, "Your payment could not be completed!");
+    //     },
+    //   });
+    // }
+
+    payWithRazorpay({
+      description: campaign?.name,
+      // amount: Number(campaign?.minimum_payable_amount) + shippingFees,
+      orderType: "ecommerce",
+      intent: intent,
+      productId: campaign?.id,
+      onSuccess: (trnxnId) => {
+        setLoading(false);
+        placeOrder(trnxnId);
+      },
+      onFail: () => {
+        setLoading(false);
+        handleError(err, "Your payment could not be completed!");
+      },
+    });
   }
 
   useEffect(() => {
