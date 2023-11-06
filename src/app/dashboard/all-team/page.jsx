@@ -114,6 +114,7 @@ const page = () => {
     onToggle();
     setGiftCard("")
     payWithRazorpay({
+      orderType: "atp",
       amount: 210,
       onSuccess: (trnxnId) => {
         donate(trnxnId);
