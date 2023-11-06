@@ -51,10 +51,12 @@ import useRazorpay from "@/utils/hooks/useRazorpay";
 import BackendAxios from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
 import FullPageLoader from "../global/FullPageLoader";
+import { useRouter } from "next/navigation";
 
 const CampaignData = ({ campaign }) => {
   const Toast = useToast({ position: "top-right" });
-  const { payWithRazorpay } = useRazorpay();
+  // const { payWithRazorpay } = useRazorpay();
+  const { push } = useRouter();
   const { handleError } = useApiHandler();
   const { value, setValue, onCopy, hasCopied } = useClipboard(
     `
@@ -84,45 +86,60 @@ const CampaignData = ({ campaign }) => {
         Toast({ description: "Name and phone no. are required" });
         return;
       }
-      payWithRazorpay({
+      // payWithRazorpay({
+      //   amount: amount,
+      //   description: campaign?.title,
+      //   user: {
+      //     name: values.name,
+      //     phone: values.phone,
+      //   },
+      //   onSuccess: (trnxnId) => {
+      //     setLoading(true);
+      //     BackendAxios.post(`/api/donate-campaign`, {
+      //       campaignId: campaign?.id,
+      //       amount: amount,
+      //       name: values.name,
+      //       phoneNumber: values.phone,
+      //       tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
+      //       transactionId: trnxnId,
+      //     })
+      //       .then((res) => {
+      //         setLoading(false);
+      //         Toast({
+      //           status: "success",
+      //           title: "Thank you for your donation!",
+      //           description: "A receipt has been sent to your email",
+      //         });
+      //       })
+      //       .catch((err) => {
+      //         setLoading(false);
+      //         handleError(err, "Error while adding your donation");
+      //       });
+      //   },
+      //   onFail: () => {
+      //     Toast({
+      //       status: "warning",
+      //       title: "Transaction Failed.",
+      //       description:
+      //         "There was an error processing your payment with Razorpay!",
+      //     });
+      //   },
+      // });
+      BackendAxios.post(`/api/donate-campaign`, {
+        campaignId: campaign?.id,
         amount: amount,
-        description: campaign?.title,
-        user: {
-          name: values.name,
-          phone: values.phone,
-        },
-        onSuccess: (trnxnId) => {
-          setLoading(true);
-          BackendAxios.post(`/api/donate-campaign`, {
-            campaignId: campaign?.id,
-            amount: amount,
-            name: values.name,
-            phoneNumber: values.phone,
-            tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
-            transactionId: trnxnId,
-          })
-            .then((res) => {
-              setLoading(false);
-              Toast({
-                status: "success",
-                title: "Thank you for your donation!",
-                description: "A receipt has been sent to your email",
-              });
-            })
-            .catch((err) => {
-              setLoading(false);
-              handleError(err, "Error while adding your donation");
-            });
-        },
-        onFail: () => {
-          Toast({
-            status: "warning",
-            title: "Transaction Failed.",
-            description:
-              "There was an error processing your payment with Razorpay!",
-          });
-        },
-      });
+        name: values.name,
+        phoneNumber: values.phone,
+        // tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
+      })
+        .then((res) => {
+          // setLoading(false);
+          push(`/payment?order_id=${res.data?.order_id}&amount=${res.data?.amount}&description=${campaign?.title}`)
+        })
+        .catch((err) => {
+          setLoading(false);
+          handleError(err, "Error while adding your donation");
+        });
     },
   });
 

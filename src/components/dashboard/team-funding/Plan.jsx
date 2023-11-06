@@ -87,9 +87,22 @@ const Plan = ({
   }
 
   async function handlePayment() {
+    if (
+      parentId == localStorage.getItem("userId") ||
+      referralId == localStorage.getItem("userId")
+    ) {
+      Toast({
+        description: "You can not join yourself!",
+      });
+      return;
+    }
     await payWithRazorpay({
+      orderType: "viro-team",
+      planId: id,
+      parentId: parentId,
+      referralId: referralId,
       amount: price,
-      description: `Join ${title} at Virolife`,
+      description: `Donate ${title} at Virolife`,
       onSuccess: (trnxnId) => {
         handleClick(trnxnId);
       },
