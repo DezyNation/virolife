@@ -52,6 +52,7 @@ import BackendAxios from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
 import FullPageLoader from "../global/FullPageLoader";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const CampaignData = ({ campaign }) => {
   const Toast = useToast({ position: "top-right" });
@@ -125,7 +126,7 @@ const CampaignData = ({ campaign }) => {
       //     });
       //   },
       // });
-      BackendAxios.post(`/api/donate-campaign`, {
+      axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/donate-campaign`, {
         campaignId: campaign?.id,
         amount: amount,
         name: values.name,
