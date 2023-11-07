@@ -29,7 +29,7 @@ const CampaignInfo = ({ params }) => {
     BackendAxios.get(`/api/campaign/${id}`)
       .then((res) => {
         setCampaign(res.data[0]);
-        console.log(JSON.parse(JSON.parse(res.data[0]?.beneficiary_details)));
+        console.log(JSON.parse(res.data[0]?.beneficiary_details));
       })
       .catch((err) => {
         Toast({
