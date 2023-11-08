@@ -60,7 +60,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
                   ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${JSON.parse(campaign?.file_path)[0]}`
                   : "https://idea.batumi.ge/files/default.jpg"
               }
-              category={campaign?.category?.name}
+              category={campaign?.category_name}
               title={campaign.title}
               userName={`Need ₹ ${Number(
                 campaign?.target_amount
