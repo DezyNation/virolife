@@ -83,7 +83,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
         <Text>Categories</Text>
         <HStack
           w={"full"}
-          p={4}
+          px={4}
           flexWrap={'wrap'}
           alignItems={"center"}
           justifyContent={"flex-start"}
