@@ -74,39 +74,49 @@ const AllCampaigns = ({ showNavbar = true }) => {
           Redeem Your Points
         </Text>
       </Stack>
-      <HStack
-        w={"full"}
-        p={4}
-        overflowX={"wrap"}
+      <Stack
         alignItems={"center"}
         justifyContent={"flex-start"}
+        direction={["column", "row"]}
       >
         <Text>Categories</Text>
-        <Button
-          onClick={() => {
-            setSelectedCategory("all");
-          }}
-          variant={selectedCategory == "all" ? "solid" : "ghost"}
-          size={"sm"}
-          rounded={"full"}
+        <HStack
+          w={"full"}
+          p={4}
+          overflowX={"wrap"}
+          alignItems={"center"}
+          justifyContent={"flex-start"}
         >
-          {"All"}
-        </Button>
-        {categories.map((category, key) => (
           <Button
+            minW={"16"}
             onClick={() => {
-              setSelectedCategory(category?.name);
+              setSelectedCategory("all");
             }}
-            key={key}
-            variant={selectedCategory == category?.name ? "solid" : "ghost"}
+            variant={selectedCategory == "all" ? "solid" : "ghost"}
+            colorScheme="yellow"
             size={"sm"}
             rounded={"full"}
-            textTransform={"uppercase"}
           >
-            {category.name}
+            {"All"}
           </Button>
-        ))}
-      </HStack>
+          {categories.map((category, key) => (
+            <Button
+              minW={"16"}
+              onClick={() => {
+                setSelectedCategory(category?.name);
+              }}
+              key={key}
+              colorScheme="yellow"
+              variant={selectedCategory == category?.name ? "solid" : "ghost"}
+              size={"sm"}
+              rounded={"full"}
+              textTransform={"uppercase"}
+            >
+              {category.name}
+            </Button>
+          ))}
+        </HStack>
+      </Stack>
       <Stack
         direction={["column", "row"]}
         flexWrap={"wrap"}
