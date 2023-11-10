@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Box, Stack, Text, Button, useToast } from "@chakra-ui/react";
+import { Box, Stack, Text, Button, useToast, HStack } from "@chakra-ui/react";
 import CampaignCard from "@/components/campaign/CampaignCard";
 import { BsPlus } from "react-icons/bs";
 import Link from "next/link";
@@ -11,10 +11,31 @@ import Navbar from "@/components/global/Navbar";
 const AllCampaigns = ({ showNavbar = true }) => {
   const Toast = useToast({ position: "top-right" });
   const [campaigns, setCampaigns] = useState([]);
+  const [filteredCampaigns, setFilteredCampaigns] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCategory == "all") {
+      setFilteredCampaigns(campaigns);
+    } else {
+      setFilteredCampaigns(
+        campaigns.filter(
+          (campaign) => campaign?.category?.name == selectedCategory
+        )
+      );
+    }
+  }, [selectedCategory]);
+
   useEffect(() => {
     DefaultAxios.get("/api/product")
       .then((res) => {
         setCampaigns(res.data);
+        setFilteredCampaigns(res.data);
       })
       .catch((err) => {
         Toast({
@@ -24,6 +45,20 @@ const AllCampaigns = ({ showNavbar = true }) => {
         });
       });
   }, []);
+
+  function fetchCategories() {
+    BackendAxios.get("/api/category")
+      .then((res) => {
+        setCategories(res.data);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
 
   return (
     <>
@@ -39,6 +74,39 @@ const AllCampaigns = ({ showNavbar = true }) => {
           Redeem Your Points
         </Text>
       </Stack>
+      <HStack
+        w={"full"}
+        p={4}
+        overflowX={"wrap"}
+        alignItems={"center"}
+        justifyContent={"flex-start"}
+      >
+        <Text>Categories</Text>
+        <Button
+          onClick={() => {
+            setSelectedCategory("all");
+          }}
+          variant={selectedCategory == "all" ? "solid" : "ghost"}
+          size={"sm"}
+          rounded={"full"}
+        >
+          {"All"}
+        </Button>
+        {categories.map((category, key) => (
+          <Button
+            onClick={() => {
+              setSelectedCategory(category?.name);
+            }}
+            key={key}
+            variant={selectedCategory == category?.name ? "solid" : "ghost"}
+            size={"sm"}
+            rounded={"full"}
+            textTransform={"uppercase"}
+          >
+            {category.name}
+          </Button>
+        ))}
+      </HStack>
       <Stack
         direction={["column", "row"]}
         flexWrap={"wrap"}
@@ -50,7 +118,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
         px={[4, 8, 16]}
         pb={[4, 8, 16]}
       >
-        {campaigns
+        {filteredCampaigns
           .filter((item) => item.status === 1)
           .map((campaign, key) => (
             <CampaignCard
