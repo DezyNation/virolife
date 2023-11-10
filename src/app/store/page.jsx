@@ -75,7 +75,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
         </Text>
       </Stack>
       <Stack
-        alignItems={"center"}
+        alignItems={"flex-start"}
         justifyContent={"flex-start"}
         direction={["column", "row"]}
       >
@@ -83,7 +83,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
         <HStack
           w={"full"}
           p={4}
-          overflowX={"wrap"}
+          flexWrap={'wrap'}
           alignItems={"center"}
           justifyContent={"flex-start"}
         >
