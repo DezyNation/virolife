@@ -100,7 +100,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
           >
             {"All"}
           </Button>
-          {categories.map((category, key) => (
+          {categories?.filter((category) => category?.type == "ecommerce").map((category, key) => (
             <Button
               minW={"16"}
               onClick={() => {
