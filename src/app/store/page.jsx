@@ -78,12 +78,11 @@ const AllCampaigns = ({ showNavbar = true }) => {
         alignItems={"flex-start"}
         justifyContent={"flex-start"}
         direction={["column", "row"]}
-        p={4}
+        p={[4, 8, 16]}
       >
         <Text>Categories</Text>
         <HStack
           w={"full"}
-          px={4}
           flexWrap={'wrap'}
           alignItems={"center"}
           justifyContent={"flex-start"}
