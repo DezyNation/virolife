@@ -42,7 +42,8 @@ const page = () => {
               <Th>Order ID</Th>
               <Th>Product</Th>
               <Th>Amount</Th>
-              <Th>Shipping Address</Th>
+              {/* <Th>Shipping Address</Th> */}
+              <Th>Status</Th>
               <Th>Amount</Th>
               <Th>Ad Points</Th>
               <Th>Health Points</Th>
@@ -56,7 +57,8 @@ const page = () => {
                 <Td>{data?.id}</Td>
                 <Td>{data?.product_name}</Td>
                 <Td>{data?.amount}</Td>
-                <Td>{data?.shipping_address || "Same as Profile Address"}</Td>
+                {/* <Td>{data?.shipping_address || "Same as Profile Address"}</Td> */}
+                <Td>{data?.status}</Td>
                 <Td>{data?.amount}</Td>
                 <Td>{data?.ad_points}</Td>
                 <Td>{data?.health_points}</Td>
