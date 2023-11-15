@@ -1,6 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Box, Stack, Text, Button, useToast, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Stack,
+  Text,
+  Button,
+  useToast,
+  HStack,
+  Select,
+} from "@chakra-ui/react";
 import CampaignCard from "@/components/campaign/CampaignCard";
 import { BsPlus } from "react-icons/bs";
 import Link from "next/link";
@@ -78,44 +86,23 @@ const AllCampaigns = ({ showNavbar = true }) => {
         alignItems={"flex-start"}
         justifyContent={"flex-start"}
         direction={["column", "row"]}
-        p={[4, 8, 16]}
+        p={[4]}
+        w={["xs"]}
       >
         <Text>Categories</Text>
-        <HStack
-          w={"full"}
-          flexWrap={'wrap'}
-          alignItems={"center"}
-          justifyContent={"flex-start"}
+        <Select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          <Button
-            minW={"16"}
-            onClick={() => {
-              setSelectedCategory("all");
-            }}
-            variant={selectedCategory == "all" ? "solid" : "ghost"}
-            colorScheme="yellow"
-            size={"sm"}
-            rounded={"full"}
-          >
-            {"All"}
-          </Button>
-          {categories?.filter((category) => category?.type == "ecommerce").map((category, key) => (
-            <Button
-              minW={"16"}
-              onClick={() => {
-                setSelectedCategory(category?.name);
-              }}
-              key={key}
-              colorScheme="yellow"
-              variant={selectedCategory == category?.name ? "solid" : "ghost"}
-              size={"sm"}
-              rounded={"full"}
-              textTransform={"uppercase"}
-            >
-              {category.name}
-            </Button>
-          ))}
-        </HStack>
+          <option value="all">All</option>
+          {categories
+            ?.filter((category) => category?.type == "ecommerce")
+            .map((category, key) => (
+              <option key={key} value={category?.name}>
+                {category?.name}
+              </option>
+            ))}
+        </Select>
       </Stack>
       <Stack
         direction={["column", "row"]}
