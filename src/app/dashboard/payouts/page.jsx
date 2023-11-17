@@ -25,6 +25,7 @@ const page = () => {
     BackendAxios.get(`/api/user/commission-request`)
       .then((res) => {
         setData(res.data);
+        console.log(res.data)
       })
       .catch((err) => {
         handleError(err);
