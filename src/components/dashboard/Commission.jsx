@@ -26,31 +26,26 @@ import { FiRefreshCw } from "react-icons/fi";
 
 const Commission = ({ onClick, commission }) => {
   const { isOpen, onToggle } = useDisclosure();
-  const { handleError } = useApiHandler();
-  const Toast = useToast();
+  const {handleError} = useApiHandler()
+  const Toast = useToast()
 
   const Formik = useFormik({
     initialValues: {
       amount: "",
       remarks: "",
     },
-    onSubmit: (values) => {
-      BackendAxios.post(`/api/user/commission-request`, {
-        ...values,
-        useRemarks: values.remarks,
-      })
-        .then((res) => {
-          Toast({
-            status: "success",
-            title: "Request Sent",
-            description: "We have sent a payout request to the admin!",
-          });
-          onToggle();
+    onSubmit: values => {
+      BackendAxios.post(`/api/user/commission-request`, values).then(res => {
+        Toast({
+          status: 'success',
+          title: "Request Sent",
+          description: "We have sent a payout request to the admin!"
         })
-        .catch((err) => {
-          handleError(err, "Error while sending request");
-        });
-    },
+        onToggle()
+      }).catch(err => {
+        handleError(err, "Error while sending request")
+      })
+    }
   });
 
   return (

@@ -55,7 +55,7 @@ const page = () => {
             {data?.map((item, key) => (
               <Tr key={key}>
                 <Td>{key + 1}</Td>
-                <Td>{item?.request_amount}</Td>
+                <Td>₹{item?.request_amount}</Td>
                 <Td>
                   {item?.admin_remarks
                     ? `Admin: ${item?.admin_remarks}`
