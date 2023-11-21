@@ -173,6 +173,7 @@ const Progress = () => {
           ...prev,
           round: userInfo?.round,
         }));
+        localStorage.setItem("currentRound", userInfo?.round)
       })
       .catch((err) => {
         Toast({

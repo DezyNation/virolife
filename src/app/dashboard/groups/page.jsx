@@ -54,6 +54,9 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     name: "",
   });
 
+  const [myCurrentRound, setMyCurrentRound] = useState(null);
+  const [myUserId, setMyUserId] = useState("");
+
   const [videoStatus, setVideoStatus] = useState(false);
   const [videoData, setVideoData] = useState({
     title: "Watch this video to proceed.",
@@ -65,18 +68,24 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   });
 
   useEffect(() => {
-    fetchMyDonations();
+    setMyCurrentRound(localStorage.getItem("currentRound"));
+    setMyUserId(localStorage.getItem("userId"));
   }, []);
+
+  useEffect(() => {
+    if (myCurrentRound == null || !myUserId) return;
+    fetchMyDonations();
+  }, [myCurrentRound, myUserId]);
 
   useEffect(() => {
     let amt = 0;
     if (groupType == "primary") {
-      amt = localStorage.getItem(`primarySeniorAmount`);
+      amt = localStorage.getItem(`primarySeniorAmount`) ?? 200;
       setAmount(amt);
       return;
     }
     if (groupType == "secondary") {
-      amt = localStorage.getItem(`secondarySeniorAmount`);
+      amt = localStorage.getItem(`secondarySeniorAmount`) ?? 200;
       setAmount(amt);
       return;
     }
@@ -179,7 +188,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   }
 
   function fetchMyDonations() {
-    BackendAxios.get(`/api/my-donations`)
+    BackendAxios.get(`/api/senior-donations/${myUserId}/${myCurrentRound}`)
       .then((res) => {
         setBeneficiaries(
           res.data
@@ -1133,7 +1142,9 @@ const Page = () => {
                     setSecondaryIdRequested(true);
                   }}
                   colorScheme="twitter"
-                  isDisabled={Boolean(secondaryJoined) || Boolean(!primaryJoined)}
+                  isDisabled={
+                    Boolean(secondaryJoined) || Boolean(!primaryJoined)
+                  }
                 >
                   Activate Secondary ID
                 </Button>
