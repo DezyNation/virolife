@@ -94,7 +94,7 @@ const Progress = () => {
       );
       localStorage.setItem(
         "secondarySeniorAmount",
-        Number(data?.secondary_senior_amount || 200)
+        Number(data?.secondary_senior_amount) || 200
       );
       localStorage.setItem(
         "primaryJuniorAmount",
