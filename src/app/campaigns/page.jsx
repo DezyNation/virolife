@@ -11,9 +11,9 @@ import { useSearchParams } from "next/navigation";
 
 const AllCampaigns = ({ showNavbar = true }) => {
   const Toast = useToast({ position: "top-right" });
-  const params = useSearchParams()
+  const params = useSearchParams();
 
-  const prefilAmount = params.get("prefil_amount")
+  const prefilAmount = params.get("prefil_amount");
 
   const [campaigns, setCampaigns] = useState([]);
   useEffect(() => {
@@ -62,13 +62,17 @@ const AllCampaigns = ({ showNavbar = true }) => {
               key={key}
               coverImage={
                 campaign?.file_path
-                  ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${JSON.parse(campaign?.file_path)[0]}`
+                  ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${
+                      JSON.parse(campaign?.file_path)[0]
+                    }`
                   : "https://idea.batumi.ge/files/default.jpg"
               }
               category={campaign?.category_name}
               title={campaign.title}
-              userName={`Need ₹ ${Number(
+              userName={`Need ₹${Number(
                 campaign?.target_amount
+              )?.toLocaleString("en-IN")} and Received ₹${Number(
+                campaign?.total_donations
               )?.toLocaleString("en-IN")}`}
               description={campaign.description}
               link={`/campaigns/${campaign.id}?prefil_amount=${prefilAmount}`}
