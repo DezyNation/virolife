@@ -465,7 +465,7 @@ const CampaignData = ({ campaign }) => {
                 min={5}
                 max={18}
                 step={1}
-                onChange={(val) => setFees(val)}\
+                onChange={(val) => setFees(val)}
               >
                 <SliderTrack bg="yellow.100">
                   <SliderFilledTrack bg="orange" />

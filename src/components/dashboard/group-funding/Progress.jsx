@@ -402,15 +402,17 @@ const Progress = () => {
                   <BsClock />
                 )}
               </Box>
-              <Button
-                size={"xs"}
-                colorScheme="yellow"
-                onClick={() =>
-                  donateToVirolife(nextRoundInfo?.virolife_donation)
-                }
-              >
-                Donate
-              </Button>
+              {myProgress?.virolife_donation ? null : (
+                <Button
+                  size={"xs"}
+                  colorScheme="yellow"
+                  onClick={() =>
+                    donateToVirolife(nextRoundInfo?.virolife_donation)
+                  }
+                >
+                  Donate
+                </Button>
+              )}
             </HStack>
             <HStack
               alignItems={"flex-start"}
@@ -439,13 +441,15 @@ const Progress = () => {
                   <BsClock />
                 )}
               </Box>
-              <Link
-                href={`/campaigns?prefil_amount=${nextRoundInfo?.campaign_amount}`}
-              >
-                <Button size={"xs"} colorScheme="yellow">
-                  Donate
-                </Button>
-              </Link>
+              {myProgress?.campaign_donation ? null : (
+                <Link
+                  href={`/campaigns?prefil_amount=${nextRoundInfo?.campaign_amount}`}
+                >
+                  <Button size={"xs"} colorScheme="yellow">
+                    Donate
+                  </Button>
+                </Link>
+              )}
             </HStack>
 
             {nextRoundInfo?.primary_senior_count ? (
