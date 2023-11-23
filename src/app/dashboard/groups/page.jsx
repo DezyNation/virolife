@@ -320,6 +320,7 @@ const NestedChildren = ({
         {data.map((item, key) => (
           <ChildMemberCard
             key={key}
+            index={key}
             name={item?.name}
             id={item?.id}
             phone_number={item?.phone_number}
