@@ -14,7 +14,6 @@ const ChildMemberCard = ({
   groupType,
   upi_id,
   canAcceptDonation = true,
-  index
 }) => {
   const Toast = useToast();
   const [amount, setAmount] = useState(0);
@@ -149,7 +148,7 @@ const ChildMemberCard = ({
           <Avatar name={name} />
           <Box w={"full"}>
             <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
-              {name} ({index})
+              {name}
             </Text>
             <Text fontSize={"xs"}>
               ID: {process.env.NEXT_PUBLIC_CODE}

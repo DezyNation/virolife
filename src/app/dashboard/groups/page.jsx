@@ -313,6 +313,7 @@ const NestedChildren = ({
   level,
   currentLevel = 1,
   groupType,
+  completeList,
 }) => {
   if (parseInt(currentLevel) == parseInt(level)) {
     return (
@@ -320,11 +321,14 @@ const NestedChildren = ({
         {data.map((item, key) => (
           <ChildMemberCard
             key={key}
-            index={key}
             name={item?.name}
             id={item?.id}
             phone_number={item?.phone_number}
             donation_received={donors?.includes(item?.id)}
+            canAcceptDonation={completeList
+              ?.split(0, 20)
+              ?.filter((usr) => ({ id: usr?.id }))
+              ?.includes(item?.id)}
             groupType={groupType}
             upi_id={item?.upi_id}
           />
@@ -464,6 +468,7 @@ const MyChildren = ({ childMembers, donors }) => {
           level={selectedLevel}
           data={groupMembers[0]?.children || []}
           donors={donors}
+          completeList={donors}
           groupType={"primary"}
         />
         {myGroup?.filter((user) => user?.parent_id == parseInt(myId))
@@ -641,6 +646,7 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
           data={groupMembers[0]?.children || []}
           level={selectedLevel}
           donors={donors}
+          completeList={donors}
           groupType={"secondary"}
         />
         {myGroup?.filter((user) => user?.secondary_parent_id == parseInt(myId))
