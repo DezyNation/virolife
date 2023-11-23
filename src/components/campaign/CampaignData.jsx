@@ -51,12 +51,15 @@ import useRazorpay from "@/utils/hooks/useRazorpay";
 import BackendAxios from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
 import FullPageLoader from "../global/FullPageLoader";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 
 const CampaignData = ({ campaign }) => {
   const Toast = useToast({ position: "top-right" });
-  // const { payWithRazorpay } = useRazorpay();
+  const params = useSearchParams();
+
+  const prefilAmount = params.get("prefil_amount");
+
   const { push } = useRouter();
   const { handleError } = useApiHandler();
   const { value, setValue, onCopy, hasCopied } = useClipboard(
@@ -126,16 +129,19 @@ const CampaignData = ({ campaign }) => {
       //     });
       //   },
       // });
-      axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/donate-campaign`, {
-        campaignId: campaign?.id,
-        amount: amount,
-        name: values.name,
-        phoneNumber: values.phone,
-        // tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
-      })
+      axios
+        .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/donate-campaign`, {
+          campaignId: campaign?.id,
+          amount: amount,
+          name: values.name,
+          phoneNumber: values.phone,
+          // tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
+        })
         .then((res) => {
           // setLoading(false);
-          push(`/payment?order_id=${res.data?.order_id}&amount=${res.data?.amount}&description=${campaign?.title}`)
+          push(
+            `/payment?order_id=${res.data?.order_id}&amount=${res.data?.amount}&description=${campaign?.title}`
+          );
         })
         .catch((err) => {
           setLoading(false);
@@ -143,6 +149,11 @@ const CampaignData = ({ campaign }) => {
         });
     },
   });
+
+  useEffect(() => {
+    setAmount(parseInt(prefilAmount));
+    Formik.setFieldValue("amount", prefilAmount);
+  }, [prefilAmount]);
 
   useEffect(() => {
     console.log(campaign);
@@ -427,6 +438,7 @@ const CampaignData = ({ campaign }) => {
                   value={Formik.values.amount}
                   onChange={Formik.handleChange}
                   mb={2}
+                  isDisabled={parseInt(prefilAmount) > 0}
                 />
               </InputGroup>
               <br />
@@ -453,6 +465,7 @@ const CampaignData = ({ campaign }) => {
                 max={18}
                 step={1}
                 onChange={(val) => setFees(val)}
+                isDisabled={parseInt(prefilAmount) > 0}
               >
                 <SliderTrack bg="yellow.100">
                   <SliderFilledTrack bg="orange" />

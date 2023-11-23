@@ -1,6 +1,7 @@
 "use client";
 import FullPageLoader from "@/components/global/FullPageLoader";
 import BackendAxios from "@/utils/axios";
+import useRazorpay from "@/utils/hooks/useRazorpay";
 import {
   Box,
   Button,
@@ -26,6 +27,7 @@ import {
   useSteps,
   useToast,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import {
   BsCheckCircleFill,
@@ -38,6 +40,8 @@ const Progress = () => {
   const Toast = useToast({ position: "top-right" });
   const [steps, setSteps] = useState([]);
   const [nextRoundInfo, setNextRoundInfo] = useState({});
+
+  const { payWithRazorpay } = useRazorpay();
 
   const [clickedRoundInfo, setClickedRoundInfo] = useState({});
   const [showRoundInfoModal, setShowRoundInfoModal] = useState(false);
@@ -80,7 +84,9 @@ const Progress = () => {
   }, [activeStep, steps]);
 
   function clickStep(roundNumber) {
-    const data = steps?.find((step) => parseInt(step?.round) == parseInt(roundNumber)+1 );
+    const data = steps?.find(
+      (step) => parseInt(step?.round) == parseInt(roundNumber) + 1
+    );
     setClickedRoundInfo(data);
     setShowRoundInfoModal(true);
   }
@@ -173,7 +179,7 @@ const Progress = () => {
           ...prev,
           round: userInfo?.round,
         }));
-        localStorage.setItem("currentRound", userInfo?.round)
+        localStorage.setItem("currentRound", userInfo?.round);
       })
       .catch((err) => {
         Toast({
@@ -282,6 +288,22 @@ const Progress = () => {
       });
   }
 
+  function donateToVirolife(amount) {
+    payWithRazorpay({
+      orderType: "target",
+      amount: amount,
+      onSuccess: async () => {
+        await fetchMyProgress();
+      },
+      onFail: (err) => {
+        Toast({
+          status: "error",
+          description: "Error while creating payment link",
+        });
+      },
+    });
+  }
+
   return (
     <>
       {isLoading ? <FullPageLoader /> : null}
@@ -297,7 +319,7 @@ const Progress = () => {
       <Stepper index={activeStep}>
         {steps.map((step, index) => (
           <Step key={index} onClick={() => clickStep(index)}>
-            <StepIndicator cursor={'pointer'}>
+            <StepIndicator cursor={"pointer"}>
               <StepStatus
                 complete={<StepIcon />}
                 incomplete={<StepNumber />}
@@ -380,6 +402,15 @@ const Progress = () => {
                   <BsClock />
                 )}
               </Box>
+              <Button
+                size={"xs"}
+                colorScheme="yellow"
+                onClick={() =>
+                  donateToVirolife(nextRoundInfo?.virolife_donation)
+                }
+              >
+                Donate
+              </Button>
             </HStack>
             <HStack
               alignItems={"flex-start"}
@@ -408,6 +439,13 @@ const Progress = () => {
                   <BsClock />
                 )}
               </Box>
+              <Link
+                href={`/campaigns?prefil_amount=${nextRoundInfo?.campaign_amount}`}
+              >
+                <Button size={"xs"} colorScheme="yellow">
+                  Donate
+                </Button>
+              </Link>
             </HStack>
 
             {nextRoundInfo?.primary_senior_count ? (
@@ -538,9 +576,7 @@ const Progress = () => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            Round {clickedRoundInfo?.id} Information
-          </ModalHeader>
+          <ModalHeader>Round {clickedRoundInfo?.id} Information</ModalHeader>
           <ModalBody py={2} px={6}>
             <HStack
               alignItems={"flex-start"}
@@ -689,7 +725,7 @@ const Progress = () => {
             ) : null}
           </ModalBody>
           <ModalFooter justifyContent={"flex-end"} gap={4}>
-            <Button onClick={()=>setShowRoundInfoModal(false)}>Close</Button>
+            <Button onClick={() => setShowRoundInfoModal(false)}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

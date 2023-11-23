@@ -7,9 +7,14 @@ import Link from "next/link";
 import BackendAxios, { DefaultAxios } from "@/utils/axios";
 import Footer from "@/components/global/Footer";
 import Navbar from "@/components/global/Navbar";
+import { useSearchParams } from "next/navigation";
 
 const AllCampaigns = ({ showNavbar = true }) => {
   const Toast = useToast({ position: "top-right" });
+  const params = useSearchParams()
+
+  const prefilAmount = params.get("prefil_amount")
+
   const [campaigns, setCampaigns] = useState([]);
   useEffect(() => {
     DefaultAxios.get("/api/campaign")
@@ -66,7 +71,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
                 campaign?.target_amount
               )?.toLocaleString("en-IN")}`}
               description={campaign.description}
-              link={`/campaigns/${campaign.id}`}
+              link={`/campaigns/${campaign.id}?prefil_amount=${prefilAmount}`}
             />
           ))}
       </Stack>
