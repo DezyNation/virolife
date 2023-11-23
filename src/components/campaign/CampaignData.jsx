@@ -292,7 +292,14 @@ const CampaignData = ({ campaign }) => {
                 Donate To {campaign?.user?.name}
               </Text>
               <br />
-              <Progress value={80} colorScheme="yellow" />
+              <Progress
+                value={
+                  (parseInt(campaign?.total_donations) /
+                    parseInt(campaign?.target_amount)) *
+                  100
+                }
+                colorScheme="yellow"
+              />
               <HStack justifyContent={"space-between"}>
                 <Text fontSize={"xs"}>
                   ₹ {Number(0).toLocaleString("en-IN")}
@@ -425,7 +432,14 @@ const CampaignData = ({ campaign }) => {
                 Donate To {campaign?.user?.name}
               </Text>
               <br />
-              <Progress value={80} colorScheme="yellow" />
+              <Progress
+                value={
+                  (parseInt(campaign?.total_donations) /
+                    parseInt(campaign?.target_amount)) *
+                  100
+                }
+                colorScheme="yellow"
+              />
               <HStack justifyContent={"space-between"}>
                 <Text fontSize={"xs"}>₹0</Text>
                 <Text fontSize={"xs"}>₹{campaign?.target_amount}</Text>
