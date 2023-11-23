@@ -326,7 +326,7 @@ const NestedChildren = ({
             phone_number={item?.phone_number}
             donation_received={donors?.includes(item?.id)}
             canAcceptDonation={completeList
-              ?.split(0, 20)
+              ?.slice(0, 20)
               ?.filter((usr) => ({ id: usr?.id }))
               ?.includes(item?.id)}
             groupType={groupType}
