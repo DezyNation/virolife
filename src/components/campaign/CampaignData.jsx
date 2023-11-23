@@ -337,7 +337,6 @@ const CampaignData = ({ campaign }) => {
                 max={18}
                 step={1}
                 onChange={(val) => setFees(val)}
-                isDisabled={parseInt(prefilAmount) > 0}
               >
                 <SliderTrack bg="yellow.100">
                   <SliderFilledTrack bg="orange" />
@@ -466,8 +465,7 @@ const CampaignData = ({ campaign }) => {
                 min={5}
                 max={18}
                 step={1}
-                onChange={(val) => setFees(val)}
-                isDisabled={parseInt(prefilAmount) > 0}
+                onChange={(val) => setFees(val)}\
               >
                 <SliderTrack bg="yellow.100">
                   <SliderFilledTrack bg="orange" />
