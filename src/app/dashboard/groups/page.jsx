@@ -346,6 +346,7 @@ const NestedChildren = ({
               data={item.children}
               level={level}
               currentLevel={currentLevel + 1}
+              completeList={completeList}
               donors={donors}
               groupType={groupType}
             />
