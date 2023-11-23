@@ -12,7 +12,9 @@ const ChildMemberCard = ({
   phone_number,
   donation_received,
   groupType,
-  upi_id
+  upi_id,
+  canAcceptDonation = true,
+  key
 }) => {
   const Toast = useToast();
   const [amount, setAmount] = useState(0);
@@ -48,7 +50,7 @@ const ChildMemberCard = ({
 
   useEffect(() => {
     const onHold = parseInt(localStorage.getItem("onHold")) === 1;
-    if (parseInt(amount) > 0 && !onHold) {
+    if (parseInt(amount) > 0 && !onHold && canAcceptDonation) {
       setShowDonateBtn(true);
     } else {
       setShowDonateBtn(false);
@@ -147,7 +149,7 @@ const ChildMemberCard = ({
           <Avatar name={name} />
           <Box w={"full"}>
             <Text className="serif" fontWeight={"semibold"} fontSize={"lg"}>
-              {name}
+              {name} ({key})
             </Text>
             <Text fontSize={"xs"}>
               ID: {process.env.NEXT_PUBLIC_CODE}
