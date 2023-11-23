@@ -310,6 +310,7 @@ const CampaignData = ({ campaign }) => {
                   value={Formik.values.amount}
                   onChange={Formik.handleChange}
                   mb={2}
+                  isDisabled={parseInt(prefilAmount) > 0}
                 />
               </InputGroup>
               <br />
@@ -336,6 +337,7 @@ const CampaignData = ({ campaign }) => {
                 max={18}
                 step={1}
                 onChange={(val) => setFees(val)}
+                isDisabled={parseInt(prefilAmount) > 0}
               >
                 <SliderTrack bg="yellow.100">
                   <SliderFilledTrack bg="orange" />
