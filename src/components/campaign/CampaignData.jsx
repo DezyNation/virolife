@@ -302,7 +302,7 @@ const CampaignData = ({ campaign }) => {
               />
               <HStack justifyContent={"space-between"}>
                 <Text fontSize={"xs"}>
-                  ₹ {Number(0).toLocaleString("en-IN")}
+                  ₹ {Number(campaign?.total_donations).toLocaleString("en-IN")}
                 </Text>
                 <Text fontSize={"xs"}>
                   ₹{Number(campaign?.target_amount)?.toLocaleString("en-IN")}
@@ -441,7 +441,7 @@ const CampaignData = ({ campaign }) => {
                 colorScheme="yellow"
               />
               <HStack justifyContent={"space-between"}>
-                <Text fontSize={"xs"}>₹0</Text>
+                <Text fontSize={"xs"}>₹{Number(campaign?.total_donations)?.toLocaleString("en-IN")}</Text>
                 <Text fontSize={"xs"}>₹{campaign?.target_amount}</Text>
               </HStack>
               <br />
