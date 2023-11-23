@@ -13,7 +13,7 @@ const ChildMemberCard = ({
   donation_received,
   groupType,
   upi_id,
-  canAcceptDonation = true,
+  canAcceptDonation,
 }) => {
   const Toast = useToast();
   const [amount, setAmount] = useState(0);
@@ -54,6 +54,9 @@ const ChildMemberCard = ({
     } else {
       setShowDonateBtn(false);
     }
+
+    console.log("Can accept donation")
+    console.log(canAcceptDonation)
   }, [amount]);
 
   function showVideo(user) {
