@@ -29,7 +29,15 @@ const CampaignInfo = ({ params }) => {
     BackendAxios.get(`/api/campaign/${id}`)
       .then((res) => {
         setCampaign(res.data[0]);
-        console.log(JSON.parse(res.data[0]?.beneficiary_details));
+
+        const campaignImages = JSON.parse(res.data[0]?.file_path)?.map(
+          (img) => `${process.env.NEXT_PUBLIC_BACKEND_URL}/${img}`
+        );
+
+        setImages(campaignImages);
+        if (campaignImages?.length) {
+          setSelectedImg(campaignImages[0]);
+        }
       })
       .catch((err) => {
         Toast({
@@ -75,6 +83,10 @@ const CampaignInfo = ({ params }) => {
             till &nbsp;
             {new Date(campaign?.updated_at).toDateString()} - Campaign By{" "}
             {campaign?.user?.name}
+            <br />
+            <br />
+            Received ₹
+            {Number(campaign?.total_donations)?.toLocaleString("en-IN")}
           </Text>
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
