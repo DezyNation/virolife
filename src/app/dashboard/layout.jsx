@@ -38,6 +38,7 @@ import Points from "@/components/dashboard/Points";
 import Commission from "@/components/dashboard/Commission";
 import { HiArrowsRightLeft } from "react-icons/hi2";
 import { BiDonateHeart } from "react-icons/bi";
+import { PiTargetFill } from "react-icons/pi";
 
 const Layout = ({ children }) => {
   const Toast = useToast({ position: "top-right" });
@@ -60,7 +61,9 @@ const Layout = ({ children }) => {
         // removeCookie("jwt")
         Cookies.remove("jwt");
         localStorage.clear();
-      }).finally(()=>{
+        Router.replace("/");
+      })
+      .finally(() => {
         Router.replace("/");
       });
   }
@@ -135,6 +138,12 @@ const Layout = ({ children }) => {
                     <HStack gap={4}>
                       <MdGroups size={20} />
                       <Text>Groups</Text>
+                    </HStack>
+                  </Link>
+                  <Link href={"/dashboard/target"}>
+                    <HStack gap={4}>
+                      <PiTargetFill size={20} />
+                      <Text>Target List</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/team-funding"}>
@@ -228,7 +237,13 @@ const Layout = ({ children }) => {
             </VStack>
           </Box>
         </Show>
-        <Box p={[4, 8, 8]} w={"full"} height={"100vh"} overflowY={"scroll"}>
+        <Box
+          p={[4, 8, 8]}
+          w={"full"}
+          height={"100vh"}
+          overflowY={"scroll"}
+          className="hide-scrollbar"
+        >
           {myRole == "user" ? (
             <Points />
           ) : (

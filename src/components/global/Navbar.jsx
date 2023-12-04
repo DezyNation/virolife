@@ -427,6 +427,9 @@ const Navbar = () => {
                       <Link href={"/dashboard/groups"}>
                         <Text>Groups</Text>
                       </Link>
+                      <Link href={"/dashboard/target"}>
+                        <Text>Target List</Text>
+                      </Link>
                       <Link href={"/dashboard/team-funding"}>
                         <Text>Veero Team Funding</Text>
                       </Link>
