@@ -93,7 +93,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   useEffect(() => {
     const onHold = parseInt(localStorage.getItem("onHold")) === 1;
-    console.log("On Hold ", onHold);
+
     if (parseInt(amount) > 0 && !onHold) {
       setShowDonateBtn(true);
     } else {
@@ -116,7 +116,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     if (groupType == "primary" && !user?.primary_activated) {
       setUpi("9022853554@okbizaxis");
       setReceiver({
-        id: key == 0 ? myParentId : user?.id,
+        id: user?.id,
         name: "Virolife Foundation",
       });
       setQrModal(true);
@@ -125,7 +125,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     if (groupType == "secondary" && !user?.secondary_activated) {
       setUpi("9022853554@okbizaxis");
       setReceiver({
-        id: key == 0 ? myParentId : user?.id,
+        id: user?.id,
         name: "Virolife Foundation",
       });
       setQrModal(true);
@@ -134,7 +134,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     if (!user?.upi_id) {
       setUpi("9022853554@okbizaxis");
       setReceiver({
-        id: key == 0 ? myParentId : user?.id,
+        id: user?.id,
         name: "Virolife Foundation",
       });
       setQrModal(true);
@@ -142,7 +142,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     }
     setUpi(user?.upi_id);
     setReceiver({
-      id: key == 0 ? myParentId : user?.id,
+      id: user?.id,
       name: user?.parent_name,
     });
     setQrModal(true);
