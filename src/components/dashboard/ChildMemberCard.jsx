@@ -158,7 +158,7 @@ const ChildMemberCard = ({
               {id} &nbsp; | &nbsp; Phone: {phone_number?.slice(0, 9)}
             </Text>
           </Box>
-          {showDonateBtn ? (
+          {/* {showDonateBtn ? (
             <Button
               size={"xs"}
               variant={donation_received ? "ghost" : "solid"}
@@ -171,7 +171,7 @@ const ChildMemberCard = ({
             >
               {donation_received ? "Donated" : "Donate"}
             </Button>
-          ) : null}
+          ) : null} */}
         </HStack>
       </HStack>
 
