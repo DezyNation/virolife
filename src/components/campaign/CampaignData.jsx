@@ -129,14 +129,16 @@ const CampaignData = ({ campaign }) => {
       //     });
       //   },
       // });
-      axios
-        .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/donate-campaign`, {
+      BackendAxios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/donate-campaign`,
+        {
           campaignId: campaign?.id,
           amount: amount,
           name: values.name,
           phoneNumber: values.phone,
           // tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
-        })
+        }
+      )
         .then((res) => {
           // setLoading(false);
           push(
@@ -441,7 +443,9 @@ const CampaignData = ({ campaign }) => {
                 colorScheme="yellow"
               />
               <HStack justifyContent={"space-between"}>
-                <Text fontSize={"xs"}>₹{Number(campaign?.total_donations)?.toLocaleString("en-IN")}</Text>
+                <Text fontSize={"xs"}>
+                  ₹{Number(campaign?.total_donations)?.toLocaleString("en-IN")}
+                </Text>
                 <Text fontSize={"xs"}>₹{campaign?.target_amount}</Text>
               </HStack>
               <br />
