@@ -104,7 +104,7 @@ const DashboardHome = () => {
   function fetchCampaigns() {
     BackendAxios.get("/api/user-campaigns")
       .then((res) => {
-        setCampaigns(res.data?.filter((data) => data?.status == "active"));
+        setCampaigns(res.data?.filter((data) => data?.status == "approved"));
       })
       .catch((err) => {
         Toast({
@@ -146,7 +146,7 @@ const DashboardHome = () => {
             title={"my team"}
             quantity={primaryJuniors?.length + secondaryJuniors?.length}
           />
-          
+
           <StatsCard
             icon={<BsMegaphoneFill size={28} />}
             title={"active campaigns"}
