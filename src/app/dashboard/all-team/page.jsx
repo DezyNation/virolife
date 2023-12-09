@@ -126,6 +126,7 @@ const page = () => {
         status: "warning",
         description: "You have already donated in this month",
       });
+      return
     }
     onToggle();
     setGiftCard("");
@@ -161,6 +162,7 @@ const page = () => {
         status: "warning",
         description: "You have already donated in this month",
       });
+      return
     }
     BackendAxios.post(`/api/gift/redeem/viroteam`, {
       purpose: "all-team",

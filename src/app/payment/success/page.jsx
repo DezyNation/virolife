@@ -13,7 +13,7 @@ const page = () => {
       </HStack>
       <br />
       <VStack w={"full"} justifyContent={"center"} alignItems={"center"} p={4}>
-        <Image src="/success.png" w={"2xl"} objectFit={"contain"} />
+        <Image src="/success.png" w={"xs"} objectFit={"contain"} />
       </VStack>
       <br />
       <Text textAlign={"center"}>
