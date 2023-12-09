@@ -18,11 +18,12 @@ import { useFormik } from "formik";
 import { isExpired } from "react-jwt";
 import BackendAxios, { FormAxios } from "@/utils/axios";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const Info = () => {
   const Toast = useToast({ position: "top-right" });
+  const { push } = useRouter();
   const [gender, setGender] = useState("");
-  const [authUser, setAuthUser] = useState({});
   const [addressObj, setAddressObj] = useState({
     line: "",
     landmark: "",
@@ -89,6 +90,7 @@ const Info = () => {
             status: "success",
             description: "Data updated successfully!",
           });
+          push("/dashboard");
         })
         .catch((err) => {
           Toast({
@@ -114,7 +116,6 @@ const Info = () => {
   function fetchInfo() {
     BackendAxios.get("/auth-user")
       .then((res) => {
-        setAuthUser(res.data[0]);
         const emptyAddress = JSON.stringify({
           line: "",
           landmark: "",
@@ -131,7 +132,7 @@ const Info = () => {
           Formik.setFieldValue("lastName", res.data[0]?.name?.split(" ")[1]);
         Formik.setFieldValue("dob", res.data[0]?.dob);
         Formik.setFieldValue("gender", res.data[0]?.gender);
-        setGender(res.data[0]?.gender)
+        setGender(res.data[0]?.gender);
         Formik.setFieldValue("pan", res.data[0]?.pan);
         Formik.setFieldValue("phone", res.data[0]?.phone_number);
         Formik.setFieldValue("email", res.data[0]?.email);
@@ -328,12 +329,11 @@ const Info = () => {
                 w={["full", "xs"]}
                 pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
                 name="pan"
-                textTransform={'uppercase'}
+                textTransform={"uppercase"}
                 value={Formik.values.pan}
                 onChange={Formik.handleChange}
               />
             </Box>
-
           </Stack>
 
           <Stack
@@ -665,13 +665,13 @@ const Info = () => {
             </FormControl>
           </Stack>
 
-          <HStack>
+          {/* <HStack>
             <Checkbox required />
             <Text>
               I have read and accept the Terms & Conditions and Privacy Policy
               of Virolife Foundation With All My Attention
             </Text>
-          </HStack>
+          </HStack> */}
 
           <HStack justifyContent={"flex-end"}>
             <Button

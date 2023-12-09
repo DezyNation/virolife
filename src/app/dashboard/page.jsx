@@ -31,6 +31,9 @@ const DashboardHome = () => {
   const { fetchMyInfo, authUser, myRole } = useAuth();
   const [sessionExpired, setSessionExpired] = useState(false);
 
+  const [primaryJuniors, setPrimaryJuniors] = useState([]);
+  const [secondaryJuniors, setSecondaryJuniors] = useState([]);
+  const [campaigns, setCampaigns] = useState([]);
   const [collections, setCollections] = useState(null);
   const [team, setTeam] = useState({
     primary: [],
@@ -47,10 +50,12 @@ const DashboardHome = () => {
 
   useEffect(() => {
     fetchCollections();
+    fetchCampaigns();
   }, []);
 
   useEffect(() => {
-    fetchMyTeam();
+    fetchPrimaryGroup();
+    fetchSecondaryGroup();
   }, []);
 
   function fetchCollections() {
@@ -68,20 +73,42 @@ const DashboardHome = () => {
       });
   }
 
-  function fetchMyTeam(groupType) {
-    BackendAxios.get(`/api/user/direct-junior`)
+  function fetchPrimaryGroup() {
+    BackendAxios.get(`/api/my-group`)
       .then((res) => {
-          setTeam((prev) => ({
-            ...prev,
-            primary: res.data?.primary,
-            secondary: res.data?.secondary
-          }))
-        
+        setPrimaryJuniors(res.data);
       })
       .catch((err) => {
         Toast({
           status: "error",
-          title: "Error while fetching your team members",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
+  function fetchSecondaryGroup() {
+    BackendAxios.get(`/api/my-group/secondary`)
+      .then((res) => {
+        setSecondaryJuniors(res.data);
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
+  function fetchCampaigns() {
+    BackendAxios.get("/api/user-campaigns")
+      .then((res) => {
+        setCampaigns(res.data?.filter((data) => data?.status == "active"));
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
@@ -91,7 +118,7 @@ const DashboardHome = () => {
   if (sessionExpired) {
     return (
       <>
-        <Text>Session expired! Please login again to view this page</Text>
+        <Text>Session expired! Please login to view this page</Text>
       </>
     );
   }
@@ -114,10 +141,16 @@ const DashboardHome = () => {
           gap={[8, 16]}
           justifyContent={"space-between"}
         >
-          <StatsCard icon={<MdGroups size={28} />} title={"my team"} quantity={team?.primary?.length} />
+          <StatsCard
+            icon={<MdGroups size={28} />}
+            title={"my team"}
+            quantity={primaryJuniors?.length + secondaryJuniors?.length}
+          />
+          
           <StatsCard
             icon={<BsMegaphoneFill size={28} />}
             title={"active campaigns"}
+            quantity={campaigns?.length}
           />
           <StatsCard
             icon={<BsCurrencyRupee size={28} />}
