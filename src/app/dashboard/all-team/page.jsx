@@ -112,7 +112,7 @@ const page = () => {
 
   async function handlePayment() {
     onToggle();
-    setGiftCard("")
+    setGiftCard("");
     payWithRazorpay({
       orderType: "atp",
       amount: 210,
@@ -139,6 +139,7 @@ const page = () => {
     })
       .then((res) => {
         fetchVirolifeDonations();
+        onToggle();
         Toast({
           status: "success",
           description: "Donated successfully!",
@@ -236,7 +237,9 @@ const page = () => {
                   </PinInput>
                 </HStack>
               </Box>
-            ) : "You will be paying with Razorpay Payment Gateway"}
+            ) : (
+              "You will be paying with Razorpay Payment Gateway"
+            )}
           </ModalBody>
           <ModalFooter justifyContent={"flex-end"} gap={8}>
             {paymentMethod == "gateway" ? (
