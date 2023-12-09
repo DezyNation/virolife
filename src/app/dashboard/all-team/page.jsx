@@ -111,6 +111,22 @@ const page = () => {
   }
 
   async function handlePayment() {
+    const today = new Date();
+    if (
+      donations?.filter((data) => {
+        if (
+          new Date(data?.updated_at).getMonth() == today.getMonth() &&
+          new Date(data?.updated_at).getFullYear() == today.getFullYear()
+        ) {
+          return data;
+        }
+      })?.length
+    ) {
+      Toast({
+        status: "warning",
+        description: "You have already donated in this month",
+      });
+    }
     onToggle();
     setGiftCard("");
     payWithRazorpay({
@@ -130,6 +146,22 @@ const page = () => {
   }
 
   function donate(transactionId) {
+    const today = new Date();
+    if (
+      donations?.filter((data) => {
+        if (
+          new Date(data?.updated_at).getMonth() == today.getMonth() &&
+          new Date(data?.updated_at).getFullYear() == today.getFullYear()
+        ) {
+          return data;
+        }
+      })?.length
+    ) {
+      Toast({
+        status: "warning",
+        description: "You have already donated in this month",
+      });
+    }
     BackendAxios.post(`/api/gift/redeem/viroteam`, {
       purpose: "all-team",
       code: giftCard,
