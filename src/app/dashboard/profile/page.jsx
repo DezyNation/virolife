@@ -41,6 +41,7 @@ const Info = () => {
     middleName: false,
     lastName: false,
     gender: false,
+    pan: false,
     dob: false,
     phone: false,
     email: false,
@@ -58,6 +59,7 @@ const Info = () => {
       firstName: "",
       middleName: "",
       lastName: "",
+      pan: "",
       gender: gender,
       dob: "",
       phone: "",
@@ -130,6 +132,7 @@ const Info = () => {
         Formik.setFieldValue("dob", res.data[0]?.dob);
         Formik.setFieldValue("gender", res.data[0]?.gender);
         setGender(res.data[0]?.gender)
+        Formik.setFieldValue("pan", res.data[0]?.pan);
         Formik.setFieldValue("phone", res.data[0]?.phone_number);
         Formik.setFieldValue("email", res.data[0]?.email);
         Formik.setFieldValue("upi", res.data[0]?.upi_id);
@@ -151,6 +154,7 @@ const Info = () => {
           lastName: Boolean(res.data[0]?.name),
           dob: Boolean(res.data[0]?.dob),
           gender: Boolean(res.data[0]?.gender),
+          pan: Boolean(res.data[0]?.pan),
           phone: Boolean(res.data[0]?.phone_number),
           email: Boolean(res.data[0]?.email),
           upi: Boolean(res.data[0]?.upi_id),
@@ -309,6 +313,27 @@ const Info = () => {
                 onChange={Formik.handleChange}
               />
             </Box>
+
+            <Box gap={4} w={["full", "xs"]}>
+              <FormLabel
+                fontWeight={"bold"}
+                textTransform={"uppercase"}
+                fontSize={"lg"}
+              >
+                PAN
+              </FormLabel>
+              <Input
+                isDisabled={disabledInputs.pan}
+                bg={"blanchedalmond"}
+                w={["full", "xs"]}
+                pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
+                name="pan"
+                textTransform={'uppercase'}
+                value={Formik.values.pan}
+                onChange={Formik.handleChange}
+              />
+            </Box>
+
           </Stack>
 
           <Stack

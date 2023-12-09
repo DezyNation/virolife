@@ -16,19 +16,20 @@ import { useFormik } from "formik";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const page = () => {
   const searchParams = useSearchParams();
+  const token = searchParams.get("reset-token");
+  const { push } = useRouter();
   const Toast = useToast({
     position: "top-right",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const token = searchParams.get("reset-token");
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    if(token){
+    if (token) {
       Formik.setFieldValue("token", token);
     }
   }, [searchParams]);
@@ -49,12 +50,17 @@ const page = () => {
             title: "Password Reset Successfully",
             description: "Please login with your new credentials",
           });
+          Formik.handleReset();
+          push("/")
         })
         .catch((err) => {
           setIsLoading(false);
           Toast({
             status: "error",
-            description: err?.response?.data?.message || err?.response?.data || err?.message,
+            description:
+              err?.response?.data?.message ||
+              err?.response?.data ||
+              err?.message,
           });
         });
     },
@@ -106,7 +112,12 @@ const page = () => {
             <Text color={"#FFF"}>Home</Text>
           </HStack>
         </Link>
-        <Container w={'xs'} alignItems={"center"} justifyContent={"center"} pt={[16, 0]}>
+        <Container
+          w={"xs"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          pt={[16, 0]}
+        >
           <Image
             boxSize={"36"}
             src="/logo.png"

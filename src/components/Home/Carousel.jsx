@@ -239,15 +239,6 @@ const Carousel = () => {
                   </Button>
                 </HStack>
               </VStack>
-              <VStack w={["full", "xs"]} gap={8}>
-                <Text textAlign={"center"}>Or Login With</Text>
-                <Image
-                  src="/gmail.png"
-                  w={20}
-                  cursor={"pointer"}
-                  onClick={() => signIn("google")}
-                />
-              </VStack>
             </Stack>
           </ModalBody>
         </ModalContent>

@@ -289,7 +289,7 @@ const Navbar = () => {
           </HStack>
           <Spacer />
           {websiteData?.whatsappStatus ? (
-            <Link href={websiteData?.whatsappLink}>
+            <Link href={websiteData?.whatsappLink} target="_blank">
               <HStack>
                 <Image
                   src="/whatsapp.png"
@@ -312,7 +312,7 @@ const Navbar = () => {
             <Spacer w={24} />
           ) : null}
           {websiteData?.telegramStatus ? (
-            <Link href={websiteData?.telegramLink}>
+            <Link href={websiteData?.telegramLink} target="_blank">
               <HStack>
                 <Image
                   src="/telegram.png"
@@ -624,10 +624,6 @@ const Navbar = () => {
                     Continue
                   </Button>
                 </HStack>
-              </VStack>
-              <VStack w={["full", "xs"]} gap={8}>
-                <Text textAlign={"center"}>Or Login With</Text>
-                <Image src="/gmail.png" w={20} cursor={"pointer"} />
               </VStack>
             </Stack>
           </ModalBody>
