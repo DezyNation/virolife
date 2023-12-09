@@ -103,7 +103,7 @@ const page = () => {
       <Text fontSize={["2xl", "3xl"]}>Your Collection</Text>
       <br />
       <TableContainer>
-        <Table variant={"striped"} colorScheme="gray">
+        <Table variant={"striped"} colorScheme="gray" size={'sm'}>
           <Thead>
             <Tr>
               <Th>Trnxn ID</Th>
