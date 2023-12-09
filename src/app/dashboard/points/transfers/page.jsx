@@ -103,7 +103,6 @@ const Transactions = () => {
               <Tr>
                 <Th>#</Th>
                 <Th>Trnxn ID</Th>
-                <Th>User Name</Th>
                 <Th>Ponits</Th>
                 <Th>Status</Th>
                 <Th>Beneficiary</Th>
@@ -116,13 +115,10 @@ const Transactions = () => {
                 <Tr fontSize={"xs"} key={key}>
                   <Td>{key + 1}</Td>
                   <Td>{item?.id}</Td>
-                  <Td>
-                    {item?.user_name}-{item?.user_id}
-                  </Td>
                   <Td>{item?.value}</Td>
                   <Td>{item?.status}</Td>
                   <Td>
-                    {item?.receiver_id}-{item?.receiver_name}
+                    {item?.receiver_id}-{item?.name}
                   </Td>
                   <Td>{item?.created_at}</Td>
                   <Td>
