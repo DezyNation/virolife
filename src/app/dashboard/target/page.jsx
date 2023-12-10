@@ -34,7 +34,38 @@ const page = () => {
   const { handleError } = useApiHandler();
   const { payWithRazorpay } = useRazorpay();
 
-  const [rounds, setRounds] = useState([]);
+  const [rounds, setRounds] = useState([
+    {
+      round: 0,
+    },
+    {
+      round: 1,
+    },
+    {
+      round: 2,
+    },
+    {
+      round: 3,
+    },
+    {
+      round: 4,
+    },
+    {
+      round: 5,
+    },
+    {
+      round: 6,
+    },
+    {
+      round: 7,
+    },
+    {
+      round: 8,
+    },
+    {
+      round: 9,
+    },
+  ]);
   const [myCurrentRound, setMyCurrentRound] = useState(null);
   const [activeRound, setActiveRound] = useState(null);
 
@@ -90,7 +121,7 @@ const page = () => {
         const currentTasks = tasks?.find(
           (task) => task?.round == myCurrentRound
         );
-        setRounds(tasks);
+        // setRounds(tasks);
         setRequirements((prev) => ({
           ...prev,
           threshold: Number(currentTasks?.target_amount)?.toFixed(0),
