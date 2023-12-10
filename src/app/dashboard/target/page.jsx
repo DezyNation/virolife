@@ -96,7 +96,6 @@ const page = () => {
   const [virolifeDonationData, setVirolifeDonationData] = useState([]);
 
   useEffect(() => {
-    if (!myCurrentRound) return;
     setActiveRound(myCurrentRound);
     fetchRounds();
   }, [myCurrentRound]);
@@ -106,7 +105,6 @@ const page = () => {
   }, []);
 
   useEffect(() => {
-    if (!activeRound) return;
     fetchJuniorsData();
     fetchSeniorsData();
     fetchMyCollection();
