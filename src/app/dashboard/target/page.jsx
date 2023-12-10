@@ -240,7 +240,7 @@ const page = () => {
         alignItems={"center"}
         justifyContent={"center"}
         my={4}
-        gap={8}
+        gap={4}
       >
         <Box
           p={4}
@@ -279,7 +279,7 @@ const page = () => {
               <BiSolidGroup size={48} color="#FFF" />
             </Box>
             <Box w={"full"}>
-              <Text fontSize={"sm"}>Donation to juniors</Text>
+              <Text fontSize={"sm"}>Junior Donations</Text>
               <HStack w={"full"} gap={8}>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
                   Prim. {requirements?.primaryJuniorDonationsDone}
@@ -291,7 +291,7 @@ const page = () => {
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontSize={"xs"}>
-                  Required: Prim. {requirements?.primaryJuniorDonationsRequired}
+                  Req.: Prim. {requirements?.primaryJuniorDonationsRequired}
                 </Text>
                 <Text fontSize={"xs"}>
                   Sec. {requirements?.secondaryJuniorDonationsRequired}
