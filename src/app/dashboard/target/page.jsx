@@ -312,7 +312,7 @@ const page = () => {
               <BsHeartFill size={48} color="#FFF" />
             </Box>
             <Box w={"full"}>
-              <Text fontSize={"sm"}>Medical campaign donations</Text>
+              <Text fontSize={"sm"}>Medical donations</Text>
               <Text fontSize={"xl"} fontWeight={"semibold"}>
                 {requirements?.campaignDonationsDone}
               </Text>
