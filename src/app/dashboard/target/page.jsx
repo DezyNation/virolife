@@ -96,7 +96,7 @@ const page = () => {
   const [virolifeDonationData, setVirolifeDonationData] = useState([]);
 
   useEffect(() => {
-    if(!myCurrentRound) return
+    if (!myCurrentRound) return;
     setActiveRound(myCurrentRound);
     fetchRounds();
   }, [myCurrentRound]);
@@ -106,7 +106,7 @@ const page = () => {
   }, []);
 
   useEffect(() => {
-    if(!activeRound) return
+    if (!activeRound) return;
     fetchJuniorsData();
     fetchSeniorsData();
     fetchMyCollection();
@@ -457,9 +457,7 @@ const page = () => {
                       <Td>
                         {data?.donated && data?.approved ? (
                           <BsCheckCircleFill color="green" />
-                        ) : (
-                          <BsXCircleFill color="red" />
-                        )}
+                        ) : null}
                       </Td>
                       <Td>{data?.approved ? data?.updated_at : null}</Td>
                       <Td>
@@ -512,8 +510,6 @@ const page = () => {
                       <Td>
                         {data?.approved ? (
                           <BsCheckCircleFill color="red" />
-                        ) : !data?.donated ? (
-                          <BsXCircleFill color="red" />
                         ) : null}
                       </Td>
                       <Td>{data?.updated_at}</Td>
