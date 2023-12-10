@@ -35,9 +35,9 @@ const page = () => {
   const { payWithRazorpay } = useRazorpay();
 
   const [rounds, setRounds] = useState([
-    {
-      round: 0,
-    },
+    // {
+    //   round: 0,
+    // },
     {
       round: 1,
     },
@@ -96,6 +96,7 @@ const page = () => {
   const [virolifeDonationData, setVirolifeDonationData] = useState([]);
 
   useEffect(() => {
+    if(!myCurrentRound) return
     setActiveRound(myCurrentRound);
     fetchRounds();
   }, [myCurrentRound]);
@@ -105,6 +106,7 @@ const page = () => {
   }, []);
 
   useEffect(() => {
+    if(!activeRound) return
     fetchJuniorsData();
     fetchSeniorsData();
     fetchMyCollection();
@@ -119,7 +121,7 @@ const page = () => {
         const currentTasks = tasks?.find(
           (task) => task?.round == myCurrentRound
         );
-        // setRounds(tasks);
+        setRounds(tasks);
         setRequirements((prev) => ({
           ...prev,
           threshold: Number(currentTasks?.target_amount)?.toFixed(0),
