@@ -620,7 +620,7 @@ const page = () => {
         </Tabs>
       ) : 
       <Text>
-        Please collect atleast 6000 to view tasks of this round
+        Please collect atleast ₹6000 to view tasks of this round
       </Text>
       }
     </>
