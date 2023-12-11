@@ -274,7 +274,8 @@ const page = () => {
         gap={4}
       >
         <Box
-          p={4} w={'full'}
+          p={4}
+          w={"full"}
           rounded={4}
           boxShadow={"base"}
           flex={["unset", 1]}
@@ -299,7 +300,8 @@ const page = () => {
           </HStack>
         </Box>
         <Box
-          p={4} w={'full'}
+          p={4}
+          w={"full"}
           rounded={4}
           boxShadow={"base"}
           flex={["unset", 1]}
@@ -332,7 +334,8 @@ const page = () => {
           </HStack>
         </Box>
         <Box
-          p={4} w={'full'}
+          p={4}
+          w={"full"}
           rounded={4}
           boxShadow={"base"}
           flex={["unset", 1]}
@@ -357,7 +360,8 @@ const page = () => {
           </HStack>
         </Box>
         <Box
-          p={4} w={'full'}
+          p={4}
+          w={"full"}
           rounded={4}
           boxShadow={"base"}
           flex={["unset", 1]}
@@ -414,204 +418,211 @@ const page = () => {
       </HStack>
       <br />
       <br />
-      <Tabs>
-        <TabList>
-          {/* <Tab>Donate to Seniors</Tab> */}
-          <Tab>Donate to Juniors</Tab>
-          <Tab>Approve Donations from Senior</Tab>
-          <Tab>Donate in Medical Campaigns</Tab>
-          <Tab>Donate to Virolife</Tab>
-        </TabList>
 
-        <TabPanels>
-          {/* Donate to Juniors */}
-          <TabPanel>
-            <TableContainer my={4}>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>#</Th>
-                    <Th>User</Th>
-                    <Th>Group</Th>
-                    <Th>Amount</Th>
-                    <Th>Donated</Th>
-                    <Th>Approved</Th>
-                    <Th>Updated On</Th>
-                    <Th>Action</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {juniorsData?.map((data, key) => (
-                    <Tr key={key}>
-                      <Td>{key + 1}</Td>
-                      <Td>
-                        ({data?.receiver_id}) {data?.receiver_name}
-                      </Td>
-                      <Td>{data?.group}</Td>
-                      <Td>{data?.amount}</Td>
-                      <Td>
-                        {data?.donated ? (
-                          <BsCheckCircleFill color="green" />
-                        ) : null}
-                      </Td>
-                      <Td>
-                        {data?.donated && data?.approved ? (
-                          <BsCheckCircleFill color="green" />
-                        ) : null}
-                      </Td>
-                      <Td>{data?.approved ? data?.updated_at : null}</Td>
-                      <Td>
-                        {data?.donated ? null : (
-                          <DonateButton
-                            userId={data?.receiver_id}
-                            userName={
-                              data?.upi_id
-                                ? data?.receiver_name
-                                : "Virolife Foundation"
-                            }
-                            upiId={data?.upi_id ?? "9022853554@okbizaxis"}
-                            amount={data?.amount}
-                            groupType={data?.group}
-                            instanceId={data?.id}
-                          />
-                        )}
-                      </Td>
+      {requirements?.collection >= 6000 ? (
+        <Tabs>
+          <TabList>
+            {/* <Tab>Donate to Seniors</Tab> */}
+            <Tab>Donate to Juniors</Tab>
+            <Tab>Approve Donations from Senior</Tab>
+            <Tab>Donate in Medical Campaigns</Tab>
+            <Tab>Donate to Virolife</Tab>
+          </TabList>
+
+          <TabPanels>
+            {/* Donate to Juniors */}
+            <TabPanel>
+              <TableContainer my={4}>
+                <Table>
+                  <Thead>
+                    <Tr>
+                      <Th>#</Th>
+                      <Th>User</Th>
+                      <Th>Group</Th>
+                      <Th>Amount</Th>
+                      <Th>Donated</Th>
+                      <Th>Approved</Th>
+                      <Th>Updated On</Th>
+                      <Th>Action</Th>
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-
-          {/* Approve Donations from Senior */}
-          <TabPanel>
-            <TableContainer my={4}>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>#</Th>
-                    <Th>User</Th>
-                    <Th>Group</Th>
-                    <Th>Amount</Th>
-                    <Th>Approved</Th>
-                    <Th>Updated On</Th>
-                    <Th>Action</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {seniorsData?.map((data, key) => (
-                    <Tr key={key}>
-                      <Td>{key + 1}</Td>
-                      <Td>
-                        ({data?.sender_id}) {data?.sender_name}
-                      </Td>
-                      <Td>{data?.group}</Td>
-                      <Td>{data?.amount}</Td>
-                      <Td>
-                        {data?.approved ? (
-                          <BsCheckCircleFill color="red" />
-                        ) : null}
-                      </Td>
-                      <Td>{data?.updated_at}</Td>
-                      <Td>
-                        <HStack gap={6}>
-                          {data?.approved ? null : data?.donated ? (
-                            <Button
-                              size={"sm"}
-                              rounded={"full"}
-                              colorScheme="yellow"
-                              onClick={() => approveDonation(data?.id, true)}
-                            >
-                              Approve
-                            </Button>
+                  </Thead>
+                  <Tbody>
+                    {juniorsData?.map((data, key) => (
+                      <Tr key={key}>
+                        <Td>{key + 1}</Td>
+                        <Td>
+                          ({data?.receiver_id}) {data?.receiver_name}
+                        </Td>
+                        <Td>{data?.group}</Td>
+                        <Td>{data?.amount}</Td>
+                        <Td>
+                          {data?.donated ? (
+                            <BsCheckCircleFill color="green" />
                           ) : null}
-                          {data?.approved ? null : data?.donated ? (
-                            <Button
-                              size={"sm"}
-                              rounded={"full"}
-                              colorScheme="red"
-                              onClick={() => approveDonation(data?.id, false)}
-                            >
-                              Reject
-                            </Button>
+                        </Td>
+                        <Td>
+                          {data?.donated && data?.approved ? (
+                            <BsCheckCircleFill color="green" />
                           ) : null}
-                        </HStack>
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
+                        </Td>
+                        <Td>{data?.approved ? data?.updated_at : null}</Td>
+                        <Td>
+                          {data?.donated ? null : (
+                            <DonateButton
+                              userId={data?.receiver_id}
+                              userName={
+                                data?.upi_id
+                                  ? data?.receiver_name
+                                  : "Virolife Foundation"
+                              }
+                              upiId={data?.upi_id ?? "9022853554@okbizaxis"}
+                              amount={data?.amount}
+                              groupType={data?.group}
+                              instanceId={data?.id}
+                            />
+                          )}
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
 
-          {/* Donate in Medical Campaigns */}
-          <TabPanel>
-            <TableContainer my={4}>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>#</Th>
-                    <Th>Name</Th>
-                    <Th>Phone Number</Th>
-                    <Th>Campaign</Th>
-                    <Th>Amount</Th>
-                    <Th>Donated On</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {campaignsData?.map((data, key) => (
-                    <Tr key={key}>
-                      <Td>{key + 1}</Td>
+            {/* Approve Donations from Senior */}
+            <TabPanel>
+              <TableContainer my={4}>
+                <Table>
+                  <Thead>
+                    <Tr>
+                      <Th>#</Th>
+                      <Th>User</Th>
+                      <Th>Group</Th>
+                      <Th>Amount</Th>
+                      <Th>Approved</Th>
+                      <Th>Updated On</Th>
+                      <Th>Action</Th>
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <br />
-            {amounts?.campaignDonation > 0 ? (
-              <HStack py={4} justifyContent={"flex-end"}>
-                <Link
-                  href={`/campaigns?prefil_amount=${amounts?.campaignDonation}`}
-                >
-                  <Button colorScheme="blue">Donate Now</Button>
-                </Link>
-              </HStack>
-            ) : null}
-          </TabPanel>
+                  </Thead>
+                  <Tbody>
+                    {seniorsData?.map((data, key) => (
+                      <Tr key={key}>
+                        <Td>{key + 1}</Td>
+                        <Td>
+                          ({data?.sender_id}) {data?.sender_name}
+                        </Td>
+                        <Td>{data?.group}</Td>
+                        <Td>{data?.amount}</Td>
+                        <Td>
+                          {data?.approved ? (
+                            <BsCheckCircleFill color="red" />
+                          ) : null}
+                        </Td>
+                        <Td>{data?.updated_at}</Td>
+                        <Td>
+                          <HStack gap={6}>
+                            {data?.approved ? null : data?.donated ? (
+                              <Button
+                                size={"sm"}
+                                rounded={"full"}
+                                colorScheme="yellow"
+                                onClick={() => approveDonation(data?.id, true)}
+                              >
+                                Approve
+                              </Button>
+                            ) : null}
+                            {data?.approved ? null : data?.donated ? (
+                              <Button
+                                size={"sm"}
+                                rounded={"full"}
+                                colorScheme="red"
+                                onClick={() => approveDonation(data?.id, false)}
+                              >
+                                Reject
+                              </Button>
+                            ) : null}
+                          </HStack>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
 
-          {/* Donate to Virolife */}
-          <TabPanel>
-            <TableContainer my={4}>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>#</Th>
-                    <Th>Amount</Th>
-                    <Th>Transaction ID</Th>
-                    <Th>Timestamp</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {virolifeDonationData?.map((data, key) => (
-                    <Tr key={key}>
-                      <Td>{key + 1}</Td>
+            {/* Donate in Medical Campaigns */}
+            <TabPanel>
+              <TableContainer my={4}>
+                <Table>
+                  <Thead>
+                    <Tr>
+                      <Th>#</Th>
+                      <Th>Name</Th>
+                      <Th>Phone Number</Th>
+                      <Th>Campaign</Th>
+                      <Th>Amount</Th>
+                      <Th>Donated On</Th>
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <br />
-            {requirements?.virolifeDonationsRequired >
-            requirements?.virolifeDonationsDone ? (
-              <HStack py={4} justifyContent={"flex-end"}>
-                <Button colorScheme="blue" onClick={() => donateToVirolife()}>
-                  Donate Now
-                </Button>
-              </HStack>
-            ) : null}
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+                  </Thead>
+                  <Tbody>
+                    {campaignsData?.map((data, key) => (
+                      <Tr key={key}>
+                        <Td>{key + 1}</Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+              <br />
+              {amounts?.campaignDonation > 0 ? (
+                <HStack py={4} justifyContent={"flex-end"}>
+                  <Link
+                    href={`/campaigns?prefil_amount=${amounts?.campaignDonation}`}
+                  >
+                    <Button colorScheme="blue">Donate Now</Button>
+                  </Link>
+                </HStack>
+              ) : null}
+            </TabPanel>
+
+            {/* Donate to Virolife */}
+            <TabPanel>
+              <TableContainer my={4}>
+                <Table>
+                  <Thead>
+                    <Tr>
+                      <Th>#</Th>
+                      <Th>Amount</Th>
+                      <Th>Transaction ID</Th>
+                      <Th>Timestamp</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {virolifeDonationData?.map((data, key) => (
+                      <Tr key={key}>
+                        <Td>{key + 1}</Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+              <br />
+              {requirements?.virolifeDonationsRequired >
+              requirements?.virolifeDonationsDone ? (
+                <HStack py={4} justifyContent={"flex-end"}>
+                  <Button colorScheme="blue" onClick={() => donateToVirolife()}>
+                    Donate Now
+                  </Button>
+                </HStack>
+              ) : null}
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      ) : 
+      <Text>
+        Please collect atleast 6000 to view tasks of this round
+      </Text>
+      }
     </>
   );
 };

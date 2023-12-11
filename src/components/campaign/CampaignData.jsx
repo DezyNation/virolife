@@ -130,7 +130,7 @@ const CampaignData = ({ campaign }) => {
       //   },
       // });
       BackendAxios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/donate-campaign`,
+        `/api/donate-campaign`,
         {
           campaignId: campaign?.id,
           amount: amount,
@@ -158,7 +158,6 @@ const CampaignData = ({ campaign }) => {
   }, [prefilAmount]);
 
   useEffect(() => {
-    console.log(campaign);
     if (campaign?.file_path) {
       setSelectedImg(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/${
