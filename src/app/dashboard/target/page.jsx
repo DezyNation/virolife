@@ -274,10 +274,10 @@ const page = () => {
         gap={4}
       >
         <Box
-          p={4}
+          p={4} w={'full'}
           rounded={4}
           boxShadow={"base"}
-          flex={1}
+          flex={["unset", 1]}
           bgColor={"yellow.50"}
         >
           <HStack w={"full"} alignItems={"flex-start"}>
