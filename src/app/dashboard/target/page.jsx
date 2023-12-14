@@ -489,7 +489,7 @@ const page = () => {
               </TableContainer>
             </TabPanel>
           ) : (
-            <Text>
+            <Text p={8}>
               Please collect atleast ₹6000 to view tasks of this round
             </Text>
           )}
