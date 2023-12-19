@@ -1054,9 +1054,7 @@ const Page = () => {
           </Button>
         </HStack>
       </HStack>
-      <br />
-      <br />
-      <Progress />
+      {/* <Progress /> */}
       <br />
       <br />
       <Box>
