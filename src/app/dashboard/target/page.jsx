@@ -251,7 +251,22 @@ const page = () => {
     BackendAxios.get(
       `/api/user/donation/donate-virolife?purpose=virolife-donation`
     )
-      .then((res) => setVirolifeDonationData(res.data))
+      .then((res) => {
+        const result = res.data?.filter((data) => data?.round == activeRound);
+        setVirolifeDonationData(result);
+
+        const totalAmount = result?.reduce((accumulator, currentValue) => {
+          if (currentValue.hasOwnProperty("amount")) {
+            return accumulator + currentValue.amount;
+          }
+          return accumulator;
+        }, 0);
+
+        setRequirements((prev) => ({
+          ...prev,
+          virolifeDonationsDone: totalAmount,
+        }));
+      })
       .catch((err) => {
         if (err?.response?.status == 401) {
           Cookies.remove("jwt");
@@ -628,6 +643,9 @@ const page = () => {
                   {virolifeDonationData?.map((data, key) => (
                     <Tr key={key}>
                       <Td>{key + 1}</Td>
+                      <Td>{Number(data?.amount)?.toFixed(2)}</Td>
+                      <Td>{data?.transaction_id}</Td>
+                      <Td>{data?.created_at}</Td>
                     </Tr>
                   ))}
                 </Tbody>
