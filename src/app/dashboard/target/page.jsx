@@ -610,6 +610,10 @@ const page = () => {
                   {campaignsData?.map((data, key) => (
                     <Tr key={key}>
                       <Td>{key + 1}</Td>
+                      <Td>{data?.name}</Td>
+                      <Td>{data?.phone_number}</Td>
+                      <Td>({data?.campaign_id}) {data?.title}</Td>
+                      <Td>{data?.updated_at}</Td>
                     </Tr>
                   ))}
                 </Tbody>
