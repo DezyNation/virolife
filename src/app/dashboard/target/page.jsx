@@ -96,6 +96,10 @@ const page = () => {
   const [virolifeDonationData, setVirolifeDonationData] = useState([]);
 
   useEffect(() => {
+    refreshMyRound();
+  }, []);
+
+  useEffect(() => {
     if (!myCurrentRound) return;
     setActiveRound(myCurrentRound);
     fetchRounds();
@@ -259,6 +263,19 @@ const page = () => {
       });
   }
 
+  function refreshMyRound() {
+    BackendAxios.get(`/api/update-round`)
+      .then((res) => {
+        Toast({
+          status: "success",
+          description: "Data updated successfully!",
+        });
+      })
+      .catch((err) => {
+        handleError(err, "Error while updating data");
+      });
+  }
+
   return (
     <>
       <Text mb={4} fontSize={"2xl"} fontWeight={"semibold"} className="messiri">
@@ -415,6 +432,11 @@ const page = () => {
             </Button>
           </Box>
         ))}
+      </HStack>
+      <HStack w={"full"} justifyContent={"flex-end"}>
+        <Text fontSize={"xs"}>
+          If the data is incorrect, please refresh the page.
+        </Text>
       </HStack>
       <br />
       <br />
