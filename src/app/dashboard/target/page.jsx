@@ -257,7 +257,7 @@ const page = () => {
 
         const totalAmount = result?.reduce((accumulator, currentValue) => {
           if (currentValue.hasOwnProperty("amount")) {
-            return accumulator + currentValue.amount;
+            return accumulator + Number(currentValue.amount);
           }
           return accumulator;
         }, 0);
