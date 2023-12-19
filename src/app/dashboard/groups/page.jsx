@@ -188,13 +188,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   }
 
   function fetchMyDonations() {
-    BackendAxios.get(
-      `/api/senior-donations/${myUserId}/${
-        Number(myCurrentRound) == 0
-          ? Number(myCurrentRound)
-          : Number(myCurrentRound) - 1
-      }`
-    )
+    BackendAxios.get(`/api/senior-donations/${myUserId}/${myCurrentRound}`)
       .then((res) => {
         setBeneficiaries(
           res.data
