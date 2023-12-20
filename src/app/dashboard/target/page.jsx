@@ -467,7 +467,7 @@ const page = () => {
 
         <TabPanels>
           {/* Donate to Juniors */}
-          {requirements?.collection >= 6000 ? (
+          {requirements?.collection >= requirements?.threshold ? (
             <TabPanel>
               <TableContainer my={4}>
                 <Table>
@@ -484,7 +484,7 @@ const page = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {juniorsData?.map((data, key) => (
+                    {juniorsData?.slice(0,20).map((data, key) => (
                       <Tr key={key}>
                         <Td>{key + 1}</Td>
                         <Td>
@@ -527,7 +527,7 @@ const page = () => {
             </TabPanel>
           ) : (
             <Text p={8}>
-              Please collect atleast ₹6000 to view tasks of this round
+              Please collect atleast ₹{requirements?.collection} to view tasks of this round
             </Text>
           )}
 
@@ -612,7 +612,9 @@ const page = () => {
                       <Td>{key + 1}</Td>
                       <Td>{data?.name}</Td>
                       <Td>{data?.phone_number}</Td>
-                      <Td>({data?.campaign_id}) {data?.title}</Td>
+                      <Td>
+                        ({data?.campaign_id}) {data?.title}
+                      </Td>
                       <Td>{data?.updated_at}</Td>
                     </Tr>
                   ))}
@@ -620,7 +622,9 @@ const page = () => {
               </Table>
             </TableContainer>
             <br />
-            {amounts?.campaignDonation > 0 ? (
+            {amounts?.campaignDonation > 0 &&
+            requirements.campaignDonationsRequired >
+              requirements.campaignDonationsDone ? (
               <HStack py={4} justifyContent={"flex-end"}>
                 <Link
                   href={`/campaigns?prefil_amount=${amounts?.campaignDonation}`}
