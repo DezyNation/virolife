@@ -102,7 +102,7 @@ const page = () => {
   useEffect(() => {
     if (!myCurrentRound) return;
     setActiveRound(myCurrentRound);
-    fetchRounds();
+    fetchRounds(myCurrentRound);
   }, [myCurrentRound]);
 
   useEffect(() => {
@@ -111,6 +111,7 @@ const page = () => {
 
   useEffect(() => {
     if (!activeRound) return;
+    fetchRounds(activeRound)
     fetchJuniorsData();
     fetchSeniorsData();
     fetchMyCollection();
@@ -118,12 +119,12 @@ const page = () => {
     fetchVirolifeDonations();
   }, [activeRound]);
 
-  function fetchRounds() {
+  function fetchRounds(round = myCurrentRound) {
     BackendAxios.get(`/api/tasks`)
       .then((res) => {
         const tasks = res.data;
         const currentTasks = tasks?.find(
-          (task) => task?.round == myCurrentRound
+          (task) => task?.round == round
         );
         setRounds(tasks);
         setRequirements((prev) => ({
@@ -484,7 +485,7 @@ const page = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {juniorsData?.slice(0,20).map((data, key) => (
+                    {juniorsData?.slice(0, 20).map((data, key) => (
                       <Tr key={key}>
                         <Td>{key + 1}</Td>
                         <Td>
@@ -527,7 +528,8 @@ const page = () => {
             </TabPanel>
           ) : (
             <Text p={8}>
-              Please collect atleast ₹{requirements?.collection} to view tasks of this round
+              Please collect atleast ₹{requirements?.collection} to view tasks
+              of this round
             </Text>
           )}
 
