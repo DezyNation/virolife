@@ -528,7 +528,7 @@ const page = () => {
             </TabPanel>
           ) : (
             <Text p={8}>
-              Please collect atleast ₹{requirements?.collection} to view tasks
+              Please collect atleast ₹{requirements?.threshold} to view tasks
               of this round
             </Text>
           )}
