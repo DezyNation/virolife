@@ -29,9 +29,11 @@ import BackendAxios from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
 import DonateButton from "@/components/dashboard/group-funding/DonateButton";
 import useRazorpay from "@/utils/hooks/useRazorpay";
+import useAuth from "@/utils/hooks/useAuth";
 
 const page = () => {
   const { handleError } = useApiHandler();
+  const { authUser } = useAuth();
   const { payWithRazorpay } = useRazorpay();
 
   const [rounds, setRounds] = useState([
@@ -91,6 +93,7 @@ const page = () => {
   });
   const [juniorsData, setJuniorsData] = useState([]);
   const [seniorsData, setSeniorsData] = useState([]);
+  const [donationData, setDonationData] = useState([]);
 
   const [campaignsData, setCampaignsData] = useState([]);
   const [virolifeDonationData, setVirolifeDonationData] = useState([]);
@@ -111,21 +114,20 @@ const page = () => {
 
   useEffect(() => {
     if (!activeRound) return;
-    fetchRounds(activeRound)
+    fetchRounds(activeRound);
     fetchJuniorsData();
     fetchSeniorsData();
     fetchMyCollection();
     fetchCampaignDonations();
     fetchVirolifeDonations();
+    fetchMyPreviousDonations();
   }, [activeRound]);
 
   function fetchRounds(round = myCurrentRound) {
     BackendAxios.get(`/api/tasks`)
       .then((res) => {
         const tasks = res.data;
-        const currentTasks = tasks?.find(
-          (task) => task?.round == round
-        );
+        const currentTasks = tasks?.find((task) => task?.round == round);
         setRounds(tasks);
         setRequirements((prev) => ({
           ...prev,
@@ -276,6 +278,16 @@ const page = () => {
           return;
         }
         handleError(err, "Error while fetching donations");
+      });
+  }
+
+  function fetchMyPreviousDonations() {
+    BackendAxios.get(`/api/senior-donations/${authUser?.id}/${activeRound}`)
+      .then((res) => {
+        setDonationData(res.data?.filter((item) => item?.group == "primary"));
+      })
+      .catch((err) => {
+        handleError(err, "Error while getting your past donations");
       });
   }
 
@@ -462,6 +474,7 @@ const page = () => {
           {/* <Tab>Donate to Seniors</Tab> */}
           <Tab>Donate to Juniors</Tab>
           <Tab>Approve Donations from Senior</Tab>
+          <Tab>Senior Donation History</Tab>
           <Tab>Donate in Medical Campaigns</Tab>
           <Tab>Donate to Virolife</Tab>
         </TabList>
@@ -528,8 +541,8 @@ const page = () => {
             </TabPanel>
           ) : (
             <Text p={8}>
-              Please collect atleast ₹{requirements?.threshold} to view tasks
-              of this round
+              Please collect atleast ₹{requirements?.threshold} to view tasks of
+              this round
             </Text>
           )}
 
@@ -587,6 +600,34 @@ const page = () => {
                           ) : null}
                         </HStack>
                       </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </TabPanel>
+
+          {/* Senior Donation History */}
+          <TabPanel>
+            <TableContainer my={4}>
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th>#</Th>
+                    <Th>User</Th>
+                    <Th>Amount</Th>
+                    <Th>Updated On</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {donationData?.map((data, key) => (
+                    <Tr key={key}>
+                      <Td>{key + 1}</Td>
+                      <Td>
+                        ({data?.sender_id}) {data?.sender_name}
+                      </Td>
+                      <Td>{data?.amount}</Td>
+                      <Td>{data?.updated_at}</Td>
                     </Tr>
                   ))}
                 </Tbody>
