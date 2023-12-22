@@ -128,7 +128,7 @@ const page = () => {
       .then((res) => {
         const tasks = res.data;
         const currentTasks = tasks?.find((task) => task?.round == round);
-        setRounds(tasks);
+        setRounds(tasks?.sort((a, b) => a.round - b.round));
         setRequirements((prev) => ({
           ...prev,
           threshold: Number(currentTasks?.target_amount)?.toFixed(0),
