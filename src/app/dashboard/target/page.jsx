@@ -103,7 +103,7 @@ const page = () => {
   }, []);
 
   useEffect(() => {
-    if (!myCurrentRound) return;
+    // if (!myCurrentRound) return;
     setActiveRound(myCurrentRound);
     fetchRounds(myCurrentRound);
   }, [myCurrentRound]);
@@ -113,7 +113,7 @@ const page = () => {
   }, []);
 
   useEffect(() => {
-    if (!activeRound) return;
+    // if (!activeRound) return;
     fetchRounds(activeRound);
     fetchJuniorsData();
     fetchSeniorsData();
