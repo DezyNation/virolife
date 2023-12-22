@@ -120,7 +120,7 @@ const page = () => {
     fetchMyCollection();
     fetchCampaignDonations();
     fetchVirolifeDonations();
-    fetchMyPreviousDonations();
+    fetchMyPreviousDonations(localStorage.getItem("userId"));
   }, [activeRound]);
 
   function fetchRounds(round = myCurrentRound) {
@@ -281,8 +281,8 @@ const page = () => {
       });
   }
 
-  function fetchMyPreviousDonations() {
-    BackendAxios.get(`/api/senior-donations/${authUser?.id}/${activeRound}`)
+  function fetchMyPreviousDonations(userId) {
+    BackendAxios.get(`/api/senior-donations/${userId}/${activeRound}`)
       .then((res) => {
         setDonationData(res.data?.filter((item) => item?.group == "primary"));
       })
