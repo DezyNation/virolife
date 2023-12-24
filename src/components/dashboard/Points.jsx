@@ -172,7 +172,7 @@ const Points = () => {
           <Box p={2}>
             <Text fontSize={"8"}>Ad Points</Text>
             <Text fontSize={"md"} fontWeight={"semibold"}>
-              {points.adPoints}
+              {Number(points.adPoints)?.toFixed(2)}
             </Text>
           </Box>
         </HStack>
