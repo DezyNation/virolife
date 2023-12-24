@@ -473,8 +473,8 @@ const page = () => {
         <TabList>
           {/* <Tab>Donate to Seniors</Tab> */}
           <Tab>Donate to Juniors</Tab>
-          <Tab>Approve Donations from Senior</Tab>
           <Tab>Senior Donation History</Tab>
+          <Tab>Approve Donations from Senior</Tab>
           <Tab>Donate in Medical Campaigns</Tab>
           <Tab>Donate to Virolife</Tab>
         </TabList>
@@ -546,6 +546,40 @@ const page = () => {
             </Text>
           )}
 
+          {/* Senior Donation History */}
+          <TabPanel>
+            <TableContainer my={4}>
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th>#</Th>
+                    <Th>User</Th>
+                    <Th>Amount</Th>
+                    <Th>Approved</Th>
+                    <Th>Updated On</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {donationData?.map((data, key) => (
+                    <Tr key={key}>
+                      <Td>{key + 1}</Td>
+                      <Td>
+                        ({data?.donatable_id}) {data?.user_name}
+                      </Td>
+                      <Td>₹{data?.amount}</Td>
+                      <Td>
+                        {data?.approved ? (
+                          <BsCheckCircleFill color="green" />
+                        ) : null}
+                      </Td>
+                      <Td>{data?.updated_at}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </TabPanel>
+
           {/* Approve Donations from Senior */}
           <TabPanel>
             <TableContainer my={4}>
@@ -607,115 +641,98 @@ const page = () => {
             </TableContainer>
           </TabPanel>
 
-          {/* Senior Donation History */}
-          <TabPanel>
-            <TableContainer my={4}>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>#</Th>
-                    <Th>User</Th>
-                    <Th>Amount</Th>
-                    <Th>Approved</Th>
-                    <Th>Updated On</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {donationData?.map((data, key) => (
-                    <Tr key={key}>
-                      <Td>{key + 1}</Td>
-                      <Td>
-                        ({data?.donatable_id}) {data?.user_name}
-                      </Td>
-                      <Td>₹{data?.amount}</Td>
-                      <Td>
-                        {data?.approved ? <BsCheckCircleFill color="green" /> : null}
-                      </Td>
-                      <Td>{data?.updated_at}</Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-
           {/* Donate in Medical Campaigns */}
-          <TabPanel>
-            <TableContainer my={4}>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>#</Th>
-                    <Th>Name</Th>
-                    <Th>Phone Number</Th>
-                    <Th>Campaign</Th>
-                    <Th>Amount</Th>
-                    <Th>Donated On</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {campaignsData?.map((data, key) => (
-                    <Tr key={key}>
-                      <Td>{key + 1}</Td>
-                      <Td>{data?.name}</Td>
-                      <Td>{data?.phone_number}</Td>
-                      <Td>
-                        ({data?.campaign_id}) {data?.title}
-                      </Td>
-                      <Td>{data?.updated_at}</Td>
+          {requirements?.collection >= requirements?.threshold ? (
+            <TabPanel>
+              <TableContainer my={4}>
+                <Table>
+                  <Thead>
+                    <Tr>
+                      <Th>#</Th>
+                      <Th>Name</Th>
+                      <Th>Phone Number</Th>
+                      <Th>Campaign</Th>
+                      <Th>Amount</Th>
+                      <Th>Donated On</Th>
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <br />
-            {amounts?.campaignDonation > 0 &&
-            requirements.campaignDonationsRequired >
-              requirements.campaignDonationsDone ? (
-              <HStack py={4} justifyContent={"flex-end"}>
-                <Link
-                  href={`/campaigns?prefil_amount=${amounts?.campaignDonation}`}
-                >
-                  <Button colorScheme="blue">Donate Now</Button>
-                </Link>
-              </HStack>
-            ) : null}
-          </TabPanel>
+                  </Thead>
+                  <Tbody>
+                    {campaignsData?.map((data, key) => (
+                      <Tr key={key}>
+                        <Td>{key + 1}</Td>
+                        <Td>{data?.name}</Td>
+                        <Td>{data?.phone_number}</Td>
+                        <Td>
+                          ({data?.campaign_id}) {data?.title}
+                        </Td>
+                        <Td>{data?.updated_at}</Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+              <br />
+              {amounts?.campaignDonation > 0 &&
+              requirements.campaignDonationsRequired >
+                requirements.campaignDonationsDone ? (
+                <HStack py={4} justifyContent={"flex-end"}>
+                  <Link
+                    href={`/campaigns?prefil_amount=${amounts?.campaignDonation}`}
+                  >
+                    <Button colorScheme="blue">Donate Now</Button>
+                  </Link>
+                </HStack>
+              ) : null}
+            </TabPanel>
+          ) : (
+            <Text p={8}>
+              Please collect atleast ₹{requirements?.threshold} to view tasks of
+              this round
+            </Text>
+          )}
 
           {/* Donate to Virolife */}
-          <TabPanel>
-            <TableContainer my={4}>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>#</Th>
-                    <Th>Amount</Th>
-                    <Th>Transaction ID</Th>
-                    <Th>Timestamp</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {virolifeDonationData?.map((data, key) => (
-                    <Tr key={key}>
-                      <Td>{key + 1}</Td>
-                      <Td>{Number(data?.amount)?.toFixed(2)}</Td>
-                      <Td>{data?.transaction_id}</Td>
-                      <Td>{data?.created_at}</Td>
+
+          {requirements?.collection >= requirements?.threshold ? (
+            <TabPanel>
+              <TableContainer my={4}>
+                <Table>
+                  <Thead>
+                    <Tr>
+                      <Th>#</Th>
+                      <Th>Amount</Th>
+                      <Th>Transaction ID</Th>
+                      <Th>Timestamp</Th>
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <br />
-            {requirements?.virolifeDonationsRequired >
-            requirements?.virolifeDonationsDone ? (
-              <HStack py={4} justifyContent={"flex-end"}>
-                <Button colorScheme="blue" onClick={() => donateToVirolife()}>
-                  Donate Now
-                </Button>
-              </HStack>
-            ) : null}
-          </TabPanel>
+                  </Thead>
+                  <Tbody>
+                    {virolifeDonationData?.map((data, key) => (
+                      <Tr key={key}>
+                        <Td>{key + 1}</Td>
+                        <Td>{Number(data?.amount)?.toFixed(2)}</Td>
+                        <Td>{data?.transaction_id}</Td>
+                        <Td>{data?.created_at}</Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+              <br />
+              {requirements?.virolifeDonationsRequired >
+              requirements?.virolifeDonationsDone ? (
+                <HStack py={4} justifyContent={"flex-end"}>
+                  <Button colorScheme="blue" onClick={() => donateToVirolife()}>
+                    Donate Now
+                  </Button>
+                </HStack>
+              ) : null}
+            </TabPanel>
+          ) : (
+            <Text p={8}>
+              Please collect atleast ₹{requirements?.threshold} to view tasks of
+              this round
+            </Text>
+          )}
         </TabPanels>
       </Tabs>
     </>
