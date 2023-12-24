@@ -616,6 +616,7 @@ const page = () => {
                     <Th>#</Th>
                     <Th>User</Th>
                     <Th>Amount</Th>
+                    <Th>Approved</Th>
                     <Th>Updated On</Th>
                   </Tr>
                 </Thead>
@@ -627,6 +628,9 @@ const page = () => {
                         ({data?.donatable_id}) {data?.user_name}
                       </Td>
                       <Td>₹{data?.amount}</Td>
+                      <Td>
+                        {data?.approved ? <BsCheckCircleFill color="green" /> : null}
+                      </Td>
                       <Td>{data?.updated_at}</Td>
                     </Tr>
                   ))}
