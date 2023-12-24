@@ -360,20 +360,20 @@ const page = () => {
               <Text fontSize={"sm"}>Junior Donations</Text>
               <HStack w={"full"} gap={8}>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
-                  Prim. {requirements?.primaryJuniorDonationsDone}
+                  {requirements?.primaryJuniorDonationsDone}
                 </Text>
-                <Text fontSize={"md"} fontWeight={"semibold"}>
+                {/* <Text fontSize={"md"} fontWeight={"semibold"}>
                   Sec. {requirements?.secondaryJuniorDonationsDone}
-                </Text>
+                </Text> */}
               </HStack>
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontSize={"xs"}>
-                  Req.: Prim. {requirements?.primaryJuniorDonationsRequired}
+                  Req.: {requirements?.primaryJuniorDonationsRequired}
                 </Text>
-                <Text fontSize={"xs"}>
+                {/* <Text fontSize={"xs"}>
                   Sec. {requirements?.secondaryJuniorDonationsRequired}
-                </Text>
+                </Text> */}
               </HStack>
             </Box>
           </HStack>
