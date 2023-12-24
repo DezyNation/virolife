@@ -27,14 +27,12 @@ import {
   PinInput,
   PinInputField,
 } from "@chakra-ui/react";
-import { LuStars } from "react-icons/lu";
 import BackendAxios from "@/utils/axios";
 import QRCode from "react-qr-code";
 import Tree from "react-d3-tree";
 import VideoPlayer from "@/components/global/VideoPlayer";
 import ChildMemberCard from "@/components/dashboard/ChildMemberCard";
 import VerticalSpacer from "@/components/global/VerticalSpacer";
-import Progress from "@/components/dashboard/group-funding/Progress";
 import Cookies from "js-cookie";
 import useRazorpay from "@/utils/hooks/useRazorpay";
 
@@ -243,8 +241,9 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 </Text>
                 <Text fontSize={"xs"}>
                   ID: {process.env.NEXT_PUBLIC_CODE}
-                  {key == 0 ? myParentId : item?.id} &nbsp; | &nbsp; Phone:{" "}
-                  {item?.parent_phone}
+                  {key == 0 ? myParentId : item?.id}
+                  {/* &nbsp; | &nbsp; Phone:{" "}
+                  {item?.parent_phone} */}
                 </Text>
               </Box>
             </HStack>
