@@ -481,8 +481,8 @@ const page = () => {
 
         <TabPanels>
           {/* Donate to Juniors */}
-          {requirements?.collection >= requirements?.threshold ? (
             <TabPanel>
+          {requirements?.collection >= requirements?.threshold ? (
               <TableContainer my={4}>
                 <Table>
                   <Thead>
@@ -538,13 +538,13 @@ const page = () => {
                   </Tbody>
                 </Table>
               </TableContainer>
-            </TabPanel>
           ) : (
             <Text p={8}>
               Please collect atleast ₹{requirements?.threshold} to view tasks of
               this round
             </Text>
           )}
+            </TabPanel>
 
           {/* Senior Donation History */}
           <TabPanel>
@@ -642,8 +642,8 @@ const page = () => {
           </TabPanel>
 
           {/* Donate in Medical Campaigns */}
-          {requirements?.collection >= requirements?.threshold ? (
-            <TabPanel>
+          <TabPanel>
+            {requirements?.collection >= requirements?.threshold ? (
               <TableContainer my={4}>
                 <Table>
                   <Thead>
@@ -671,30 +671,29 @@ const page = () => {
                   </Tbody>
                 </Table>
               </TableContainer>
-              <br />
-              {amounts?.campaignDonation > 0 &&
-              requirements.campaignDonationsRequired >
-                requirements.campaignDonationsDone ? (
-                <HStack py={4} justifyContent={"flex-end"}>
-                  <Link
-                    href={`/campaigns?prefil_amount=${amounts?.campaignDonation}`}
-                  >
-                    <Button colorScheme="blue">Donate Now</Button>
-                  </Link>
-                </HStack>
-              ) : null}
-            </TabPanel>
-          ) : (
-            <Text p={8}>
-              Please collect atleast ₹{requirements?.threshold} to view tasks of
-              this round
-            </Text>
-          )}
+            ) : (
+              <Text p={8}>
+                Please collect atleast ₹{requirements?.threshold} to view tasks
+                of this round
+              </Text>
+            )}
+            <br />
+            {amounts?.campaignDonation > 0 &&
+            requirements.campaignDonationsRequired >
+              requirements.campaignDonationsDone ? (
+              <HStack py={4} justifyContent={"flex-end"}>
+                <Link
+                  href={`/campaigns?prefil_amount=${amounts?.campaignDonation}`}
+                >
+                  <Button colorScheme="blue">Donate Now</Button>
+                </Link>
+              </HStack>
+            ) : null}
+          </TabPanel>
 
           {/* Donate to Virolife */}
-
-          {requirements?.collection >= requirements?.threshold ? (
-            <TabPanel>
+          <TabPanel>
+            {requirements?.collection >= requirements?.threshold ? (
               <TableContainer my={4}>
                 <Table>
                   <Thead>
@@ -717,22 +716,22 @@ const page = () => {
                   </Tbody>
                 </Table>
               </TableContainer>
-              <br />
-              {requirements?.virolifeDonationsRequired >
-              requirements?.virolifeDonationsDone ? (
-                <HStack py={4} justifyContent={"flex-end"}>
-                  <Button colorScheme="blue" onClick={() => donateToVirolife()}>
-                    Donate Now
-                  </Button>
-                </HStack>
-              ) : null}
-            </TabPanel>
-          ) : (
-            <Text p={8}>
-              Please collect atleast ₹{requirements?.threshold} to view tasks of
-              this round
-            </Text>
-          )}
+            ) : (
+              <Text p={8}>
+                Please collect atleast ₹{requirements?.threshold} to view tasks
+                of this round
+              </Text>
+            )}
+            <br />
+            {requirements?.virolifeDonationsRequired >
+            requirements?.virolifeDonationsDone ? (
+              <HStack py={4} justifyContent={"flex-end"}>
+                <Button colorScheme="blue" onClick={() => donateToVirolife()}>
+                  Donate Now
+                </Button>
+              </HStack>
+            ) : null}
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </>
