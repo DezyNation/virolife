@@ -41,6 +41,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   const [showDonateBtn, setShowDonateBtn] = useState(false);
 
+  const [initialBeneficiaries, setInitialBeneficiaries] = useState([]);
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [parentUsers, setParentUsers] = useState(parents);
 
@@ -207,6 +208,28 @@ const MyParents = ({ parents, myParentId, groupType }) => {
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
+
+    BackendAxios.get(`/api/senior-donations/${myUserId}/${0}`)
+      .then((res) => {
+        setInitialBeneficiaries(
+          res.data
+            ?.filter((item) => item?.group == groupType)
+            ?.map((item) => item?.donatable_id)
+        );
+      })
+      .catch((err) => {
+        if (err?.response?.status == 401) {
+          Cookies.remove("jwt");
+          localStorage.clear();
+          window.location.assign("/");
+          return;
+        }
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
   }
 
   useEffect(() => {
@@ -247,7 +270,11 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {beneficiaries?.includes(item?.id) ? (
+            {myCurrentRound <= 1 &&
+            (beneficiaries?.includes(item?.id) ||
+              initialBeneficiaries?.includes(item?.id)) ? (
+              <Text color="whatsapp.500">Donated</Text>
+            ) : myCurrentRound > 1 && beneficiaries?.includes(item?.id) ? (
               <Text color="whatsapp.500">Donated</Text>
             ) : showDonateBtn ? (
               <Button
