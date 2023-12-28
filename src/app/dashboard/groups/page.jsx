@@ -35,9 +35,11 @@ import ChildMemberCard from "@/components/dashboard/ChildMemberCard";
 import VerticalSpacer from "@/components/global/VerticalSpacer";
 import Cookies from "js-cookie";
 import useRazorpay from "@/utils/hooks/useRazorpay";
+import useApiHandler from "@/utils/hooks/useApiHandler";
 
 const MyParents = ({ parents, myParentId, groupType }) => {
   const Toast = useToast({ position: "top-right" });
+  const { handleError } = useApiHandler();
 
   const [showDonateBtn, setShowDonateBtn] = useState(false);
 
@@ -54,6 +56,10 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   });
 
   const [myCurrentRound, setMyCurrentRound] = useState(null);
+  const [requirements, setRequirements] = useState({
+    threshold: 0,
+    collection: 0,
+  });
   const [myUserId, setMyUserId] = useState("");
 
   const [videoStatus, setVideoStatus] = useState(false);
@@ -69,6 +75,8 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   useEffect(() => {
     setMyCurrentRound(localStorage.getItem("currentRound"));
     setMyUserId(localStorage.getItem("userId"));
+    fetchMyCollection();
+    fetchRounds();
   }, []);
 
   useEffect(() => {
@@ -92,12 +100,11 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   useEffect(() => {
     const onHold = parseInt(localStorage.getItem("onHold")) === 1;
-
-    if (parseInt(amount) > 0 && !onHold) {
-      setShowDonateBtn(true);
-    } else {
-      setShowDonateBtn(false);
-    }
+      if (parseInt(amount) > 0 && !onHold) {
+        setShowDonateBtn(true);
+      } else {
+        setShowDonateBtn(false);
+      }
   }, [amount]);
 
   function showVideo(user, key) {
@@ -232,6 +239,36 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       });
   }
 
+  async function fetchMyCollection() {
+    await BackendAxios.get(`/api/total-donation`)
+      .then((res) => {
+        setRequirements((prev) => ({
+          ...prev,
+          collection:
+            parseInt(res.data?.primary) + parseInt(res.data?.secondary),
+        }));
+      })
+      .catch((err) => {
+        handleError(err, "Error while fetching total collection");
+      });
+  }
+
+  function fetchRounds(round = myCurrentRound) {
+    BackendAxios.get(`/api/tasks`)
+      .then((res) => {
+        const tasks = res.data;
+        const currentTasks = tasks?.find((task) => task?.round == round);
+        setRequirements((prev) => ({
+          ...prev,
+          threshold: Number(currentTasks?.target_amount)?.toFixed(0),
+        }));
+      })
+      .catch((err) => {
+        console.log("error while fetching tasks");
+        console.log(err?.response?.data);
+      });
+  }
+
   useEffect(() => {
     if (parents?.length) {
       let newData = [...parents];
@@ -270,13 +307,9 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 </Text>
               </Box>
             </HStack>
-            {myCurrentRound <= 1 &&
-            (beneficiaries?.includes(item?.id) ||
-              initialBeneficiaries?.includes(item?.id)) ? (
+            {beneficiaries?.includes(item?.id) ? (
               <Text color="whatsapp.500">Donated</Text>
-            ) : myCurrentRound > 1 && beneficiaries?.includes(item?.id) ? (
-              <Text color="whatsapp.500">Donated</Text>
-            ) : showDonateBtn ? (
+            ) : requirements.collection < requirements.threshold ? null : showDonateBtn ? (
               <Button
                 size={"xs"}
                 colorScheme="yellow"
