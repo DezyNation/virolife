@@ -841,6 +841,7 @@ const Page = () => {
     setPrimaryJoined(localStorage.getItem("primaryParentId"));
     setSecondaryJoined(localStorage.getItem("secondaryParentId"));
     setCanJoinGroup(localStorage.getItem("canJoinGroup"));
+    console.log(localStorage.getItem("canJoinGroup"))
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
         "userId"
@@ -1086,7 +1087,7 @@ const Page = () => {
           Group Funding
         </Text>
         <HStack>
-          {canJoinGroup ? (
+          {canJoinGroup == '1' ? (
             <Button
               size={["xs", "md"]}
               colorScheme="yellow"
