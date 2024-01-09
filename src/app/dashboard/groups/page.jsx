@@ -840,7 +840,7 @@ const Page = () => {
   useEffect(() => {
     setPrimaryJoined(localStorage.getItem("primaryParentId"));
     setSecondaryJoined(localStorage.getItem("secondaryParentId"));
-    setCanJoinGroup(Boolean(localStorage.getItem("canJoinGroup")));
+    setCanJoinGroup(localStorage.getItem("canJoinGroup"));
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
         "userId"
