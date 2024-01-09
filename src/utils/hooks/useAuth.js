@@ -19,6 +19,7 @@ const useAuth = () => {
         localStorage.setItem("onHold", res.data[0]?.on_hold);
         localStorage.setItem("currentRound", res.data[0]?.round)
         localStorage.setItem("primaryActive", res.data[0]?.primary_activated);
+        localStorage.setItem("canJoinGroup", res.data[0]?.secondary_activation_enable);
         localStorage.setItem(
           "secondaryActive",
           res.data[0]?.secondary_activated

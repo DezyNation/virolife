@@ -100,11 +100,11 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   useEffect(() => {
     const onHold = parseInt(localStorage.getItem("onHold")) === 1;
-      if (parseInt(amount) > 0 && !onHold) {
-        setShowDonateBtn(true);
-      } else {
-        setShowDonateBtn(false);
-      }
+    if (parseInt(amount) > 0 && !onHold) {
+      setShowDonateBtn(true);
+    } else {
+      setShowDonateBtn(false);
+    }
   }, [amount]);
 
   function showVideo(user, key) {
@@ -309,7 +309,8 @@ const MyParents = ({ parents, myParentId, groupType }) => {
             </HStack>
             {beneficiaries?.includes(item?.id) ? (
               <Text color="whatsapp.500">Donated</Text>
-            ) : requirements.collection < requirements.threshold ? null : showDonateBtn ? (
+            ) : requirements.collection <
+              requirements.threshold ? null : showDonateBtn ? (
               <Button
                 size={"xs"}
                 colorScheme="yellow"
@@ -788,6 +789,9 @@ const Page = () => {
   const { value, setValue, onCopy, hasCopied } = useClipboard(
     `${process.env.NEXT_PUBLIC_FRONTEND_URL}?refid=`
   );
+
+  const [canJoinGroup, setCanJoinGroup] = useState(true);
+
   const [primaryParentUsers, setPrimaryParentUsers] = useState([]);
   const [secondaryParentUsers, setSecondaryParentUsers] = useState([]);
 
@@ -808,8 +812,6 @@ const Page = () => {
       return null;
     },
   });
-
-  const [collections, setCollections] = useState([]);
 
   const [paymentMethod, setPaymentMethod] = useState("gateway");
   const [giftCard, setGiftCard] = useState("");
@@ -838,6 +840,7 @@ const Page = () => {
   useEffect(() => {
     setPrimaryJoined(localStorage.getItem("primaryParentId"));
     setSecondaryJoined(localStorage.getItem("secondaryParentId"));
+    setCanJoinGroup(Boolean(localStorage.getItem("canJoinGroup")));
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
         "userId"
@@ -1056,26 +1059,6 @@ const Page = () => {
       });
   }
 
-  function fetchMyCollections() {
-    BackendAxios.get(`/api/my-collections`)
-      .then((res) => {
-        setCollections(res.data);
-      })
-      .catch((err) => {
-        if (err?.response?.status == 401) {
-          Cookies.remove("jwt");
-          localStorage.clear();
-          window.location.assign("/");
-          return;
-        }
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
-
   function fetchMyDonations() {
     BackendAxios.get(`/api/my-donations`)
       .then((res) => {
@@ -1103,14 +1086,16 @@ const Page = () => {
           Group Funding
         </Text>
         <HStack>
-          <Button
-            size={["xs", "md"]}
-            colorScheme="yellow"
-            rounded={"full"}
-            onClick={onOpen}
-          >
-            Join Group
-          </Button>
+          {canJoinGroup ? (
+            <Button
+              size={["xs", "md"]}
+              colorScheme="yellow"
+              rounded={"full"}
+              onClick={onOpen}
+            >
+              Join Group
+            </Button>
+          ) : null}
         </HStack>
       </HStack>
       {/* <Progress /> */}
