@@ -498,43 +498,86 @@ const page = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {juniorsData?.slice(0, 20).map((data, key) => (
-                      <Tr key={key}>
-                        <Td>{key + 1}</Td>
-                        <Td>
-                          ({data?.receiver_id}) {data?.receiver_name}
-                        </Td>
-                        <Td>{data?.group}</Td>
-                        <Td>{data?.amount}</Td>
-                        <Td>
-                          {data?.donated ? (
-                            <BsCheckCircleFill color="green" />
-                          ) : null}
-                        </Td>
-                        <Td>
-                          {data?.donated && data?.approved ? (
-                            <BsCheckCircleFill color="green" />
-                          ) : null}
-                        </Td>
-                        <Td>{data?.approved ? data?.updated_at : null}</Td>
-                        <Td>
-                          {data?.donated ? null : (
-                            <DonateButton
-                              userId={data?.receiver_id}
-                              userName={
-                                data?.upi_id
-                                  ? data?.receiver_name
-                                  : "Virolife Foundation"
-                              }
-                              upiId={data?.upi_id ?? "9022853554@okbizaxis"}
-                              amount={data?.amount}
-                              groupType={data?.group}
-                              instanceId={data?.id}
-                            />
-                          )}
-                        </Td>
-                      </Tr>
-                    ))}
+                    {juniorsData
+                      ?.filter((data) => data?.group == "primary")
+                      ?.slice(0, 20)
+                      .map((data, key) => (
+                        <Tr key={key}>
+                          <Td>{key + 1}</Td>
+                          <Td>
+                            ({data?.receiver_id}) {data?.receiver_name}
+                          </Td>
+                          <Td>{data?.group}</Td>
+                          <Td>{data?.amount}</Td>
+                          <Td>
+                            {data?.donated ? (
+                              <BsCheckCircleFill color="green" />
+                            ) : null}
+                          </Td>
+                          <Td>
+                            {data?.donated && data?.approved ? (
+                              <BsCheckCircleFill color="green" />
+                            ) : null}
+                          </Td>
+                          <Td>{data?.approved ? data?.updated_at : null}</Td>
+                          <Td>
+                            {data?.donated ? null : (
+                              <DonateButton
+                                userId={data?.receiver_id}
+                                userName={
+                                  data?.upi_id
+                                    ? data?.receiver_name
+                                    : "Virolife Foundation"
+                                }
+                                upiId={data?.upi_id ?? "9022853554@okbizaxis"}
+                                amount={data?.amount}
+                                groupType={data?.group}
+                                instanceId={data?.id}
+                              />
+                            )}
+                          </Td>
+                        </Tr>
+                      ))}
+                    {juniorsData
+                      ?.filter((data) => data?.group == "secondary")
+                      ?.slice(0, 20)
+                      .map((data, key) => (
+                        <Tr key={key}>
+                          <Td>{key + 1}</Td>
+                          <Td>
+                            ({data?.receiver_id}) {data?.receiver_name}
+                          </Td>
+                          <Td>{data?.group}</Td>
+                          <Td>{data?.amount}</Td>
+                          <Td>
+                            {data?.donated ? (
+                              <BsCheckCircleFill color="green" />
+                            ) : null}
+                          </Td>
+                          <Td>
+                            {data?.donated && data?.approved ? (
+                              <BsCheckCircleFill color="green" />
+                            ) : null}
+                          </Td>
+                          <Td>{data?.approved ? data?.updated_at : null}</Td>
+                          <Td>
+                            {data?.donated ? null : (
+                              <DonateButton
+                                userId={data?.receiver_id}
+                                userName={
+                                  data?.upi_id
+                                    ? data?.receiver_name
+                                    : "Virolife Foundation"
+                                }
+                                upiId={data?.upi_id ?? "9022853554@okbizaxis"}
+                                amount={data?.amount}
+                                groupType={data?.group}
+                                instanceId={data?.id}
+                              />
+                            )}
+                          </Td>
+                        </Tr>
+                      ))}
                   </Tbody>
                 </Table>
               </TableContainer>
