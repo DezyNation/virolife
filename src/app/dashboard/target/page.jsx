@@ -252,7 +252,7 @@ const page = () => {
 
   function fetchVirolifeDonations() {
     BackendAxios.get(
-      `/api/user/donation/donate-virolife?purpose=virolife-donation`
+      `/api/user/donation/donate-virolife?purpose=virolife-donation&round=${activeRound}`
     )
       .then((res) => {
         const result = res.data?.filter((data) => data?.round == activeRound);
@@ -712,6 +712,7 @@ const page = () => {
                         <Td>
                           ({data?.campaign_id}) {data?.title}
                         </Td>
+                        <Td>₹ {data?.amount}</Td>
                         <Td>{data?.updated_at}</Td>
                       </Tr>
                     ))}
