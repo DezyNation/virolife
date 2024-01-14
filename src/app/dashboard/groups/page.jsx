@@ -236,6 +236,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       .then((res) => {
         const tasks = res.data;
         const currentTasks = tasks?.find((task) => task?.round == round);
+        console.log(currentTasks)
         setRequirements((prev) => ({
           ...prev,
           threshold: Number(currentTasks?.target_amount)?.toFixed(0),
