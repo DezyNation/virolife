@@ -76,12 +76,12 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     setMyCurrentRound(localStorage.getItem("currentRound"));
     setMyUserId(localStorage.getItem("userId"));
     fetchMyCollection();
-    fetchRounds();
   }, []);
 
   useEffect(() => {
     if (myCurrentRound == null || !myUserId) return;
     fetchMyDonations();
+    fetchRounds();
   }, [myCurrentRound, myUserId]);
 
   useEffect(() => {
@@ -236,6 +236,8 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       .then((res) => {
         const tasks = res.data;
         const currentTasks = tasks?.find((task) => task?.round == myCurrentRound);
+        console.log("My current round ", myCurrentRound)
+        console.log("This round tasks")
         console.log(currentTasks)
         setRequirements((prev) => ({
           ...prev,
