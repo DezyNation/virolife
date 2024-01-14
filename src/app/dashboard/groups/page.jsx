@@ -255,6 +255,11 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     }
   }, [parents]);
 
+  useEffect(() => {
+    console.log("REQ.");
+    console.log(requirements);
+  }, [requirements]);
+
   return (
     <>
       <Box>
