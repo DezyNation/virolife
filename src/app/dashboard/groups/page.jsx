@@ -235,7 +235,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     BackendAxios.get(`/api/tasks`)
       .then((res) => {
         const tasks = res.data;
-        const currentTasks = tasks?.find((task) => task?.round == round);
+        const currentTasks = tasks?.find((task) => task?.round == myCurrentRound);
         console.log(currentTasks)
         setRequirements((prev) => ({
           ...prev,
