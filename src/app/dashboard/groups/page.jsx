@@ -215,28 +215,6 @@ const MyParents = ({ parents, myParentId, groupType }) => {
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
       });
-
-    BackendAxios.get(`/api/senior-donations/${myUserId}/${0}`)
-      .then((res) => {
-        setInitialBeneficiaries(
-          res.data
-            ?.filter((item) => item?.group == groupType)
-            ?.map((item) => item?.donatable_id)
-        );
-      })
-      .catch((err) => {
-        if (err?.response?.status == 401) {
-          Cookies.remove("jwt");
-          localStorage.clear();
-          window.location.assign("/");
-          return;
-        }
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
   }
 
   async function fetchMyCollection() {
@@ -309,8 +287,9 @@ const MyParents = ({ parents, myParentId, groupType }) => {
             </HStack>
             {beneficiaries?.includes(item?.id) ? (
               <Text color="whatsapp.500">Donated</Text>
-            ) : requirements.collection <
-              requirements.threshold ? null : showDonateBtn ? (
+            ) : myCurrentRound > 0 &&
+              requirements.collection <
+                requirements.threshold ? null : showDonateBtn ? (
               <Button
                 size={"xs"}
                 colorScheme="yellow"
@@ -841,7 +820,7 @@ const Page = () => {
     setPrimaryJoined(localStorage.getItem("primaryParentId"));
     setSecondaryJoined(localStorage.getItem("secondaryParentId"));
     setCanJoinGroup(localStorage.getItem("canJoinGroup"));
-    console.log(localStorage.getItem("canJoinGroup"))
+    console.log(localStorage.getItem("canJoinGroup"));
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
         "userId"
@@ -1087,7 +1066,7 @@ const Page = () => {
           Group Funding
         </Text>
         <HStack>
-          {canJoinGroup == '1' ? (
+          {canJoinGroup == "1" ? (
             <Button
               size={["xs", "md"]}
               colorScheme="yellow"
