@@ -482,7 +482,7 @@ const page = () => {
         <TabPanels>
           {/* Donate to Juniors */}
           <TabPanel>
-            {requirements?.collection >= requirements?.threshold ? (
+            {requirements?.collection >= requirements?.threshold && myCurrentRound >= 1 ? (
               <TableContainer my={4}>
                 <Table>
                   <Thead>
@@ -686,7 +686,7 @@ const page = () => {
 
           {/* Donate in Medical Campaigns */}
           <TabPanel>
-            {requirements?.collection >= requirements?.threshold ? (
+            {requirements?.collection >= requirements?.threshold && myCurrentRound >= 1 ? (
               <TableContainer my={4}>
                 <Table>
                   <Thead>
@@ -736,9 +736,8 @@ const page = () => {
           </TabPanel>
 
           {/* Donate to Virolife */}
-
           <TabPanel>
-            {requirements?.collection >= requirements?.threshold ? (
+            {requirements?.collection >= requirements?.threshold && myCurrentRound >= 1 ? (
               <TableContainer my={4}>
                 <Table>
                   <Thead>
