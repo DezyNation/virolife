@@ -216,7 +216,7 @@ const index = () => {
 
       {/* Plans */}
       <HStack
-        gap={6}
+        gap={4}
         py={4}
         alignItems={"center"}
         justifyContent={"space-between"}
@@ -226,7 +226,7 @@ const index = () => {
           <Box>
             {/* <Text>Members who bought subscription</Text> */}
             <br />
-            <TableContainer>
+            <TableContainer h={"lg"} overflowY={"scroll"}>
               <Table size={"sm"}>
                 <Thead>
                   <Tr>
@@ -249,7 +249,13 @@ const index = () => {
                       <Td>{data?.parent_id}</Td>
                       <Td>{data?.name}</Td>
                       <Td>{data?.points}</Td>
-                      <Td>{data?.purpose == "parent" ? "Direct" : data?.purpose == "chain" ? "level" : data?.purpose }</Td>
+                      <Td>
+                        {data?.purpose == "parent"
+                          ? "Direct"
+                          : data?.purpose == "chain"
+                          ? "level"
+                          : data?.purpose}
+                      </Td>
                       <Td>{data?.created_at}</Td>
                     </Tr>
                   ))}

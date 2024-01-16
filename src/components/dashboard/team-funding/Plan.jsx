@@ -57,6 +57,12 @@ const Plan = ({
     }
   }, [paymentMethod]);
 
+  useEffect(() => {
+    if (id == 2) {
+      setParentId("146");
+    }
+  }, []);
+
   function verifyUser(userId) {
     if (!userId) {
       Toast({
