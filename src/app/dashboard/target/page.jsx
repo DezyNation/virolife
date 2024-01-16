@@ -435,7 +435,7 @@ const page = () => {
             <Box w={"full"}>
               <Text fontSize={"sm"}>Senior Donations</Text>
               <HStack w={"full"} gap={8}>
-                <Text fontSize={"md"} fontWeight={"semibold"}>
+                <Text fontSize={"xl"} fontWeight={"semibold"}>
                   {requirements?.primarySeniorDonationsDone}
                 </Text>
                 {/* <Text fontSize={"md"} fontWeight={"semibold"}>

@@ -20,12 +20,14 @@ import BackendAxios from "@/utils/axios";
 
 const Transactions = () => {
   const [requests, setRequests] = useState([]);
-  
+  const [userId, setUserId] = useState("");
+
   const Toast = useToast({
     position: "top-right",
   });
 
   useEffect(() => {
+    setUserId(localStorage.getItem("userId"));
     fetchRequests();
   }, []);
 
@@ -38,36 +40,11 @@ const Transactions = () => {
         if (err?.response?.status == 401) {
           localStorage.clear();
           window.location.assign("/");
-          return
+          return;
         }
         Toast({
           status: "error",
           title: "Error while fetching peding requests",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
-
-  function updateStatus({ transactionId, status }) {
-    BackendAxios.post(`/api/admin/approve-points/${transactionId}`, {
-      transactionId: transactionId,
-      status: status,
-    })
-      .then((res) => {
-        Toast({
-          status: "success",
-          description: "Request updated!",
-        });
-        fetchRequests();
-      })
-      .catch((err) => {
-        if (err?.response?.status == 401) {
-          localStorage.clear();
-          window.location.assign("/");
-        }
-        Toast({
-          status: "error",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
@@ -102,10 +79,10 @@ const Transactions = () => {
             <Thead bgColor={"yellow.400"}>
               <Tr>
                 <Th>#</Th>
-                <Th>Trnxn ID</Th>
                 <Th>Ponits</Th>
                 <Th>Status</Th>
-                <Th>Beneficiary</Th>
+                <Th>Sender</Th>
+                <Th>Receiver</Th>
                 <Th>Requested At</Th>
                 <Th>Updated At</Th>
               </Tr>
@@ -114,16 +91,24 @@ const Transactions = () => {
               {requests.map((item, key) => (
                 <Tr fontSize={"xs"} key={key}>
                   <Td>{key + 1}</Td>
-                  <Td>{item?.id}</Td>
-                  <Td>{item?.value}</Td>
+                  <Td>
+                    <Text
+                      p={2}
+                      bgColor={userId == item?.user_id ? "red" : "whatsapp.600"}
+                      color={"white"}
+                    >
+                      {item?.value}
+                    </Text>
+                  </Td>
                   <Td>{item?.status}</Td>
                   <Td>
-                    {item?.receiver_id}-{item?.name}
+                    {item?.user_id}-{item?.sender_name}
+                  </Td>
+                  <Td>
+                    {item?.receiver_id}-{item?.receiver_name}
                   </Td>
                   <Td>{item?.created_at}</Td>
-                  <Td>
-                    {item?.updated_at}
-                  </Td>
+                  <Td>{item?.updated_at}</Td>
                 </Tr>
               ))}
             </Tbody>
