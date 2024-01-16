@@ -76,6 +76,8 @@ const page = () => {
     collection: 0,
     campaignDonationsRequired: 0,
     campaignDonationsDone: 0,
+    primarySeniorDonationsRequired: 0,
+    primarySeniorDonationsDone: 0,
     primaryJuniorDonationsRequired: 0,
     primaryJuniorDonationsDone: 0,
     secondaryJuniorDonationsRequired: 0,
@@ -135,6 +137,7 @@ const page = () => {
           virolifeDonationsRequired: Number(
             currentTasks?.virolife_donation
           )?.toFixed(0),
+          primarySeniorDonationsRequired: currentTasks?.primary_senior_count,
           primaryJuniorDonationsRequired: currentTasks?.primary_junior_count,
           secondaryJuniorDonationsRequired:
             currentTasks?.secondary_junior_count,
@@ -193,6 +196,10 @@ const page = () => {
     BackendAxios.get(`/api/my-senior-donation`)
       .then((res) => {
         setSeniorsData(res.data);
+        setRequirements({
+          ...requirements,
+          primarySeniorDonationsDone: res.data?.length,
+        });
       })
       .catch((err) => {
         handleError(err, "Error while fetching seniors data");
@@ -337,7 +344,7 @@ const page = () => {
               </Text>
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
-                <Text fontSize={"xs"}>
+                <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Required: ₹{requirements?.threshold}
                 </Text>
               </HStack>
@@ -368,7 +375,7 @@ const page = () => {
               </HStack>
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
-                <Text fontSize={"xs"}>
+                <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Req.: {requirements?.primaryJuniorDonationsRequired}
                 </Text>
                 {/* <Text fontSize={"xs"}>
@@ -397,9 +404,52 @@ const page = () => {
               </Text>
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
-                <Text fontSize={"xs"}>
+                <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Required: {requirements?.campaignDonationsRequired}
                 </Text>
+              </HStack>
+            </Box>
+          </HStack>
+        </Box>
+      </Stack>
+      <Stack
+        w={"full"}
+        direction={["column", "row"]}
+        alignItems={"center"}
+        justifyContent={"center"}
+        my={4}
+        gap={4}
+      >
+        <Box
+          p={4}
+          w={"full"}
+          rounded={4}
+          boxShadow={"base"}
+          flex={["unset", 1]}
+          bgColor={"yellow.50"}
+        >
+          <HStack w={"full"}>
+            <Box p={4} rounded={4} bgColor={"yellow.600"}>
+              <BiSolidGroup size={48} color="#FFF" />
+            </Box>
+            <Box w={"full"}>
+              <Text fontSize={"sm"}>Senior Donations</Text>
+              <HStack w={"full"} gap={8}>
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  {requirements?.primarySeniorDonationsDone}
+                </Text>
+                {/* <Text fontSize={"md"} fontWeight={"semibold"}>
+                  Sec. {requirements?.secondaryJuniorDonationsDone}
+                </Text> */}
+              </HStack>
+              <br />
+              <HStack w={"full"} justifyContent={"flex-end"}>
+                <Text fontWeight={"semibold"} fontSize={"xs"}>
+                  Req.: {requirements?.primarySeniorDonationsRequired}
+                </Text>
+                {/* <Text fontSize={"xs"}>
+                  Sec. {requirements?.secondaryJuniorDonationsRequired}
+                </Text> */}
               </HStack>
             </Box>
           </HStack>
@@ -423,7 +473,7 @@ const page = () => {
               </Text>
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
-                <Text fontSize={"xs"}>
+                <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Required: ₹{requirements?.virolifeDonationsRequired}
                 </Text>
               </HStack>
