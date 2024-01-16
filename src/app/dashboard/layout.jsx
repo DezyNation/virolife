@@ -108,10 +108,10 @@ const Layout = ({ children }) => {
             </Text>
 
             <VStack w={"full"} gap={0} pt={8} alignItems={"flex-start"}>
-              <Link href={"/dashboard/profile"}>
+              <Link style={{width: '100%'}} href={"/dashboard/profile"}>
                 <HStack
-                  py={2}
-                  _hover={{ bgColor: "yellow.50" }}
+                  px={2} py={1}
+                  _hover={{ bgColor: "orange.200" }}
                   w={"full"}
                   gap={4}
                 >
@@ -119,10 +119,10 @@ const Layout = ({ children }) => {
                   <Text>Profile</Text>
                 </HStack>
               </Link>
-              <Link href={"/dashboard"}>
+              <Link style={{width: '100%'}} href={"/dashboard"}>
                 <HStack
-                  py={2}
-                  _hover={{ bgColor: "yellow.50" }}
+                  px={2} py={1}
+                  _hover={{ bgColor: "orange.200" }}
                   w={"full"}
                   gap={4}
                 >
@@ -132,10 +132,10 @@ const Layout = ({ children }) => {
               </Link>
               {myRole == "user" ? (
                 <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
-                  <Link href={"/dashboard/campaigns"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/campaigns"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -143,10 +143,10 @@ const Layout = ({ children }) => {
                       <Text>My Campaigns</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/collection"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/collection"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -154,10 +154,10 @@ const Layout = ({ children }) => {
                       <Text>Collection</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/groups"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/groups"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -165,10 +165,10 @@ const Layout = ({ children }) => {
                       <Text>Groups</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/target"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/target"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -176,10 +176,10 @@ const Layout = ({ children }) => {
                       <Text>Target List</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/team-funding"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/team-funding"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -187,10 +187,10 @@ const Layout = ({ children }) => {
                       <Text>Viro Team Funding</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/all-team"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/all-team"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -199,10 +199,10 @@ const Layout = ({ children }) => {
                     </HStack>
                   </Link>
                   <br />
-                  <Link href={"/dashboard/gift-cards"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/gift-cards"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -210,10 +210,10 @@ const Layout = ({ children }) => {
                       <Text>Gift Cards</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/points/transfers"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/points/transfers"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -221,10 +221,10 @@ const Layout = ({ children }) => {
                       <Text>Point Transfers</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/points/withdrawals"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/points/withdrawals"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -233,10 +233,10 @@ const Layout = ({ children }) => {
                     </HStack>
                   </Link>
                   <br />
-                  <Link href={"/dashboard/campaign-donations"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/campaign-donations"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -244,10 +244,10 @@ const Layout = ({ children }) => {
                       <Text>Campaign Donations</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/orders"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/orders"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -255,10 +255,10 @@ const Layout = ({ children }) => {
                       <Text>Ecom Orders</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/transactions"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/transactions"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -269,10 +269,10 @@ const Layout = ({ children }) => {
                 </VStack>
               ) : (
                 <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
-                  <Link href={"/dashboard/users"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/users"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -280,10 +280,10 @@ const Layout = ({ children }) => {
                       <Text>Manage Users</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/gift-cards"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/gift-cards"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -291,10 +291,10 @@ const Layout = ({ children }) => {
                       <Text>Gift Cards</Text>
                     </HStack>
                   </Link>
-                  <Link href={"/dashboard/payouts"}>
+                  <Link style={{width: '100%'}} href={"/dashboard/payouts"}>
                     <HStack
-                      py={2}
-                      _hover={{ bgColor: "yellow.50" }}
+                      px={2} py={1}
+                      _hover={{ bgColor: "orange.200" }}
                       w={"full"}
                       gap={4}
                     >
@@ -304,15 +304,15 @@ const Layout = ({ children }) => {
                   </Link>
                 </VStack>
               )}
-              {/* <Link href={"/dashboard"}>
-                <HStack py={2} _hover={{bgColor: 'yellow.50'}} w={'full'} gap={4}>
+              {/* <Link style={{width: '100%'}} href={"/dashboard"}>
+                <HStack px={2} py={1} _hover={{bgColor: 'orange.200'}} w={'full'} gap={4}>
                   <BsMegaphoneFill size={20} />
                   <Text>Broadcast</Text>
                 </HStack>
               </Link> */}
               <HStack
-                py={2}
-                _hover={{ bgColor: "yellow.50" }}
+                px={2} py={1}
+                _hover={{ bgColor: "orange.200" }}
                 w={"full"}
                 marginTop={16}
                 gap={4}
