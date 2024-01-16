@@ -93,8 +93,8 @@ const Transactions = () => {
                   <Td>{key + 1}</Td>
                   <Td>
                     <Text
-                      p={2}
-                      bgColor={userId == item?.user_id ? "red" : "whatsapp.600"}
+                      py={1} px={2}
+                      bgColor={userId == item?.user_id ? "red.400" : "whatsapp.500"}
                       color={"white"}
                     >
                       {item?.value}
