@@ -107,15 +107,25 @@ const Layout = ({ children }) => {
               Virolife
             </Text>
 
-            <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
+            <VStack w={"full"} gap={0} pt={8} alignItems={"flex-start"}>
               <Link href={"/dashboard/profile"}>
-                <HStack gap={4}>
+                <HStack
+                  py={2}
+                  _hover={{ bgColor: "yellow.50" }}
+                  w={"full"}
+                  gap={4}
+                >
                   <BsPersonFill size={20} />
                   <Text>Profile</Text>
                 </HStack>
               </Link>
               <Link href={"/dashboard"}>
-                <HStack gap={4}>
+                <HStack
+                  py={2}
+                  _hover={{ bgColor: "yellow.50" }}
+                  w={"full"}
+                  gap={4}
+                >
                   <AiFillDashboard size={20} />
                   <Text>Dashboard</Text>
                 </HStack>
@@ -123,75 +133,135 @@ const Layout = ({ children }) => {
               {myRole == "user" ? (
                 <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
                   <Link href={"/dashboard/campaigns"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <BsMegaphoneFill size={20} />
                       <Text>My Campaigns</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/collection"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <BsCurrencyRupee size={20} />
                       <Text>Collection</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/groups"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <MdGroups size={20} />
                       <Text>Groups</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/target"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <PiTargetFill size={20} />
                       <Text>Target List</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/team-funding"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <GiChestnutLeaf size={20} />
                       <Text>Viro Team Funding</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/all-team"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <FaHandshake size={20} />
                       <Text>All Team Processing</Text>
                     </HStack>
                   </Link>
                   <br />
                   <Link href={"/dashboard/gift-cards"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <BsGiftFill size={20} />
                       <Text>Gift Cards</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/points/transfers"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <HiArrowsRightLeft size={20} />
                       <Text>Point Transfers</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/points/withdrawals"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <GiReceiveMoney size={20} />
                       <Text>Point Withdrawals</Text>
                     </HStack>
                   </Link>
                   <br />
                   <Link href={"/dashboard/campaign-donations"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <BiDonateHeart size={20} />
                       <Text>Campaign Donations</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/orders"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <FaShoppingCart size={20} />
                       <Text>Ecom Orders</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/transactions"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <BsClipboardDataFill size={20} />
                       <Text>Transactions</Text>
                     </HStack>
@@ -200,19 +270,34 @@ const Layout = ({ children }) => {
               ) : (
                 <VStack w={"full"} gap={4} pt={8} alignItems={"flex-start"}>
                   <Link href={"/dashboard/users"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <FaUsers size={20} />
                       <Text>Manage Users</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/gift-cards"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <BsGiftFill size={20} />
                       <Text>Gift Cards</Text>
                     </HStack>
                   </Link>
                   <Link href={"/dashboard/payouts"}>
-                    <HStack gap={4}>
+                    <HStack
+                      py={2}
+                      _hover={{ bgColor: "yellow.50" }}
+                      w={"full"}
+                      gap={4}
+                    >
                       <BsWalletFill size={20} />
                       <Text>Payouts</Text>
                     </HStack>
@@ -220,12 +305,15 @@ const Layout = ({ children }) => {
                 </VStack>
               )}
               {/* <Link href={"/dashboard"}>
-                <HStack gap={4}>
+                <HStack py={2} _hover={{bgColor: 'yellow.50'}} w={'full'} gap={4}>
                   <BsMegaphoneFill size={20} />
                   <Text>Broadcast</Text>
                 </HStack>
               </Link> */}
               <HStack
+                py={2}
+                _hover={{ bgColor: "yellow.50" }}
+                w={"full"}
                 marginTop={16}
                 gap={4}
                 onClick={handleLogout}
