@@ -196,10 +196,10 @@ const page = () => {
     BackendAxios.get(`/api/my-senior-donation`)
       .then((res) => {
         setSeniorsData(res.data);
-        setRequirements({
-          ...requirements,
+        setRequirements(prev => ({
+          ...prev,
           primarySeniorDonationsDone: res.data?.length,
-        });
+        }));
       })
       .catch((err) => {
         handleError(err, "Error while fetching seniors data");
