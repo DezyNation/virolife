@@ -84,27 +84,13 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   }, [myCurrentRound, myUserId]);
 
   useEffect(() => {
-    let amt = 0;
-    if (groupType == "primary") {
-      amt = localStorage.getItem(`primarySeniorAmount`) ?? 200;
-      setAmount(amt);
-      return;
-    }
-    if (groupType == "secondary") {
-      amt = localStorage.getItem(`secondarySeniorAmount`) ?? 200;
-      setAmount(amt);
-      return;
-    }
-  }, []);
-
-  useEffect(() => {
     const onHold = parseInt(localStorage.getItem("onHold")) === 1;
     if (parseInt(amount) > 0 && !onHold) {
       setShowDonateBtn(true);
     } else {
       setShowDonateBtn(false);
     }
-  }, [amount]);
+  }, []);
 
   function showVideo(user, key) {
     setVideoStatus(true);
@@ -247,6 +233,19 @@ const MyParents = ({ parents, myParentId, groupType }) => {
             currentTasks?.secondary_senior_amount
           )?.toFixed(0),
         }));
+
+        if (groupType == "primary") {
+          if (Number(currentTasks?.primary_senior_amount) == 0) {
+            setShowDonateBtn(false);
+          }
+          setAmount(Number(currentTasks?.primary_senior_amount) == 0);
+        }
+        if (groupType == "secondary") {
+          if (Number(currentTasks?.secondary_senior_amount) == 0) {
+            setShowDonateBtn(false);
+          }
+          setAmount(Number(currentTasks?.secondary_senior_amount) == 0);
+        }
       })
       .catch((err) => {
         console.log("error while fetching tasks");
@@ -261,11 +260,6 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       setParentUsers(newData);
     }
   }, [parents]);
-
-  useEffect(() => {
-    console.log("REQ.");
-    console.log(requirements);
-  }, [requirements]);
 
   return (
     <>
