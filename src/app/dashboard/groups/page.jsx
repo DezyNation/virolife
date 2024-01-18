@@ -43,7 +43,6 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   const [showDonateBtn, setShowDonateBtn] = useState(false);
 
-  const [initialBeneficiaries, setInitialBeneficiaries] = useState([]);
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [parentUsers, setParentUsers] = useState(parents);
 
@@ -235,13 +234,18 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     BackendAxios.get(`/api/tasks`)
       .then((res) => {
         const tasks = res.data;
-        const currentTasks = tasks?.find((task) => task?.round == myCurrentRound);
-        console.log("My current round ", myCurrentRound)
-        console.log("This round tasks")
-        console.log(currentTasks)
+        const currentTasks = tasks?.find(
+          (task) => task?.round == myCurrentRound
+        );
         setRequirements((prev) => ({
           ...prev,
           threshold: Number(currentTasks?.target_amount)?.toFixed(0),
+          primarySeniorAmount: Number(
+            currentTasks?.primary_senior_amount
+          )?.toFixed(0),
+          secondarySeniorAmount: Number(
+            currentTasks?.secondary_senior_amount
+          )?.toFixed(0),
         }));
       })
       .catch((err) => {
@@ -321,7 +325,11 @@ const MyParents = ({ parents, myParentId, groupType }) => {
           <ModalBody alignItems={"center"} justifyContent={"center"}>
             <QRCode
               size={256}
-              value={`upi://pay?cu=INR&pa=${upi}&am=${amount}`}
+              value={`upi://pay?cu=INR&pa=${upi}&am=${
+                groupType == "primary"
+                  ? requirements?.primarySeniorAmount
+                  : requirements?.secondarySeniorAmount
+              }`}
             />
             <br />
             <Text textAlign={"center"}>Pay with any UPI app</Text>
