@@ -78,7 +78,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   }, []);
 
   useEffect(() => {
-    if (myCurrentRound == null || !myUserId) return;
+    if (!myUserId) return;
     fetchMyDonations();
     fetchRounds();
   }, [myCurrentRound, myUserId]);
@@ -303,7 +303,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                   showVideo(item, key);
                 }}
               >
-                Donate
+                {amount ? `₹${amount}` : "Donate"}
               </Button>
             ) : null}
           </HStack>
