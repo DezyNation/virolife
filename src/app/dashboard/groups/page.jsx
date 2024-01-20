@@ -78,9 +78,10 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   }, []);
 
   useEffect(() => {
-    if (!myUserId) return;
-    fetchMyDonations();
-    fetchRounds();
+    if (myUserId) {
+      fetchMyDonations();
+      fetchRounds();
+    }
   }, [myCurrentRound, myUserId]);
 
   useEffect(() => {
@@ -90,7 +91,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     } else {
       setShowDonateBtn(false);
     }
-  }, []);
+  }, [amount]);
 
   function showVideo(user, key) {
     setVideoStatus(true);
@@ -223,6 +224,11 @@ const MyParents = ({ parents, myParentId, groupType }) => {
         const currentTasks = tasks?.find(
           (task) => task?.round == myCurrentRound
         );
+
+        console.log("My current round is ", myCurrentRound);
+        console.log("Tasks are");
+        console.log(currentTasks);
+
         setRequirements((prev) => ({
           ...prev,
           threshold: Number(currentTasks?.target_amount)?.toFixed(0),
@@ -238,13 +244,13 @@ const MyParents = ({ parents, myParentId, groupType }) => {
           if (Number(currentTasks?.primary_senior_amount) == 0) {
             setShowDonateBtn(false);
           }
-          setAmount(Number(currentTasks?.primary_senior_amount) == 0);
+          setAmount(Number(currentTasks?.primary_senior_amount));
         }
         if (groupType == "secondary") {
           if (Number(currentTasks?.secondary_senior_amount) == 0) {
             setShowDonateBtn(false);
           }
-          setAmount(Number(currentTasks?.secondary_senior_amount) == 0);
+          setAmount(Number(currentTasks?.secondary_senior_amount));
         }
       })
       .catch((err) => {
