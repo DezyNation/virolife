@@ -196,10 +196,6 @@ const page = () => {
     BackendAxios.get(`/api/my-senior-donation`)
       .then((res) => {
         setSeniorsData(res.data);
-        setRequirements(prev => ({
-          ...prev,
-          primarySeniorDonationsDone: res.data?.length,
-        }));
       })
       .catch((err) => {
         handleError(err, "Error while fetching seniors data");
@@ -436,7 +432,7 @@ const page = () => {
               <Text fontSize={"sm"}>Senior Donations</Text>
               <HStack w={"full"} gap={8}>
                 <Text fontSize={"xl"} fontWeight={"semibold"}>
-                  {requirements?.primarySeniorDonationsDone}
+                  {donationData?.length}
                 </Text>
                 {/* <Text fontSize={"md"} fontWeight={"semibold"}>
                   Sec. {requirements?.secondaryJuniorDonationsDone}
