@@ -376,7 +376,7 @@ const page = () => {
               <Text fontSize={"sm"}>Junior Donations</Text>
               <HStack w={"full"} gap={8}>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
-                  {requirements?.primaryJuniorDonationsDone}
+                  Prim. {requirements?.primaryJuniorDonationsDone}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"semibold"}>
                   Sec. {requirements?.secondaryJuniorDonationsDone}
@@ -387,7 +387,7 @@ const page = () => {
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Req.: {requirements?.primaryJuniorDonationsRequired}
                 </Text>
-                <Text fontSize={"xs"}>
+                <Text fontWeight={'semibold'} fontSize={"xs"}>
                   Sec. {requirements?.secondaryJuniorDonationsRequired}
                 </Text>
               </HStack>
