@@ -78,6 +78,8 @@ const page = () => {
     campaignDonationsDone: 0,
     primarySeniorDonationsRequired: 0,
     primarySeniorDonationsDone: 0,
+    secondarySeniorDonationsRequired: 0,
+    secondarySeniorDonationsDone: 0,
     primaryJuniorDonationsRequired: 0,
     primaryJuniorDonationsDone: 0,
     secondaryJuniorDonationsRequired: 0,
@@ -138,6 +140,8 @@ const page = () => {
             currentTasks?.virolife_donation
           )?.toFixed(0),
           primarySeniorDonationsRequired: currentTasks?.primary_senior_count,
+          secondarySeniorDonationsRequired:
+            currentTasks?.secondary_senior_count,
           primaryJuniorDonationsRequired: currentTasks?.primary_junior_count,
           secondaryJuniorDonationsRequired:
             currentTasks?.secondary_junior_count,
@@ -288,6 +292,15 @@ const page = () => {
     BackendAxios.get(`/api/senior-donations/${userId}/${activeRound}`)
       .then((res) => {
         setDonationData(res.data?.filter((item) => item?.group == "primary"));
+        setRequirements((prev) => ({
+          ...prev,
+          secondarySeniorDonationsDone: res.data?.filter(
+            (item) => item?.group == "secondary"
+          )?.length,
+          primarySeniorDonationsDone: res.data?.filter(
+            (item) => item?.group == "primary"
+          )?.length,
+        }));
       })
       .catch((err) => {
         handleError(err, "Error while getting your past donations");
@@ -365,18 +378,18 @@ const page = () => {
                 <Text fontSize={"md"} fontWeight={"semibold"}>
                   {requirements?.primaryJuniorDonationsDone}
                 </Text>
-                {/* <Text fontSize={"md"} fontWeight={"semibold"}>
+                <Text fontSize={"md"} fontWeight={"semibold"}>
                   Sec. {requirements?.secondaryJuniorDonationsDone}
-                </Text> */}
+                </Text>
               </HStack>
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Req.: {requirements?.primaryJuniorDonationsRequired}
                 </Text>
-                {/* <Text fontSize={"xs"}>
+                <Text fontSize={"xs"}>
                   Sec. {requirements?.secondaryJuniorDonationsRequired}
-                </Text> */}
+                </Text>
               </HStack>
             </Box>
           </HStack>
