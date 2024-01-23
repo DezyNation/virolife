@@ -387,7 +387,7 @@ const page = () => {
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Req.: {requirements?.primaryJuniorDonationsRequired}
                 </Text>
-                <Text fontWeight={'semibold'} fontSize={"xs"}>
+                <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Sec. {requirements?.secondaryJuniorDonationsRequired}
                 </Text>
               </HStack>
@@ -444,21 +444,21 @@ const page = () => {
             <Box w={"full"}>
               <Text fontSize={"sm"}>Senior Donations</Text>
               <HStack w={"full"} gap={8}>
-                <Text fontSize={"xl"} fontWeight={"semibold"}>
-                  {donationData?.length}
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  Prim. {requirements?.primarySeniorDonationsDone}
                 </Text>
-                {/* <Text fontSize={"md"} fontWeight={"semibold"}>
-                  Sec. {requirements?.secondaryJuniorDonationsDone}
-                </Text> */}
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  Sec. {requirements?.secondarySeniorDonationsDone}
+                </Text>
               </HStack>
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Req.: {requirements?.primarySeniorDonationsRequired}
                 </Text>
-                {/* <Text fontSize={"xs"}>
+                <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Sec. {requirements?.secondaryJuniorDonationsRequired}
-                </Text> */}
+                </Text>
               </HStack>
             </Box>
           </HStack>
