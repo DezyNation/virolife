@@ -385,7 +385,7 @@ const page = () => {
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Req.: {requirements?.primaryJuniorDonationsRequired}
+                  Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim. {requirements?.primaryJuniorDonationsRequired}
                 </Text>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Sec. {requirements?.secondaryJuniorDonationsRequired}
@@ -454,7 +454,7 @@ const page = () => {
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Req.: {requirements?.primarySeniorDonationsRequired}
+                  Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim. {requirements?.primarySeniorDonationsRequired}
                 </Text>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Sec. {requirements?.secondaryJuniorDonationsRequired}
