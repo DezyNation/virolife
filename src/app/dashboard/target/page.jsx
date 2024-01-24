@@ -457,7 +457,7 @@ const page = () => {
                   Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim. {requirements?.primarySeniorDonationsRequired}
                 </Text>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Sec. {requirements?.secondaryJuniorDonationsRequired}
+                  Sec. {requirements?.secondarySeniorDonationsRequired}
                 </Text>
               </HStack>
             </Box>
