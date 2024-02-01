@@ -414,7 +414,7 @@ const page = () => {
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Required: {requirements?.campaignDonationsRequired}
+                  Req: {requirements?.campaignDonationsRequired} &nbsp;&nbsp;&nbsp; Amt: ₹{amounts?.campaignDonation}
                 </Text>
               </HStack>
             </Box>
