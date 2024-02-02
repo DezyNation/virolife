@@ -19,7 +19,13 @@ const AllCampaigns = ({ showNavbar = true }) => {
   useEffect(() => {
     DefaultAxios.get("/api/campaign")
       .then((res) => {
-        setCampaigns(res.data);
+        if (Number(prefilAmount) > 0) {
+          setCampaigns(
+            res.data?.filter((data) => data?.category_name == "medical")
+          );
+        } else {
+          setCampaigns(res.data);
+        }
       })
       .catch((err) => {
         Toast({
