@@ -21,7 +21,7 @@ const AllCampaigns = ({ showNavbar = true }) => {
       .then((res) => {
         if (Number(prefilAmount) > 0) {
           setCampaigns(
-            res.data?.filter((data) => data?.category_name == "medical")
+            res.data?.filter((data) => data?.category_name == "Medical")
           );
         } else {
           setCampaigns(res.data);
