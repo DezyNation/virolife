@@ -672,7 +672,7 @@ const page = () => {
                         ({data?.donatable_id}) {data?.user_name}
                       </Td>
                       <Td>₹{data?.amount}</Td>
-                      <Td>₹{data?.group}</Td>
+                      <Td>{data?.group}</Td>
                       <Td>
                         {data?.approved ? (
                           <BsCheckCircleFill color="green" />
