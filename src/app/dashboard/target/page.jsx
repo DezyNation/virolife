@@ -291,7 +291,7 @@ const page = () => {
   function fetchMyPreviousDonations(userId) {
     BackendAxios.get(`/api/senior-donations/${userId}/${activeRound}`)
       .then((res) => {
-        setDonationData(res.data?.filter((item) => item?.group == "primary"));
+        setDonationData(res.data);
         setRequirements((prev) => ({
           ...prev,
           secondarySeniorDonationsDone: res.data?.filter(
@@ -659,6 +659,7 @@ const page = () => {
                     <Th>#</Th>
                     <Th>User</Th>
                     <Th>Amount</Th>
+                    <Th>Group</Th>
                     <Th>Approved</Th>
                     <Th>Updated On</Th>
                   </Tr>
@@ -671,6 +672,7 @@ const page = () => {
                         ({data?.donatable_id}) {data?.user_name}
                       </Td>
                       <Td>₹{data?.amount}</Td>
+                      <Td>₹{data?.group}</Td>
                       <Td>
                         {data?.approved ? (
                           <BsCheckCircleFill color="green" />
