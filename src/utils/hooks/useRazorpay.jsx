@@ -1,13 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useApiHandler from "./useApiHandler";
-import BackendAxios from "../axios";
+import BackendAxios, { DefaultAxios } from "../axios";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const useRazorpay = () => {
   const { handleError } = useApiHandler();
   const { push } = useRouter();
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    setToken(Cookies.get("jwt"));
+  }, []);
 
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
@@ -107,15 +112,31 @@ const useRazorpay = () => {
     // const paymentObject = new window.Razorpay(options);
     // paymentObject.open();
 
-    await BackendAxios.post("/api/create-order", { ...params })
-      .then(async (res) => {
-        // await submitrazorpayForm({ ...res.data, ...params });
-        push(`/payment?order_id=${res.data?.order_id}&amount=${res.data?.amount}&description=${description}`)
-      })
-      .catch((err) => {
-        console.log(err);
-        handleError({ message: "Error while creating order" });
-      });
+    if (token) {
+      await BackendAxios.post("/api/create-order", { ...params })
+        .then(async (res) => {
+          // await submitrazorpayForm({ ...res.data, ...params });
+          push(
+            `/payment?order_id=${res.data?.order_id}&amount=${res.data?.amount}&description=${description}`
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          handleError({ message: "Error while creating order" });
+        });
+    } else {
+      await DefaultAxios.post("/api/create-order", { ...params })
+        .then(async (res) => {
+          // await submitrazorpayForm({ ...res.data, ...params });
+          push(
+            `/payment?order_id=${res.data?.order_id}&amount=${res.data?.amount}&description=${description}`
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          handleError({ message: "Error while creating order" });
+        });
+    }
   };
 
   return {
