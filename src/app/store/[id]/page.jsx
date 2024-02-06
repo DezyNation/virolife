@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "@/components/global/Navbar";
 import Footer from "@/components/global/Footer";
-import BackendAxios from "@/utils/axios";
+import BackendAxios, { DefaultAxios } from "@/utils/axios";
 import CampaignData from "@/components/campaign/CampaignData";
 import ProductData from "@/components/campaign/ProductData";
 
@@ -35,7 +35,7 @@ const CampaignInfo = async ({ params }) => {
   const { id } = params;
 
   let campaign;
-  await BackendAxios.get(`/api/product/${id}`)
+  await DefaultAxios.get(`/api/product/${id}`)
     .then((res) => {
       campaign = res.data;
     })
