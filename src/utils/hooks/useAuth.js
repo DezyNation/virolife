@@ -17,9 +17,12 @@ const useAuth = () => {
         localStorage.setItem("email", res.data[0]?.email);
         localStorage.setItem("userId", res.data[0]?.id);
         localStorage.setItem("onHold", res.data[0]?.on_hold);
-        localStorage.setItem("currentRound", res.data[0]?.round)
+        localStorage.setItem("currentRound", res.data[0]?.round);
         localStorage.setItem("primaryActive", res.data[0]?.primary_activated);
-        localStorage.setItem("canJoinGroup", res.data[0]?.secondary_activation_enable);
+        localStorage.setItem(
+          "canJoinGroup",
+          res.data[0]?.secondary_activation_enable
+        );
         localStorage.setItem(
           "secondaryActive",
           res.data[0]?.secondary_activated
@@ -49,7 +52,12 @@ const useAuth = () => {
         if (err?.response?.status == 401) {
           Cookies.remove("jwt");
           localStorage.clear();
-          window.location.assign("/");
+          // window.location.assign("/");
+          Toast({
+            status: "warning",
+            title: "Session expired",
+            description: "Please login again",
+          });
           return;
         }
         Toast({
