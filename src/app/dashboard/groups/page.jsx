@@ -579,7 +579,6 @@ const MyChildren = ({ childMembers, donors }) => {
               bgColor={"#FFF"}
             >
               <Text fontSize={"sm"}>ID: {showTooltip.id}</Text>
-              <Text fontSize={"sm"}>Collection: {showTooltip.donation}</Text>
             </Box>
           </ModalBody>
           <ModalFooter></ModalFooter>
