@@ -699,15 +699,13 @@ const Navbar = () => {
                     <FormLabel fontSize={"xl"}>Phone</FormLabel>
                     <NumberInput
                       value={Formik.values.phone_number}
-                      name="phone_number"
-                      onChange={Formik.handleChange}
                       boxShadow={"xl"}
                       border={".5px solid #FAFAFA"}
                       w={["full", "xs"]}
                       rounded={0}
                       max={9999999999}
                     >
-                      <NumberInputField placeholder="Phone Number" />
+                      <NumberInputField name="phone_number" onChange={Formik.handleChange} placeholder="Phone Number" />
                     </NumberInput>
                   </Stack>
                 </FormControl>
