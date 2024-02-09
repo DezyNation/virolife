@@ -31,6 +31,8 @@ import {
   InputRightElement,
   DrawerFooter,
   InputLeftElement,
+  NumberInputField,
+  NumberInput,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { BiMenuAltLeft } from "react-icons/bi";
@@ -94,6 +96,7 @@ const Navbar = () => {
     initialValues: {
       email: "",
       password: "",
+      phone_number: "",
     },
   });
 
@@ -110,6 +113,7 @@ const Navbar = () => {
     if (intentFromParams == "register") {
       Formik.setFieldValue("email", emailFromParams ? emailFromParams : "");
       Formik.setFieldValue("password", phoneFromParams ? phoneFromParams : "");
+      Formik.setFieldValue("phone_number", phoneFromParams ? phoneFromParams : "");
       setName(nameFromParams ? nameFromParams : "");
     }
     setCode(referralId);
@@ -188,6 +192,7 @@ const Navbar = () => {
         ...Formik.values,
         name: name,
         password_confirmation: Formik.values.password,
+        phone_number: Formik.values.phone_number,
         code: code,
       })
       .then((res) => {
@@ -686,6 +691,27 @@ const Navbar = () => {
                   </Stack>
                 </FormControl>
                 <FormControl>
+                  <Stack
+                    direction={["column", "row"]}
+                    spacing={[4, 8]}
+                    justifyContent={"space-between"}
+                  >
+                    <FormLabel fontSize={"xl"}>Phone</FormLabel>
+                    <NumberInput
+                      value={Formik.values.phone_number}
+                      name="phone_number"
+                      onChange={Formik.handleChange}
+                      boxShadow={"xl"}
+                      border={".5px solid #FAFAFA"}
+                      w={["full", "xs"]}
+                      rounded={0}
+                      max={9999999999}
+                    >
+                      <NumberInputField placeholder="Phone Number" />
+                    </NumberInput>
+                  </Stack>
+                </FormControl>
+                <FormControl>
                   <Stack direction={["column", "row"]} spacing={[4, 8]}>
                     <FormLabel fontSize={"xl"}>Password</FormLabel>
                     <InputGroup>
@@ -788,10 +814,6 @@ const Navbar = () => {
                     Continue
                   </Button>
                 </HStack>
-              </VStack>
-              <VStack w={["full", "xs"]} gap={8}>
-                <Text textAlign={"center"}>Or Register With</Text>
-                <Image src="/gmail.png" w={20} cursor={"pointer"} />
               </VStack>
             </Stack>
           </ModalBody>
