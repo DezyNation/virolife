@@ -788,8 +788,8 @@ const page = () => {
             )}
             <br />
             {amounts?.campaignDonation > 0 &&
-            requirements.campaignDonationsRequired <
-              requirements.campaignDonationsDone &&
+            requirements.campaignDonationsDone >=
+              requirements.campaignDonationsRequired &&
             requirements?.collection >= requirements?.threshold ? (
               <HStack py={4} justifyContent={"flex-end"}>
                 <Link
