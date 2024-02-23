@@ -389,7 +389,7 @@ const page = () => {
               {requirements?.primaryJuniorDonationsDone +
                 requirements?.secondaryJuniorDonationsDone <=
               requirements?.primaryJuniorDonationsRequired +
-                requirements?.secondaryJuniorDonationsReprimaryJuniorDonationsRequired ? (
+                requirements?.secondaryJuniorDonationsRequired ? (
                 <Badge>Pending</Badge>
               ) : null}
               <br />
