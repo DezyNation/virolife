@@ -110,18 +110,14 @@ const CampaignData = ({ campaign }) => {
             setLoading(false);
             handleError(err, "Error while adding your donation");
           });
-      }
-      else {
-        DefaultAxios.post(
-          `/api/donate-campaign`,
-          {
-            campaignId: campaign?.id,
-            amount: amount,
-            name: values.name,
-            phoneNumber: values.phone,
-            // tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
-          }
-        )
+      } else {
+        DefaultAxios.post(`/api/donate-campaign`, {
+          campaignId: campaign?.id,
+          amount: amount,
+          name: values.name,
+          phoneNumber: values.phone,
+          // tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
+        })
           .then((res) => {
             // setLoading(false);
             push(
@@ -183,7 +179,7 @@ const CampaignData = ({ campaign }) => {
             Need ₹{Number(campaign?.target_amount)?.toLocaleString("en-IN")}{" "}
             till &nbsp;
             {new Date(campaign?.updated_at).toDateString()} - Campaign By{" "}
-            {campaign?.user?.name}
+            {campaign?.user?.name} (VCF{campaign?.user?.id})
           </Text>
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
