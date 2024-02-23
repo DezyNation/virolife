@@ -1,5 +1,6 @@
 "use client";
 import {
+  Badge,
   Box,
   Button,
   HStack,
@@ -316,7 +317,7 @@ const page = () => {
         });
       })
       .catch((err) => {
-        handleError(err, "Error while updating data");
+        handleError(err, "Error while updating data", 20*60*1000);
       });
   }
 
@@ -351,6 +352,9 @@ const page = () => {
               <Text fontSize={"xl"} fontWeight={"semibold"}>
                 ₹ {requirements?.collection}
               </Text>
+              {requirements?.collection <= requirements?.threshold ? (
+                <Badge>Pending</Badge>
+              ) : null}
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
@@ -382,10 +386,17 @@ const page = () => {
                   Sec. {requirements?.secondaryJuniorDonationsDone}
                 </Text>
               </HStack>
+              {requirements?.primaryJuniorDonationsDone +
+                requirements?.secondaryJuniorDonationsDone <=
+              requirements?.primaryJuniorDonationsRequired +
+                requirements?.secondaryJuniorDonationsRequired ? (
+                <Badge>Pending</Badge>
+              ) : null}
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim. {requirements?.primaryJuniorDonationsRequired}
+                  Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim.{" "}
+                  {requirements?.primaryJuniorDonationsRequired}
                 </Text>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Sec. {requirements?.secondaryJuniorDonationsRequired}
@@ -411,10 +422,15 @@ const page = () => {
               <Text fontSize={"xl"} fontWeight={"semibold"}>
                 {requirements?.campaignDonationsDone}
               </Text>
+              {requirements?.campaignDonationsDone <=
+              requirements?.campaignDonationsRequired ? (
+                <Badge>Pending</Badge>
+              ) : null}
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Req: {requirements?.campaignDonationsRequired} &nbsp;&nbsp;&nbsp; Amt: ₹{amounts?.campaignDonation}
+                  Req: {requirements?.campaignDonationsRequired}{" "}
+                  &nbsp;&nbsp;&nbsp; Amt: ₹{amounts?.campaignDonation} each
                 </Text>
               </HStack>
             </Box>
@@ -451,10 +467,17 @@ const page = () => {
                   Sec. {requirements?.secondarySeniorDonationsDone}
                 </Text>
               </HStack>
+              {requirements?.primarySeniorDonationsDone +
+                requirements?.secondarySeniorDonationsDone <=
+              requirements?.primarySeniorDonationsRequired +
+                requirements?.secondarySeniorDonationsRequired ? (
+                <Badge>Pending</Badge>
+              ) : null}
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim. {requirements?.primarySeniorDonationsRequired}
+                  Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim.{" "}
+                  {requirements?.primarySeniorDonationsRequired}
                 </Text>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Sec. {requirements?.secondarySeniorDonationsRequired}
@@ -480,6 +503,10 @@ const page = () => {
               <Text fontSize={"xl"} fontWeight={"semibold"}>
                 ₹{requirements?.virolifeDonationsDone}
               </Text>
+              {requirements?.virolifeDonationsDone <=
+              requirements?.virolifeDonationsRequired ? (
+                <Badge>Pending</Badge>
+              ) : null}
               <br />
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
