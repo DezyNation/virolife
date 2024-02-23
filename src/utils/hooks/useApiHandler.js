@@ -14,10 +14,11 @@ const useApiHandler = () => {
   });
   const { fetchMyInfo } = useAuth();
 
-  const handleError = (err, title) => {
+  const handleError = (err, title, duration) => {
     Toast({
       status: "error",
       title: title || "Err occured",
+      duration: duration || 5000,
       description:
         err?.response?.data?.message || err?.response?.data || err?.message,
     });
