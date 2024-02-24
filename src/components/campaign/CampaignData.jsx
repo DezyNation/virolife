@@ -169,7 +169,7 @@ const CampaignData = ({ campaign, id }) => {
   }, []);
 
   function fetchDonors() {
-    DefaultAxios.get(`/api/donors/${id}`)
+    DefaultAxios.get(`/api/campaign-donors/${id}`)
       .then((res) => {
         setDonors(res.data);
       })
@@ -179,7 +179,7 @@ const CampaignData = ({ campaign, id }) => {
   }
 
   function fetchHealthPoints() {
-    DefaultAxios.get(`/api/campaign/health-points/${id}`)
+    DefaultAxios.get(`/api/campaign-withdrawals/${id}`)
       .then((res) => {
         setHealthPointsReceived(res.data);
       })
