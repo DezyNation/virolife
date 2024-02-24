@@ -1,5 +1,6 @@
 "use client";
 import {
+  Avatar,
   Box,
   Button,
   FormLabel,
@@ -47,15 +48,13 @@ import {
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import parse from "html-react-parser";
-import useRazorpay from "@/utils/hooks/useRazorpay";
 import BackendAxios, { DefaultAxios } from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
 import FullPageLoader from "../global/FullPageLoader";
 import { useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
 import Cookies from "js-cookie";
 
-const CampaignData = ({ campaign }) => {
+const CampaignData = ({ campaign, id }) => {
   const Toast = useToast({ position: "top-right" });
   const params = useSearchParams();
 
@@ -78,6 +77,9 @@ const CampaignData = ({ campaign }) => {
   const [fees, setFees] = useState(5);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [donationCardStatus, setDonationCardStatus] = useState(true);
+
+  const [donors, setDonors] = useState([]);
+  const [healthPointsReceived, setHealthPointsReceived] = useState(0);
 
   const Formik = useFormik({
     initialValues: {
@@ -133,8 +135,8 @@ const CampaignData = ({ campaign }) => {
   });
 
   useEffect(() => {
-    setAmount(parseInt(prefilAmount));
-    Formik.setFieldValue("amount", prefilAmount);
+    setAmount(parseInt(prefilAmount || 1000));
+    Formik.setFieldValue("amount", prefilAmount || 1000);
   }, [prefilAmount]);
 
   useEffect(() => {
@@ -158,6 +160,34 @@ const CampaignData = ({ campaign }) => {
     setAmount(calcAmount);
   }, [Formik.values.amount, fees]);
 
+  useEffect(() => {
+    fetchDonors();
+  }, []);
+
+  useEffect(() => {
+    fetchHealthPoints();
+  }, []);
+
+  function fetchDonors() {
+    DefaultAxios.get(`/api/donors/${id}`)
+      .then((res) => {
+        setDonors(res.data);
+      })
+      .catch((err) => {
+        handleError(err, "Could not get donors");
+      });
+  }
+
+  function fetchHealthPoints() {
+    DefaultAxios.get(`/api/campaign/health-points/${id}`)
+      .then((res) => {
+        setHealthPointsReceived(res.data);
+      })
+      .catch((err) => {
+        handleError(err, "Could not get health points data");
+      });
+  }
+
   return (
     <>
       {loading ? <FullPageLoader /> : null}
@@ -175,12 +205,15 @@ const CampaignData = ({ campaign }) => {
           >
             {campaign?.title}
           </Text>
-          <Text pb={8}>
+          <Text pb={2}>
             Need ₹{Number(campaign?.target_amount)?.toLocaleString("en-IN")}{" "}
             till &nbsp;
             {new Date(campaign?.updated_at).toDateString()} - Campaign By{" "}
             {campaign?.user?.name} (VCF{campaign?.user?.id})
           </Text>
+          {healthPointsReceived ? (
+            <Text pb={8}>Received {healthPointsReceived} Health Points</Text>
+          ) : null}
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
               src={selectedImg}
@@ -254,9 +287,34 @@ const CampaignData = ({ campaign }) => {
           <Box pb={16} maxW={["full", "xl", "4xl"]}>
             {parse(campaign?.full_description)}
           </Box>
-          {/* <Text pb={16} maxW={["full", "xl", "4xl"]}>
-            {campaign?.full_description}
-          </Text> */}
+          <br />
+          <br />
+          <Text
+            fontSize={["xl"]}
+            fontWeight={"semibold"}
+            textTransform={"capitalize"}
+          >
+            Donors
+          </Text>
+          <br />
+          {donors?.length ? (
+            donors?.map((item, key) => (
+              <HStack p={4} rounded={4} bgColor={"blanchedalmond"} mb={6}>
+                <Avatar name={item?.user?.name} />
+                <Box>
+                  <Text fontWeight={"semibold"}>{item?.user?.name}</Text>
+                  <Text fontSize={"sm"}>
+                    Donated ₹{item?.amount} on{" "}
+                    {new Date(item?.created_at).toLocaleDateString(null, {
+                      timeZone: "Asia/Kolkata",
+                    })}
+                  </Text>
+                </Box>
+              </HStack>
+            ))
+          ) : (
+            <Text>Be the first one to donate for this campaign!</Text>
+          )}
         </Box>
 
         <Show above="md">
@@ -388,7 +446,7 @@ const CampaignData = ({ campaign }) => {
             width={"full"}
             h={"inherit"}
             position={"fixed"}
-            bottom={donationCardStatus ? 0 : "-60vh"}
+            bottom={donationCardStatus ? 0 : "-80vh"}
             left={0}
             right={0}
             p={4}

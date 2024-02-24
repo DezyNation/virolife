@@ -43,7 +43,7 @@ const CampaignInfo = async ({ params }) => {
   return (
     <>
       <Navbar />
-      <CampaignData campaign={campaign} />
+      <CampaignData campaign={campaign} id={id} />
       <Footer />
     </>
   );
