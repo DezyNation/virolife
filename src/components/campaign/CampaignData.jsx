@@ -299,15 +299,13 @@ const CampaignData = ({ campaign, id }) => {
           <br />
           {donors?.length ? (
             donors?.map((item, key) => (
-              <HStack p={4} rounded={4} bgColor={"blanchedalmond"} mb={6}>
+              <HStack key={key} p={4} rounded={4} bgColor={"blanchedalmond"} mb={6}>
                 <Avatar name={item?.user?.name} />
                 <Box>
                   <Text fontWeight={"semibold"}>{item?.user?.name}</Text>
                   <Text fontSize={"sm"}>
                     Donated ₹{item?.amount} on{" "}
-                    {new Date(item?.created_at).toLocaleDateString(null, {
-                      timeZone: "Asia/Kolkata",
-                    })}
+                    {item?.created_at}
                   </Text>
                 </Box>
               </HStack>
