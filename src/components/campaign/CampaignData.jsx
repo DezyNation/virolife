@@ -300,9 +300,9 @@ const CampaignData = ({ campaign, id }) => {
           {donors?.length ? (
             donors?.map((item, key) => (
               <HStack key={key} p={4} rounded={4} bgColor={"blanchedalmond"} mb={6}>
-                <Avatar name={item?.user?.name} />
+                <Avatar name={item?.name} />
                 <Box>
-                  <Text fontWeight={"semibold"}>{item?.user?.name}</Text>
+                  <Text fontWeight={"semibold"}>{item?.name}</Text>
                   <Text fontSize={"sm"}>
                     Donated ₹{item?.amount} on{" "}
                     {item?.created_at}
