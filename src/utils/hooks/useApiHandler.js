@@ -19,6 +19,7 @@ const useApiHandler = () => {
       status: "error",
       title: title || "Err occured",
       duration: duration || 5000,
+      isClosable: true,
       description:
         err?.response?.data?.message || err?.response?.data || err?.message,
     });
