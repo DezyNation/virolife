@@ -553,7 +553,7 @@ const Navbar = () => {
                     spacing={8}
                     justifyContent={"space-between"}
                   >
-                    <FormLabel fontSize={"xl"}>Email</FormLabel>
+                    <FormLabel fontSize={"xl"}>Email/ID</FormLabel>
                     <Input
                       w={["full", "xs"]}
                       placeholder="Your Email"
