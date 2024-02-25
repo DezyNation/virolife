@@ -26,7 +26,7 @@ const CampaignInfo = ({ params }) => {
   const { id } = params;
   const [campaign, setCampaign] = useState({});
   useEffect(() => {
-    BackendAxios.get(`/api/campaign/${id}`)
+    BackendAxios.get(`/api/user/campaign/${id}`)
       .then((res) => {
         setCampaign(res.data[0]);
 
