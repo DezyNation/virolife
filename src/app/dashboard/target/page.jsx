@@ -317,7 +317,7 @@ const page = () => {
         });
       })
       .catch((err) => {
-        handleError(err, "Error while updating data", 20*60*1000);
+        handleError(err, "Error while updating data", 20 * 60 * 1000);
       });
   }
 
@@ -352,7 +352,8 @@ const page = () => {
               <Text fontSize={"xl"} fontWeight={"semibold"}>
                 ₹ {requirements?.collection}
               </Text>
-              {requirements?.collection <= requirements?.threshold ? (
+              {Number(requirements?.collection) <
+              Number(requirements?.threshold) ? (
                 <Badge>Pending</Badge>
               ) : null}
               <br />
@@ -386,10 +387,10 @@ const page = () => {
                   Sec. {requirements?.secondaryJuniorDonationsDone}
                 </Text>
               </HStack>
-              {requirements?.primaryJuniorDonationsDone +
-                requirements?.secondaryJuniorDonationsDone <=
-              requirements?.primaryJuniorDonationsRequired +
-                requirements?.secondaryJuniorDonationsRequired ? (
+              {Number(requirements?.primaryJuniorDonationsDone) +
+                Number(requirements?.secondaryJuniorDonationsDone) <
+              Number(requirements?.primaryJuniorDonationsRequired) +
+                Number(requirements?.secondaryJuniorDonationsRequired) ? (
                 <Badge>Pending</Badge>
               ) : null}
               <br />
@@ -422,8 +423,8 @@ const page = () => {
               <Text fontSize={"xl"} fontWeight={"semibold"}>
                 {requirements?.campaignDonationsDone}
               </Text>
-              {requirements?.campaignDonationsDone <=
-              requirements?.campaignDonationsRequired ? (
+              {Number(requirements?.campaignDonationsDone) <
+              Number(requirements?.campaignDonationsRequired) ? (
                 <Badge>Pending</Badge>
               ) : null}
               <br />
@@ -467,10 +468,10 @@ const page = () => {
                   Sec. {requirements?.secondarySeniorDonationsDone}
                 </Text>
               </HStack>
-              {requirements?.primarySeniorDonationsDone +
-                requirements?.secondarySeniorDonationsDone <=
-              requirements?.primarySeniorDonationsRequired +
-                requirements?.secondarySeniorDonationsRequired ? (
+              {Number(requirements?.primarySeniorDonationsDone) +
+                Number(requirements?.secondarySeniorDonationsDone) <
+              Number(requirements?.primarySeniorDonationsRequired) +
+                Number(requirements?.secondarySeniorDonationsRequired) ? (
                 <Badge>Pending</Badge>
               ) : null}
               <br />
@@ -503,8 +504,8 @@ const page = () => {
               <Text fontSize={"xl"} fontWeight={"semibold"}>
                 ₹{requirements?.virolifeDonationsDone}
               </Text>
-              {requirements?.virolifeDonationsDone <=
-              requirements?.virolifeDonationsRequired ? (
+              {Number(requirements?.virolifeDonationsDone) <
+              Number(requirements?.virolifeDonationsRequired) ? (
                 <Badge>Pending</Badge>
               ) : null}
               <br />
