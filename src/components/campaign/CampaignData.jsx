@@ -218,7 +218,7 @@ const CampaignData = ({ campaign, id }) => {
             <Image
               src={selectedImg}
               w={["100%", "lg", "3xl"]}
-              objectFit={"cover"}
+              objectFit={"contain"}
               h={["xs", "sm"]}
               rounded={16}
             />
