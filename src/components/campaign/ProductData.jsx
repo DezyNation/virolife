@@ -368,7 +368,7 @@ const ProductData = ({ product }) => {
                       : ""}
                   </Text>
                 </Box>
-              ) : null}
+              ) : <Text mt={4}>Please login to view more buying options</Text>}
               <br />
               {intent == "full" && hasUserProp && product?.gift_card_status === 1 ? (
                 <Box p={4} my={4}>
