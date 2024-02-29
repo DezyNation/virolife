@@ -30,13 +30,13 @@ export async function generateMetadata({ params }) {
   };
 }
 
-const CampaignInfo = async ({ params }) => {
+const ProductInfo = async ({ params }) => {
   const { id } = params;
 
-  let campaign;
+  let product;
   await DefaultAxios.get(`/api/product/${id}`)
     .then((res) => {
-      campaign = res.data;
+      product = res.data;
     })
     .catch((err) => {
       console.log(err);
@@ -45,10 +45,10 @@ const CampaignInfo = async ({ params }) => {
   return (
     <>
       <Navbar />
-      <ProductData campaign={campaign} />
+      <ProductData product={product} />
       <Footer />
     </>
   );
 };
 
-export default CampaignInfo;
+export default ProductInfo;

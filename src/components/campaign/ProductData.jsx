@@ -44,18 +44,18 @@ import Points from "../dashboard/Points";
 import FullPageLoader from "../global/FullPageLoader";
 import useRazorpay from "@/utils/hooks/useRazorpay";
 
-const ProductData = ({ campaign }) => {
+const ProductData = ({ product }) => {
   const Toast = useToast({ position: "top-right" });
   const { handleError, refreshPoints } = useApiHandler();
   const { payWithRazorpay } = useRazorpay();
 
-  const { value, setValue, onCopy, hasCopied } = useClipboard(
+  const { onCopy, hasCopied } = useClipboard(
     `
-      ${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${campaign?.id}
+      ${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${product?.id}
       `
   );
-  const shippingFees = Number(campaign?.delivery_charges)
-    ? Number(campaign?.delivery_charges)
+  const shippingFees = Number(product?.delivery_charges)
+    ? Number(product?.delivery_charges)
     : 0;
 
   const [intent, setIntent] = useState("full");
@@ -66,6 +66,7 @@ const ProductData = ({ campaign }) => {
   const [images, setImages] = useState([]);
   const [giftCard, setGiftCard] = useState("");
   const [giftCardAmount, setGiftCardAmount] = useState(0);
+  const [hasUserProp, setHasUserProp] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [donationCardStatus, setDonationCardStatus] = useState(true);
@@ -80,7 +81,7 @@ const ProductData = ({ campaign }) => {
     setLoading(true);
     BackendAxios.post(`/api/orders`, {
       intent: intent,
-      productId: campaign?.id,
+      productId: product?.id,
       paymentId: trnxnId,
       giftCard: giftCard,
     })
@@ -100,91 +101,21 @@ const ProductData = ({ campaign }) => {
   }
 
   async function handlePurchase() {
-    // setLoading(true);
-    // if (campaign?.minimum_payable_amount > 0 && intent == "partial") {
-    //   await refreshPoints();
-    //   if (
-    //     Number(localStorage.getItem("atpPoints")) >=
-    //       Number(campaign?.atp_point) &&
-    //     Number(localStorage.getItem("adPoints")) >=
-    //       Number(campaign?.ad_point) &&
-    //     Number(localStorage.getItem("healthPoints")) >=
-    //       Number(campaign?.health_point)
-    //   ) {
-    //     payWithRazorpay({
-    //       description: campaign?.name,
-    //       amount: Number(campaign?.minimum_payable_amount) + shippingFees,
-    //       orderType: "ecommerce",
-    //       intent: intent,
-    //       productId: campaign?.id,
-    //       onSuccess: (trnxnId) => {
-    //         setLoading(false);
-    //         placeOrder(trnxnId);
-    //       },
-    //       onFail: () => {
-    //         setLoading(false);
-    //         handleError(err, "Your payment could not be completed!");
-    //       },
-    //     });
-    //   } else {
-    //     Toast({
-    //       status: "warning",
-    //       title: "You don't have enough points",
-    //       description: "Try refreshing your points",
-    //     });
-    //   }
-    // }
-    // if (campaign?.minimum_payable_amount == 0 && intent == "partial") {
-    //   setLoading(false);
-    //   if (
-    //     Number(localStorage.getItem("atpPoints")) >=
-    //       Number(campaign?.atp_point) &&
-    //     Number(localStorage.getItem("adPoints")) >=
-    //       Number(campaign?.ad_point) &&
-    //     Number(localStorage.getItem("healthPoints")) >=
-    //       Number(campaign?.health_point)
-    //   ) {
-    //     placeOrder();
-    //   } else {
-    //     Toast({
-    //       status: "warning",
-    //       title: "You don't have enough points",
-    //       description: "Try refreshing your points",
-    //     });
-    //   }
-    // }
-    // if (intent == "full") {
-    //   payWithRazorpay({
-    //     description: campaign?.name,
-    //     amount: parseInt(giftCardAmount)
-    //       ? Number(campaign?.price) - Number(giftCardAmount) + shippingFees
-    //       : Number(campaign?.price) + shippingFees,
-    //     onSuccess: (trnxnId) => {
-    //       setLoading(false);
-    //       placeOrder(trnxnId);
-    //     },
-    //     onFail: () => {
-    //       setLoading(false);
-    //       handleError(err, "Your payment could not be completed!");
-    //     },
-    //   });
-    // }
     if (intent == "partial") {
       await refreshPoints();
       if (
         Number(localStorage.getItem("atpPoints")) >=
-          Number(campaign?.atp_point) &&
-        Number(localStorage.getItem("adPoints")) >=
-          Number(campaign?.ad_point) &&
+          Number(product?.atp_point) &&
+        Number(localStorage.getItem("adPoints")) >= Number(product?.ad_point) &&
         Number(localStorage.getItem("healthPoints")) >=
-          Number(campaign?.health_point)
+          Number(product?.health_point)
       ) {
         payWithRazorpay({
-          description: campaign?.name,
-          // amount: Number(campaign?.minimum_payable_amount) + shippingFees,
+          description: product?.name,
+          // amount: Number(product?.minimum_payable_amount) + shippingFees,
           orderType: "ecommerce",
           intent: intent,
-          productId: campaign?.id,
+          productId: product?.id,
           onSuccess: (trnxnId) => {
             setLoading(false);
             placeOrder(trnxnId);
@@ -194,21 +125,20 @@ const ProductData = ({ campaign }) => {
             handleError(err, "Your payment could not be completed!");
           },
         });
-      }
-      else {
+      } else {
         Toast({
           status: "error",
-          description: "You don't have sufficient points"
-        })
+          description: "You don't have sufficient points",
+        });
       }
     } else {
       payWithRazorpay({
-        description: campaign?.name,
-        // amount: Number(campaign?.minimum_payable_amount) + shippingFees,
+        description: product?.name,
+        // amount: Number(product?.minimum_payable_amount) + shippingFees,
         giftCard: giftCard,
         orderType: "ecommerce",
         intent: intent,
-        productId: campaign?.id,
+        productId: product?.id,
         onSuccess: (trnxnId) => {
           setLoading(false);
           placeOrder(trnxnId);
@@ -222,13 +152,13 @@ const ProductData = ({ campaign }) => {
   }
 
   useEffect(() => {
-    if (campaign?.images) {
+    if (product?.images) {
       setSelectedImg(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/${
-          JSON.parse(campaign?.images)[0]
+          JSON.parse(product?.images)[0]
         }`
       );
-      const campaignImages = JSON.parse(campaign?.images)?.map(
+      const campaignImages = JSON.parse(product?.images)?.map(
         (img) => `${process.env.NEXT_PUBLIC_BACKEND_URL}/${img}`
       );
       setImages(campaignImages);
@@ -245,7 +175,7 @@ const ProductData = ({ campaign }) => {
           if (
             !res.data?.redeemed &&
             res.data?.purpose == "ecommerce" &&
-            Number(res.data?.amount) <= Number(campaign?.price)
+            Number(res.data?.amount) <= Number(product?.price)
           ) {
             Toast({
               status: "success",
@@ -256,7 +186,7 @@ const ProductData = ({ campaign }) => {
           if (
             res.data?.redeemed ||
             res.data?.purpose != "ecommerce" ||
-            Number(res.data?.amount) >= Number(campaign?.price)
+            Number(res.data?.amount) >= Number(product?.price)
           ) {
             Toast({
               status: "warning",
@@ -279,6 +209,7 @@ const ProductData = ({ campaign }) => {
   }
 
   useEffect(() => {
+    setHasUserProp(Boolean(localStorage.getItem("user")));
     if (intent != "full") {
       setGiftCard("");
       setGiftCardAmount(0);
@@ -288,9 +219,11 @@ const ProductData = ({ campaign }) => {
   return (
     <>
       {loading ? <FullPageLoader /> : null}
-      <HStack py={4} justifyContent={"flex-end"} w={"full"}>
-        <Points />
-      </HStack>
+      {hasUserProp ? (
+        <HStack py={4} justifyContent={"flex-end"} w={"full"}>
+          <Points />
+        </HStack>
+      ) : null}
       <Stack
         p={[4, 16, 24]}
         direction={["column", "row"]}
@@ -303,12 +236,12 @@ const ProductData = ({ campaign }) => {
             fontWeight={"semibold"}
             textTransform={"capitalize"}
           >
-            {campaign?.name}
+            {product?.name}
           </Text>
           <Text fontSize={"lg"} fontWeight={"medium"}>
-            Min. Payable ₹{campaign?.minimum_payable_amount}
+            Min. Payable ₹{product?.minimum_payable_amount}
           </Text>
-          <Text pb={8}>Full Price: ₹{campaign?.price}</Text>
+          <Text pb={8}>Full Price: ₹{product?.price}</Text>
           <Stack direction={["column", "row"]} gap={8} mb={16}>
             <Image
               src={selectedImg}
@@ -345,7 +278,7 @@ const ProductData = ({ campaign }) => {
             </Stack>
           </Stack>
           <Text fontWeight={"semibold"}>
-            Category: {campaign?.category?.name}
+            Category: {product?.category?.name}
           </Text>
           <br />
           <Text
@@ -354,12 +287,12 @@ const ProductData = ({ campaign }) => {
             bgColor={"blue.50"}
             rounded={"12"}
           >
-            {campaign?.description}
+            {product?.description}
           </Text>
           <br />
           <br />
           <Box pb={16} maxW={["full", "xl", "4xl"]}>
-            {parse(campaign?.long_description)}
+            {parse(product?.long_description)}
           </Box>
         </Box>
 
@@ -389,53 +322,55 @@ const ProductData = ({ campaign }) => {
                 cursor={"pointer"}
               >
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  Pay Full Price: ₹{campaign?.price}
+                  Pay Full Price: ₹{product?.price}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.delivery_charges)
+                  {parseInt(product?.delivery_charges)
                     ? `Shipping Fees: ₹${shippingFees}`
                     : ""}
                 </Text>
               </Box>
 
-              <Box
-                p={4}
-                my={4}
-                rounded={12}
-                border={"1px"}
-                borderColor={intent == "partial" ? "yellow.500" : "gray.50"}
-                bgColor={intent == "partial" ? "yellow.50" : "#fff"}
-                onClick={() => setIntent("partial")}
-                cursor={"pointer"}
-              >
-                <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.minimum_payable_amount)
-                    ? `Pay Only: ₹${campaign?.minimum_payable_amount}`
-                    : ""}
-                </Text>
-                <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.delivery_charges)
-                    ? `Shipping Fees: ₹${shippingFees}`
-                    : ""}
-                </Text>
-                <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.ad_point)
-                    ? `Pay with Ad Points: ₹${campaign?.ad_point}`
-                    : ""}
-                </Text>
-                <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.health_point)
-                    ? `Pay with Health Points: ₹${campaign?.health_point}`
-                    : ""}
-                </Text>
-                <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.atp_point)
-                    ? `Pay with ATP Points: ₹${campaign?.atp_point}`
-                    : ""}
-                </Text>
-              </Box>
+              {hasUserProp ? (
+                <Box
+                  p={4}
+                  my={4}
+                  rounded={12}
+                  border={"1px"}
+                  borderColor={intent == "partial" ? "yellow.500" : "gray.50"}
+                  bgColor={intent == "partial" ? "yellow.50" : "#fff"}
+                  onClick={() => setIntent("partial")}
+                  cursor={"pointer"}
+                >
+                  <Text fontSize={"md"} fontWeight={"medium"}>
+                    {parseInt(product?.minimum_payable_amount)
+                      ? `Pay Only: ₹${product?.minimum_payable_amount}`
+                      : ""}
+                  </Text>
+                  <Text fontSize={"md"} fontWeight={"medium"}>
+                    {parseInt(product?.delivery_charges)
+                      ? `Shipping Fees: ₹${shippingFees}`
+                      : ""}
+                  </Text>
+                  <Text fontSize={"md"} fontWeight={"medium"}>
+                    {parseInt(product?.ad_point)
+                      ? `Pay with Ad Points: ₹${product?.ad_point}`
+                      : ""}
+                  </Text>
+                  <Text fontSize={"md"} fontWeight={"medium"}>
+                    {parseInt(product?.health_point)
+                      ? `Pay with Health Points: ₹${product?.health_point}`
+                      : ""}
+                  </Text>
+                  <Text fontSize={"md"} fontWeight={"medium"}>
+                    {parseInt(product?.atp_point)
+                      ? `Pay with ATP Points: ₹${product?.atp_point}`
+                      : ""}
+                  </Text>
+                </Box>
+              ) : null}
               <br />
-              {intent == "full" && campaign?.gift_card_status === 1 ? (
+              {intent == "full" && hasUserProp && product?.gift_card_status === 1 ? (
                 <Box p={4} my={4}>
                   <Text fontSize={"xs"}>Discount Card</Text>
                   <InputGroup>
@@ -466,7 +401,7 @@ const ProductData = ({ campaign }) => {
               >
                 Buy Now{" "}
                 {parseInt(giftCardAmount)
-                  ? `₹${Number(campaign?.price) - Number(giftCardAmount)}`
+                  ? `₹${Number(product?.price) - Number(giftCardAmount)}`
                   : ""}
               </Button>
             </Box>
@@ -528,10 +463,10 @@ const ProductData = ({ campaign }) => {
                 cursor={"pointer"}
               >
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  Pay Full Price: ₹{campaign?.price}
+                  Pay Full Price: ₹{product?.price}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.delivery_charges)
+                  {parseInt(product?.delivery_charges)
                     ? `Shipping Fees: ₹${shippingFees}`
                     : ""}
                 </Text>
@@ -548,33 +483,33 @@ const ProductData = ({ campaign }) => {
                 cursor={"pointer"}
               >
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.minimum_payable_amount)
-                    ? `Pay Only: ₹${campaign?.minimum_payable_amount}`
+                  {parseInt(product?.minimum_payable_amount)
+                    ? `Pay Only: ₹${product?.minimum_payable_amount}`
                     : ""}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.delivery_charges)
+                  {parseInt(product?.delivery_charges)
                     ? `Shipping Fees: ₹${shippingFees}`
                     : ""}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.ad_point)
-                    ? `Pay with Ad Points: ₹${campaign?.ad_point}`
+                  {parseInt(product?.ad_point)
+                    ? `Pay with Ad Points: ₹${product?.ad_point}`
                     : ""}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.health_point)
-                    ? `Pay with Health Points: ₹${campaign?.health_point}`
+                  {parseInt(product?.health_point)
+                    ? `Pay with Health Points: ₹${product?.health_point}`
                     : ""}
                 </Text>
                 <Text fontSize={"md"} fontWeight={"medium"}>
-                  {parseInt(campaign?.atp_point)
-                    ? `Pay with ATP Points: ₹${campaign?.atp_point}`
+                  {parseInt(product?.atp_point)
+                    ? `Pay with ATP Points: ₹${product?.atp_point}`
                     : ""}
                 </Text>
               </Box>
               <br />
-              {intent == "full" && campaign?.gift_card_status === 1 ? (
+              {intent == "full" && product?.gift_card_status === 1 ? (
                 <Box p={4} my={4}>
                   <Text fontSize={"xs"}>Discount Card</Text>
                   <InputGroup>
@@ -605,7 +540,7 @@ const ProductData = ({ campaign }) => {
               >
                 Buy Now{" "}
                 {parseInt(giftCardAmount)
-                  ? `₹${Number(campaign?.price) - Number(giftCardAmount)}`
+                  ? `₹${Number(product?.price) - Number(giftCardAmount)}`
                   : ""}
               </Button>
             </Box>
@@ -648,24 +583,24 @@ const ProductData = ({ campaign }) => {
               justifyContent={"center"}
             >
               <WhatsappShareButton
-                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${campaign?.id}`}
-                title={`*${campaign?.title}*\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${product?.id}`}
+                title={`*${product?.title}*\n${product?.description}\nEven a single contribution can make a difference.\nDonate Now`}
               >
                 <WhatsappIcon size={36} round={true} />
               </WhatsappShareButton>
 
               <FacebookShareButton
-                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${campaign?.id}`}
-                quote={`${campaign?.title}\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
-                title={`${campaign?.title}\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${product?.id}`}
+                quote={`${product?.title}\n${product?.description}\nEven a single contribution can make a difference.\nDonate Now`}
+                title={`${product?.title}\n${product?.description}\nEven a single contribution can make a difference.\nDonate Now`}
               >
                 <FacebookIcon size={36} round={true} />
               </FacebookShareButton>
 
               <LinkedinShareButton
-                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${campaign?.id}`}
-                summary={`${campaign?.title}\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
-                title={`${campaign?.title}\n${campaign?.description}\nEven a single contribution can make a difference.\nDonate Now`}
+                url={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/store/${product?.id}`}
+                summary={`${product?.title}\n${product?.description}\nEven a single contribution can make a difference.\nDonate Now`}
+                title={`${product?.title}\n${product?.description}\nEven a single contribution can make a difference.\nDonate Now`}
               >
                 <LinkedinIcon size={36} round={true} />
               </LinkedinShareButton>
