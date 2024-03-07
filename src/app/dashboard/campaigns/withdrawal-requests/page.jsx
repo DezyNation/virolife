@@ -107,7 +107,7 @@ const page = () => {
             {data?.map((item, key) => (
               <Tr>
                 <Td>{key + 1}</Td>
-                <Td>{item?.campaign?.title}</Td>
+                <Td>{item?.campaign_title}</Td>
                 <Td>{item?.amount}</Td>
                 <Td>{item?.created_at}</Td>
                 <Td>{item?.status}</Td>
