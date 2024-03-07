@@ -209,7 +209,7 @@ const ProductData = ({ product }) => {
   }
 
   useEffect(() => {
-    setHasUserProp(Boolean(localStorage.getItem("user")));
+    setHasUserProp(Boolean(localStorage.getItem("userId")));
     if (intent != "full") {
       setGiftCard("");
       setGiftCardAmount(0);
