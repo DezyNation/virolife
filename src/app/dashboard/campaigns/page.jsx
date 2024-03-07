@@ -8,6 +8,7 @@ import BackendAxios from "@/utils/axios";
 
 const Page = () => {
   const Toast = useToast({ position: "top-right" });
+
   const [campaigns, setCampaigns] = useState([]);
   useEffect(() => {
     BackendAxios.get("/api/user-campaigns")

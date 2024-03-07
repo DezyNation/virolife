@@ -26,7 +26,7 @@ import {
   BsWalletFill,
 } from "react-icons/bs";
 import { MdGroups, MdSlowMotionVideo } from "react-icons/md";
-import { FaHandshake, FaShoppingCart, FaUsers } from "react-icons/fa";
+import { FaHandshake, FaMoneyBill, FaShoppingCart, FaUsers } from "react-icons/fa";
 import { GiChestnutLeaf, GiReceiveMoney } from "react-icons/gi";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
@@ -141,6 +141,17 @@ const Layout = ({ children }) => {
                     >
                       <BsMegaphoneFill size={20} />
                       <Text>My Campaigns</Text>
+                    </HStack>
+                  </Link>
+                  <Link style={{width: '100%'}} href={"/dashboard/campaigns/withdrawal-requests"}>
+                    <HStack
+                      p={2}
+                      _hover={{ bgColor: "orange.200" }}
+                      w={"full"}
+                      gap={4}
+                    >
+                      <FaMoneyBill size={20} />
+                      <Text>Campaign Withdrawals</Text>
                     </HStack>
                   </Link>
                   <Link style={{width: '100%'}} href={"/dashboard/collection"}>
