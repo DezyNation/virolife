@@ -155,6 +155,7 @@ const page = () => {
     })
       .then((res) => {
         setMergeCouponModal(false);
+        fetchGiftCards()
         Toast({
           status: "success",
           title: "Coupons merged successfully!",
