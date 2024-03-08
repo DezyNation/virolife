@@ -1,7 +1,10 @@
 "use client";
 import BackendAxios from "@/utils/axios";
+import useApiHandler from "@/utils/hooks/useApiHandler";
 import {
   Button,
+  Checkbox,
+  CheckboxGroup,
   FormControl,
   FormLabel,
   HStack,
@@ -22,20 +25,26 @@ import {
   Th,
   Thead,
   Tr,
+  VStack,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
+import { LuMerge } from "react-icons/lu";
 
 const page = () => {
   const [giftCards, setGiftCards] = useState([]);
   const Toast = useToast({ position: "top-right" });
+  const { handleError } = useApiHandler();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [myRole, setMyRole] = useState("");
   const [selectedGiftCard, setSelectedGiftCard] = useState(null);
+
+  const [mergeCouponModal, setMergeCouponModal] = useState(false);
+  const [mergeCoupons, setMergeCoupons] = useState([]);
 
   useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));
@@ -140,6 +149,23 @@ const page = () => {
       });
   }
 
+  function mergeGiftCards() {
+    BackendAxios.post(`/api/merge-gifts`, {
+      gifts: mergeCoupons,
+    })
+      .then((res) => {
+        setMergeCouponModal(false);
+        Toast({
+          status: "success",
+          title: "Coupons merged successfully!",
+          description: "A new gift card has been issued to you.",
+        });
+      })
+      .catch((err) => {
+        handleError(err, "Error while merging gift cards");
+      });
+  }
+
   return (
     <>
       <Text fontSize={"lg"}>Your Gift Cards</Text>
@@ -196,6 +222,18 @@ const page = () => {
           </Tbody>
         </Table>
       </TableContainer>
+
+      <Button
+        rounded={"full"}
+        pos={"fixed"}
+        bottom={4}
+        right={4}
+        colorScheme="twitter"
+        leftIcon={<LuMerge />}
+        onClick={() => setMergeCouponModal(true)}
+      >
+        Merge Gift Cards
+      </Button>
 
       {/* Gift Card Creation Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size={"sm"}>
@@ -274,6 +312,42 @@ const page = () => {
             <Button colorScheme="twitter" onClick={Formik.handleSubmit}>
               Save
             </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Merge Gift Cards Modal */}
+      <Modal
+        isOpen={mergeCouponModal}
+        onClose={() => setMergeCouponModal(false)}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Merge Gift Cards</ModalHeader>
+          <ModalBody>
+            <Text>Select Gift Cards to Merge</Text>
+            <CheckboxGroup
+              value={mergeCoupons}
+              onChange={(value) => setMergeCoupons(value)}
+            >
+              <VStack spacing={3}>
+                {giftCards
+                  ?.filter(
+                    (item) => item?.purpose == "ecommerce" && !item?.redeemed
+                  )
+                  .map((card, key) => (
+                    <Checkbox value={card?.code}>{card?.code}</Checkbox>
+                  ))}
+              </VStack>
+            </CheckboxGroup>
+          </ModalBody>
+          <ModalFooter>
+            <HStack justifyContent={"flex-end"}>
+              <Button onClick={() => setMergeCouponModal(false)}>Cancel</Button>
+              <Button colorScheme="yellow" onClick={() => mergeGiftCards()}>
+                Merge
+              </Button>
+            </HStack>
           </ModalFooter>
         </ModalContent>
       </Modal>
