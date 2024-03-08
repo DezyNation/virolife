@@ -330,7 +330,13 @@ const page = () => {
               value={mergeCoupons}
               onChange={(value) => setMergeCoupons(value)}
             >
-              <VStack spacing={3}>
+              <VStack
+                spacing={3}
+                w={"full"}
+                alignItems={"flex-start"}
+                justifyContent={"flex-start"}
+                mt={4}
+              >
                 {giftCards
                   ?.filter(
                     (item) => item?.purpose == "ecommerce" && !item?.redeemed
