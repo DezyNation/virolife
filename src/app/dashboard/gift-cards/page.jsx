@@ -155,7 +155,11 @@ const page = () => {
     })
       .then((res) => {
         setMergeCouponModal(false);
-        fetchGiftCards()
+        if (myRole == "distributor" || myRole == "agent") {
+          fetchGiftCards("my-assigned-gifts");
+        } else {
+          fetchGiftCards("my-gifts");
+        }
         Toast({
           status: "success",
           title: "Coupons merged successfully!",
