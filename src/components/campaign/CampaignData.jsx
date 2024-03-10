@@ -285,7 +285,7 @@ const CampaignData = ({ campaign, id }) => {
           <br />
           <br />
           <Box pb={16} maxW={["full", "xl", "4xl"]}>
-            {parse(campaign?.full_description)}
+            {campaign?.full_description ? parse(campaign?.full_description) : null}
           </Box>
           <br />
           <br />
