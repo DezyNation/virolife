@@ -101,6 +101,7 @@ const page = () => {
   const [donationData, setDonationData] = useState([]);
 
   const [campaignsData, setCampaignsData] = useState([]);
+  const [totalCampaignDonation, setTotalCampaignDonation] = useState(0);
   const [virolifeDonationData, setVirolifeDonationData] = useState([]);
 
   useEffect(() => {
@@ -127,6 +128,14 @@ const page = () => {
     fetchVirolifeDonations();
     fetchMyPreviousDonations(localStorage.getItem("userId"));
   }, [activeRound]);
+
+  useEffect(() => {
+    if (!campaignsData) return;
+    let total = campaignsData.reduce((accumulator, currentValue) => {
+      return accumulator + parseInt(currentValue.amount);
+    }, 0);
+    setTotalCampaignDonation(total);
+  }, [campaignsData]);
 
   function fetchRounds(round = myCurrentRound) {
     BackendAxios.get(`/api/tasks`)
@@ -818,7 +827,10 @@ const page = () => {
             {amounts?.campaignDonation > 0 &&
             requirements.campaignDonationsDone <
               requirements.campaignDonationsRequired &&
-            requirements?.collection >= requirements?.threshold ? (
+            requirements?.collection >= requirements?.threshold &&
+            totalCampaignDonation <
+              parseInt(requirements?.campaignDonationsRequired) *
+                parseInt(amounts?.campaignDonation) ? (
               <HStack py={4} justifyContent={"flex-end"}>
                 <Link
                   href={`/campaigns?prefil_amount=${amounts?.campaignDonation}`}

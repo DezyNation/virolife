@@ -175,7 +175,7 @@ const ProductData = ({ product }) => {
           if (
             !res.data?.redeemed &&
             res.data?.purpose == "ecommerce" &&
-            Number(res.data?.amount) <= Number(product?.price)
+            Number(product?.price) - Number(res.data?.amount) >= Number(product?.minimum_payable_amount)
           ) {
             Toast({
               status: "success",
