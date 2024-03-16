@@ -134,6 +134,7 @@ const page = () => {
     let total = campaignsData.reduce((accumulator, currentValue) => {
       return accumulator + parseInt(currentValue.amount);
     }, 0);
+    console.log("totalCampaignDonation", totalCampaignDonation);
     setTotalCampaignDonation(total);
   }, [campaignsData]);
 

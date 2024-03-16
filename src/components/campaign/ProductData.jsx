@@ -175,7 +175,8 @@ const ProductData = ({ product }) => {
           if (
             !res.data?.redeemed &&
             res.data?.purpose == "ecommerce" &&
-            Number(product?.price) - Number(res.data?.amount) >= Number(product?.minimum_payable_amount)
+            Number(product?.price) - Number(res.data?.amount) >=
+              Number(product?.minimum_payable_amount)
           ) {
             Toast({
               status: "success",
@@ -368,9 +369,13 @@ const ProductData = ({ product }) => {
                       : ""}
                   </Text>
                 </Box>
-              ) : <Text mt={4}>Please login to view more buying options</Text>}
+              ) : (
+                <Text mt={4}>Please login to view more buying options</Text>
+              )}
               <br />
-              {intent == "full" && hasUserProp && product?.gift_card_status === 1 ? (
+              {intent == "full" &&
+              hasUserProp &&
+              product?.gift_card_status === 1 ? (
                 <Box p={4} my={4}>
                   <Text fontSize={"xs"}>Discount Card</Text>
                   <InputGroup>
