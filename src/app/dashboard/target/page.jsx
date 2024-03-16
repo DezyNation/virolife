@@ -826,8 +826,6 @@ const page = () => {
             )}
             <br />
             {amounts?.campaignDonation > 0 &&
-            requirements.campaignDonationsDone <
-              requirements.campaignDonationsRequired &&
             requirements?.collection >= requirements?.threshold &&
             totalCampaignDonation <
               parseInt(requirements?.campaignDonationsRequired) *
