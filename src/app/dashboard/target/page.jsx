@@ -825,11 +825,12 @@ const page = () => {
               </Text>
             )}
             <br />
-            {amounts?.campaignDonation > 0 &&
-            requirements?.collection >= requirements?.threshold &&
-            totalCampaignDonation <
-              parseInt(requirements?.campaignDonationsRequired) *
-                parseInt(amounts?.campaignDonation) ? (
+            {totalCampaignDonation >=
+            parseInt(requirements?.campaignDonationsRequired) *
+              parseInt(
+                amounts?.campaignDonation
+              ) ? null : requirements?.collection >= requirements?.threshold &&
+              amounts?.campaignDonation > 0 ? (
               <HStack py={4} justifyContent={"flex-end"}>
                 <Link
                   href={`/campaigns?prefil_amount=${amounts?.campaignDonation}`}
