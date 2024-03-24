@@ -186,7 +186,7 @@ const Plan = ({
   }
 
   function fetchJuniors() {
-    BackendAxios.get(`/api/admin/subscription_tree/${userId}`)
+    BackendAxios.get(`/api/subscription-tree`)
       .then((res) => {
         const data = res?.data;
       })
