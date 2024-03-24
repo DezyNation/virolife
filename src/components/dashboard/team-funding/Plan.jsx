@@ -1,5 +1,6 @@
 "use client";
 import BackendAxios from "@/utils/axios";
+import useApiHandler from "@/utils/hooks/useApiHandler";
 import useRazorpay from "@/utils/hooks/useRazorpay";
 import {
   Box,
@@ -41,10 +42,13 @@ const Plan = ({
 }) => {
   const Toast = useToast({ position: "top-right" });
   const { payWithRazorpay } = useRazorpay();
+  const { handleError } = useApiHandler();
 
   const [isLoading, setIsLoading] = useState(false);
   const [parentId, setParentId] = useState("");
+  const [userId, setUserId] = useState("");
   const [referralId, setReferralId] = useState("");
+  const [treeModal, setTreeModal] = useState(false);
 
   const [paymentMethod, setPaymentMethod] = useState("gateway");
   const [giftCard, setGiftCard] = useState("");
@@ -62,6 +66,16 @@ const Plan = ({
       setParentId("146");
     }
   }, []);
+
+  useEffect(() => {
+    setUserId(localStorage.getItem("userId"));
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      fetchJuniors();
+    }
+  }, [userId]);
 
   function verifyUser(userId) {
     if (!userId) {
@@ -169,6 +183,16 @@ const Plan = ({
       });
   }
 
+  function fetchJuniors() {
+    BackendAxios.get(`/api/admin/subscription_tree/${userId}`)
+      .then((res) => {
+        const data = res?.data;
+      })
+      .catch((err) => {
+        handleError(err, "Error while fetching juniors");
+      });
+  }
+
   return (
     <>
       <Box
@@ -217,8 +241,9 @@ const Plan = ({
               bgColor={bgColor}
               _hover={{ bgColor: bgColor }}
               color={color}
+              onClick={() => setTreeModal(true)}
             >
-              Already Joined
+              View Tree
             </Button>
           ) : (
             <Button
@@ -327,6 +352,25 @@ const Plan = ({
             >
               Join
             </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={treeModal}
+        onClose={() => setTreeModal(false)}
+        size={["full", "3xl"]}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Juniors Tree</ModalHeader>
+          <ModalBody>
+
+          </ModalBody>
+          <ModalFooter>
+            <HStack w={"full"} justifyContent={"flex-end"}>
+              <Button fontWeight={"medium"} onClick={() => setTreeModal(false)}>Cancel</Button>
+            </HStack>
           </ModalFooter>
         </ModalContent>
       </Modal>
