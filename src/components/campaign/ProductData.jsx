@@ -173,11 +173,12 @@ const ProductData = ({ product }) => {
           res.data?.user_id == localStorage.getItem("userId")
         ) {
           if (
-            Number(product?.price) - Number(res.data?.amount) <=
+            Number(product?.price) - Number(res.data?.amount) >=
             Number(product?.minimum_payable_amount)
           ) {
             Toast({
               status: "warning",
+              title: `Gift card value is ₹${res.data?.amount}`,
               description: `You must pay atleast ₹${product?.minimum_payable_amount} to buy this product.`,
             });
             return
