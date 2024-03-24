@@ -39,7 +39,7 @@ const PlanTree = ({ status, groupMembers, onClose }) => {
     };
   }, []);
 
-  
+
 
 
   return (
@@ -70,7 +70,7 @@ const PlanTree = ({ status, groupMembers, onClose }) => {
               flexDirection={"column"}
               pos={"absolute"}
               top={coords.y - 100}
-              left={coords.x - 410}
+              left={coords.x - 210}
               p={3}
               rounded={4}
               boxShadow={"sm"}
