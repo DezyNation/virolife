@@ -27,7 +27,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Plan = ({
   id,
@@ -41,6 +41,7 @@ const Plan = ({
   onClick,
 }) => {
   const Toast = useToast({ position: "top-right" });
+  const ref = useRef(true)
   const { payWithRazorpay } = useRazorpay();
   const { handleError } = useApiHandler();
 
@@ -72,10 +73,11 @@ const Plan = ({
   }, []);
 
   useEffect(() => {
-    if (userId) {
+    if (userId && ref.current) {
+      ref.current = false
       fetchJuniors();
     }
-  }, [userId]);
+  }, [userId, ref]);
 
   function verifyUser(userId) {
     if (!userId) {
