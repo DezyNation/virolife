@@ -28,6 +28,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
+import PlanTree from "../PlanTree";
 
 const Plan = ({
   id,
@@ -41,15 +42,14 @@ const Plan = ({
   onClick,
 }) => {
   const Toast = useToast({ position: "top-right" });
-  const ref = useRef(true)
   const { payWithRazorpay } = useRazorpay();
   const { handleError } = useApiHandler();
 
   const [isLoading, setIsLoading] = useState(false);
   const [parentId, setParentId] = useState("");
-  const [userId, setUserId] = useState("");
   const [referralId, setReferralId] = useState("");
   const [treeModal, setTreeModal] = useState(false);
+  const [groupMembers, setGroupMembers] = useState([]);
 
   const [paymentMethod, setPaymentMethod] = useState("gateway");
   const [giftCard, setGiftCard] = useState("");
@@ -69,15 +69,8 @@ const Plan = ({
   }, []);
 
   useEffect(() => {
-    setUserId(localStorage.getItem("userId"));
+    fetchJuniors(localStorage.getItem("userId"));
   }, []);
-
-  useEffect(() => {
-    if (userId && ref.current) {
-      ref.current = false
-      fetchJuniors();
-    }
-  }, [userId, ref]);
 
   function verifyUser(userId) {
     if (!userId) {
@@ -185,10 +178,33 @@ const Plan = ({
       });
   }
 
-  function fetchJuniors() {
+  function buildHierarchy(items, parentId) {
+    const nestedArray = [];
+    for (const item of items) {
+      if (parseInt(item.parent_id) == parseInt(parentId)) {
+        const children = buildHierarchy(items, item.user_id);
+        if (children.length > 0) {
+          item.children = children;
+        }
+        nestedArray.push(item);
+      }
+    }
+    return nestedArray;
+  }
+
+  function fetchJuniors(userId) {
     BackendAxios.get(`/api/subscription-tree`)
       .then((res) => {
-        const data = res?.data;
+        if (!res?.data) return;
+        const hierarchyArray = buildHierarchy(res?.data, userId);
+        setGroupMembers([
+          {
+            name: localStorage.getItem("userName"),
+            children: hierarchyArray,
+            id: userId,
+            planName: "",
+          },
+        ]);
       })
       .catch((err) => {
         handleError(err, "Error while fetching juniors");
@@ -358,24 +374,11 @@ const Plan = ({
         </ModalContent>
       </Modal>
 
-      <Modal
-        isOpen={treeModal}
+      <PlanTree
+        status={treeModal}
         onClose={() => setTreeModal(false)}
-        size={["full", "3xl"]}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Juniors Tree</ModalHeader>
-          <ModalBody>
-
-          </ModalBody>
-          <ModalFooter>
-            <HStack w={"full"} justifyContent={"flex-end"}>
-              <Button fontWeight={"medium"} onClick={() => setTreeModal(false)}>Cancel</Button>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+        groupMembers={groupMembers}
+      />
     </>
   );
 };
