@@ -31,6 +31,7 @@ import useApiHandler from "@/utils/hooks/useApiHandler";
 import DonateButton from "@/components/dashboard/group-funding/DonateButton";
 import useRazorpay from "@/utils/hooks/useRazorpay";
 import useAuth from "@/utils/hooks/useAuth";
+import { FaUserShield } from "react-icons/fa";
 
 const page = () => {
   const { handleError } = useApiHandler();
@@ -709,7 +710,10 @@ const page = () => {
                       <Td>
                         ({data?.donatable_id}) {data?.user_name}
                       </Td>
-                      <Td>₹{data?.amount}</Td>
+                      <Td>
+                        ₹{data?.amount}{" "}
+                        {data?.donated_to_admin ? <FaUserShield /> : null}
+                      </Td>
                       <Td>{data?.group}</Td>
                       <Td>
                         {data?.approved ? (

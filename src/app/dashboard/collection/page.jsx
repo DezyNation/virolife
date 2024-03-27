@@ -18,7 +18,7 @@ import VideoPlayer from "@/components/global/VideoPlayer";
 
 const page = () => {
   const [transactions, setTransactions] = useState([]);
-  const [videoStatus, setVideoStatus] = useState(false)
+  const [videoStatus, setVideoStatus] = useState(false);
   const [videoData, setVideoData] = useState({
     title: "Watch this video to proceed.",
     id: "",
@@ -50,26 +50,26 @@ const page = () => {
     fetchMyCollections();
   }, []);
 
-  function showVideo(id){
-    setVideoStatus(true)
+  function showVideo(id) {
+    setVideoStatus(true);
     setVideoData({
       ...videoData,
-      onVideoClose: ()=>{
-        setVideoStatus(false)
-        approveDonation(id)
-      }
-    })
+      onVideoClose: () => {
+        setVideoStatus(false);
+        approveDonation(id);
+      },
+    });
   }
 
   function approveDonation(id) {
     if (!id) return;
-    BackendAxios.post(`/api/approve-donation/${id}`,{status: 1})
+    BackendAxios.post(`/api/approve-donation/${id}`, { status: 1 })
       .then((res) => {
         Toast({
           status: "success",
           description: "Donation approved",
         });
-        fetchMyCollections()
+        fetchMyCollections();
       })
       .catch((err) => {
         Toast({
@@ -87,7 +87,7 @@ const page = () => {
         Toast({
           description: "Donation deleted",
         });
-        fetchMyCollections()
+        fetchMyCollections();
       })
       .catch((err) => {
         Toast({
@@ -103,7 +103,7 @@ const page = () => {
       <Text fontSize={["2xl", "3xl"]}>Your Collection</Text>
       <br />
       <TableContainer>
-        <Table variant={"striped"} colorScheme="gray" size={'sm'}>
+        <Table variant={"striped"} colorScheme="gray" size={"sm"}>
           <Thead>
             <Tr>
               <Th>Trnxn ID</Th>
@@ -118,12 +118,19 @@ const page = () => {
             {transactions.map((item, key) => (
               <Tr key={key}>
                 <Td>{item?.id}</Td>
-                <Td>{item?.user?.name} (VCF{item?.user_id})</Td>
+                <Td>
+                  {item?.user?.name} (VCF{item?.user_id})
+                </Td>
                 <Td>{item?.remarks}</Td>
-                <Td>₹ {item?.amount || 200}</Td>
+                <Td>
+                  ₹ {item?.amount || 200}
+                  {item?.donated_to_admin ? <FaUserShield /> : null}
+                </Td>
                 <Td>{new Date(item?.created_at).toLocaleString()}</Td>
                 <Td>
-                  {!item?.approved && !item?.deleted_at && !item?.donated_to_admin ? (
+                  {!item?.approved &&
+                  !item?.deleted_at &&
+                  !item?.donated_to_admin ? (
                     <HStack>
                       <Button
                         size={"sm"}
@@ -149,7 +156,6 @@ const page = () => {
           </Tbody>
         </Table>
       </TableContainer>
-
 
       <VideoPlayer
         status={videoStatus}
