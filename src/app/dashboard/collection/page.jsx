@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import BackendAxios from "@/utils/axios";
 import VideoPlayer from "@/components/global/VideoPlayer";
+import { FaUserShield } from "react-icons/fa";
 
 const page = () => {
   const [transactions, setTransactions] = useState([]);
