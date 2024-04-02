@@ -413,6 +413,7 @@ const NestedChildren = ({
 };
 
 const MyChildren = ({ childMembers, donors, groupType }) => {
+  const { handleError } = useApiHandler();
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
   const [myId, setMyId] = useState("");
@@ -521,6 +522,7 @@ const MyChildren = ({ childMembers, donors, groupType }) => {
       .catch((err) => {
         console.log("Error in Fetching Collection");
         console.log(err);
+        handleError(err, "Error while fetching collection")
       });
   }
 
@@ -607,6 +609,7 @@ const MyChildren = ({ childMembers, donors, groupType }) => {
 };
 
 const MySecondaryChildren = ({ childMembers, donors }) => {
+  const { handleError } = useApiHandler();
   const Toast = useToast({ position: "top-right" });
   const [groupModal, setGroupModal] = useState(false);
   const [myId, setMyId] = useState("");
@@ -716,6 +719,7 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
       .catch((err) => {
         console.log("Error in Fetching Collection");
         console.log(err);
+        handleError(err, "Error while fetching collection")
       });
   }
 
