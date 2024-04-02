@@ -502,15 +502,21 @@ const MyChildren = ({ childMembers, donors, groupType }) => {
   }
 
   function fetchCollection(id) {
+    setShowTooltip({
+      status: true,
+      id: `VCF${id}`,
+      donation: "calculating...",
+    });
     BackendAxios.get(`/api/users/${id}`)
       .then((res) => {
-          setShowTooltip({
-            status: true,
-            id: `VCF${id}`,
-            donation:
-              Number(res?.data[0]?.primary_sum || 0) +
-              Number(res?.data[0]?.senior_primary || 0),
-          });
+        setShowTooltip((prev) => ({
+          ...prev,
+          status: true,
+          id: `VCF${id}`,
+          donation:
+            Number(res?.data[0]?.secondary_sum || 0) +
+            Number(res?.data[0]?.senior_secondary || 0),
+        }));
       })
       .catch((err) => {
         console.log("Error in Fetching Collection");
@@ -590,6 +596,7 @@ const MyChildren = ({ childMembers, donors, groupType }) => {
               bgColor={"#FFF"}
             >
               <Text fontSize={"sm"}>ID: {showTooltip.id}</Text>
+              <Text fontSize={"sm"}>Collection: {showTooltip.donation}</Text>
             </Box>
           </ModalBody>
           <ModalFooter></ModalFooter>
@@ -690,15 +697,21 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
   }
 
   function fetchCollection(id) {
+    setShowTooltip({
+      status: true,
+      id: `VCF${id}`,
+      donation: "calculating...",
+    });
     BackendAxios.get(`/api/users/${id}`)
       .then((res) => {
-          setShowTooltip({
-            status: true,
-            id: `VCF${id}`,
-            donation:
-              Number(res?.data[0]?.secondary_sum || 0) +
-              Number(res?.data[0]?.senior_secondary || 0),
-          });
+        setShowTooltip((prev) => ({
+          ...prev,
+          status: true,
+          id: `VCF${id}`,
+          donation:
+            Number(res?.data[0]?.secondary_sum || 0) +
+            Number(res?.data[0]?.senior_secondary || 0),
+        }));
       })
       .catch((err) => {
         console.log("Error in Fetching Collection");
