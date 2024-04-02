@@ -504,24 +504,13 @@ const MyChildren = ({ childMembers, donors, groupType }) => {
   function fetchCollection(id) {
     BackendAxios.get(`/api/users/${id}`)
       .then((res) => {
-        if (groupType == "primary") {
           setShowTooltip({
             status: true,
             id: `VCF${id}`,
             donation:
-              Number(res?.data?.primary_sum || 0) +
-              Number(res?.data?.senior_primary || 0),
+              Number(res?.data[0]?.primary_sum || 0) +
+              Number(res?.data[0]?.senior_primary || 0),
           });
-        }
-        if (groupType == "secondary") {
-          setShowTooltip({
-            status: true,
-            id: `VCF${id}`,
-            donation:
-              Number(res?.data?.secondary_sum || 0) +
-              Number(res?.data?.senior_secondary || 0),
-          });
-        }
       })
       .catch((err) => {
         console.log("Error in Fetching Collection");
@@ -700,6 +689,23 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
       });
   }
 
+  function fetchCollection(id) {
+    BackendAxios.get(`/api/users/${id}`)
+      .then((res) => {
+          setShowTooltip({
+            status: true,
+            id: `VCF${id}`,
+            donation:
+              Number(res?.data[0]?.secondary_sum || 0) +
+              Number(res?.data[0]?.senior_secondary || 0),
+          });
+      })
+      .catch((err) => {
+        console.log("Error in Fetching Collection");
+        console.log(err);
+      });
+  }
+
   return (
     <>
       <Box>
@@ -756,13 +762,7 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
                 orientation="vertical"
                 translate={{ x: 300, y: 200 }}
                 separation={{ siblings: 3, nonSiblings: 3 }}
-                onNodeMouseOver={(data) => {
-                  setShowTooltip({
-                    status: true,
-                    id: `VCF${data?.data?.id}`,
-                    donation: 0,
-                  });
-                }}
+                onNodeMouseOver={(data) => fetchCollection(data?.data?.id)}
                 onNodeMouseOut={() => setShowTooltip({ status: false })}
               />
             </Box>
