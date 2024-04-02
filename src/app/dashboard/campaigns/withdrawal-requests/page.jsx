@@ -17,6 +17,7 @@ import {
   Select,
   Stack,
   Table,
+  TableCaption,
   TableContainer,
   Tbody,
   Td,
