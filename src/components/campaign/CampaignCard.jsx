@@ -1,7 +1,9 @@
 "use client";
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
+import { BsHeartFill } from "react-icons/bs";
+import { FaRupeeSign } from "react-icons/fa";
 
 const CampaignCard = (props) => {
   return (
@@ -60,6 +62,31 @@ const CampaignCard = (props) => {
           <Text pt={2} fontSize={"12"}>
             {props.description?.slice(0, 60)}...
           </Text>
+
+          {
+            <HStack gap={8}>
+              {props?.healthPoints ? (
+                <Button
+                  variant={"ghost"}
+                  colorScheme="red"
+                  size={"xs"}
+                  leftIcon={<BsHeartFill />}
+                >
+                  {props?.healthPoints} Health Points
+                </Button>
+              ) : null}
+              {props?.withdrawnAmount ? (
+                <Button
+                  variant={"ghost"}
+                  colorScheme="red"
+                  size={"xs"}
+                  leftIcon={<FaRupeeSign />}
+                >
+                  {props?.withdrawnAmount} Withdrawn
+                </Button>
+              ) : null}
+            </HStack>
+          }
         </Link>
       </Box>
     </>

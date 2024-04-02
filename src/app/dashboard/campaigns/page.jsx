@@ -60,6 +60,8 @@ const Page = () => {
             userName={campaign.status}
             description={campaign.description}
             link={`/dashboard/campaigns/view/${campaign.id}`}
+            healthPoints={campaign?.total_points}
+            withdrawnAmount={campaign?.total_withdrawal}
           />
         ))}
       </Stack>
