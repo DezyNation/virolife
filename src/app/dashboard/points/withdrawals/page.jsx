@@ -49,31 +49,6 @@ const Transactions = () => {
       });
   }
 
-  function updateStatus({ transactionId, status }) {
-    BackendAxios.post(`/api/admin/approve-points/${transactionId}`, {
-      transactionId: transactionId,
-      status: status,
-    })
-      .then((res) => {
-        Toast({
-          status: "success",
-          description: "Request updated!",
-        });
-        fetchRequests();
-      })
-      .catch((err) => {
-        if (err?.response?.status == 401) {
-          localStorage.clear();
-          window.location.assign("/");
-        }
-        Toast({
-          status: "error",
-          description:
-            err?.response?.data?.message || err?.response?.data || err?.message,
-        });
-      });
-  }
-
   return (
     <>
       <Text
@@ -82,7 +57,7 @@ const Transactions = () => {
         py={4}
         textTransform={"capitalize"}
       >
-        Transactions
+        Point Withdrawal Requests
       </Text>
       <br />
       <HStack justifyContent={"flex-end"} py={4}>

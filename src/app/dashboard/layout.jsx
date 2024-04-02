@@ -232,7 +232,7 @@ const Layout = ({ children }) => {
                       <Text>Point Transfers</Text>
                     </HStack>
                   </Link>
-                  <Link style={{width: '100%'}} href={"/dashboard/points/withdrawals"}>
+                  {/* <Link style={{width: '100%'}} href={"/dashboard/points/withdrawals"}>
                     <HStack
                       p={2}
                       _hover={{ bgColor: "orange.200" }}
@@ -242,7 +242,7 @@ const Layout = ({ children }) => {
                       <GiReceiveMoney size={20} />
                       <Text>Point Withdrawals</Text>
                     </HStack>
-                  </Link>
+                  </Link> */}
                   <br />
                   <Link style={{width: '100%'}} href={"/dashboard/campaign-donations"}>
                     <HStack
