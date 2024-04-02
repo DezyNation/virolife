@@ -162,7 +162,7 @@ const page = () => {
         <TableContainer rounded={"16"} flex={["unset", 3]}>
           <Table variant={"striped"} colorScheme="gray">
             <TableCaption>
-              <Link href={"#"}>Point Transfer Requests</Link>
+              Point Transfer Requests
             </TableCaption>
             <Thead bgColor={"yellow.400"}>
               <Tr>
