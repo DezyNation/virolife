@@ -514,8 +514,8 @@ const MyChildren = ({ childMembers, donors, groupType }) => {
           status: true,
           id: `VCF${id}`,
           donation:
-            Number(res?.data[0]?.secondary_sum || 0) +
-            Number(res?.data[0]?.senior_secondary || 0),
+            Number(res?.data[0]?.primary_sum || 0) +
+            Number(res?.data[0]?.senior_primary || 0),
         }));
       })
       .catch((err) => {
