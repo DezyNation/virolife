@@ -432,7 +432,7 @@ const MyChildren = ({ childMembers, donors, groupType }) => {
   useEffect(() => {
     const handleWindowMouseMove = (event) => {
       setCoords({
-        x: event.clientX,
+        x: event.clientX - 100,
         y: event.clientY,
       });
     };
@@ -626,7 +626,7 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
   useEffect(() => {
     const handleWindowMouseMove = (event) => {
       setCoords({
-        x: event.clientX,
+        x: event.clientX - 100,
         y: event.clientY,
       });
     };
