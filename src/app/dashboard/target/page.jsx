@@ -633,6 +633,15 @@ const page = () => {
                                 amount={data?.amount}
                                 groupType={data?.group}
                                 instanceId={data?.id}
+                                donatedTo={
+                                  data?.group == "primary" &&
+                                  !data?.primary_active
+                                    ? "inactive-junior"
+                                    : data?.group == "secondary" &&
+                                      !data?.secondary_active
+                                    ? "inactive-junior"
+                                    : "junior"
+                                }
                               />
                             )}
                           </Td>

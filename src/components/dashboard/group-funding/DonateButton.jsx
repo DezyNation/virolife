@@ -55,7 +55,7 @@ const DonateButton = ({ amount, userId, userName, upiId, groupType, donatedTo, i
   }
 
   function donate() {
-    BackendAxios.post(donatedTo == "senior" ? `/api/donation` : `/api/donate-junior/${instanceId}`,
+    BackendAxios.post(donatedTo == "senior" ? `/api/donation` : donatedTo == "inactive-junior" ? `/api/donate-inactive-junior/${instanceId}` : `/api/donate-junior/${instanceId}`,
       {
         donatable_id: userId,
         amount: amount,
