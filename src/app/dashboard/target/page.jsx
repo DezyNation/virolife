@@ -760,7 +760,10 @@ const page = () => {
                         ({data?.sender_id}) {data?.sender_name}
                       </Td>
                       <Td>{data?.group}</Td>
-                      <Td>{data?.amount}</Td>
+                      <Td>
+                        {data?.amount}{" "}
+                        {data?.donated_to_admin ? <FaUserShield /> : null}
+                      </Td>
                       <Td>
                         {data?.approved ? (
                           <BsCheckCircleFill color="red" />
@@ -768,28 +771,30 @@ const page = () => {
                       </Td>
                       <Td>{data?.updated_at}</Td>
                       <Td>
-                        <HStack gap={6}>
-                          {data?.approved ? null : data?.donated ? (
-                            <Button
-                              size={"sm"}
-                              rounded={"full"}
-                              colorScheme="yellow"
-                              onClick={() => approveDonation(data?.id, true)}
-                            >
-                              Approve
-                            </Button>
-                          ) : null}
-                          {data?.approved ? null : data?.donated ? (
-                            <Button
-                              size={"sm"}
-                              rounded={"full"}
-                              colorScheme="red"
-                              onClick={() => approveDonation(data?.id, false)}
-                            >
-                              Reject
-                            </Button>
-                          ) : null}
-                        </HStack>
+                        {data?.donated_to_admin ? null : (
+                          <HStack gap={6}>
+                            {data?.approved ? null : data?.donated ? (
+                              <Button
+                                size={"sm"}
+                                rounded={"full"}
+                                colorScheme="yellow"
+                                onClick={() => approveDonation(data?.id, true)}
+                              >
+                                Approve
+                              </Button>
+                            ) : null}
+                            {data?.approved ? null : data?.donated ? (
+                              <Button
+                                size={"sm"}
+                                rounded={"full"}
+                                colorScheme="red"
+                                onClick={() => approveDonation(data?.id, false)}
+                              >
+                                Reject
+                              </Button>
+                            ) : null}
+                          </HStack>
+                        )}
                       </Td>
                     </Tr>
                   ))}
