@@ -635,10 +635,10 @@ const page = () => {
                                 instanceId={data?.id}
                                 donatedTo={
                                   data?.group == "primary" &&
-                                  !data?.primary_active
+                                  !data?.primary_activated
                                     ? "inactive-junior"
                                     : data?.group == "secondary" &&
-                                      !data?.secondary_active
+                                      !data?.secondary_activated
                                     ? "inactive-junior"
                                     : "junior"
                                 }
