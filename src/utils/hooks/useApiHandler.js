@@ -16,7 +16,7 @@ const useApiHandler = () => {
 
   const handleError = (err, title, duration) => {
     Toast({
-      status: "error",
+      // status: "error",
       title: title || "Err occured",
       duration: duration || 5000,
       isClosable: true,

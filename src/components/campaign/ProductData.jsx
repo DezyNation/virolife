@@ -96,7 +96,7 @@ const ProductData = ({ product }) => {
       })
       .catch((err) => {
         setLoading(false);
-        handleError(err, "Error while placing order");
+        handleError(err, "Notification while placing order");
       });
   }
 
@@ -214,7 +214,7 @@ const ProductData = ({ product }) => {
         }
       })
       .catch((err) => {
-        handleError(err, "Error while getting gift card details");
+        handleError(err, "Notification while getting gift card details");
         setGiftCard("");
         setGiftCardAmount(0);
       });

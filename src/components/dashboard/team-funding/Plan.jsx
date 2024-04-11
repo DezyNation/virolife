@@ -207,7 +207,7 @@ const Plan = ({
         ]);
       })
       .catch((err) => {
-        handleError(err, "Error while fetching juniors");
+        handleError(err, "Notification while fetching juniors");
       });
   }
 

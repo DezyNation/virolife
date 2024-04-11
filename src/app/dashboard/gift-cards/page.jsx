@@ -167,7 +167,7 @@ const page = () => {
         });
       })
       .catch((err) => {
-        handleError(err, "Error while merging gift cards");
+        handleError(err, "Notification while merging gift cards");
       });
   }
 

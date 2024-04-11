@@ -43,7 +43,7 @@ const Commission = ({ onClick, commission }) => {
         })
         onToggle()
       }).catch(err => {
-        handleError(err, "Error while sending request")
+        handleError(err, "Notification while sending request")
       })
     }
   });

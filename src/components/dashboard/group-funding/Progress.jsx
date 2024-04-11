@@ -73,7 +73,7 @@ const Progress = () => {
         setSteps(res.data);
       })
       .catch((err) => {
-        console.log("error while fetching tasks");
+        console.log("Notification while fetching tasks");
         console.log(err?.response?.data);
       });
   }
@@ -162,7 +162,7 @@ const Progress = () => {
       .catch((err) => {
         Toast({
           status: "error",
-          title: "Error while fetching total collection",
+          title: "Notification while fetching total collection",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
@@ -184,7 +184,7 @@ const Progress = () => {
       .catch((err) => {
         Toast({
           status: "error",
-          title: "Error while fetching your info",
+          title: "Notification while fetching your info",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
@@ -298,7 +298,7 @@ const Progress = () => {
       onFail: (err) => {
         Toast({
           status: "error",
-          description: "Error while creating payment link",
+          description: "Notification while creating payment link",
         });
       },
     });

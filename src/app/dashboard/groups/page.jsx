@@ -213,7 +213,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
         }));
       })
       .catch((err) => {
-        handleError(err, "Error while fetching total collection");
+        handleError(err, "Notification while fetching total collection");
       });
   }
 
@@ -254,7 +254,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
         }
       })
       .catch((err) => {
-        console.log("error while fetching tasks");
+        console.log("Notification while fetching tasks");
         console.log(err?.response?.data);
       });
   }
@@ -522,7 +522,7 @@ const MyChildren = ({ childMembers, donors, groupType }) => {
       .catch((err) => {
         console.log("Error in Fetching Collection");
         console.log(err);
-        handleError(err, "Error while fetching collection")
+        handleError(err, "Notification while fetching collection")
       });
   }
 
@@ -719,7 +719,7 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
       .catch((err) => {
         console.log("Error in Fetching Collection");
         console.log(err);
-        handleError(err, "Error while fetching collection")
+        handleError(err, "Notification while fetching collection")
       });
   }
 

@@ -27,7 +27,7 @@ const page = () => {
         setData(res.data);
       })
       .catch((err) => {
-        handleError(err, "Error while fetching orders");
+        handleError(err, "Notification while fetching orders");
       });
   }
 

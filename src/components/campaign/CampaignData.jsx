@@ -110,7 +110,7 @@ const CampaignData = ({ campaign, id }) => {
           })
           .catch((err) => {
             setLoading(false);
-            handleError(err, "Error while adding your donation");
+            handleError(err, "Notification while adding your donation");
           });
       } else {
         DefaultAxios.post(`/api/donate-campaign`, {
@@ -128,7 +128,7 @@ const CampaignData = ({ campaign, id }) => {
           })
           .catch((err) => {
             setLoading(false);
-            handleError(err, "Error while adding your donation");
+            handleError(err, "Notification while adding your donation");
           });
       }
     },

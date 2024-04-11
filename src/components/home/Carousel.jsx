@@ -111,7 +111,7 @@ const Carousel = () => {
       .catch((err) => {
         Toast({
           status: "error",
-          title: "Error while sending invitation",
+          title: "Notification while sending invitation",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });

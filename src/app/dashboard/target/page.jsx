@@ -178,7 +178,7 @@ const page = () => {
         }));
       })
       .catch((err) => {
-        console.log("error while fetching tasks");
+        console.log("Notification while fetching tasks");
         console.log(err?.response?.data);
       });
   }
@@ -204,7 +204,7 @@ const page = () => {
         }));
       })
       .catch((err) => {
-        handleError(err, "Error while fetching juniors data");
+        handleError(err, "Notification while fetching juniors data");
       });
   }
 
@@ -214,7 +214,7 @@ const page = () => {
         setSeniorsData(res.data);
       })
       .catch((err) => {
-        handleError(err, "Error while fetching seniors data");
+        handleError(err, "Notification while fetching seniors data");
       });
   }
 
@@ -228,7 +228,7 @@ const page = () => {
         }));
       })
       .catch((err) => {
-        handleError(err, "Error while fetching total collection");
+        handleError(err, "Notification while fetching total collection");
       });
   }
 
@@ -296,7 +296,7 @@ const page = () => {
           window.location.assign("/");
           return;
         }
-        handleError(err, "Error while fetching donations");
+        handleError(err, "Notification while fetching donations");
       });
   }
 
@@ -315,7 +315,7 @@ const page = () => {
         }));
       })
       .catch((err) => {
-        handleError(err, "Error while getting your past donations");
+        handleError(err, "Notification while getting your past donations");
       });
   }
 
@@ -328,7 +328,7 @@ const page = () => {
         });
       })
       .catch((err) => {
-        handleError(err, "Error while updating data", 20 * 60 * 1000);
+        handleError(err, "Notification while updating data", 20 * 60 * 1000);
       });
   }
 

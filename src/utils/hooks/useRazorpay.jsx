@@ -122,7 +122,7 @@ const useRazorpay = () => {
         })
         .catch((err) => {
           console.log(err);
-          handleError({ message: "Error while creating order" });
+          handleError({ message: "Notification while creating order" });
         });
     } else {
       await DefaultAxios.post("/api/create-order", { ...params })
@@ -134,7 +134,7 @@ const useRazorpay = () => {
         })
         .catch((err) => {
           console.log(err);
-          handleError({ message: "Error while creating order" });
+          handleError({ message: "Notification while creating order" });
         });
     }
   };

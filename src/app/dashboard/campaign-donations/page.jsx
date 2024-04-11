@@ -28,14 +28,14 @@ const page = () => {
         setData(res.data);
       })
       .catch((err) => {
-        handleError(err, "Error while fetching donations");
+        handleError(err, "Notification while fetching donations");
       });
     BackendAxios.get(`/api/my-campaign-collections`)
       .then((res) => {
         setCollections(res.data);
       })
       .catch((err) => {
-        handleError(err, "Error while fetching donations");
+        handleError(err, "Notification while fetching donations");
       });
   }
 

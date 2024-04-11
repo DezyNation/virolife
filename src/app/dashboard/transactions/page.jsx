@@ -27,7 +27,7 @@ const page = () => {
         setData(res.data);
       })
       .catch((err) => {
-        handleError(err, "Error while fetching payments");
+        handleError(err, "Notification while fetching payments");
       });
   }
 

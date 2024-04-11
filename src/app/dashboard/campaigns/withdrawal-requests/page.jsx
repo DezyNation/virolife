@@ -53,7 +53,7 @@ const page = () => {
         setData(res?.data);
       })
       .catch((err) => {
-        handleError(err, "Error while fetching requests");
+        handleError(err, "Notification while fetching requests");
       });
   }
 
@@ -78,7 +78,7 @@ const page = () => {
           window.location.assign("/");
           return
         }
-        handleError(err, "Error while fetching peding requests");
+        handleError(err, "Notification while fetching peding requests");
       });
   }
 

@@ -42,7 +42,7 @@ const Transactions = () => {
         }
         Toast({
           status: "error",
-          title: "Error while fetching peding requests",
+          title: "Notification while fetching peding requests",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });

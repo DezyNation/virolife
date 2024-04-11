@@ -67,7 +67,7 @@ const DashboardHome = () => {
       .catch((err) => {
         Toast({
           status: "error",
-          title: "Error while fetching total collection",
+          title: "Notification while fetching total collection",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });

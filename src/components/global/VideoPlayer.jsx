@@ -53,7 +53,7 @@ const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
         setLoading(false);
         Toast({
           status: "error",
-          title: "Error while fetching video",
+          title: "Notification while fetching video",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });

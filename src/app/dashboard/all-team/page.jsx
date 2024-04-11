@@ -78,7 +78,7 @@ const page = () => {
         }
         Toast({
           status: "error",
-          title: "Error while fetching donations",
+          title: "Notification while fetching donations",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
@@ -103,7 +103,7 @@ const page = () => {
         }
         Toast({
           status: "error",
-          title: "Error while fetching donations",
+          title: "Notification while fetching donations",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
@@ -182,7 +182,7 @@ const page = () => {
       .catch((err) => {
         Toast({
           status: "error",
-          title: "Error while fetching donations",
+          title: "Notification while fetching donations",
           description:
             err?.response?.data?.message || err?.response?.data || err?.message,
         });
