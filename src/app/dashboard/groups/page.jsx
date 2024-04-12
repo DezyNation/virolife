@@ -292,8 +292,8 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 <Text fontSize={"xs"}>
                   ID: {process.env.NEXT_PUBLIC_CODE}
                   {key == 0 ? myParentId : item?.id}
-                  {/* &nbsp; | &nbsp; Phone:{" "}
-                  {item?.parent_phone} */}
+                  &nbsp; | &nbsp; Phone:{" "}
+                  {item?.parent_phone}
                 </Text>
               </Box>
             </HStack>
