@@ -116,6 +116,7 @@ const DonateButton = ({ amount, userId, userName, upiId, groupType, donatedTo, i
               size={256}
               value={`upi://pay?cu=INR&pa=${upiId}&am=${amount}`}
             />
+            <Text>{upiId}</Text>
             <br />
             <Text textAlign={"center"}>Pay with any UPI app</Text>
             <Image

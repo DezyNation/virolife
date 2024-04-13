@@ -331,6 +331,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                   : requirements?.secondarySeniorAmount
               }`}
             />
+            <Text>{upi}</Text>
             <br />
             <Text textAlign={"center"}>Pay with any UPI app</Text>
             <Image
