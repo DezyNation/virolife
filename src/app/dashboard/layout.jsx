@@ -20,6 +20,7 @@ import {
   BsGiftFill,
   BsHeartFill,
   BsMegaphoneFill,
+  BsPercent,
   BsPerson,
   BsPersonFill,
   BsPower,
@@ -313,14 +314,20 @@ const Layout = ({ children }) => {
                       <Text>Payouts</Text>
                     </HStack>
                   </Link>
+                  <Link style={{width: '100%'}} href={"/dashboard/campaign-commission"}>
+                    <HStack
+                      p={2}
+                      _hover={{ bgColor: "orange.200" }}
+                      w={"full"}
+                      gap={4}
+                    >
+                      <BsPercent size={20} />
+                      <Text>Campaign Commission</Text>
+                    </HStack>
+                  </Link>
                 </VStack>
               )}
-              {/* <Link style={{width: '100%'}} href={"/dashboard"}>
-                <HStack p={2} _hover={{bgColor: 'orange.200'}} w={'full'} gap={4}>
-                  <BsMegaphoneFill size={20} />
-                  <Text>Broadcast</Text>
-                </HStack>
-              </Link> */}
+              
               <HStack
                 p={2}
                 _hover={{ bgColor: "orange.200" }}

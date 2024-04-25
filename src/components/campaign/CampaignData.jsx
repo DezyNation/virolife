@@ -87,6 +87,7 @@ const CampaignData = ({ campaign, id }) => {
       fees: 5,
       name: "",
       phone: "",
+      agent_id: "",
     },
     onSubmit: (values) => {
       if (!values.name || !values.phone) {
@@ -100,6 +101,7 @@ const CampaignData = ({ campaign, id }) => {
           amount: amount,
           name: values.name,
           phoneNumber: values.phone,
+          agent_id: values.agent_id,
           // tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
         })
           .then((res) => {
@@ -118,6 +120,7 @@ const CampaignData = ({ campaign, id }) => {
           amount: amount,
           name: values.name,
           phoneNumber: values.phone,
+          agent_id: values.agent_id,
           // tip: (Number(fees) / 100) * Number(Formik.values.amount || 0),
         })
           .then((res) => {
@@ -285,7 +288,9 @@ const CampaignData = ({ campaign, id }) => {
           <br />
           <br />
           <Box pb={16} maxW={["full", "xl", "4xl"]}>
-            {campaign?.full_description ? parse(campaign?.full_description) : null}
+            {campaign?.full_description
+              ? parse(campaign?.full_description)
+              : null}
           </Box>
           <br />
           <br />
@@ -299,13 +304,18 @@ const CampaignData = ({ campaign, id }) => {
           <br />
           {donors?.length ? (
             donors?.map((item, key) => (
-              <HStack key={key} p={4} rounded={4} bgColor={"blanchedalmond"} mb={6}>
+              <HStack
+                key={key}
+                p={4}
+                rounded={4}
+                bgColor={"blanchedalmond"}
+                mb={6}
+              >
                 <Avatar name={item?.name} />
                 <Box>
                   <Text fontWeight={"semibold"}>{item?.name}</Text>
                   <Text fontSize={"sm"}>
-                    Donated ₹{item?.amount} on{" "}
-                    {item?.created_at}
+                    Donated ₹{item?.amount} on {item?.created_at}
                   </Text>
                 </Box>
               </HStack>
@@ -369,7 +379,16 @@ const CampaignData = ({ campaign, id }) => {
               <FormLabel>Your Phone No.</FormLabel>
               <Input
                 name="phone"
+                type="tel"
                 value={Formik.values.phone}
+                onChange={Formik.handleChange}
+                mb={2}
+              />
+              <br />
+              <FormLabel>Agent ID</FormLabel>
+              <Input
+                name="agent_id"
+                value={Formik.values.agent_id}
                 onChange={Formik.handleChange}
                 mb={2}
               />
@@ -507,7 +526,16 @@ const CampaignData = ({ campaign, id }) => {
               <FormLabel>Your Phone No.</FormLabel>
               <Input
                 name="phone"
+                type="tel"
                 value={Formik.values.phone}
+                onChange={Formik.handleChange}
+                mb={2}
+              />
+              <br />
+              <FormLabel>Agent ID</FormLabel>
+              <Input
+                name="agent_id"
+                value={Formik.values.agent_id}
                 onChange={Formik.handleChange}
                 mb={2}
               />
