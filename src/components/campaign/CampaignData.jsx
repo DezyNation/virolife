@@ -385,7 +385,7 @@ const CampaignData = ({ campaign, id }) => {
                 mb={2}
               />
               <br />
-              <FormLabel>Agent ID</FormLabel>
+              <FormLabel>Volunteer ID</FormLabel>
               <Input
                 name="agent_id"
                 value={Formik.values.agent_id}
@@ -532,7 +532,7 @@ const CampaignData = ({ campaign, id }) => {
                 mb={2}
               />
               <br />
-              <FormLabel>Agent ID</FormLabel>
+              <FormLabel>Volunteer ID</FormLabel>
               <Input
                 name="agent_id"
                 value={Formik.values.agent_id}
