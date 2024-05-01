@@ -181,7 +181,7 @@ const ProductData = ({ product }) => {
               title: `Coupon value is ₹${res.data?.amount}`,
               description: `You must pay atleast ₹${product?.minimum_payable_amount} to buy this product.`,
             });
-            return
+            return;
           }
           if (
             !res.data?.redeemed &&
@@ -344,42 +344,46 @@ const ProductData = ({ product }) => {
               </Box>
 
               {hasUserProp ? (
-                <Box
-                  p={4}
-                  my={4}
-                  rounded={12}
-                  border={"1px"}
-                  borderColor={intent == "partial" ? "yellow.500" : "gray.50"}
-                  bgColor={intent == "partial" ? "yellow.50" : "#fff"}
-                  onClick={() => setIntent("partial")}
-                  cursor={"pointer"}
-                >
-                  <Text fontSize={"md"} fontWeight={"medium"}>
-                    {parseInt(product?.minimum_payable_amount)
-                      ? `Pay Only: ₹${product?.minimum_payable_amount}`
-                      : ""}
-                  </Text>
-                  <Text fontSize={"md"} fontWeight={"medium"}>
-                    {parseInt(product?.delivery_charges)
-                      ? `Shipping Fees: ₹${shippingFees}`
-                      : ""}
-                  </Text>
-                  <Text fontSize={"md"} fontWeight={"medium"}>
-                    {parseInt(product?.ad_point)
-                      ? `Pay with Ad Points: ₹${product?.ad_point}`
-                      : ""}
-                  </Text>
-                  <Text fontSize={"md"} fontWeight={"medium"}>
-                    {parseInt(product?.health_point)
-                      ? `Pay with Health Points: ₹${product?.health_point}`
-                      : ""}
-                  </Text>
-                  <Text fontSize={"md"} fontWeight={"medium"}>
-                    {parseInt(product?.atp_point)
-                      ? `Pay with ATP Points: ₹${product?.atp_point}`
-                      : ""}
-                  </Text>
-                </Box>
+                product?.ad_point ||
+                product?.health_point ||
+                product?.atp_point ? (
+                  <Box
+                    p={4}
+                    my={4}
+                    rounded={12}
+                    border={"1px"}
+                    borderColor={intent == "partial" ? "yellow.500" : "gray.50"}
+                    bgColor={intent == "partial" ? "yellow.50" : "#fff"}
+                    onClick={() => setIntent("partial")}
+                    cursor={"pointer"}
+                  >
+                    <Text fontSize={"md"} fontWeight={"medium"}>
+                      {parseInt(product?.minimum_payable_amount)
+                        ? `Pay Only: ₹${product?.minimum_payable_amount}`
+                        : ""}
+                    </Text>
+                    <Text fontSize={"md"} fontWeight={"medium"}>
+                      {parseInt(product?.delivery_charges)
+                        ? `Shipping Fees: ₹${shippingFees}`
+                        : ""}
+                    </Text>
+                    <Text fontSize={"md"} fontWeight={"medium"}>
+                      {parseInt(product?.ad_point)
+                        ? `Pay with Ad Points: ₹${product?.ad_point}`
+                        : ""}
+                    </Text>
+                    <Text fontSize={"md"} fontWeight={"medium"}>
+                      {parseInt(product?.health_point)
+                        ? `Pay with Health Points: ₹${product?.health_point}`
+                        : ""}
+                    </Text>
+                    <Text fontSize={"md"} fontWeight={"medium"}>
+                      {parseInt(product?.atp_point)
+                        ? `Pay with ATP Points: ₹${product?.atp_point}`
+                        : ""}
+                    </Text>
+                  </Box>
+                ) : null
               ) : (
                 <Text mt={4}>Please login to view more buying options</Text>
               )}
