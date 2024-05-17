@@ -57,6 +57,7 @@ const Navbar = () => {
   const [isPasswordVisible, setisPasswordVisible] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
+  const [signupSuccessModal, setSignupSuccessModal] = useState(false);
   const [seniorInfo, setSeniorInfo] = useState({});
   const Router = useRouter();
 
@@ -113,7 +114,10 @@ const Navbar = () => {
     if (intentFromParams == "register") {
       Formik.setFieldValue("email", emailFromParams ? emailFromParams : "");
       Formik.setFieldValue("password", phoneFromParams ? phoneFromParams : "");
-      Formik.setFieldValue("phone_number", phoneFromParams ? phoneFromParams : "");
+      Formik.setFieldValue(
+        "phone_number",
+        phoneFromParams ? phoneFromParams : ""
+      );
       setName(nameFromParams ? nameFromParams : "");
     }
     setCode(referralId);
@@ -201,6 +205,7 @@ const Navbar = () => {
           description: "Signup successful!",
         });
         setIsSignupOpen(false);
+        setSignupSuccessModal(true);
       })
       .catch((err) => {
         Toast({
@@ -705,7 +710,11 @@ const Navbar = () => {
                       rounded={0}
                       max={9999999999}
                     >
-                      <NumberInputField name="phone_number" onChange={Formik.handleChange} placeholder="Phone Number" />
+                      <NumberInputField
+                        name="phone_number"
+                        onChange={Formik.handleChange}
+                        placeholder="Phone Number"
+                      />
                     </NumberInput>
                   </Stack>
                 </FormControl>
@@ -815,6 +824,39 @@ const Navbar = () => {
               </VStack>
             </Stack>
           </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      {/* Signup success modal */}
+      <Modal
+        isOpen={signupSuccessModal}
+        onClose={() => setSignupSuccessModal(false)}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            <Text
+              textAlign={"center"}
+              fontWeight={"semibold"}
+              color={"whatsapp.500"}
+            >
+              Sign Up Successful!
+            </Text>
+          </ModalHeader>
+          <ModalBody>
+            <Text>
+              Congratulations! Your ID was created successfully. Please use
+              these details to login.
+            </Text>
+            <Text>Email: {Formik.values.email}</Text>
+            <Text>Password: {Formik.values.password}</Text>
+          </ModalBody>
+          <ModalFooter>
+            <HStack w={"full"} justifyContent={"flex-end"}>
+              <Button>Okay!</Button>
+            </HStack>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
