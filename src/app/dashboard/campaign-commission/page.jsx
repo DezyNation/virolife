@@ -20,6 +20,7 @@ import {
   Th,
   Thead,
   Tr,
+  Td,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
