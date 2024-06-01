@@ -58,7 +58,7 @@ const Earnings = () => {
           {data?.map((item, key) => (
               <Tr key={key}>
                 <Td>{item?.id}</Td>
-                <Td>{item?.campaign_name}</Td>
+                <Td>{item?.campaign_title} ({item?.campaign_id})</Td>
                 <Td>{item?.commission}</Td>
                 <Td>{item?.created_at}</Td>
               </Tr>
