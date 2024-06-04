@@ -408,10 +408,10 @@ const page = () => {
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim.{" "}
-                  {requirements?.primaryJuniorDonationsRequired}
+                  {requirements?.primaryJuniorDonationsRequired} (₹{amounts?.primaryJuniorDonation})
                 </Text>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Sec. {requirements?.secondaryJuniorDonationsRequired}
+                  Sec. {requirements?.secondaryJuniorDonationsRequired} (₹{amounts?.secondaryJuniorDonation})
                 </Text>
               </HStack>
             </Box>
@@ -489,10 +489,10 @@ const page = () => {
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim.{" "}
-                  {requirements?.primarySeniorDonationsRequired}
+                  {requirements?.primarySeniorDonationsRequired} (₹{amounts?.primarySeniorDonation})
                 </Text>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Sec. {requirements?.secondarySeniorDonationsRequired}
+                  Sec. {requirements?.secondarySeniorDonationsRequired} (₹{amounts?.secondarySeniorDonation})
                 </Text>
               </HStack>
             </Box>
