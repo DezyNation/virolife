@@ -134,7 +134,7 @@ const Layout = ({ children }) => {
                   <Text>Profile</Text>
                   <Box
                     p={2}
-                    bgColor={idStatus?.primary ? "whatsapp.400" : "red.500"}
+                    bgColor={Boolean(Number(idStatus?.primary)) ? "whatsapp.400" : "red.500"}
                     rounded={"full"}
                     fontSize={"xs"}
                   >
@@ -142,7 +142,7 @@ const Layout = ({ children }) => {
                   </Box>
                   <Box
                     p={2}
-                    bgColor={idStatus?.secondary ? "whatsapp.400" : "red.500"}
+                    bgColor={Boolean(Number(idStatus?.secondary)) ? "whatsapp.400" : "red.500"}
                     rounded={"full"}
                     fontSize={"xs"}
                   >
