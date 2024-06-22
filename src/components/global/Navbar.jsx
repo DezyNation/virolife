@@ -719,11 +719,10 @@ const Navbar = () => {
                   </Stack>
                 </FormControl>
                 <FormControl>
-                  <Stack direction={["column", "row"]} spacing={[4, 8]}>
+                  <Stack direction={["column", "row"]} spacing={[4, 8]} justifyContent={'space-between'}>
                     <FormLabel fontSize={"xl"}>Password</FormLabel>
-                    <InputGroup>
+                    <InputGroup w={['full', 'xs']}>
                       <Input
-                        w={["full", "xs"]}
                         placeholder="Password"
                         type={isPasswordVisible ? "text" : "password"}
                         boxShadow={"xl"}
@@ -795,6 +794,7 @@ const Navbar = () => {
                     </Box>
                   </Stack>
                 </FormControl>
+                <Text fontSize={'sm'}>By signing up, you accept our terms and conditions. You also affirm that you are above 18 years of age.</Text>
                 <Box
                   px={8}
                   py={4}

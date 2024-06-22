@@ -36,11 +36,13 @@ import VerticalSpacer from "@/components/global/VerticalSpacer";
 import Cookies from "js-cookie";
 import useRazorpay from "@/utils/hooks/useRazorpay";
 import useApiHandler from "@/utils/hooks/useApiHandler";
+import FullPageLoader from "@/components/global/FullPageLoader";
 
 const MyParents = ({ parents, myParentId, groupType }) => {
   const Toast = useToast({ position: "top-right" });
   const { handleError } = useApiHandler();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [showDonateBtn, setShowDonateBtn] = useState(false);
 
   const [beneficiaries, setBeneficiaries] = useState([]);
@@ -141,6 +143,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   }
 
   function donate() {
+    setIsLoading(true);
     BackendAxios.post(
       receiver?.name == "Virolife Foundation"
         ? `/api/donate/admin`
@@ -153,17 +156,19 @@ const MyParents = ({ parents, myParentId, groupType }) => {
       }
     )
       .then((res) => {
+        setIsLoading(false);
         fetchMyDonations();
         Toast({
           status: "success",
           description: "Notification sent to senior",
         });
         setQrModal(false);
-        setTimeout(() => {
-          window.location.reload(true);
-        }, 300);
+        // setTimeout(() => {
+        //   window.location.reload(true);
+        // }, 300);
       })
       .catch((err) => {
+        setIsLoading(false);
         if (err?.response?.status == 401) {
           Cookies.remove("jwt");
           localStorage.clear();
@@ -269,6 +274,9 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   return (
     <>
+    {
+      isLoading ? <FullPageLoader /> : null
+    }
       <Box>
         {parentUsers?.map((item, key) => (
           <HStack
@@ -292,8 +300,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
                 <Text fontSize={"xs"}>
                   ID: {process.env.NEXT_PUBLIC_CODE}
                   {key == 0 ? myParentId : item?.id}
-                  &nbsp; | &nbsp; Phone:{" "}
-                  {item?.parent_phone}
+                  &nbsp; | &nbsp; Phone: {item?.parent_phone}
                 </Text>
               </Box>
             </HStack>
@@ -523,7 +530,7 @@ const MyChildren = ({ childMembers, donors, groupType }) => {
       .catch((err) => {
         console.log("Error in Fetching Collection");
         console.log(err);
-        handleError(err, "Notification while fetching collection")
+        handleError(err, "Notification while fetching collection");
       });
   }
 
@@ -720,7 +727,7 @@ const MySecondaryChildren = ({ childMembers, donors }) => {
       .catch((err) => {
         console.log("Error in Fetching Collection");
         console.log(err);
-        handleError(err, "Notification while fetching collection")
+        handleError(err, "Notification while fetching collection");
       });
   }
 

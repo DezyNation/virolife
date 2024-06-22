@@ -16,8 +16,18 @@ import BackendAxios from "@/utils/axios";
 import Cookies from "js-cookie";
 import VideoPlayer from "@/components/global/VideoPlayer";
 import QRCode from "react-qr-code";
+import FullPageLoader from "@/components/global/FullPageLoader";
 
-const DonateButton = ({ amount, userId, userName, upiId, groupType, donatedTo, instanceId }) => {
+const DonateButton = ({
+  amount,
+  userId,
+  userName,
+  upiId,
+  groupType,
+  donatedTo,
+  instanceId,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [showDonateBtn, setShowDonateBtn] = useState(true);
   const [qrModal, setQrModal] = useState(false);
   const [videoStatus, setVideoStatus] = useState(false);
@@ -55,16 +65,23 @@ const DonateButton = ({ amount, userId, userName, upiId, groupType, donatedTo, i
   }
 
   function donate() {
-    BackendAxios.post(donatedTo == "senior" ? `/api/donation` : donatedTo == "inactive-junior" ? `/api/donate-inactive-junior/${instanceId}` : `/api/donate-junior/${instanceId}`,
+    setIsLoading(true);
+    BackendAxios.post(
+      donatedTo == "senior"
+        ? `/api/donation`
+        : donatedTo == "inactive-junior"
+        ? `/api/donate-inactive-junior/${instanceId}`
+        : `/api/donate-junior/${instanceId}`,
       {
         donatable_id: userId,
         amount: amount,
         remarks: `Donation in ${groupType} group VCF${userId}`,
         group: groupType,
-        donated: 1
+        donated: 1,
       }
     )
       .then((res) => {
+        setIsLoading(false);
         Toast({
           status: "success",
           description: "Notification sent to junior",
@@ -75,6 +92,7 @@ const DonateButton = ({ amount, userId, userName, upiId, groupType, donatedTo, i
         }, 300);
       })
       .catch((err) => {
+        setIsLoading(false);
         if (err?.response?.status == 401) {
           Cookies.remove("jwt");
           localStorage.clear();
@@ -92,6 +110,7 @@ const DonateButton = ({ amount, userId, userName, upiId, groupType, donatedTo, i
 
   return (
     <>
+      {isLoading ? <FullPageLoader /> : null}
       {showDonateBtn ? (
         <Button
           size={"sm"}
