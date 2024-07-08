@@ -37,6 +37,7 @@ import Cookies from "js-cookie";
 import useRazorpay from "@/utils/hooks/useRazorpay";
 import useApiHandler from "@/utils/hooks/useApiHandler";
 import FullPageLoader from "@/components/global/FullPageLoader";
+import { primaryGroupPlans } from "@/utils/constants";
 
 const MyParents = ({ parents, myParentId, groupType }) => {
   const Toast = useToast({ position: "top-right" });
@@ -61,6 +62,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
     threshold: 0,
     collection: 0,
   });
+  const [primaryPlan, setPrimaryPlan] = useState("");
   const [myUserId, setMyUserId] = useState("");
 
   const [videoStatus, setVideoStatus] = useState(false);
@@ -76,6 +78,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
   useEffect(() => {
     setMyCurrentRound(localStorage.getItem("currentRound"));
     setMyUserId(localStorage.getItem("userId"));
+    setPrimaryPlan(localStorage.getItem("primaryPlan"));
     fetchMyCollection();
   }, []);
 
@@ -237,19 +240,29 @@ const MyParents = ({ parents, myParentId, groupType }) => {
         setRequirements((prev) => ({
           ...prev,
           threshold: Number(currentTasks?.target_amount)?.toFixed(0),
-          primarySeniorAmount: Number(
-            currentTasks?.primary_senior_amount
-          )?.toFixed(0),
-          secondarySeniorAmount: Number(
-            currentTasks?.secondary_senior_amount
-          )?.toFixed(0),
+          primarySeniorAmount:
+            myCurrentRound == 0
+              ? primaryGroupPlans.find((item) => item?.label == primaryPlan)
+                  ?.amount
+              : Number(currentTasks?.primary_senior_amount)?.toFixed(0),
+          secondarySeniorAmount:
+            myCurrentRound == 0
+              ? 0
+              : Number(currentTasks?.secondary_senior_amount)?.toFixed(0),
         }));
 
         if (groupType == "primary") {
           if (Number(currentTasks?.primary_senior_amount) == 0) {
             setShowDonateBtn(false);
           }
-          setAmount(Number(currentTasks?.primary_senior_amount));
+          setAmount(
+            Number(
+              myCurrentRound == 0
+                ? primaryGroupPlans.find((item) => item?.label == primaryPlan)
+                    ?.amount
+                : currentTasks?.primary_senior_amount
+            )
+          );
         }
         if (groupType == "secondary") {
           if (Number(currentTasks?.secondary_senior_amount) == 0) {
@@ -274,9 +287,7 @@ const MyParents = ({ parents, myParentId, groupType }) => {
 
   return (
     <>
-    {
-      isLoading ? <FullPageLoader /> : null
-    }
+      {isLoading ? <FullPageLoader /> : null}
       <Box>
         {parentUsers?.map((item, key) => (
           <HStack
@@ -1278,7 +1289,10 @@ const Page = () => {
                   />
                 </InputGroup>
                 <Text mt={2} fontSize={"xs"}>
-                  {userInfo?.name} - ({userInfo?.phone || "Phone No. not added"}
+                  {userInfo?.name} - (
+                  {userInfo?.primary_plan_name
+                    ? `(Plan ${userInfo?.primary_plan_name})`
+                    : "No Plan"}
                   )
                 </Text>
               </Box>

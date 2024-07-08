@@ -70,6 +70,7 @@ const page = () => {
     },
   ]);
   const [myCurrentRound, setMyCurrentRound] = useState(null);
+  const [primaryPlan, setPrimaryPlan] = useState("");
   const [activeRound, setActiveRound] = useState(null);
 
   const [requirements, setRequirements] = useState({
@@ -116,6 +117,7 @@ const page = () => {
 
   useEffect(() => {
     setMyCurrentRound(localStorage.getItem("currentRound"));
+    setPrimaryPlan(localStorage.getItem("primaryPlan"));
   }, []);
 
   useEffect(() => {
@@ -168,9 +170,11 @@ const page = () => {
           secondaryJuniorDonation: Number(
             currentTasks?.secondary_junior_amount
           )?.toFixed(0),
-          primarySeniorDonation: Number(
-            currentTasks?.primary_senior_amount
-          )?.toFixed(0),
+          primarySeniorDonation:
+            myCurrentRound == 0
+              ? primaryGroupPlans.find((item) => item?.label == primaryPlan)
+                  ?.amount
+              : Number(currentTasks?.primary_senior_amount)?.toFixed(0),
           secondarySeniorDonation: Number(
             currentTasks?.secondary_senior_amount
           )?.toFixed(0),
