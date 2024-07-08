@@ -21,7 +21,6 @@ import {
   BsCheckCircleFill,
   BsCurrencyRupee,
   BsHeartFill,
-  BsXCircleFill,
 } from "react-icons/bs";
 import { GiChestnutLeaf } from "react-icons/gi";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
@@ -30,14 +29,14 @@ import BackendAxios from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
 import DonateButton from "@/components/dashboard/group-funding/DonateButton";
 import useRazorpay from "@/utils/hooks/useRazorpay";
-import useAuth from "@/utils/hooks/useAuth";
 import { FaUserShield } from "react-icons/fa";
+import FullPageLoader from "@/components/global/FullPageLoader";
 
 const page = () => {
   const { handleError } = useApiHandler();
-  const { authUser } = useAuth();
   const { payWithRazorpay } = useRazorpay();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [rounds, setRounds] = useState([
     // {
     //   round: 0,
@@ -247,10 +246,12 @@ const page = () => {
   }
 
   function donateToVirolife() {
+    setIsLoading(true);
     payWithRazorpay({
       orderType: "virolife-donation",
       amount: amounts?.virolifeDonation,
     });
+    setIsLoading(false);
   }
 
   function approveDonation(id, approve) {
@@ -334,6 +335,7 @@ const page = () => {
 
   return (
     <>
+      {isLoading ? <FullPageLoader /> : null}
       <Text mb={4} fontSize={"2xl"} fontWeight={"semibold"} className="messiri">
         Target List
       </Text>
@@ -408,10 +410,12 @@ const page = () => {
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim.{" "}
-                  {requirements?.primaryJuniorDonationsRequired} (₹{amounts?.primaryJuniorDonation})
+                  {requirements?.primaryJuniorDonationsRequired} (₹
+                  {amounts?.primaryJuniorDonation})
                 </Text>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Sec. {requirements?.secondaryJuniorDonationsRequired} (₹{amounts?.secondaryJuniorDonation})
+                  Sec. {requirements?.secondaryJuniorDonationsRequired} (₹
+                  {amounts?.secondaryJuniorDonation})
                 </Text>
               </HStack>
             </Box>
@@ -489,10 +493,12 @@ const page = () => {
               <HStack w={"full"} justifyContent={"flex-end"}>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
                   Req.: &nbsp;&nbsp;&nbsp;&nbsp;Prim.{" "}
-                  {requirements?.primarySeniorDonationsRequired} (₹{amounts?.primarySeniorDonation})
+                  {requirements?.primarySeniorDonationsRequired} (₹
+                  {amounts?.primarySeniorDonation})
                 </Text>
                 <Text fontWeight={"semibold"} fontSize={"xs"}>
-                  Sec. {requirements?.secondarySeniorDonationsRequired} (₹{amounts?.secondarySeniorDonation})
+                  Sec. {requirements?.secondarySeniorDonationsRequired} (₹
+                  {amounts?.secondarySeniorDonation})
                 </Text>
               </HStack>
             </Box>

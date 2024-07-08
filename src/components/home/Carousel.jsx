@@ -172,7 +172,7 @@ const Carousel = () => {
                     spacing={8}
                     justifyContent={"space-between"}
                   >
-                    <FormLabel fontSize={"xl"}>Email</FormLabel>
+                    <FormLabel fontSize={"md"}>Email</FormLabel>
                     <Input
                       w={["full", "xs"]}
                       placeholder="Your Email"
@@ -187,7 +187,7 @@ const Carousel = () => {
                 </FormControl>
                 <FormControl>
                   <Stack direction={["column", "row"]} spacing={8}>
-                    <FormLabel fontSize={"xl"}>Password</FormLabel>
+                    <FormLabel fontSize={"md"}>Password</FormLabel>
                     <InputGroup>
                       <Input
                         w={["full", "xs"]}
@@ -212,6 +212,7 @@ const Carousel = () => {
                     </InputGroup>
                   </Stack>
                 </FormControl>
+
                 <Box
                   px={8}
                   py={4}
@@ -262,7 +263,7 @@ const Carousel = () => {
                     spacing={[4, 8]}
                     justifyContent={"space-between"}
                   >
-                    <FormLabel fontSize={"xl"}>Name</FormLabel>
+                    <FormLabel fontSize={"md"}>Name</FormLabel>
                     <Input
                       w={["full", "xs"]}
                       placeholder="Your Full Name"
@@ -280,7 +281,7 @@ const Carousel = () => {
                     spacing={[4, 8]}
                     justifyContent={"space-between"}
                   >
-                    <FormLabel fontSize={"xl"}>Email</FormLabel>
+                    <FormLabel fontSize={"md"}>Email</FormLabel>
                     <Input
                       w={["full", "xs"]}
                       placeholder="Your Email"
@@ -299,7 +300,7 @@ const Carousel = () => {
                     spacing={[4, 8]}
                     justifyContent={"space-between"}
                   >
-                    <FormLabel fontSize={"xl"}>Phone Number</FormLabel>
+                    <FormLabel fontSize={"md"}>Phone Number</FormLabel>
                     <Input
                       w={["full", "xs"]}
                       placeholder="Phone Number"
@@ -312,7 +313,7 @@ const Carousel = () => {
                     />
                   </Stack>
                 </FormControl>
-
+                <Text fontSize={'sm'} textAlign={'center'}>By signing up, you accept our terms and conditions. You also affirm that you are above 18 years of age.</Text>
                 <Box
                   px={8}
                   py={4}
