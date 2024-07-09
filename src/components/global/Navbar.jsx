@@ -798,7 +798,7 @@ const Navbar = () => {
                         {seniorInfo?.name}{" "}
                         {seniorInfo?.primary_plan_name
                           ? `(Plan ${seniorInfo?.primary_plan_name})`
-                          : "No Plan"}
+                          : ""}
                       </Text>
                     </Box>
                   </Stack>
