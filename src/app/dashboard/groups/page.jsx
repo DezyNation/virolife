@@ -897,7 +897,7 @@ const Page = () => {
     setValue(
       `${process.env.NEXT_PUBLIC_FRONTEND_URL}?ref_id=${localStorage.getItem(
         "userId"
-      )}`
+      )}&plan=${localStorage.getItem("primaryPlan")}`
     );
   }, []);
 

@@ -19,6 +19,7 @@ const DashboardHome = () => {
   const { fetchMyInfo, authUser, myRole } = useAuth();
   const [sessionExpired, setSessionExpired] = useState(false);
 
+  const [myPlan, setMyPlan] = useState("");
   const [primaryJuniors, setPrimaryJuniors] = useState([]);
   const [secondaryJuniors, setSecondaryJuniors] = useState([]);
   const [campaigns, setCampaigns] = useState([]);
@@ -32,6 +33,7 @@ const DashboardHome = () => {
 
   useEffect(() => {
     fetchMyInfo();
+    setMyPlan(localStorage.getItem("primaryPlan"));
   }, []);
 
   useEffect(() => {
@@ -133,7 +135,7 @@ const DashboardHome = () => {
         textTransform={"capitalize"}
       >
         Welcome, {authUser?.name} - ({process.env.NEXT_PUBLIC_CODE}
-        {authUser?.id})
+        {authUser?.id} - {myPlan && `Plan ${myPlan}`})
       </Text>
       {myRole == "user" ? (
         <Stack
