@@ -1289,11 +1289,12 @@ const Page = () => {
                   />
                 </InputGroup>
                 <Text mt={2} fontSize={"xs"}>
-                  {userInfo?.name} - (
+                  {userInfo?.name} 
+                  {/* - (
                   {userInfo?.primary_plan_name
                     ? `(Plan ${userInfo?.primary_plan_name})`
                     : "No Plan"}
-                  )
+                  ) */}
                 </Text>
               </Box>
             ) : null}

@@ -796,9 +796,9 @@ const Navbar = () => {
                       </InputGroup>
                       <Text fontSize={"xs"}>
                         {seniorInfo?.name}{" "}
-                        {seniorInfo?.primary_plan_name
+                        {/* {seniorInfo?.primary_plan_name
                           ? `(Plan ${seniorInfo?.primary_plan_name})`
-                          : "No Plan"}
+                          : "No Plan"} */}
                       </Text>
                     </Box>
                   </Stack>
