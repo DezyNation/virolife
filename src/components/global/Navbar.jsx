@@ -195,6 +195,9 @@ const Navbar = () => {
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
         ...Formik.values,
         name: name,
+        first_name: name?.split(" ")[0] ?? "",
+        middle_name: name?.split(" ")[1] ?? "",
+        last_name: name?.split(" ")[2] ?? "",
         password_confirmation: Formik.values.password,
         phone_number: Formik.values.phone_number,
         code: code,

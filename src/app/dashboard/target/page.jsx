@@ -172,7 +172,7 @@ const page = () => {
             currentTasks?.secondary_junior_amount
           )?.toFixed(0),
           primarySeniorDonation:
-            myCurrentRound == 0 || activeRound == 0
+            myCurrentRound == 0 && activeRound == 0
               ? primaryGroupPlans.find((item) => item?.label == primaryPlan)
                   ?.amount
               : Number(currentTasks?.primary_senior_amount)?.toFixed(0),
