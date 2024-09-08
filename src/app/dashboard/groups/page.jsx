@@ -1322,8 +1322,8 @@ const Page = () => {
             ) : null}
           </ModalBody>
           <ModalFooter gap={8} justifyContent={"flex-end"}>
-            {paymentMethod == "gateway" &&
-            (!primaryJoined || !secondaryJoined) ? (
+            {paymentMethod == "gateway" 
+             ? (
               <Text
                 color={"blue.600"}
                 onClick={() => setPaymentMethod("giftCard")}
@@ -1332,8 +1332,8 @@ const Page = () => {
               >
                 Pay with Gift PIN
               </Text>
-            ) : paymentMethod == "giftCard" &&
-              (!primaryJoined || !secondaryJoined) ? (
+            ) : paymentMethod == "giftCard" 
+               ? (
               <Text
                 color={"blue.600"}
                 onClick={() => {
