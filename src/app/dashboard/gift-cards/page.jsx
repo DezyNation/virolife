@@ -46,6 +46,9 @@ const page = () => {
   const [mergeCouponModal, setMergeCouponModal] = useState(false);
   const [mergeCoupons, setMergeCoupons] = useState([]);
 
+  const [shareGiftCardId, setShareGiftCardId] = useState("");
+  const [targetUser, setTargetUser] = useState("");
+
   useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));
   }, []);
@@ -171,6 +174,30 @@ const page = () => {
       });
   }
 
+  function shareGiftCard() {
+    BackendAxios.post(`/api/transfer-gift/${shareGiftCardId}`, {
+      user_id: targetUser,
+    })
+      .then((res) => {
+        if (myRole == "distributor" || myRole == "agent") {
+          fetchGiftCards("my-assigned-gifts");
+        } else {
+          fetchGiftCards("my-gifts");
+        }
+        Toast({
+          status: "success",
+          description: "Gift card transferred successfully!",
+        });
+      })
+      .catch((err) => {
+        Toast({
+          status: "error",
+          description:
+            err?.response?.data?.message || err?.response?.data || err?.message,
+        });
+      });
+  }
+
   return (
     <>
       <Text fontSize={"lg"}>Your Gift Cards</Text>
@@ -189,9 +216,7 @@ const page = () => {
               <Th>Linked User</Th>
               <Th>Created At</Th>
               <Th>Expires At</Th>
-              {myRole == "agent" || myRole == "distributor" ? (
-                <Th>Action</Th>
-              ) : null}
+              <Th>Action</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -212,16 +237,23 @@ const page = () => {
                     : ""}
                 </Td>
                 <Td>{item?.expiry_at}</Td>
-                {myRole == "agent" || myRole == "distributor" ? (
-                  <Td>
+                <Td>
+                  {myRole == "agent" || myRole == "distributor" ? (
                     <Button
                       size={"xs"}
                       onClick={() => setSelectedGiftCard(item)}
                     >
                       Edit
                     </Button>
-                  </Td>
-                ) : null}
+                  ) : item?.redeemed ? null : (
+                    <Button
+                      size={"xs"}
+                      onClick={() => setShareGiftCardId(true)}
+                    >
+                      Share
+                    </Button>
+                  )}
+                </Td>
               </Tr>
             ))}
           </Tbody>
@@ -358,6 +390,36 @@ const page = () => {
               <Button colorScheme="yellow" onClick={() => mergeGiftCards()}>
                 Merge
               </Button>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Transfer Gift Card */}
+      <Modal isOpen={shareGiftCardId} onClose={() => setShareGiftCardId(null)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Transfer Gift Card</ModalHeader>
+          <ModalBody>
+            <FormLabel>User ID</FormLabel>
+            <HStack>
+              <InputGroup>
+                <InputLeftAddon children={"VCF"} />
+                <Input
+                  name="userId"
+                  placeholder="Enter User ID"
+                  value={targetUser}
+                  onChange={(e) => setTargetUser(e.target.value)}
+                />
+              </InputGroup>
+              <Button size={"xs"} onClick={() => verifyUser(targetUser)}>
+                Verify
+              </Button>
+            </HStack>
+          </ModalBody>
+          <ModalFooter>
+            <HStack justifyContent={"flex-end"}>
+              <Button colorScheme="twitter">Share</Button>
             </HStack>
           </ModalFooter>
         </ModalContent>
