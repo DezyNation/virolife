@@ -419,7 +419,7 @@ const page = () => {
           </ModalBody>
           <ModalFooter>
             <HStack justifyContent={"flex-end"}>
-              <Button colorScheme="twitter">Share</Button>
+              <Button colorScheme="twitter" onClick={shareGiftCard}>Share</Button>
             </HStack>
           </ModalFooter>
         </ModalContent>
