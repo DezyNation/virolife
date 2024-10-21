@@ -289,13 +289,14 @@ const page = () => {
           <ModalBody>
             <FormControl mb={4}>
               <FormLabel>Card No.</FormLabel>
-              <HStack>
+              <HStack w={'full'}>
                 {/* <Input
                   name="code"
                   value={Formik.values.code}
                   isDisabled={true}
                 /> */}
                 <Select
+                  isMulti
                   name="gift_card_ids"
                   options={giftCards
                     ?.filter(
@@ -308,6 +309,7 @@ const page = () => {
                     Formik.setFieldValue("code", e.value);
                     Formik.setFieldValue("gift_card_ids", e.value);
                   }}
+                  styles={{width: '100%'}}
                 />
               </HStack>
             </FormControl>
