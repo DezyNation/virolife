@@ -29,6 +29,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { Select } from "chakra-react-select";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
 import { LuMerge } from "react-icons/lu";
@@ -64,6 +65,7 @@ const page = () => {
   const Formik = useFormik({
     initialValues: {
       giftCardId: "",
+      gift_card_ids: [],
       count: "",
       code: "",
       userId: "",
@@ -76,7 +78,7 @@ const page = () => {
       purpose: "",
     },
     onSubmit: (values) => {
-      BackendAxios.put(`/api/gift/${values.giftCardId}`, values)
+      BackendAxios.put(`/api/gift`, values)
         .then((res) => {
           Toast({
             status: "success",
@@ -101,6 +103,13 @@ const page = () => {
   useEffect(() => {
     if (selectedGiftCard) {
       Formik.setFieldValue("giftCardId", selectedGiftCard?.id);
+      const existingGiftCards = Formik.values.gift_card_ids;
+      if (!existingGiftCards.includes(selectedGiftCard?.id)) {
+        Formik.setFieldValue("gift_card_ids", [
+          ...existingGiftCards,
+          selectedGiftCard?.id,
+        ]);
+      }
       Formik.setFieldValue("userId", selectedGiftCard?.user_id);
       Formik.setFieldValue("code", selectedGiftCard?.code);
       Formik.setFieldValue("agentId", selectedGiftCard?.agent_id);
@@ -272,7 +281,7 @@ const page = () => {
         Merge Gift Cards
       </Button>
 
-      {/* Gift Card Creation Modal */}
+      {/* Gift Card Update Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size={"sm"}>
         <ModalOverlay />
         <ModalContent>
@@ -281,14 +290,29 @@ const page = () => {
             <FormControl mb={4}>
               <FormLabel>Card No.</FormLabel>
               <HStack>
-                <Input
+                {/* <Input
                   name="code"
                   value={Formik.values.code}
                   isDisabled={true}
+                /> */}
+                <Select
+                  name="gift_card_ids"
+                  options={giftCards
+                    ?.filter(
+                      (item) =>
+                        item?.redeemed == 0 &&
+                        (item?.agent_id == null || item?.user_id == null)
+                    )
+                    ?.map((item) => ({ value: item?.code, label: item?.code }))}
+                  onChange={(e) => {
+                    Formik.setFieldValue("code", e.value);
+                    Formik.setFieldValue("gift_card_ids", e.value);
+                  }}
                 />
               </HStack>
             </FormControl>
-            {Formik.values.giftCardId ? null : (
+
+            {/* {Formik.values.giftCardId ? null : (
               <FormControl mb={4}>
                 <FormLabel>Amount</FormLabel>
                 <Input
@@ -297,7 +321,7 @@ const page = () => {
                   // onChange={Formik.handleChange}
                 />
               </FormControl>
-            )}
+            )} */}
 
             {myRole == "agent" ? null : (
               <FormControl mb={4}>
@@ -321,6 +345,7 @@ const page = () => {
                 </HStack>
               </FormControl>
             )}
+
             {myRole == "distributor" ? null : (
               <FormControl mb={4}>
                 <FormLabel>Authorised User</FormLabel>
@@ -419,7 +444,9 @@ const page = () => {
           </ModalBody>
           <ModalFooter>
             <HStack justifyContent={"flex-end"}>
-              <Button colorScheme="twitter" onClick={shareGiftCard}>Share</Button>
+              <Button colorScheme="twitter" onClick={shareGiftCard}>
+                Share
+              </Button>
             </HStack>
           </ModalFooter>
         </ModalContent>

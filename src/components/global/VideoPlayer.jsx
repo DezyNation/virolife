@@ -13,9 +13,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import BackendAxios from "@/utils/axios";
-import Plyr from "plyr-react";
-import "plyr/dist/plyr.css";
-import AdSenseVideoAd from "./AdSenseVideoAd";
 
 const VideoPlayer = ({ title, onVideoClose, status, videoId, provider }) => {
   const Toast = useToast({ position: "top-right" });
