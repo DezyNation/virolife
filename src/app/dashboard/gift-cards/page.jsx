@@ -78,7 +78,7 @@ const page = () => {
       purpose: "",
     },
     onSubmit: (values) => {
-      BackendAxios.put(`/api/gift`, values)
+      BackendAxios.put(`/api/edit-gift`, values)
         .then((res) => {
           Toast({
             status: "success",
