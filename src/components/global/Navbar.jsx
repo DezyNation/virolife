@@ -50,7 +50,9 @@ const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [userData, setUserData] = useState(null);
   const [myRole, setMyRole] = useState("");
@@ -118,7 +120,7 @@ const Navbar = () => {
         "phone_number",
         phoneFromParams ? phoneFromParams : ""
       );
-      setName(nameFromParams ? nameFromParams : "");
+      setFirstName(nameFromParams ? nameFromParams : "");
     }
     setCode(referralId);
     if (referralId) {
@@ -194,10 +196,9 @@ const Navbar = () => {
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
         ...Formik.values,
-        name: name,
-        first_name: name?.split(" ")[0] ?? "",
-        middle_name: name?.split(" ")[1] ?? "",
-        last_name: name?.split(" ")[2] ?? "",
+        first_name: firstName,
+        middle_name: middleName,
+        last_name: lastName,
         password_confirmation: Formik.values.password,
         phone_number: Formik.values.phone_number,
         code: code,
@@ -666,14 +667,50 @@ const Navbar = () => {
                     spacing={[4, 8]}
                     justifyContent={"space-between"}
                   >
-                    <FormLabel fontSize={"xl"}>Name</FormLabel>
+                    <FormLabel fontSize={"xl"}>First Name</FormLabel>
                     <Input
                       w={["full", "xs"]}
-                      placeholder="Your Full Name"
+                      placeholder="Your First Name"
                       boxShadow={"xl"}
                       border={".5px solid #FAFAFA"}
                       rounded={0}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      value={name}
+                    />
+                  </Stack>
+                </FormControl>
+                <FormControl>
+                  <Stack
+                    direction={["column", "row"]}
+                    spacing={[4, 8]}
+                    justifyContent={"space-between"}
+                  >
+                    <FormLabel fontSize={"xl"}>Middle Name</FormLabel>
+                    <Input
+                      w={["full", "xs"]}
+                      placeholder="Your Middle Name"
+                      boxShadow={"xl"}
+                      border={".5px solid #FAFAFA"}
+                      rounded={0}
+                      onChange={(e) => setMiddleName(e.target.value)}
+                      value={name}
+                    />
+                  </Stack>
+                </FormControl>
+                <FormControl>
+                  <Stack
+                    direction={["column", "row"]}
+                    spacing={[4, 8]}
+                    justifyContent={"space-between"}
+                  >
+                    <FormLabel fontSize={"xl"}>Last Name</FormLabel>
+                    <Input
+                      w={["full", "xs"]}
+                      placeholder="Your Last Name"
+                      boxShadow={"xl"}
+                      border={".5px solid #FAFAFA"}
+                      rounded={0}
+                      onChange={(e) => setLastName(e.target.value)}
                       value={name}
                     />
                   </Stack>
