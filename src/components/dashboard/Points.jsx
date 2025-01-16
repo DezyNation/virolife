@@ -30,12 +30,14 @@ import { FiRefreshCw } from "react-icons/fi";
 import { useFormik } from "formik";
 import BackendAxios from "@/utils/axios";
 import useApiHandler from "@/utils/hooks/useApiHandler";
+import { BsCurrencyRupee } from "react-icons/bs";
 
 const Points = () => {
   const [points, setPoints] = useState({
     atpPoints: 0,
     healthPoints: 0,
-    adPoints: 0
+    adPoints: 0,
+    cashPoints: 0,
   });
   const [loading, setLoading] = useState(false);
   const [intent, setIntent] = useState("");
@@ -52,7 +54,7 @@ const Points = () => {
   const Formik = useFormik({
     initialValues: {
       campaignId: "",
-      points: ""
+      points: "",
     },
     onSubmit: (values) => {
       if (values?.points > points?.healthPoints || values?.points <= 0) {
@@ -65,7 +67,7 @@ const Points = () => {
         requestTransfer();
       }
       if (intent == "withdrawal") {
-        requestWithdrawal()
+        requestWithdrawal();
       }
     },
   });
@@ -86,12 +88,12 @@ const Points = () => {
       beneficiaryId: beneficiaryId,
     })
       .then(async (res) => {
-        onToggle()
+        onToggle();
         await refreshPoints();
         Toast({
           status: "success",
-          description:"Request sent to admin successfully"
-        })
+          description: "Request sent to admin successfully",
+        });
       })
       .catch((err) => {
         handleError(err, "Failed to request point transfer.");
@@ -104,12 +106,12 @@ const Points = () => {
       campaignId: Formik.values.campaignId,
     })
       .then(async (res) => {
-        onToggle()
+        onToggle();
         await refreshPoints();
         Toast({
           status: "success",
-          description:"Request sent to admin successfully"
-        })
+          description: "Request sent to admin successfully",
+        });
       })
       .catch((err) => {
         handleError(err, "Failed to request point transfer.");
@@ -129,29 +131,37 @@ const Points = () => {
   async function refreshPoints() {
     setLoading(true);
     await fetchMyInfo();
-
-    await BackendAxios.get(`/api/user/points/my-atp`).then(async res =>{
-      await BackendAxios.get(`/api/my-health-points`).then(result =>{
-        setPoints({
-          atpPoints: res.data,
-          adPoints: Cookies.get("adPoints"),
-          healthPoints: result.data
+    try {
+      await BackendAxios.get(`/api/user/points/my-atp`).then(async (res) => {
+        await BackendAxios.get(`/api/my-health-points`).then((result) => {
+          setPoints({
+            atpPoints: res.data,
+            adPoints: Cookies.get("adPoints"),
+            healthPoints: result.data,
+          });
         });
-      })
-    }).catch(err => {
+      });
+      await BackendAxios.get(`/api/user/points/my-cash-points`).then((res) => {
+        setPoints((prev) => ({ ...prev, cashPoints: res.data }));
+      });
+    } catch (err) {
+      handleError(err, "Err while fetching ATP");
+    } finally {
       setLoading(false);
-      handleError(err, "Err while fetching ATP")
-    })
-    setLoading(false);
-
+    }
   }
 
-  useEffect(()=>{
-    localStorage.setItem("atpPoints", points.atpPoints)
-    localStorage.setItem("healthPoints", points.healthPoints)
-    localStorage.setItem("adPoints", points.adPoints)
-  },[points.atpPoints, points.healthPoints, points.adPoints])
-
+  useEffect(() => {
+    localStorage.setItem("atpPoints", points.atpPoints);
+    localStorage.setItem("healthPoints", points.healthPoints);
+    localStorage.setItem("adPoints", points.adPoints);
+    localStorage.setItem("cashPoints", points.cashPoints);
+  }, [
+    points.atpPoints,
+    points.healthPoints,
+    points.adPoints,
+    points.cashPoints,
+  ]);
 
   return (
     <>
@@ -162,6 +172,27 @@ const Points = () => {
           rounded={"full"}
           onClick={refreshPoints}
         />
+        <HStack
+          rounded={"full"}
+          gap={0}
+          bgColor={"gray.50"}
+          onClick={() =>
+            (window.location.href = "/dashboard/cash-points/withdrawals")
+          }
+        >
+          <IconButton
+            bgColor={"pink.400"}
+            color={"#FFF"}
+            icon={<BsCurrencyRupee size={20} />}
+            rounded={"full"}
+          />
+          <Box p={2}>
+            <Text fontSize={"8"}>Cash Points</Text>
+            <Text fontSize={"md"} fontWeight={"semibold"}>
+              {Number(points.cashPoints)?.toFixed(2)}
+            </Text>
+          </Box>
+        </HStack>
         <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
           <IconButton
             bgColor={"pink.400"}
@@ -290,7 +321,6 @@ const Points = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      
     </>
   );
 };

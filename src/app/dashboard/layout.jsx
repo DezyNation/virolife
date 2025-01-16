@@ -202,6 +202,20 @@ const Layout = ({ children }) => {
                       <Text>Collection</Text>
                     </HStack>
                   </Link>
+                  <Link
+                    style={{ width: "100%" }}
+                    href={"/dashboard/cash-points/withdrawals"}
+                  >
+                    <HStack
+                      p={2}
+                      _hover={{ bgColor: "orange.200" }}
+                      w={"full"}
+                      gap={4}
+                    >
+                      <BsCurrencyRupee size={20} />
+                      <Text>Cash Point Withdrawals</Text>
+                    </HStack>
+                  </Link>
                   <Link style={{ width: "100%" }} href={"/dashboard/groups"}>
                     <HStack
                       p={2}
