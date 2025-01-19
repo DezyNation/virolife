@@ -675,7 +675,7 @@ const Navbar = () => {
                       border={".5px solid #FAFAFA"}
                       rounded={0}
                       onChange={(e) => setFirstName(e.target.value)}
-                      value={name}
+                      value={firstName}
                     />
                   </Stack>
                 </FormControl>
@@ -693,7 +693,7 @@ const Navbar = () => {
                       border={".5px solid #FAFAFA"}
                       rounded={0}
                       onChange={(e) => setMiddleName(e.target.value)}
-                      value={name}
+                      value={middleName}
                     />
                   </Stack>
                 </FormControl>
@@ -711,7 +711,7 @@ const Navbar = () => {
                       border={".5px solid #FAFAFA"}
                       rounded={0}
                       onChange={(e) => setLastName(e.target.value)}
-                      value={name}
+                      value={lastName}
                     />
                   </Stack>
                 </FormControl>
