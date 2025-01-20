@@ -141,8 +141,11 @@ const Points = () => {
           });
         });
       });
-      await BackendAxios.get(`/api/user/points/my-cash-points`).then((res) => {
-        setPoints((prev) => ({ ...prev, cashPoints: res.data }));
+      await BackendAxios.get(`/api/my-cash-points`).then((res) => {
+        setPoints((prev) => ({
+          ...prev,
+          cashPoints: res.data?.total_points - res.data?.redeemed_points,
+        }));
       });
     } catch (err) {
       handleError(err, "Err while fetching ATP");
