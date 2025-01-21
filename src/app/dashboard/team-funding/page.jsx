@@ -84,7 +84,7 @@ const index = () => {
       title: "PLAN D",
       bgColor: "whatsapp.500",
       color: "#FFF",
-      price: 6000,
+      price: 10000,
       description: [
         "300 per member for direct joining",
         "275 per member for next 16 members",
@@ -103,7 +103,7 @@ const index = () => {
       title: "PLAN E",
       bgColor: "pink.500",
       color: "#FFF",
-      price: 12000,
+      price: 16000,
       description: [
         "750 per member for direct joining",
         "525 per member for next 16 members",
@@ -122,7 +122,7 @@ const index = () => {
       title: "PLAN F",
       bgColor: "twitter.500",
       color: "#FFF",
-      price: 18000,
+      price: 21500,
       description: [
         "950 per member for direct joining",
         "850 per member for next 16 members",
