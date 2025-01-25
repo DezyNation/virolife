@@ -424,7 +424,7 @@ const Layout = ({ children }) => {
           {myRole == "user" ? (
             <Points />
           ) : (
-            <Commission onClick={fetchInfo} commission={commission} />
+            <Commission />
           )}
           {children}
         </Box>

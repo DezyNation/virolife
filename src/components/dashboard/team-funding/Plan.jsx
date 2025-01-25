@@ -111,6 +111,12 @@ const Plan = ({
       });
       return;
     }
+    if(!parentId || !referralId) {
+      Toast({
+        description: "All fields are required",
+      });
+      return;
+    }
     await payWithRazorpay({
       orderType: "viro-team",
       planId: id,
@@ -145,6 +151,12 @@ const Plan = ({
     ) {
       Toast({
         description: "You can not join yourself!",
+      });
+      return;
+    }
+    if(!parentId || !referralId) {
+      Toast({
+        description: "All fields are required",
       });
       return;
     }
@@ -299,7 +311,7 @@ const Plan = ({
             </InputGroup>
             <br />
             <br />
-            <Text>Enter Referral ID (optional)</Text>
+            <Text>Enter Referral ID (required)</Text>
             <InputGroup>
               <InputLeftAddon children={"VCF"} />
               <Input
