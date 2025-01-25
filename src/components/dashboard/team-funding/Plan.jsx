@@ -311,7 +311,7 @@ const Plan = ({
             </InputGroup>
             <br />
             <br />
-            <Text>Enter Referral ID (required)</Text>
+            <Text>Enter Agent ID (required)</Text>
             <InputGroup>
               <InputLeftAddon children={"VCF"} />
               <Input

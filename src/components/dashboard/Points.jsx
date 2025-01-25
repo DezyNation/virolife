@@ -168,7 +168,7 @@ const Points = () => {
 
   return (
     <>
-      <HStack gap={8} pb={4} w={"full"} justifyContent={"flex-end"}>
+      <HStack gap={8} pb={4} w={"full"} justifyContent={"flex-end"} flexWrap={'wrap'}>
         <IconButton
           isLoading={loading}
           icon={<FiRefreshCw size={20} />}

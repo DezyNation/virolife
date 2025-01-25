@@ -155,7 +155,7 @@ const ChildMemberCard = ({
             </Text>
             <Text fontSize={"xs"}>
               ID: {process.env.NEXT_PUBLIC_CODE}
-              {id} &nbsp; | &nbsp; Phone: {phone_number?.slice(0, 9)}
+              {id} &nbsp; | &nbsp; Phone: {phone_number}
             </Text>
           </Box>
           {/* {showDonateBtn ? (
