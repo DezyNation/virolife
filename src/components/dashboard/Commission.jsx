@@ -30,6 +30,7 @@ const Commission = () => {
   const { isOpen, onToggle } = useDisclosure();
   const { handleError } = useApiHandler();
   const Toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [points, setPoints] = useState({
     atpPoints: 0,
@@ -59,6 +60,7 @@ const Commission = () => {
 
   async function fetchInfo() {
     try {
+      setIsLoading(true);
       await BackendAxios.get("/auth-user").then(async (res) => {
         setMyRole(
           res.data[0]?.roles?.length ? res.data[0]?.roles[0]?.name : ""
@@ -78,6 +80,8 @@ const Commission = () => {
       });
     } catch (err) {
       handleError(err, "Error while loading your points");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -113,7 +117,8 @@ const Commission = () => {
         <IconButton
           icon={<FiRefreshCw size={20} />}
           rounded={"full"}
-          onClick={onClick}
+          onClick={fetchInfo}
+          isLoading={isLoading}
         />
 
         <HStack
@@ -139,11 +144,7 @@ const Commission = () => {
         </HStack>
 
         {myRole == "agent" && (
-          <HStack
-            rounded={"full"}
-            gap={0}
-            bgColor={"gray.50"}
-          >
+          <HStack rounded={"full"} gap={0} bgColor={"gray.50"}>
             <IconButton
               bgColor={"red.400"}
               color={"#FFF"}
