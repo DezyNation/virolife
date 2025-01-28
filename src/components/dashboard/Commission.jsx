@@ -41,6 +41,10 @@ const Commission = () => {
   const [myRole, setMyRole] = useState("");
   const [commission, setCommission] = useState("");
 
+  const [healthPointModal, setHealthPointModal] = useState(false);
+  const [healPoints, setHealPoints] = useState("");
+  const [beneficiaryId, setBeneficiaryId] = useState("");
+
   useEffect(() => {
     setMyRole(localStorage.getItem("myRole"));
     fetchInfo();
@@ -105,6 +109,32 @@ const Commission = () => {
         });
     },
   });
+
+  function handleTransfer() {
+    if (healPoints > points?.healthPoints || healPoints <= 0) {
+      Toast({
+        status: "warning",
+        description: "Please enter valid points",
+      });
+      return;
+    }
+    BackendAxios.post("/api/user/points/request-transfer", {
+      points: healPoints,
+      beneficiaryId: beneficiaryId,
+    })
+      .then(async (res) => {
+        setHealthPointModal(false);
+        setHealPoints("");
+        await fetchInfo();
+        Toast({
+          status: "success",
+          description: "Request sent to admin successfully",
+        });
+      })
+      .catch((err) => {
+        handleError(err, "Failed to request point transfer.");
+      });
+  }
 
   return (
     <>
@@ -202,6 +232,52 @@ const Commission = () => {
               </Button>
             </HStack>
           </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Health point transfer modal */}
+
+      <Modal
+        isOpen={healthPointModal}
+        onClose={() => setHealthPointModal(false)}
+      >
+        <ModalOverlay />
+        <ModalContent transition={"all .3s ease"}>
+          <ModalHeader>Transfer your health points</ModalHeader>
+          <ModalBody alignItems={"center"} justifyContent={"center"} py={8}>
+            <Box pt={8}>
+              <FormControl>
+                <FormLabel>Enter User ID</FormLabel>
+                <InputGroup>
+                  <InputLeftAddon children={"VCF"} />
+                  <Input
+                    name="beneficiaryId"
+                    value={beneficiaryId}
+                    onChange={(e) => setBeneficiaryId(e.target.value)}
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl pt={8}>
+                <FormLabel>How much points you want to transfer?</FormLabel>
+                <Input
+                  name="points"
+                  value={healPoints}
+                  onChange={(e) => setHealPoints(e.target.value)}
+                />
+              </FormControl>
+              <Text fontSize={"xs"} fontWeight={"semibold"}>
+                These transferred points will expire in 30 days
+              </Text>
+            </Box>
+          </ModalBody>
+          <ModalBody>
+            <HStack justifyContent={"flex-end"} gap={6} py={4}>
+              <Button onClick={() => setHealthPointModal(false)}>Cancel</Button>
+              <Button onClick={handleTransfer} colorScheme="twitter">
+                Confirm
+              </Button>
+            </HStack>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>

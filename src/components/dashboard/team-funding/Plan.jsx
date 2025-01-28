@@ -82,6 +82,15 @@ const Plan = ({
     BackendAxios.get(`/api/users/${userId}`)
       .then((res) => {
         if (res.data?.length) {
+          if (res.data[0]?.role !== "agent") {
+            Toast({
+              status: "error",
+              title: "Enter agent ID only",
+              description: "User is not an agent",
+            });
+            setReferralId("");
+            return;
+          }
           Toast({
             title: res.data[0]?.name,
             description: `Ph. ${res.data[0]?.phone_number || "NA"}`,
@@ -111,7 +120,7 @@ const Plan = ({
       });
       return;
     }
-    if(!parentId || !referralId) {
+    if (!parentId || !referralId) {
       Toast({
         description: "All fields are required",
       });
@@ -154,7 +163,7 @@ const Plan = ({
       });
       return;
     }
-    if(!parentId || !referralId) {
+    if (!parentId || !referralId) {
       Toast({
         description: "All fields are required",
       });
