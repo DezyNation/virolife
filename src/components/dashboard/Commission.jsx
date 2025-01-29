@@ -182,6 +182,7 @@ const Commission = () => {
               color={"#FFF"}
               icon={<AiFillHeart size={20} />}
               rounded={"full"}
+              onClick={() => setHealthPointModal(true)}
             />
             <Box p={2}>
               <Text fontSize={"8"}>Health Points</Text>
