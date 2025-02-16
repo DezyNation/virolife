@@ -199,6 +199,7 @@ const Navbar = () => {
         first_name: firstName,
         middle_name: middleName,
         last_name: lastName,
+        name: firstName + " " + middleName + (middleName ? " " : "") + lastName,
         password_confirmation: Formik.values.password,
         phone_number: Formik.values.phone_number,
         code: code,
