@@ -269,7 +269,7 @@ const index = () => {
             </TableContainer>
           </Box>
         ) : null}
-        {myPlan?.id && myRole == "user" ? (
+        {myPlan?.id ? (
           <Plan
             id={myPlan?.id}
             onClick={() => console.log(myPlan?.id)}
@@ -280,7 +280,7 @@ const index = () => {
             description={myPlan?.description}
             subscribedByMe={true}
           />
-        ) : (
+        ) : myRole == "user" ? (
           plans.map((plan, key) => (
             <Plan
               key={key}
@@ -301,7 +301,7 @@ const index = () => {
               }
             />
           ))
-        )}
+        ) : null}
       </HStack>
     </>
   );
