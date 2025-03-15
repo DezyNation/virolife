@@ -138,11 +138,16 @@ const index = () => {
     },
   ];
   const [myPlan, setMyPlan] = useState({});
+  const [myRole, setMyRole] = useState("");
   const [seniorPlan, setSeniorPlan] = useState({});
   const [data, setData] = useState([]);
 
   useEffect(() => {
     getMyPlan();
+  }, []);
+
+  useEffect(() => {
+    setMyRole(localStorage.getItem("myRole"));
   }, []);
 
   useEffect(() => {
@@ -198,9 +203,9 @@ const index = () => {
   return (
     <>
       <Text fontSize={"lg"} className="serif">
-        Veero Team Funding
+        {myRole == "user" ? "Veero Team Funding" : "Cash Points"}
       </Text>
-      {myPlan?.id ? null : (
+      {myPlan?.id || myRole != "user" ? null : (
         <VStack w={"full"} py={6}>
           <Text textAlign={"center"}>You don't have any subscription.</Text>
           <Text
@@ -222,7 +227,7 @@ const index = () => {
         justifyContent={"space-between"}
         flexWrap={"wrap"}
       >
-        {myPlan?.id ? (
+        {myPlan?.id || myRole != "user" ? (
           <Box>
             {/* <Text>Members who bought subscription</Text> */}
             <br />
@@ -264,7 +269,7 @@ const index = () => {
             </TableContainer>
           </Box>
         ) : null}
-        {myPlan?.id ? (
+        {myPlan?.id && myRole == "user" ? (
           <Plan
             id={myPlan?.id}
             onClick={() => console.log(myPlan?.id)}
