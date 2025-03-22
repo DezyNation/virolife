@@ -239,7 +239,8 @@ const index = () => {
                     <Th>User Name</Th>
                     <Th>Parent ID</Th>
                     <Th>Plan Purchased</Th>
-                    <Th>Points Received</Th>
+                    <Th>Health Points</Th>
+                    <Th>Cash Points</Th>
                     <Th>Reward Type</Th>
                     <Th>Timestamp</Th>
                   </Tr>
@@ -254,6 +255,7 @@ const index = () => {
                       <Td>{data?.parent_id}</Td>
                       <Td>{data?.name}</Td>
                       <Td>{data?.points}</Td>
+                      <Td>{data?.cash_points}</Td>
                       <Td>
                         {data?.purpose == "parent"
                           ? "Direct"
